@@ -1,0 +1,19 @@
+inherit_from:
+  - .rubocop_airbnb.yml
+
+Rails:
+  Enabled: true
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'db/**/*'
+    - 'bin/*'
+    - 'config/environments/*'
+    - 'config/initializers/*'
+    - 'config/application.rb'
+    - 'config/puma.rb'
+    - 'lib/tasks/*'
+    - 'vendor/**/*'
+    - '.git/**/*'
+    - 'Gemfile'
