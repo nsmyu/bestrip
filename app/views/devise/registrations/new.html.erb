@@ -1,105 +1,72 @@
 <main class="main-content  mt-0">
-  <div class="page-header align-items-start min-vh-100" style="background-image: url(<%= asset_path 'sign_up.jpg' %>);">
-    <span class="mask bg-gradient-dark opacity-6"></span>
-    <div class="container my-auto">
-      <div class="row">
-        <div class="col-lg-4 col-md-8 col-12 mx-auto">
-          <div class="card z-index-0 fadeIn3 fadeInBottom">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
-                <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">ログイン</h4>
-                <div class="row mt-3">
-                  <div class="col-2 text-center ms-auto">
-                    <a class="btn btn-link px-3" href="javascript:;">
-                      <i class="fa fa-facebook text-white text-lg"></i>
-                    </a>
-                  </div>
-                  <div class="col-2 text-center px-1">
-                    <a class="btn btn-link px-3" href="javascript:;">
-                      <i class="fa fa-github text-white text-lg"></i>
-                    </a>
-                  </div>
-                  <div class="col-2 text-center me-auto">
-                    <a class="btn btn-link px-3" href="javascript:;">
-                      <i class="fa fa-google text-white text-lg"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
+  <section>
+    <div class="page-header min-vh-100">
+      <div class="container">
+        <div class="row">
+          <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
+            <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center" style="background-image: url(<%= asset_path 'sign_up.jpg' %>); background-size: cover;">
             </div>
-            <div class="card-body">
-              <%= form_with(model: resource, scope: resource_name, url: session_path(resource_name), local: true, html: { class: "text-start" })  do |f| %>
-                <div class="input-group input-group-outline my-3">
-                  <%= f.label :email, "メールアドレス", class: "form-label" %>
-                  <%= f.email_field :email, class: "form-control", autocomplete: "email" %>
-                </div>
-                <div class="input-group input-group-outline my-3">
-                  <%= f.label :password, "パスワード", class: "form-label" %>
-                  <%= f.password_field :password, class: "form-control", autocomplete: "current-password" %>
-                </div>
-                <%
-=begin%>
- <% if devise_mapping.rememberable? %>
-                  <div class="field">
-                    <%= f.check_box :remember_me %>
-                    <%= f.label :remember_me %>
+          </div>
+          <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
+            <div class="card card-plain">
+              <div class="card-header">
+                <h4 class="font-weight-bolder">アカウント作成</h4>
+              </div>
+              <div class="card-body">
+                <%= form_with(model: resource, scope: resource_name, url: registration_path(resource_name), local: true)  do |f| %>
+                  <div class="input-group input-group-outline mb-3 ">
+                    <%= f.label :name, "ニックネーム", class: "form-label" %>
+                    <%= f.text_field :name, class: "form-control", autocomplete: "name" %>
+                    <% if resource.errors.any? %>
+                      <div class="field-alert">
+                        <%= resource.errors.full_messages_for(:name).first %>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="input-group input-group-outline mb-3">
+                    <%= f.label :email, "メールアドレス", class: "form-label" %>
+                    <%= f.email_field :email, class: "form-control", autocomplete: "email" %>
+                    <% if resource.errors.any? %>
+                      <div class="field-alert">
+                        <%= resource.errors.full_messages_for(:email).first %>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="input-group input-group-outline mb-3">
+                    <%= f.label :password, "パスワード（半角英数字6文字以上）", class: "form-label" %>
+                    <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
+                    <% if resource.errors.any? %>
+                      <div class="field-alert">
+                        <%= resource.errors.full_messages_for(:password).first %>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="input-group input-group-outline mb-3">
+                    <%= f.label :password_confirmation, "パスワード確認", class: "form-label" %>
+                    <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
+                    <% if resource.errors.any? %>
+                      <div class="field-alert">
+                        <%= resource.errors.full_messages_for(:password_confirmation).first %>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="text-center actions">
+                    <%= f.submit "新規登録", class: "btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0" %>
                   </div>
                 <% end %>
-<%
-=end%>
-                 <div class="form-check form-switch d-flex align-items-center mb-3">
-                  <input class="form-check-input" type="checkbox" id="rememberMe" checked>
-                  <label class="form-check-label mb-0 ms-3" for="rememberMe">Remember me</label>
-                </div>
-                <div class="text-center">
-                  <%= f.submit "ログイン", class: "btn bg-gradient-primary w-100 my-4 mb-2" %>
-                </div>
-              <% end %>
-                <p class="mt-4 text-sm text-center">
-                  アカウントをお持ちでない方は
-                  <%= link_to "新規登録", :new_user_registration, data: { turbo: false }, class: "text-primary text-gradient font-weight-bold" %>
+              </div>
+              <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                <p class="mb-2 text-sm mx-auto">
+                  アカウントをお持ちの方は
+                  <%= link_to "ログイン", :new_user_session, data: { turbo: false }, class: "text-primary text-gradient font-weight-bold" %>
                 </p>
-              </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <footer class="footer position-absolute bottom-2 py-2 w-100">
-      <div class="container">
-        <div class="row align-items-center justify-content-lg-between">
-          <%
-=begin%>
- <div class="col-12 col-md-6 my-auto">
-            <div class="copyright text-center text-sm text-white text-lg-start">
-              © <script>
-                document.write(new Date().getFullYear())
-              </script>,
-              made with <i class="fa fa-heart" aria-hidden="true"></i> by
-              <a href="https://www.creative-tim.com" class="font-weight-bold text-white" target="_blank">Creative Tim</a>
-              for a better web.
-            </div>
-          </div>
-<%
-=end%>
-          <div class="col-12 col-md-6">
-            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com" class="nav-link text-white" target="_blank">Creative Tim</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com/presentation" class="nav-link text-white" target="_blank">About Us</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com/blog" class="nav-link text-white" target="_blank">Blog</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-white" target="_blank">License</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </div>
+  </section>
 </main>
+
+
