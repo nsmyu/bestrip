@@ -85,9 +85,8 @@ GEM
       xpath (~> 3.2)
     concurrent-ruby (1.2.2)
     crass (1.0.6)
-    dartsass-rails (0.5.0)
+    dartsass-rails (0.4.1)
       railties (>= 6.0.0)
-      sass-embedded (~> 1.63)
     date (3.3.3)
     debug (1.8.0)
       irb (>= 1.5.0)
@@ -111,8 +110,6 @@ GEM
       i18n (>= 1.8.11, < 2)
     globalid (1.1.0)
       activesupport (>= 5.0)
-    google-protobuf (3.23.3-arm64-darwin)
-    google-protobuf (3.23.3-x86_64-linux)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     importmap-rails (1.2.1)
@@ -249,10 +246,6 @@ GEM
       rubocop-ast (>= 1.1.0)
     ruby-progressbar (1.13.0)
     rubyzip (2.3.2)
-    sass-embedded (1.63.6-arm64-darwin)
-      google-protobuf (~> 3.23)
-    sass-embedded (1.63.6-x86_64-linux-gnu)
-      google-protobuf (~> 3.23)
     selenium-webdriver (4.10.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
@@ -303,7 +296,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   capybara
-  dartsass-rails (~> 0.5.0)
+  dartsass-rails (~> 0.4.1)
   debug
   devise
   devise-i18n
