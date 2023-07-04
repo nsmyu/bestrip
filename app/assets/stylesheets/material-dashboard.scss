@@ -28,3 +28,16 @@
 
 // Custom Variables
 @import "material-dashboard/custom/styles";
+
+
+.field-alert {
+  color: $danger;
+}
+
+.input-group:has(.field-alert) {
+  display: block;
+  input {
+    width: 100%;
+    border-color: $danger !important;
+  }
+}

@@ -3,5 +3,3 @@ import "@hotwired/turbo-rails"
 import "controllers"
 
 import "material_dashboard/material-dashboard"
-
-
