@@ -9,5 +9,7 @@ ja:
         current_password: 現在のパスワード
         current_sign_in_at: 現在のログイン時刻
         current_sign_in_ip: 現在のログインIPアドレス
+        name: ニックネーム
+        bestrip_id: BesTrip ID
         email: メールアドレス
         password: パスワード
