@@ -9,12 +9,17 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
-  validates :name,         presence: true, length: { maximum: 50 }
-  validates :bestrip_id,   uniqueness: { case_sensitive: false }, length: { maximum: 50 }
-  validates :email,        presence: true, uniqueness: true, length: { maximum: 255 }
-  validates :password,     presence: true, on: :create
+  validates :name,       presence: true, length: { maximum: 50 }
+  validates :bestrip_id, uniqueness: { case_sensitive: false },
+                         format: { with: /\A[\w]{1,50}\z/, message: "は半角英数字とアンダーバー(_)で入力してください" },
+                         length: { maximum: 50 },
+                         allow_nil: true
+  validates :email,      presence: true, uniqueness: true, length: { maximum: 255 }
+  validates :password,   presence: true,
+                         format: { with: /\A[a-z\d]{6,128}\z/i, message: "は半角英数字で入力してください" },
+                         on: :create
   validates :password_confirmation, presence: true, on: :create
-  validates :introduction, length: { maximum: 2000 }
+  validates :introduction, length: { maximum: 500 }
 
   # def update_without_current_password(params)
   #   update(params)

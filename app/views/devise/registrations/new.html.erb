@@ -36,7 +36,7 @@
                     </div>
                   </div>
                   <div class="input-group input-group-outline mb-3">
-                    <%= f.label :password_confirmation, "パスワード確認", class: "form-label" %>
+                    <%= f.label :password_confirmation, "パスワードの確認", class: "form-label" %>
                     <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
                     <div class="<%= "field-alert" if resource.errors.messages.key?(:password_confirmation) %>" >
                       <%= resource.errors.full_messages_for(:password_confirmation).first if resource.errors.any? %>

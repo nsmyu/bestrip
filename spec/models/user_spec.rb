@@ -1,32 +1,102 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  subject { create(:user) }
+  describe "バリデーション" do
+    it "ニックネーム、メールアドレス、パスワード、一致する確認用パスワードあれば有効であること" do
+      user = User.new(
+        name: "Conan",
+        email: "edogawa@example.com",
+        password: "password1",
+        password_confirmation: "password1",
+      )
+      user.valid?
+      expect(user).to be_valid
+    end
 
-  describe "ニックネーム" do
-    it { is_expected.to validate_presence_of(:name) }
-    it { is_expected.to validate_length_of(:name).is_at_most(50) }
-  end
+    it "ニックネームがなければ無効であること" do
+      user = build(:user, name: nil)
+      user.valid?
+      expect(user.errors).to be_of_kind(:name, :blank)
+    end
 
-  describe "BesTrip ID" do
-    it { is_expected.to validate_uniqueness_of(:bestrip_id).case_insensitive }
-    it { is_expected.to validate_length_of(:bestrip_id).is_at_most(50) }
-  end
+    it "ニックネームが51文字以上の場合は無効であること" do
+      user = build(:user, name: "a" * 51)
+      user.valid?
+      expect(user.errors).to be_of_kind(:name, :too_long)
+    end
 
-  describe "メールアドレス" do
-    it { is_expected.to validate_presence_of(:email) }
-    it { is_expected.to validate_uniqueness_of(:email).case_insensitive }
-    it { is_expected.to validate_length_of(:email).is_at_most(255) }
-  end
+    it "BesTrip IDが重複している場合は無効であること" do
+      create(:user)
+      user = build(:user, bestrip_id: "shinichi_kudo")
+      user.valid?
+      expect(user.errors).to be_of_kind(:bestrip_id, :taken)
+    end
 
-  describe "パスワード" do
-    it { is_expected.to validate_presence_of(:password) }
-    it { is_expected.to validate_confirmation_of(:password) }
-    it { is_expected.to validate_length_of(:password).is_at_least(6).is_at_most(128) }
-  end
+    it "BesTrip IDが51文字以上の場合は無効であること" do
+      user = build(:user, bestrip_id: "a" * 51)
+      user.valid?
+      expect(user.errors).to be_of_kind(:bestrip_id, :too_long)
+    end
 
-  describe "パスワード確認" do
-    it { is_expected.to validate_presence_of(:password) }
-    it { is_expected.to validate_length_of(:password).is_at_least(6).is_at_most(128) }
+    it "BesTrip IDに半角英数字、アンダースコア以外は使用できないこと" do
+      user = build(:user, bestrip_id: "wrong-id!")
+      user.valid?
+      expect(user.errors[:bestrip_id]).to include("は半角英数字とアンダーバー(_)で入力してください")
+    end
+
+    it "メールアドレスがなければ無効であること" do
+      user = build(:user, email: nil)
+      user.valid?
+      expect(user.errors).to be_of_kind(:email, :blank)
+    end
+
+    it "メールアドレスが他のユーザーと重複している場合は無効であること" do
+      create(:user)
+      user = build(:user, email: "edogawa@example.com")
+      user.valid?
+      expect(user.errors).to be_of_kind(:email, :taken)
+    end
+
+    it "メールアドレスが255文字以上の場合は無効であること" do
+      user = build(:user, email: "a" * 256)
+      user.valid?
+      expect(user.errors).to be_of_kind(:email, :too_long)
+    end
+
+    it "メールアドレスが不正な形式の場合は無効であること" do
+      user = build(:user, email: "edogawa")
+      user.valid?
+      expect(user.errors).to be_of_kind(:email, :invalid)
+    end
+
+    it "パスワードがなければ無効であること" do
+      user = build(:user, password: nil)
+      user.valid?
+      expect(user.errors).to be_of_kind(:password, :blank)
+    end
+
+    it "パスワードが5文字以下の場合は無効であること" do
+      user = build(:user, password: "a" * 5)
+      user.valid?
+      expect(user.errors).to be_of_kind(:password, :too_short)
+    end
+
+    it "パスワードが129文字以上の場合は無効であること" do
+      user = build(:user, password: "a" * 129)
+      user.valid?
+      expect(user.errors).to be_of_kind(:password, :too_long)
+    end
+
+    it "パスワードに半角英数字以外は使用できないこと" do
+      user = build(:user, password: "wrong-password")
+      user.valid?
+      expect(user.errors[:password]).to include("は半角英数字で入力してください")
+    end
+
+    it "確認用パスワードが一致しない場合は無効であること" do
+      user = build(:user, password_confirmation: "wrongpassword")
+      user.valid?
+      expect(user.errors).to be_of_kind(:password_confirmation, :confirmation)
+    end
   end
 end

@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :user do
     name       { "Conan" }
-    bestrip_id { "shinichi" }
+    bestrip_id { "shinichi_kudo" }
     email      { "edogawa@example.com" }
-    password   { "password" }
-    password_confirmation   { "password" }
+    password   { "password1" }
+    password_confirmation { "password1" }
   end
 end
