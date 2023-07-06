@@ -23,7 +23,7 @@
                       <%= resource.errors.full_messages_for(:name).first if resource.errors.any? %>
                     </div>
                   </div>
-                  <div class="input-group input-group-outline mb-3 <%= "is-filled" if resource[:name] %>">
+                  <div class="input-group input-group-outline mb-3 <%= "is-filled" if resource[:email] %>">
                     <%= f.label :email, "メールアドレス", class: "form-label" %>
                     <%= f.email_field :email, class: "form-control", autocomplete: "email" %>
                     <div class="<%= "field-alert" if resource.errors.messages.key?(:email) %>" >
