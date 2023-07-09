@@ -31,6 +31,7 @@
 
 
 .field-alert {
+  padding-top: 2px;
   color: $danger;
   font-size: 12px;
 }
@@ -45,4 +46,10 @@
 
 input:-webkit-autofill {
   transition: background-color 5000s ease-in-out 0s !important;
+}
+
+.form-label > .required {
+  margin-top: -2px;
+  padding-left: 2px;
+  color: $danger;
 }

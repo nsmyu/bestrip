@@ -1,9 +1,9 @@
 <main class="main-content  mt-0">
   <section>
-    <div class="page-header min-vh-100">
-      <div class="container">
+    <div class="page-header max-vh-100">
+      <div class="container my-7">
         <div class="row">
-          <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
+          <div class="col-6 d-lg-flex d-none h-100 pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
             <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center" style="background-image: url(<%= asset_path 'sign_up.jpg' %>); background-size: cover;">
             </div>
           </div>
@@ -11,34 +11,40 @@
             <div class="card card-plain">
               <div class="card-header">
                 <h4 class="font-weight-bolder">アカウント登録</h4>
-                <%= params.inspect %>
-                <%= resource[:name].inspect %>
               </div>
               <div class="card-body">
                 <%= form_with(model: resource, scope: resource_name, url: registration_path(resource_name), local: true)  do |f| %>
-                  <div class="input-group input-group-outline mb-3 <%= "is-filled" if resource[:name] %>" >
-                    <%= f.label :name, "ニックネーム", class: "form-label" %>
+                  <div class="input-group input-group-outline mb-3 <%= "is-filled" unless resource[:name].blank? %>" >
+                    <%= f.label :name, class: "form-label" do%>
+                      ニックネーム<span class="required">*</span>
+                    <% end %>
                     <%= f.text_field :name, class: "form-control", autocomplete: "name" %>
                     <div class="<%= "field-alert" if resource.errors.messages.key?(:name) %>" >
                       <%= resource.errors.full_messages_for(:name).first if resource.errors.any? %>
                     </div>
                   </div>
-                  <div class="input-group input-group-outline mb-3 <%= "is-filled" if resource[:email] %>">
-                    <%= f.label :email, "メールアドレス", class: "form-label" %>
+                  <div class="input-group input-group-outline mb-3 <%= "is-filled" unless resource[:email].blank? %>">
+                    <%= f.label :email, class: "form-label" do%>
+                      メールアドレス<span class="required">*</span>
+                    <% end %>
                     <%= f.email_field :email, class: "form-control", autocomplete: "email" %>
                     <div class="<%= "field-alert" if resource.errors.messages.key?(:email) %>" >
                       <%= resource.errors.full_messages_for(:email).first if resource.errors.any? %>
                     </div>
                   </div>
                   <div class="input-group input-group-outline mb-3">
-                    <%= f.label :password, "パスワード（半角英数字6文字以上）", class: "form-label" %>
+                    <%= f.label :password, class: "form-label" do %>
+                      パスワード（半角英数字6文字以上）<span class="required">*</span>
+                    <% end %>
                     <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
                     <div class="<%= "field-alert" if resource.errors.messages.key?(:password) %>" >
                       <%= resource.errors.full_messages_for(:password).first if resource.errors.any? %>
                     </div>
                   </div>
                   <div class="input-group input-group-outline mb-3">
-                    <%= f.label :password_confirmation, "パスワード（確認用）", class: "form-label" %>
+                    <%= f.label :password_confirmation, class: "form-label" do %>
+                      パスワード（確認用）<span class="required">*</span>
+                    <% end %>
                     <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
                     <div class="<%= "field-alert" if resource.errors.messages.key?(:password_confirmation) %>" >
                       <%= resource.errors.full_messages_for(:password_confirmation).first if resource.errors.any? %>
