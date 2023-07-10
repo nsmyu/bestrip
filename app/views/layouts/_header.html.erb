@@ -11,34 +11,29 @@
     <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5" id="navigation">
       <ul class="navbar-nav navbar-nav-hover ms-auto">
         <% if user_signed_in? %>
-          <li class="nav-item dropdown dropdown-hover mx-2 ms-lg-5">
-            <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuPages5" data-bs-toggle="dropdown" aria-expanded="false">
-              BesTripの楽しみ方
-            </a>
+          <li class="nav-item mx-2">
+            <%= link_to "BesTripの楽しみ方", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
+          </li>
+          <li class="nav-item mx-2">
+            <%= link_to "旅の計画一覧", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
           </li>
           <li class="nav-item dropdown dropdown-hover mx-2">
-            <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuBlocks" data-bs-toggle="dropdown" aria-expanded="false">
-              旅の計画一覧
-            </a>
-          </li>
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" id="dropdownMenuDocs" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="material-icons opacity-6 me-2 text-md">article</i>
+            <%= link_to "#", data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center", id: "dropdownMenuAccount", "data-bs-toggle": "dropdown", "aria-expanded": "false" do %>
               アカウント
               <%= image_tag 'down_arrow_dark.svg', alt: "down-arrow", class: "arrow ms-auto ms-md-2" %>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-animation dropdown-md dropdown-md-responsive mt-0 mt-lg-3 p-3 border-radius-lg" aria-labelledby="dropdownMenuDocs">
+            <% end %>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-animation dropdown-md dropdown-md-responsive mt-0 mt-lg-3 p-3 border-radius-lg" aria-labelledby="dropdownMenuAccount">
               <div class="d-none d-lg-block">
                 <ul class="list-group">
                   <li class="nav-item list-group-item border-0 p-0">
-                    <a class="dropdown-item py-2 ps-3 border-radius-md" href=" https://www.creative-tim.com/learning-lab/bootstrap/alerts/material-kit ">
+                    <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
                       <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">プロフィール編集</h6>
-                    </a>
+                    <% end %>
                   </li>
                   <li class="nav-item list-group-item border-0 p-0">
-                    <a class="dropdown-item py-2 ps-3 border-radius-md" href=" https://www.creative-tim.com/learning-lab/bootstrap/datepicker/material-kit ">
+                    <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
                       <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">アカウント情報</h6>
-                    </a>
+                    <% end %>
                   </li>
                   <li class="nav-item list-group-item border-0 p-0">
                     <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
@@ -49,12 +44,12 @@
               </div>
               <div class="row d-lg-none">
                 <div class="col-md-12 g-0">
-                  <a class="dropdown-item py-2 ps-3 border-radius-md" href="../../pages/about-us.html">
+                  <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
                     <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">プロフィール編集</h6>
-                  </a>
-                  <a class="dropdown-item py-2 ps-3 border-radius-md" href="../../pages/about-us.html">
+                  <% end %>
+                  <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
                     <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">アカウント情報</h6>
-                  </a>
+                  <% end %>
                   <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
                     <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">ログアウト</h6>
                   <% end %>
@@ -64,7 +59,7 @@
           </li>
         <% else %>
           <li class="nav-item dropdown dropdown-hover mx-2">
-            <%= link_to "BesTripの楽しみ方", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center", id: "dropdownMenuBlocks", "data-bs-toggle": :dropdown, "aria-expanded": :false %>
+            <%= link_to "BesTripの楽しみ方", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
           </li>
           <li class="nav-item dropdown dropdown-hover mx-2">
             <%= link_to "ログイン", :new_user_session, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
@@ -74,7 +69,7 @@
           </li>
         <% end %>
         <li class="nav-item my-auto ms-3 ms-lg-4">
-          <a href="https://www.creative-tim.com/product/material-kit-pro" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">旅の計画</a>
+          <%= link_to "旅の計画", :new_user_registration, data: { turbo: false }, class: "btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0" %>
         </li>
       </ul>
     </div>
