@@ -1,7 +1,15 @@
+<% if flash[:alert] %>
+  <div class="alert alert-danger alert-dismissible text-white" role="alert">
+    <%= alert %>
+    <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>
 <main class="main-content  mt-0">
   <div class="page-header align-items-start max-vh-100" style="background-image: url(<%= asset_path 'sign_in.jpg' %>);">
     <span class="mask bg-gradient-light opacity-6"></span>
-    <div class="container my-9">
+    <div class="container my-8">
       <div class="row">
         <div class="col-lg-4 col-md-8 col-12 mx-auto">
           <div class="card z-index-0 fadeIn3 fadeInBottom">
