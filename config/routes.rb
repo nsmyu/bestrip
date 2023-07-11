@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
-    get "guest_sign_in", to: 'users/sessions#guest_sign_in'
+    get "users/guest_sign_in", to: 'users/sessions#guest_sign_in'
+    get 'users/account', to: 'users/registrations#edit'
+    get 'users/profile', to: 'users/registrations#profile'
+    # get 'users/profile/edit', to: 'users/registrations#profile_edit'
   end
 end
