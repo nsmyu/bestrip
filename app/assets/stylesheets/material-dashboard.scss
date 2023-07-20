@@ -37,10 +37,20 @@
 }
 
 .input-group:has(.field-alert) {
-  display: block;
   input {
     width: 100%;
     border-color: $danger !important;
+  }
+}
+
+.input-group-outline {
+  .col-sm-9 {
+    &.is-focused,
+    &.is-filled {
+      .form-control {
+        border-color: $primary !important;
+      }
+    }
   }
 }
 
@@ -48,8 +58,8 @@ input:-webkit-autofill {
   transition: background-color 5000s ease-in-out 0s !important;
 }
 
-.form-label > .required {
+.required {
   margin-top: -2px;
-  padding-left: 2px;
+  padding-left: 3px;
   color: $danger;
 }
