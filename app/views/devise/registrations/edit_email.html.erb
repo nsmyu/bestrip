@@ -75,42 +75,17 @@
   <div class="main-content position-relative max-height-vh-100 h-100 my-7">
     <div class="container-fluid px-2 px-md-4">
       <div class="card card-body mx-3 mx-md-4 mt-n6 p-5">
-        <h5 class="mb-5">パスワードの変更</h5>
+        <h5 class="mb-5">メールアドレスの変更</h5>
         <div class="row">
           <div class="row">
+          <div class="text-sm mb-3">変更するメールアドレスを入力してください。</div>
             <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }, data: { turbo: false }) do |f| %>
               <div class="row mb-4 input-group input-group-outline">
-                <%= f.label :current_password, class: "col-sm-3 col-form-label-lg m-0 fw-bold" do %>
-                  現在のパスワード<span class="required">*</span>
-                <% end %>
-                <div class="form-edit col-sm-8">
-                  <%= f.password_field :current_password, class: "form-control", autocomplete: "current-password" %>
-                  <div class="<%= "field-alert" if resource.errors.messages.key?(:current_password) %>" >
-                    <%= resource.errors.full_messages_for(:current_password).first if resource.errors.any? %>
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-4 input-group input-group-outline">
-                <%= f.label :password, class: "col-sm-3 col-form-label-lg m-0 fw-bold" do %>
-                  新しいパスワード<span class="required">*</span>
-                <% end %>
-                <div class="form-edit col-sm-8">
-                  <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
-                  <div class="text-xs mt-1">※ 半角英数字6文字以上</div>
-                  <div class="<%= "field-alert" if resource.errors.messages.key?(:password) %>" >
-                    <%= resource.errors.full_messages_for(:password).first if resource.errors.any? %>
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-3 input-group input-group-outline">
-                <%= f.label :password_confirmation, class: "col-sm-3 col-form-label-lg m-0 fw-bold" do %>
-                  新しいパスワード（確認用）<span class="required">*</span>
-                <% end %>
-                <div class="form-edit col-sm-8">
-                  <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
-                  <div class="text-xs mt-1">※ 半角英数字6文字以上</div>
-                  <div class="<%= "field-alert" if resource.errors.messages.key?(:password_confirmation) %>" >
-                    <%= resource.errors.full_messages_for(:password_confirmation).first if resource.errors.any? %>
+                <%= f.label :email, class: "col-sm-2 col-form-label-lg m-0 fw-bold" %>
+                <div class="form-edit col-sm-9 <%= "is-filled" unless resource[:email].blank? %>">
+                  <%= f.email_field :email, class: "form-control", autofocus: true, autocomplete: "email" %>
+                  <div class="<%= "field-alert" if resource.errors.messages.key?(:email) %>" >
+                    <%= resource.errors.full_messages_for(:email).first if resource.errors.any? %>
                   </div>
                 </div>
               </div>
@@ -118,9 +93,6 @@
                 <%= f.submit "変更する", class: "btn bg-gradient-primary mt-4 px-6 btn-lg" %>
               </div>
             <% end %>
-            <div class="text-center">
-              <%= link_to "アカウントを削除", registration_path(resource_name), class: "text-sm", data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %>
-            </div>
           </div>
         </div>
       </div>

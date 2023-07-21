@@ -20,6 +20,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super
   end
 
+  def edit_email
+    @user = User.find(current_user.id)
+  end
+
+  def update
+    super
+  end
+
   def destroy
     super
   end
@@ -58,4 +66,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_update_path_for(resource) リダイレクト先修正？
   #   sign_in_after_change_password? ? users_account_path(resource) : new_session_path(resource_name)
   # end
+
+  def update_resource(resource, params)
+    if params.has_key?(:current_password)
+      resource.update_with_password(params)
+    else
+      resource.update_without_current_password(params)
+    end
+  end
 end

@@ -23,9 +23,9 @@ class User < ApplicationRecord
   validates :password_confirmation, presence: true, on: :create
   validates :introduction, length: { maximum: 500 }
 
-  # def update_without_current_password(params)
-  #   update(params)
-  # end
+  def update_without_current_password(params)
+    update(params)
+  end
 
   def self.guest
     random_pass = SecureRandom.base36
