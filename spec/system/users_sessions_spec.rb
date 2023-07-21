@@ -55,7 +55,7 @@ RSpec.describe "UsersSessions", type: :system do
   describe "ログアウト" do
     it 'ログアウトに成功すること' do
       sign_in user
-      visit root_path #あとで修正
+      visit root_path # あとで修正
       first(:link, 'ログアウト').click
       expect(current_path).to eq root_path
       expect(page).to have_selector "a[href=\"#{new_user_session_path}\"]"
