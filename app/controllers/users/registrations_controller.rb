@@ -2,7 +2,7 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
-  # before_action :configure_account_update_params, only: [:update]
+  before_action :configure_account_update_params, only: [:update]
 
   def new
     super
@@ -54,4 +54,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def after_inactive_sign_up_path_for(resource)
     super(resource)
   end
+
+  # def after_update_path_for(resource) リダイレクト先修正？
+  #   sign_in_after_change_password? ? users_account_path(resource) : new_session_path(resource_name)
+  # end
 end
