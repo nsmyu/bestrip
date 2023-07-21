@@ -3,14 +3,14 @@ require 'rails_helper'
 RSpec.describe "UsersSessions", type: :request do
   let(:user) { create(:user) }
 
-  describe "GET /users_sessions" do
+  describe "GET #new" do
     it "ログイン画面の表示に成功すること" do
       get new_user_session_path
       expect(response).to have_http_status 200
     end
   end
 
-  describe "POST /users_sessions" do
+  describe "POST #create" do
     it "ログインに成功すること" do
       post user_session_path, params: { user: { email: user.email, password: user.password } }
       expect(response).to redirect_to root_path
@@ -22,7 +22,7 @@ RSpec.describe "UsersSessions", type: :request do
     end
   end
 
-  describe "DELETE /users_sessions" do
+  describe "DELETE #destroy" do
     it "ログアウトに成功すること" do
       sign_in user
       delete destroy_user_session_path
