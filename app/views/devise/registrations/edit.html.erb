@@ -95,8 +95,7 @@
                   新しいパスワード<span class="required">*</span>
                 <% end %>
                 <div class="form-edit col-sm-8">
-                  <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
-                  <div class="text-xs mt-1">※ 半角英数字6文字以上</div>
+                  <%= f.password_field :password, class: "form-control", autocomplete: "new-password", placeholder: "半角英数字6文字以上で入力" %>
                   <div class="<%= "field-alert" if resource.errors.messages.key?(:password) %>" >
                     <%= resource.errors.full_messages_for(:password).first if resource.errors.any? %>
                   </div>
@@ -107,8 +106,7 @@
                   新しいパスワード（確認用）<span class="required">*</span>
                 <% end %>
                 <div class="form-edit col-sm-8">
-                  <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
-                  <div class="text-xs mt-1">※ 半角英数字6文字以上</div>
+                  <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password", placeholder: "確認のため再度入力" %>
                   <div class="<%= "field-alert" if resource.errors.messages.key?(:password_confirmation) %>" >
                     <%= resource.errors.full_messages_for(:password_confirmation).first if resource.errors.any? %>
                   </div>
