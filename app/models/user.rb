@@ -14,20 +14,16 @@ class User < ApplicationRecord
   validates :name,       presence: true, length: { maximum: 50 }
   VALID_BESTRIP_ID_REGEX = /\A[\w]{1,50}\z/
   validates :bestrip_id, uniqueness: { case_sensitive: false },
-                         format: { with: VALID_BESTRIP_ID_REGEX, message: "は半角英数字とアンダーバー(_)で入力してください" },
+                         format: { with: VALID_BESTRIP_ID_REGEX },
                          length: { maximum: 50 },
                          allow_nil: true
   validates :email,      presence: true, uniqueness: true, length: { maximum: 255 }
   VALID_PASSWORD_REGEX = /\A[a-z\d]{6,128}\z/i
-  validates :password,   presence: true,
-                         format: { with: VALID_PASSWORD_REGEX, message: "は半角英数字で入力してください" },
-                         on: :create
-  validates :password_confirmation, presence: true, on: :create
-  validates :introduction, length: { maximum: 500 }
-
-  def update_without_current_password(params)
-    update(params)
+  with_options unless: -> { validation_context == :without_password } do
+    validates :password, presence: true, format: { with: VALID_PASSWORD_REGEX }
+    validates :password_confirmation, presence: true
   end
+  validates :introduction, length: { maximum: 500 }
 
   def self.guest
     random_pass = SecureRandom.base36

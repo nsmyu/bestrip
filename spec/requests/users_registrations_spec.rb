@@ -36,7 +36,7 @@ RSpec.describe "UsersRegistrations", type: :request do
     end
   end
 
-  describe "PUT #update" do
+  describe "PATCH #update" do
     before do
       sign_in user
     end
@@ -49,15 +49,20 @@ RSpec.describe "UsersRegistrations", type: :request do
           password_confirmation: "newpassword",
         },
       }
-      put user_registration_path, params: user_params
+      patch user_registration_path, params: user_params
       sign_out user
       post user_session_path, params: { user: { email: user.email, password: "newpassword" } }
       expect(response).to redirect_to root_path
       expect(flash[:notice]).to eq "ログインしました。"
     end
+  end
 
+  describe "PATCH #update_email" do
+    before do
+      sign_in user
+    end
     it "メールアドレスを変更できること" do
-      put user_registration_path, params: { user: { email: "new_email@example.com" } }
+      patch users_update_email_path, params: { user: { email: "new_email@example.com" } }
       expect(user.reload.email).to eq "new_email@example.com"
     end
   end

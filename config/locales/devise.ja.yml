@@ -12,3 +12,16 @@ ja:
         name: ニックネーム
         bestrip_id: BesTrip ID
         email: メールアドレス
+    errors:
+      models:
+        user:
+          attributes:
+            bestrip_id:
+              invalid: は半角英数字とアンダーバー(_)で入力してください
+            password:
+              invalid: は半角英数字で入力してください
+            current_password:
+              invalid: が間違っています
+
+
+
