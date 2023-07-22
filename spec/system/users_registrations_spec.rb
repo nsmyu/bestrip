@@ -97,4 +97,33 @@ RSpec.describe "UsersRegistrations", type: :system do
       end
     end
   end
+
+  describe "メールアドレス変更" do
+    let(:user) { create(:user) }
+
+    before do
+      sign_in user
+      visit users_edit_email_path
+    end
+
+    it "有効な値の場合、成功すること" do
+      fill_in "メールアドレス", with: "new_email_address@example.com"
+      click_button "変更する"
+
+      expect(current_path).to eq root_path
+
+      visit users_edit_email_path
+      expect(page).to have_xpath "//input[@value='new_email_address@example.com']"
+    end
+
+    it "無効な値の場合、失敗すること" do
+      fill_in "メールアドレス", with: ""
+      click_button "変更する"
+
+      aggregate_failures do
+        expect(page).to have_content("メールアドレスの変更")
+        expect(page).to have_content("メールアドレスを入力してください")
+      end
+    end
+  end
 end
