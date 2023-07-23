@@ -34,10 +34,10 @@ RSpec.describe "UsersRegistrations", type: :system do
         click_button "新規登録"
 
         aggregate_failures do
-          expect(page).to have_content("アカウント登録")
-          expect(page).to have_content("メールアドレスは不正な値です")
-          expect(page).to have_content("パスワードは6文字以上で入力してください")
-          expect(page).to have_content("パスワード（確認用）とパスワードの入力が一致しません")
+          expect(page).to have_content "アカウント登録"
+          expect(page).to have_content "メールアドレスを正しく入力してください"
+          expect(page).to have_content "パスワードは6文字以上で入力してください"
+          expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
           within ".navbar" do
             expect(page).not_to have_content user.name
           end
@@ -82,8 +82,8 @@ RSpec.describe "UsersRegistrations", type: :system do
         click_button "変更する"
 
         aggregate_failures do
-          expect(page).to have_content("パスワードの変更")
-          expect(page).to have_content("現在のパスワードが間違っています")
+          expect(page).to have_content "パスワードの変更"
+          expect(page).to have_content "現在のパスワードが間違っています"
         end
       end
 
@@ -94,9 +94,9 @@ RSpec.describe "UsersRegistrations", type: :system do
         click_button "変更する"
 
         aggregate_failures do
-          expect(page).to have_content("パスワードの変更")
-          expect(page).to have_content("パスワードは6文字以上で入力してください")
-          expect(page).to have_content("パスワード（確認用）とパスワードの入力が一致しません")
+          expect(page).to have_content "パスワードの変更"
+          expect(page).to have_content "パスワードは6文字以上で入力してください"
+          expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
         end
       end
 
@@ -107,8 +107,8 @@ RSpec.describe "UsersRegistrations", type: :system do
         click_button "変更する"
 
         aggregate_failures do
-          expect(page).to have_content("パスワードの変更")
-          expect(page).to have_content("パスワードは半角英数字で入力してください")
+          expect(page).to have_content "パスワードの変更"
+          expect(page).to have_content "パスワードは半角英数字で入力してください"
         end
       end
     end
@@ -140,8 +140,8 @@ RSpec.describe "UsersRegistrations", type: :system do
         click_button "変更する"
 
         aggregate_failures do
-          expect(page).to have_content("メールアドレスの変更")
-          expect(page).to have_content("メールアドレスを入力してください")
+          expect(page).to have_content "メールアドレスの変更"
+          expect(page).to have_content "メールアドレスを入力してください"
         end
       end
 
@@ -150,8 +150,8 @@ RSpec.describe "UsersRegistrations", type: :system do
         click_button "変更する"
 
         aggregate_failures do
-          expect(page).to have_content("メールアドレスの変更")
-          # expect(page).to have_content("メールアドレスを入力してください")
+          expect(page).to have_content "メールアドレスの変更"
+          expect(page).to have_content "メールアドレスを正しく入力してください"
         end
       end
     end
