@@ -42,6 +42,8 @@ module Bestrip
         routing_specs: false
     end
 
+    config.active_storage.variant_processor = :mini_magick
+
     # フォームのエラー時、"field_with_errors"クラスを含むdivタグを生成させないための設定
     config.action_view.field_error_proc = proc do |html_tag, instance|
       html_tag.html_safe

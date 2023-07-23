@@ -12,6 +12,7 @@ ja:
         name: ニックネーム
         bestrip_id: BesTrip ID
         email: メールアドレス
+        introduction: 自己紹介
     errors:
       models:
         user:

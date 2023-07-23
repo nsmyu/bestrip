@@ -19,7 +19,7 @@
                       ニックネーム<span class="required">*</span>
                     <% end %>
                     <%= f.text_field :name, class: "form-control", autocomplete: "name" %>
-                    <div class="<%= "field-alert" if resource.errors.messages.key?(:name) %>" >
+                    <div class="<%= "error-message" if resource.errors.messages.key?(:name) %>" >
                       <%= resource.errors.full_messages_for(:name).first if resource.errors.any? %>
                     </div>
                   </div>
@@ -28,7 +28,7 @@
                       メールアドレス<span class="required">*</span>
                     <% end %>
                     <%= f.email_field :email, class: "form-control", autocomplete: "email" %>
-                    <div class="<%= "field-alert" if resource.errors.messages.key?(:email) %>" >
+                    <div class="<%= "error-message" if resource.errors.messages.key?(:email) %>" >
                       <%= resource.errors.full_messages_for(:email).first if resource.errors.any? %>
                     </div>
                   </div>
@@ -37,7 +37,7 @@
                       パスワード（半角英数字6文字以上）<span class="required">*</span>
                     <% end %>
                     <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
-                    <div class="<%= "field-alert" if resource.errors.messages.key?(:password) %>" >
+                    <div class="<%= "error-message" if resource.errors.messages.key?(:password) %>" >
                       <%= resource.errors.full_messages_for(:password).first if resource.errors.any? %>
                     </div>
                   </div>
@@ -46,7 +46,7 @@
                       パスワード（確認用）<span class="required">*</span>
                     <% end %>
                     <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
-                    <div class="<%= "field-alert" if resource.errors.messages.key?(:password_confirmation) %>" >
+                    <div class="<%= "error-message" if resource.errors.messages.key?(:password_confirmation) %>" >
                       <%= resource.errors.full_messages_for(:password_confirmation).first if resource.errors.any? %>
                     </div>
                   </div>

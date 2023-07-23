@@ -25,9 +25,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @user = User.find(current_user.id)
   end
 
-  def update_email
+  def edit_profile
     @user = User.find(current_user.id)
-    @user.assign_attributes(user_email_params)
+  end
+
+  def update_without_password
+    @user = User.find(current_user.id)
+    @user.assign_attributes(user_profile_params)
     if @user.save(context: :without_password)
       flash[:notice] = "メールアドレスを変更しました。"
       redirect_to root_path
@@ -61,6 +65,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
   end
 
+  def configure_user_params
+    devise_parameter_sanitizer.permit(:update_without_password, keys: [:name, :bestrip_id, :email, :avatar, :introduction])
+  end
+
   # The path used after sign up.
   def after_sign_up_path_for(resource)
     super(resource)
@@ -73,5 +81,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def user_email_params
     params.require(:user).permit(:email)
+  end
+
+  def user_profile_params
+    params.require(:user).permit(:name, :introduction, :avatar)
   end
 end

@@ -30,13 +30,13 @@
 @import "material-dashboard/custom/styles";
 
 
-.field-alert {
+.error-message {
   padding-top: 2px;
   color: $danger;
   font-size: 12px;
 }
 
-.input-group:has(.field-alert) {
+.input-group:has(.error-message) {
   input {
     width: 100%;
     border-color: $danger !important;
@@ -45,10 +45,9 @@
 
 .input-group-outline {
   .form-edit {
-    &.is-focused,
-    &.is-filled {
+    &.is-focused {
       .form-control {
-        border-color: $primary !important;
+        border-color: $primary;
       }
     }
   }
@@ -62,4 +61,10 @@ input:-webkit-autofill {
   margin-top: -2px;
   padding-left: 3px;
   color: $danger;
+}
+
+.resize-avatar {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
 }

@@ -85,7 +85,7 @@
                 <% end %>
                 <div class="form-edit col-sm-8">
                   <%= f.password_field :current_password, class: "form-control", autocomplete: "current-password" %>
-                  <div class="<%= "field-alert" if resource.errors.messages.key?(:current_password) %>" >
+                  <div class="<%= "error-message" if resource.errors.messages.key?(:current_password) %>" >
                     <%= resource.errors.full_messages_for(:current_password).first if resource.errors.any? %>
                   </div>
                 </div>
@@ -96,7 +96,7 @@
                 <% end %>
                 <div class="form-edit col-sm-8">
                   <%= f.password_field :password, class: "form-control", autocomplete: "new-password", placeholder: "半角英数字6文字以上で入力" %>
-                  <div class="<%= "field-alert" if resource.errors.messages.key?(:password) %>" >
+                  <div class="<%= "error-message" if resource.errors.messages.key?(:password) %>" >
                     <%= resource.errors.full_messages_for(:password).first if resource.errors.any? %>
                   </div>
                 </div>
@@ -107,7 +107,7 @@
                 <% end %>
                 <div class="form-edit col-sm-8">
                   <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password", placeholder: "確認のため再度入力" %>
-                  <div class="<%= "field-alert" if resource.errors.messages.key?(:password_confirmation) %>" >
+                  <div class="<%= "error-message" if resource.errors.messages.key?(:password_confirmation) %>" >
                     <%= resource.errors.full_messages_for(:password_confirmation).first if resource.errors.any? %>
                   </div>
                 </div>

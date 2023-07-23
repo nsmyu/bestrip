@@ -21,21 +21,6 @@ RSpec.describe "UsersRegistrations", type: :request do
     end
   end
 
-  describe "GET #edit_email" do
-    before do
-      sign_in user
-      get users_edit_email_path
-    end
-
-    it "正常にレスポンスを返すこと" do
-      expect(response).to have_http_status(200)
-    end
-
-    it "メールアドレスを取得すること" do
-      expect(response.body).to include user.email
-    end
-  end
-
   describe "PATCH #update" do
     before do
       sign_in user
@@ -57,12 +42,42 @@ RSpec.describe "UsersRegistrations", type: :request do
     end
   end
 
-  describe "PATCH #update_email" do
+  describe "GET #edit_email" do
+    before do
+      sign_in user
+      get users_edit_email_path
+    end
+
+    it "正常にレスポンスを返すこと" do
+      expect(response).to have_http_status(200)
+    end
+
+    it "メールアドレスを取得すること" do
+      expect(response.body).to include user.email
+    end
+  end
+
+  describe "GET #edit_profile" do
+    before do
+      sign_in user
+      get users_edit_profile_path
+    end
+
+    it "正常にレスポンスを返すこと" do
+      expect(response).to have_http_status(200)
+    end
+
+    # it "メールアドレスを取得すること" do
+    #   expect(response.body).to include user.email
+    # end
+  end
+
+  describe "PATCH #update_without_password" do
     before do
       sign_in user
     end
     it "メールアドレスを変更できること" do
-      patch users_update_email_path, params: { user: { email: "new_email@example.com" } }
+      patch users_update_without_password_path, params: { user: { email: "new_email@example.com" } }
       expect(user.reload.email).to eq "new_email@example.com"
     end
   end
