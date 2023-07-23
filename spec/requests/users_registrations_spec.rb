@@ -67,18 +67,29 @@ RSpec.describe "UsersRegistrations", type: :request do
       expect(response).to have_http_status(200)
     end
 
-    # it "メールアドレスを取得すること" do
-    #   expect(response.body).to include user.email
-    # end
+    it "ニックネームを取得すること" do
+      expect(response.body).to include "Conan"
+    end
   end
 
   describe "PATCH #update_without_password" do
     before do
       sign_in user
     end
+
     it "メールアドレスを変更できること" do
       patch users_update_without_password_path, params: { user: { email: "new_email@example.com" } }
       expect(user.reload.email).to eq "new_email@example.com"
+    end
+
+    it "ニックネームを変更できること" do
+      patch users_update_without_password_path, params: { user: { name: "Shinichi" } }
+      expect(user.reload.name).to eq "Shinichi"
+    end
+
+    it "自己紹介を変更できること" do
+      patch users_update_without_password_path, params: { user: { introduction: "真実はいつもひとつ" } }
+      expect(user.reload.introduction).to eq "真実はいつもひとつ"
     end
   end
 end

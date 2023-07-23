@@ -9,9 +9,9 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
-  before_validation :set_user_email, if: :guest_user?
+  before_validation :set_user_email, if: :guest_user?, on: :create
 
-  validates :name,       presence: true, length: { maximum: 50 }
+  validates :name,       presence: true, length: { maximum: 20 }
   VALID_BESTRIP_ID_REGEX = /\A[\w]{1,50}\z/
   validates :bestrip_id, uniqueness: { case_sensitive: false },
                          format: { with: VALID_BESTRIP_ID_REGEX },

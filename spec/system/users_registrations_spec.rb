@@ -156,4 +156,56 @@ RSpec.describe "UsersRegistrations", type: :system do
       end
     end
   end
+
+  describe "プロフィールの編集" do
+    let(:user) { create(:user) }
+
+    before do
+      sign_in user
+      visit users_edit_profile_path
+    end
+
+    context "有効な値の場合" do
+      it "成功すること" do
+        expect(page).to have_content "プロフィールの編集"
+        expect(page).to have_xpath "//input[@value='Conan']"
+
+        fill_in "ニックネーム", with: "Shinich"
+        fill_in "自己紹介", with: "I love traveling to different countries."
+        click_button "保存する"
+
+        expect(current_path).to eq root_path
+        expect(page).to have_content "プロフィールを変更しました"
+
+
+        # visit users_edit_email_path プロフィールページにする？
+        # expect(page).to have_xpath "//input[@value='new_email_address@example.com']"
+      end
+    end
+
+    context "無効な値の場合" do
+      it "ニックネームが空欄の場合、失敗すること" do
+        fill_in "ニックネーム", with: ""
+        fill_in "自己紹介", with: "a" * 501
+        click_button "保存する"
+
+        aggregate_failures do
+          expect(page).to have_content "プロフィールの編集"
+          expect(page).to have_content "ニックネームを入力してください"
+        end
+      end
+
+      it "文字数制限を超えている場合、失敗すること" do
+        fill_in "ニックネーム", with: "a" * 21
+        fill_in "自己紹介", with: "a" * 501
+        click_button "保存する"
+
+        aggregate_failures do
+          expect(page).to have_content "プロフィールの編集"
+          expect(page).to have_content "ニックネームは20文字以内で入力してください"
+          expect(page).to have_content "自己紹介は500文字以内で入力してください"
+        end
+      end
+    end
+  end
 end

@@ -2,7 +2,7 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
-  before_action :configure_account_update_params, only: [:update]
+  # before_action :configure_account_update_params, only: [:update]
 
   def new
     super
@@ -31,12 +31,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def update_without_password
     @user = User.find(current_user.id)
-    @user.assign_attributes(user_profile_params)
+    @user.assign_attributes(update_without_password_params)
     if @user.save(context: :without_password)
-      flash[:notice] = "メールアドレスを変更しました。"
+      update_without_password_params.key?(:email) ? (flash[:notice] = "メールアドレスを変更しました。") : (flash[:notice] = "プロフィールを変更しました。")
       redirect_to root_path
     else
-      render 'edit_email'
+      update_without_password_params.key?(:email) ? (render 'edit_email') : (render 'edit_profile')
     end
   end
 
@@ -60,14 +60,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
   end
 
-  # If you have extra params to permit, append them to the sanitizer.
-  def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
-  end
-
-  def configure_user_params
-    devise_parameter_sanitizer.permit(:update_without_password, keys: [:name, :bestrip_id, :email, :avatar, :introduction])
-  end
+  # # If you have extra params to permit, append them to the sanitizer.
+  # def configure_account_update_params
+  #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
+  # end
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
@@ -79,11 +75,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super(resource)
   end
 
-  def user_email_params
-    params.require(:user).permit(:email)
+  def update_without_password_params
+    params.require(:user).permit(:name, :bestrip_id, :email, :avatar, :introduction)
   end
 
-  def user_profile_params
-    params.require(:user).permit(:name, :introduction, :avatar)
-  end
+  # def user_params
+  #   devise_parameter_sanitizer.sanitize(:update_without_password)
+  # end
 end
