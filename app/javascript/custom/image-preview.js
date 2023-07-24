@@ -1,5 +1,5 @@
 document.addEventListener('turbo:load', () => {
-  const imageInput = document.querySelector('#image');
+  const imageInput = document.querySelector('#image-input');
   const imagePreview = document.querySelector('#image-preview');
 
   imageInput.addEventListener('change', (e) => {

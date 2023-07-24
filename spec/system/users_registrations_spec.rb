@@ -165,19 +165,26 @@ RSpec.describe "UsersRegistrations", type: :system do
       visit users_edit_profile_path
     end
 
-    context "有効な値の場合" do
+    context "有効な値の場合", :focus, js: true do
       it "成功すること" do
         expect(page).to have_content "プロフィールの編集"
         expect(page).to have_xpath "//input[@value='Conan']"
+        expect(page).to have_selector "img[src*='default_avatar']"
+
+        image_path = Rails.root.join('spec/fixtures/test_image.jpg')
+        attach_file 'user[avatar]', image_path, make_visible: true
+
+        expect(page).not_to have_selector "img[src*='default_avatar']"
 
         fill_in "ニックネーム", with: "Shinich"
         fill_in "自己紹介", with: "I love traveling to different countries."
-        click_button "保存する"
+        click_on "保存する"
 
         expect(current_path).to eq root_path
         expect(page).to have_content "プロフィールを変更しました"
 
-
+        visit users_edit_profile_path
+        expect(page).to have_selector "img[src*='test_image.jpg']"
         # visit users_edit_email_path プロフィールページにする？
         # expect(page).to have_xpath "//input[@value='new_email_address@example.com']"
       end
@@ -186,7 +193,7 @@ RSpec.describe "UsersRegistrations", type: :system do
     context "無効な値の場合" do
       it "ニックネームが空欄の場合、失敗すること" do
         fill_in "ニックネーム", with: ""
-        click_button "保存する"
+        click_on "保存する"
 
         aggregate_failures do
           expect(page).to have_content "プロフィールの編集"
@@ -194,12 +201,17 @@ RSpec.describe "UsersRegistrations", type: :system do
         end
       end
 
-      # it "自己紹介が文字数制限を超えている場合、送信できないこと" do
-      #   fill_in "自己紹介", with: "a" * 501
-      #   click_button "保存する"
+      it "自己紹介が文字数制限を超えている場合、「保存する」ボタンが押せないこと", js: true do
+        fill_in "自己紹介", with: "a" * 501
 
-      #   expect(current_path).to eq users_edit_profile_path
-      # end
+        expect(page).to have_content "500文字以内で入力してください"
+        expect(find("#btn-submit", visible: false)).to be_disabled
+
+        fill_in "自己紹介", with: "a" * 500
+
+        expect(page).not_to have_content "500文字以内で入力してください"
+        expect(find("#btn-submit", visible: false)).not_to be_disabled
+      end
     end
   end
 end
