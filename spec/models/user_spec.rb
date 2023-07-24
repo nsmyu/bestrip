@@ -20,20 +20,20 @@ RSpec.describe User, type: :model do
     end
 
     it "ニックネームが51文字以上の場合は無効であること" do
-      user = build(:user, name: "a" * 21)
+      user = build(:user, name: "a" * 51)
       user.valid?
       expect(user.errors).to be_of_kind(:name, :too_long)
     end
 
     it "BesTrip IDが重複している場合は無効であること" do
-      create(:user)
-      user = build(:user, bestrip_id: "shinichi_kudo")
-      user.valid?
-      expect(user.errors).to be_of_kind(:bestrip_id, :taken)
+      create(:user, bestrip_id: "shinichi_kudo")
+      other_user = build(:user, bestrip_id: "shinichi_kudo")
+      other_user.valid?
+      expect(other_user.errors).to be_of_kind(:bestrip_id, :taken)
     end
 
-    it "BesTrip IDが51文字以上の場合は無効であること" do
-      user = build(:user, bestrip_id: "a" * 51)
+    it "BesTrip IDが21文字以上の場合は無効であること" do
+      user = build(:user, bestrip_id: "a" * 21)
       user.valid?
       expect(user.errors).to be_of_kind(:bestrip_id, :too_long)
     end

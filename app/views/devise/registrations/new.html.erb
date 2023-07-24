@@ -34,7 +34,7 @@
                   </div>
                   <div class="input-group input-group-outline mb-3">
                     <%= f.label :password, class: "form-label" do %>
-                      パスワード（半角英数字6文字以上）<span class="required">*</span>
+                      パスワード（半角英数字6〜128文字）<span class="required">*</span>
                     <% end %>
                     <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
                     <div class="<%= "error-message" if resource.errors.messages.key?(:password) %>" >

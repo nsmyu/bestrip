@@ -11,11 +11,11 @@ class User < ApplicationRecord
 
   before_validation :set_user_email, if: :guest_user?, on: :create
 
-  validates :name,       presence: true, length: { maximum: 20 }
+  validates :name,       presence: true, length: { maximum: 50 }
   VALID_BESTRIP_ID_REGEX = /\A[\w]{1,50}\z/
   validates :bestrip_id, uniqueness: { case_sensitive: false },
                          format: { with: VALID_BESTRIP_ID_REGEX },
-                         length: { maximum: 50 },
+                         length: { maximum: 20 },
                          allow_nil: true
   validates :email,      presence: true, uniqueness: true, length: { maximum: 255 }
   VALID_PASSWORD_REGEX = /\A[a-z\d]{6,128}\z/i

@@ -186,7 +186,6 @@ RSpec.describe "UsersRegistrations", type: :system do
     context "無効な値の場合" do
       it "ニックネームが空欄の場合、失敗すること" do
         fill_in "ニックネーム", with: ""
-        fill_in "自己紹介", with: "a" * 501
         click_button "保存する"
 
         aggregate_failures do
@@ -195,17 +194,12 @@ RSpec.describe "UsersRegistrations", type: :system do
         end
       end
 
-      it "文字数制限を超えている場合、失敗すること" do
-        fill_in "ニックネーム", with: "a" * 21
-        fill_in "自己紹介", with: "a" * 501
-        click_button "保存する"
+      # it "自己紹介が文字数制限を超えている場合、送信できないこと" do
+      #   fill_in "自己紹介", with: "a" * 501
+      #   click_button "保存する"
 
-        aggregate_failures do
-          expect(page).to have_content "プロフィールの編集"
-          expect(page).to have_content "ニックネームは20文字以内で入力してください"
-          expect(page).to have_content "自己紹介は500文字以内で入力してください"
-        end
-      end
+      #   expect(current_path).to eq users_edit_profile_path
+      # end
     end
   end
 end

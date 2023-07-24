@@ -88,8 +88,8 @@ RSpec.describe "UsersRegistrations", type: :request do
     end
 
     it "自己紹介を変更できること" do
-      patch users_update_without_password_path, params: { user: { introduction: "真実はいつもひとつ" } }
-      expect(user.reload.introduction).to eq "真実はいつもひとつ"
+      patch users_update_without_password_path, params: { user: { introduction: "I love traveling to different countries." } }
+      expect(user.reload.introduction).to eq "I love traveling to different countries."
     end
   end
 end
