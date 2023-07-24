@@ -31,20 +31,19 @@
 
 
 .error-message {
-  padding-top: 2px;
   color: $danger;
   font-size: 12px;
 }
 
 .input-group:has(.error-message) {
-  input {
+  input, textarea {
     width: 100%;
     border-color: $danger !important;
   }
 }
 
 .input-group-outline {
-  .form-edit {
+  .input-field {
     &.is-focused {
       .form-control {
         border-color: $primary;

@@ -86,7 +86,7 @@
                   <%= image_tag "default_avatar.png", id: 'image-preview', class: "rounded-circle resize-avatar" %>
                 <% end %>
               </div>
-              <div class="form-edit col-sm-8 d-flex">
+              <div class="input-field col-sm-8 d-flex">
                 <div class="my-auto">
                   <label type="button" class="btn btn-outline-primary fw-bold mx-0 mb-2">
                     <i class="material-icons opacity-10 mx-2">add_photo_alternate</i>画像を変更
@@ -103,7 +103,7 @@
               <%= f.label :name, class: "col-sm-3 col-form-label-lg m-0 fw-bold" do %>
                 ニックネーム<span class="required">*</span>
               <% end %>
-              <div class="form-edit col-sm-8">
+              <div class="input-field col-sm-8">
                 <%= f.text_field :name, class: "form-control", autocomplete: "name" %>
                 <div class="<%= "error-message" if resource.errors.messages.key?(:name) %>" >
                   <%= resource.errors.full_messages_for(:name).first if resource.errors.any? %>
@@ -112,15 +112,16 @@
             </div>
             <div class="row mb-4 input-group input-group-outline">
               <%= f.label :introduction, class: "col-sm-3 col-form-label-lg m-0 fw-bold" %>
-              <div class="form-edit col-sm-8">
-                <%= f.text_area :introduction, class: "form-control min-height-250", placeholder: "500文字以上で入力" %>
-                <div class="<%= "error-message" if resource.errors.messages.key?(:introduction) %>" >
-                  <%= resource.errors.full_messages_for(:introduction).first if resource.errors.any? %>
+              <div class="input-field col-sm-8">
+                <%= f.text_area :introduction, class: "form-control counted mb-1", rows: "7", placeholder: "500文字以上で入力" %>
+                <div class="d-flex justify-content-between" >
+                  <div></div>
+                  <div class="text-xs input-count"><span>0</span>/500</div>
                 </div>
               </div>
             </div>
             <div class="mt-3 text-center ms-auto">
-              <%= f.submit "保存する", class: "btn bg-gradient-primary mt-4 px-6 btn-lg" %>
+              <%= f.submit "保存する", id: "btn-submit", class: "btn bg-gradient-primary mt-4 px-6 btn-lg" %>
             </div>
           <% end %>
           <div class="text-center">
