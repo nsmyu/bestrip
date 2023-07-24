@@ -165,7 +165,7 @@ RSpec.describe "UsersRegistrations", type: :system do
       visit users_edit_profile_path
     end
 
-    context "有効な値の場合", :focus, js: true do
+    context "有効な値の場合", js: true do
       it "成功すること" do
         expect(page).to have_content "プロフィールの編集"
         expect(page).to have_xpath "//input[@value='Conan']"
@@ -201,7 +201,7 @@ RSpec.describe "UsersRegistrations", type: :system do
         end
       end
 
-      it "自己紹介が文字数制限を超えている場合、「保存する」ボタンが押せないこと", js: true do
+      it "自己紹介が文字数制限を超えている場合、「保存する」ボタンが押せないこと", :focus, js: true do
         fill_in "自己紹介", with: "a" * 501
 
         expect(page).to have_content "500文字以内で入力してください"
