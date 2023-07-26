@@ -18,8 +18,13 @@ ja:
         user:
           attributes:
             bestrip_id:
-              invalid: は半角英数字とアンダーバー(_)で入力してください
+              format: "%{message}"
+              taken: このIDは他の人が使用しています
+              too_short: IDは5文字以上で入力してください
+              too_long: IDは20文字以内で入力してください
+              invalid: IDは半角英数字とアンダーバー(_)で入力してください
             email:
+              format: "%{message}"
               invalid: メールアドレスを正しく入力してください
             password:
               invalid: は半角英数字で入力してください

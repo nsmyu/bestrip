@@ -39,9 +39,9 @@ RSpec.describe User, type: :model do
     end
 
     it "BesTrip IDに半角英数字、アンダースコア以外は使用できないこと" do
-      user = build(:user, bestrip_id: "wrong-id!")
+      user = build(:user, bestrip_id: "invlid-id")
       user.valid?
-      expect(user.errors[:bestrip_id]).to include("は半角英数字とアンダーバー(_)で入力してください")
+      expect(user.errors).to be_of_kind(:bestrip_id, :invalid)
     end
 
     it "メールアドレスがなければ無効であること" do
@@ -82,9 +82,9 @@ RSpec.describe User, type: :model do
     end
 
     it "パスワードに半角英数字以外は使用できないこと" do
-      user = build(:user, password: "wrong-password")
+      user = build(:user, password: "invalid-password")
       user.valid?
-      expect(user.errors[:password]).to include("は半角英数字で入力してください")
+      expect(user.errors).to be_of_kind(:password, :invalid)
     end
 
     it "確認用パスワードが一致しない場合は無効であること" do

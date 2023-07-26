@@ -42,8 +42,7 @@ module Bestrip
         view_specs: false,
         routing_specs: false
     end
-
-    config.active_storage.variant_processor = :mini_magick
+    config.active_model.i18n_customize_full_message = true
 
     # フォームのエラー時、"field_with_errors"クラスを含むdivタグを生成させないための設定
     config.action_view.field_error_proc = proc do |html_tag, instance|
