@@ -321,7 +321,6 @@ DEPENDENCIES
   devise-i18n
   factory_bot_rails
   faker
-  image_processing (~> 1.2)
   importmap-rails
   jbuilder
   pg (~> 1.1)
