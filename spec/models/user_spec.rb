@@ -57,12 +57,6 @@ RSpec.describe User, type: :model do
       expect(user.errors).to be_of_kind(:email, :taken)
     end
 
-    it "メールアドレスが255文字以上の場合は無効であること" do
-      user = build(:user, email: "a" * 256)
-      user.valid?
-      expect(user.errors).to be_of_kind(:email, :too_long)
-    end
-
     it "メールアドレスが不正な形式の場合は無効であること" do
       user = build(:user, email: "edogawa")
       user.valid?

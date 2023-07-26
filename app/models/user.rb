@@ -7,23 +7,23 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_one_attached :avatar
-
   before_validation :set_user_email, if: :guest_user?, on: :create
 
   validates :name,       presence: true, length: { maximum: 50 }
-  VALID_BESTRIP_ID_REGEX = /\A[\w]{1,50}\z/
+  VALID_BESTRIP_ID_REGEX = /\A[\w]{5,20}\z/
   validates :bestrip_id, uniqueness: { case_sensitive: false },
+                         length: { minimum: 5, maximum: 20 },
                          format: { with: VALID_BESTRIP_ID_REGEX },
-                         length: { maximum: 20 },
-                         allow_nil: true
-  validates :email,      presence: true, uniqueness: true, length: { maximum: 255 }
+                         allow_blank: true
+  validates :email,      presence: true, uniqueness: true
   VALID_PASSWORD_REGEX = /\A[a-z\d]{6,128}\z/i
   with_options unless: -> { validation_context == :without_password } do
     validates :password, presence: true, format: { with: VALID_PASSWORD_REGEX }
     validates :password_confirmation, presence: true
   end
   validates :introduction, length: { maximum: 500 }
+
+  mount_uploader :avatar, AvatarUploader
 
   def self.guest
     random_pass = SecureRandom.base36

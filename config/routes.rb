@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root 'home#index'
   devise_for :users, controllers: {
     registrations: 'users/registrations',
-    sessions: 'users/sessions'
+    sessions: 'users/sessions',
   }
 
   devise_scope :user do
@@ -12,5 +12,6 @@ Rails.application.routes.draw do
     get   'users/profile',        to: 'users/registrations#profile'
     get   'users/edit_profile',   to: 'users/registrations#edit_profile'
     patch 'users/update_without_password', to: 'users/registrations#update_without_password'
+    patch 'users/validate_bestrip_id', to: 'users/registrations#validate_bestrip_id'
   end
 end

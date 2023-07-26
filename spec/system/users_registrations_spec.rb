@@ -128,6 +128,7 @@ RSpec.describe "UsersRegistrations", type: :system do
         click_button "変更する"
 
         expect(current_path).to eq root_path
+        expect(page).to have_content "メールアドレスを変更しました。"
 
         visit users_edit_email_path
         expect(page).to have_xpath "//input[@value='new_email_address@example.com']"
@@ -181,7 +182,7 @@ RSpec.describe "UsersRegistrations", type: :system do
         click_on "保存する"
 
         expect(current_path).to eq root_path
-        expect(page).to have_content "プロフィールを変更しました"
+        expect(page).to have_content "プロフィールを変更しました。"
 
         visit users_edit_profile_path
         expect(page).to have_selector "img[src*='test_image.jpg']"
@@ -201,7 +202,7 @@ RSpec.describe "UsersRegistrations", type: :system do
         end
       end
 
-      it "自己紹介が文字数制限を超えている場合、「保存する」ボタンが押せないこと", :focus, js: true do
+      it "自己紹介が文字数制限を超えている場合、「保存する」ボタンが押せないこと", js: true do
         fill_in "自己紹介", with: "a" * 501
 
         expect(page).to have_content "500文字以内で入力してください"

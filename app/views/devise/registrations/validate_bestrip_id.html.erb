@@ -1,0 +1,52 @@
+<%= turbo_frame_tag "bestrip_id" do %>
+  <%= form_with model: resource, url: users_update_without_password_path, local: true do |f| %>
+    <div class="row mb-4 input-group">
+      <div class="col-sm-3 col-form-label-lg">
+        <%= image_tag resource.avatar.url, id: 'image-preview', class: "rounded-circle resize-avatar" %>
+      </div>
+      <div class="input-field col-sm-8 d-flex">
+        <label type="button" class="btn btn-outline-primary fw-bold mx-0 my-auto">
+          <i class="material-icons opacity-10 mx-2">add_photo_alternate</i>画像を変更
+          <%= f.file_field :avatar, accept: "image/*", id: "image-input", class: "d-none" %>
+          <%= f.hidden_field :avatar_cache %>
+        </label>
+      </div>
+    </div>
+    <div class="row mb-4 input-group input-group-outline">
+      <%= f.label :name, class: "col-sm-3 col-form-label-lg m-0 fw-bold" do %>
+        ニックネーム<span class="required">*</span>
+      <% end %>
+      <div class="input-field col-sm-8">
+        <%= f.text_field :name, class: "form-control", autocomplete: "name" %>
+        <div class="<%= "error-message" if resource.errors.messages.key?(:name) %>" >
+          <%= resource.errors.full_messages_for(:name).first if resource.errors.any? %>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4 input-group input-group-outline">
+      <%= f.label :bestrip_id, class: "col-sm-3 col-form-label-lg m-0 fw-bold" %>
+      <div class="input-field col-sm-8">
+      <div class="d-flex">
+        <%= f.text_field :bestrip_id, id: "bestrip_id", class: "form-control" %>
+        <%= button_tag "きりかわった", id: "btn-check", type: :submit, formaction: :validate_bestrip_id, formmethod: :patch, class: "btn btn-outline-primary btn-sm w-50 fw-bold my-auto" %>
+          </div>
+        <div class="<%= "error-message" if resource.errors.messages.key?(:bestrip_id) %>" >
+          <%= resource.errors.full_messages_for(:bestrip_id).first if resource.errors.any? %>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-4 input-group input-group-outline">
+      <%= f.label :introduction, class: "col-sm-3 col-form-label-lg m-0 fw-bold" %>
+      <div class="input-field col-sm-8">
+        <%= f.text_area :introduction, class: "form-control counted mb-1", rows: "7", placeholder: "500文字以内で入力" %>
+        <div class="d-flex justify-content-between" >
+          <div></div>
+          <div class="text-xs input-count"><span>0</span>/500</div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-3 text-center ms-auto">
+      <%= f.submit "保存する", id: "btn-submit", class: "btn bg-gradient-primary mt-4 px-6 btn-lg", data: { turbo: false } %>
+    </div>
+  <% end %>
+<% end %>

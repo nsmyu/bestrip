@@ -3,6 +3,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
+  before_action :set_current_user, except: [:new, :create, :edit, :update]
 
   def new
     super
@@ -22,36 +23,31 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def edit_email
-    @user = User.find(current_user.id)
   end
 
   def edit_profile
-    @user = User.find(current_user.id)
+  end
+
+  def validate_bestrip_id
+    update_without_password_params[:avatar] = @user.avatar if @user.avatar
+    @user.assign_attributes(update_without_password_params)
+    @user.valid?
   end
 
   def update_without_password
-    @user = User.find(current_user.id)
     @user.assign_attributes(update_without_password_params)
     if @user.save(context: :without_password)
-      update_without_password_params.key?(:email) ? (flash[:notice] = "メールアドレスを変更しました。") : (flash[:notice] = "プロフィールを変更しました。")
+      flash[:notice] =
+        (update_without_password_params.key?(:email) ? "メールアドレス" : "プロフィール") + "を変更しました。"
       redirect_to root_path
     else
-      update_without_password_params.key?(:email) ? (render 'edit_email') : (render 'edit_profile')
+      render update_without_password_params.key?(:email) ? :edit_email : :edit_profile
     end
   end
 
   def destroy
     super
   end
-
-  # GET /resource/cancel
-  # Forces the session data which is usually expired after sign
-  # in to be expired now. This is useful if the user wants to
-  # cancel oauth signing in/up in the middle of the process,
-  # removing all OAuth session data.
-  # def cancel
-  #   super
-  # end
 
   protected
 
@@ -75,11 +71,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super(resource)
   end
 
-  def update_without_password_params
-    params.require(:user).permit(:name, :bestrip_id, :email, :avatar, :introduction)
+  def set_current_user
+    @user = User.find(current_user.id)
   end
 
-  # def user_params
-  #   devise_parameter_sanitizer.sanitize(:update_without_password)
-  # end
+  def update_without_password_params
+    params.require(:user).permit(:name, :bestrip_id, :email, :avatar, :avatar_cache, :introduction)
+  end
 end
