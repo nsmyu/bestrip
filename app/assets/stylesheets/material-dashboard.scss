@@ -44,8 +44,8 @@
 }
 
 .input-group-outline {
-  .input-field {
-    .form-control:focus  {
+  .is-focused {
+    .form-control {
       border-color: $primary;
     }
   }
