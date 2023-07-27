@@ -2,7 +2,5 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
-import "material_dashboard/core/popper.min"
-import "material_dashboard/core/bootstrap.min"
 import "material_dashboard/material-dashboard"
 import "custom"
