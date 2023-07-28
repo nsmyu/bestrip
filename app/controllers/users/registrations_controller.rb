@@ -76,6 +76,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update_without_password_params
+    params[:user][:bestrip_id] = nil if params[:user][:bestrip_id] == ""
     params.require(:user).permit(:name, :bestrip_id, :email, :avatar, :avatar_cache, :introduction)
   end
 end
