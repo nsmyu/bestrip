@@ -43,10 +43,10 @@
     <div class="row mb-4 input-group input-group-outline">
       <%= f.label :introduction, class: "col-sm-3 col-form-label-lg m-0 fw-bold" %>
       <div class="col-sm-8">
-        <%= f.text_area :introduction, class: "form-control counted mb-1", rows: "7", placeholder: "500文字以内で入力" %>
+        <%= f.text_area :introduction, id: "text-input", class: "form-control mb-1", rows: "7", placeholder: "500文字以内で入力" %>
         <div class="d-flex justify-content-between" >
           <div></div>
-          <div class="text-xs input-count"><span>0</span>/500</div>
+          <div id="char-count" class="text-xs"><span>0</span>/500</div>
         </div>
       </div>
     </div>

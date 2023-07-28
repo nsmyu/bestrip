@@ -1,71 +1,58 @@
-document.addEventListener('turbo:load', () => {
-  const counted = document.querySelector('.counted');
-  const inputCount = document.querySelector('.input-count');
-  const maxLength = inputCount.textContent.slice(2)
+document.addEventListener('DOMContentLoaded', countChars());
+export function countChars() {
+  const textInput = document.querySelector('#text-input');
+  const charCount = document.querySelector('#char-count');
+  const maxCharsLength = charCount.textContent.slice(2);
+  const initialCharsLength = textInput.value.length
 
-  counted.addEventListener('input', (e) =>{
+  function addCharsLengthError() {
+    textInput.parentElement.classList.add('error-message');
+    charCount.previousElementSibling.textContent = maxCharsLength + "文字以内で入力してください"
+    document.querySelector("#btn-submit").disabled = true;
+  };
+
+  if (initialCharsLength > 0) {
+    charCount.querySelector('span').textContent = initialCharsLength
+    if (initialCharsLength > maxCharsLength) {
+      addCharsLengthError()
+    }
+  }
+
+  textInput.addEventListener('input', (e) =>{
     const text = e.target;
-    const textLength = text.value.length;
+    const charsLength = text.value.length;
 
     if (text) {
-      inputCount.querySelector('span').textContent = textLength;
+      charCount.querySelector('span').textContent = charsLength;
     }
 
-    if (textLength > maxLength) {
-      inputCount.parentElement.classList.add('error-message');
-      inputCount.previousElementSibling.textContent = maxLength + "文字以内で入力してください"
-      document.querySelector("#btn-submit").disabled = true;
+    if (charsLength > maxCharsLength) {
+      addCharsLengthError()
     } else {
-      inputCount.parentElement.classList.remove('error-message');
-      inputCount.previousElementSibling.textContent = "";
+      textInput.parentElement.classList.remove('error-message');
+      charCount.previousElementSibling.textContent = "";
       document.querySelector('#btn-submit').removeAttribute('disabled');
     }
   });
-});
+};
 
-document.addEventListener('turbo:frame-load', () => {
+document.addEventListener('DOMContentLoaded', previewImage());
+export function previewImage() {
   const imageInput = document.querySelector('#image-input');
-  const imagePreview = document.querySelector('#image-preview');
 
-  imageInput.addEventListener('change', (e) => {
+  imageInput.addEventListener('change', (e) =>{
     const file = e.target.files[0];
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      imagePreview.src = reader.result;
-    };
+      const imagePreview = document.querySelector('#image-preview');
+      if(imagePreview) {
+        imagePreview.src = reader.result;
+      }
+    }
 
     if (file) {
     reader.readAsDataURL(file);
     }
   });
-});
-
-// function previewImage() {
-//   const target = this.event.target;
-//   const file = target.files[0];
-//   const reader  = new FileReader();
-//   reader.onloadend = function () {
-//       const preview = document.querySelector("#image-preview")
-//       if(preview) {
-//           preview.src = reader.result;
-//       }
-//   }
-//   if (file) {
-//       reader.readAsDataURL(file);
-//   }
-// }
-
-document.querySelector('#image-input').onchange = (e) => {
-  const file = e.target.files[0];
-  const reader = new FileReader();
-  const imagePreview = document.querySelector('#image-preview');
-  console.log("ok")
-    reader.onloadend = () => {
-      imagePreview.src = reader.result;
-    };
-
-    if (file) {
-    reader.readAsDataURL(file);
-    };
-  };
+};

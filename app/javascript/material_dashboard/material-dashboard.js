@@ -73,13 +73,14 @@ function setAttributes(el, options) {
 }
 
 // adding on inputs attributes for calling the focused and defocused functions
-if (document.querySelectorAll('.input-group').length != 0) {
-  var allInputs = document.querySelectorAll('input.form-control');
-  allInputs.forEach(el => setAttributes(el, {
-    "onfocus": "focused(this)",
-    "onfocusout": "defocused(this)"
-  }));
-}
+// if (document.querySelectorAll('.input-group').length != 0) {
+//   var allInputs = document.querySelectorAll('input.form-control');
+//   allInputs.forEach(el => setAttributes(el, {
+//     "onfocus": "focused(this)",
+//     "onfocusout": "defocused(this)"
+//   }));
+// }
+
 
 // Fixed Plugin
 
@@ -549,7 +550,8 @@ function getEventTarget(e) {
 
 // End tabs navigation
 
-window.onload = function() {
+window.onload = addInputFunction()
+export function addInputFunction() {
   // Material Design Input function
   var inputs = document.querySelectorAll('.form-control');
 

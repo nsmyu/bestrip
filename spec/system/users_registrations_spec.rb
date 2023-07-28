@@ -178,7 +178,7 @@ RSpec.describe "UsersRegistrations", type: :system do
         expect(page).not_to have_selector "img[src*='default_avatar']"
 
         fill_in "ニックネーム", with: "Shinich"
-        fill_in "自己紹介", with: "I love traveling to different countries."
+        fill_in "user[introduction]", with: "I love traveling to different countries."
         click_on "保存する"
 
         expect(current_path).to eq root_path
@@ -203,12 +203,12 @@ RSpec.describe "UsersRegistrations", type: :system do
       end
 
       it "自己紹介が文字数制限を超えている場合、「保存する」ボタンが押せないこと", js: true do
-        fill_in "自己紹介", with: "a" * 501
+        fill_in "user[introduction]", with: "a" * 501
 
         expect(page).to have_content "500文字以内で入力してください"
         expect(find("#btn-submit", visible: false)).to be_disabled
 
-        fill_in "自己紹介", with: "a" * 500
+        fill_in "user[introduction]", with: "a" * 500
 
         expect(page).not_to have_content "500文字以内で入力してください"
         expect(find("#btn-submit", visible: false)).not_to be_disabled

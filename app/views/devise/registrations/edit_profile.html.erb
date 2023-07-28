@@ -76,7 +76,7 @@
       <div class="card card-body mx-3 mx-md-4 mt-n6 p-5">
         <h5 class="mb-5">プロフィールの編集</h5>
         <div class="row">
-          <%= turbo_frame_tag "bestrip_id" do %>
+          <%= turbo_frame_tag "bestrip_id", data: { controller: "form", action: "turbo:frame-render->form#setDynamicEffects" } do %>
             <%= form_with model: resource, url: users_update_without_password_path, local: true do |f| %>
               <div class="row mb-4 input-group">
                 <div class="col-sm-3 col-form-label-lg">
@@ -116,10 +116,10 @@
               <div class="row mb-4 input-group input-group-outline">
                 <%= f.label :introduction, class: "col-sm-3 col-form-label-lg m-0 fw-bold" %>
                 <div class="col-sm-8">
-                  <%= f.text_area :introduction, class: "form-control counted mb-1", rows: "7", placeholder: "500文字以内で入力" %>
+                  <%= f.text_area :introduction, id: "text-input", class: "form-control mb-1", rows: "7", placeholder: "500文字以内で入力" %>
                   <div class="d-flex justify-content-between" >
                     <div></div>
-                    <div class="text-xs input-count"><span>0</span>/500</div>
+                    <div id="char-count" class="text-xs"><span>0</span>/500</div>
                   </div>
                 </div>
               </div>
