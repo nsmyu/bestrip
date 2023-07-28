@@ -3,18 +3,18 @@ export function countChars() {
   const textInput = document.querySelector('#text-input');
   const charCount = document.querySelector('#char-count');
   const maxCharsLength = charCount.textContent.slice(2);
-  const initialCharsLength = textInput.value.length
+  const initialCharsLength = textInput.value.length;
 
   function addCharsLengthError() {
     textInput.parentElement.classList.add('error-message');
-    charCount.previousElementSibling.textContent = maxCharsLength + "文字以内で入力してください"
+    charCount.previousElementSibling.textContent = maxCharsLength + "文字以内で入力してください";
     document.querySelector("#btn-submit").disabled = true;
-  };
+  }
 
   if (initialCharsLength > 0) {
-    charCount.querySelector('span').textContent = initialCharsLength
+    charCount.querySelector('span').textContent = initialCharsLength;
     if (initialCharsLength > maxCharsLength) {
-      addCharsLengthError()
+      addCharsLengthError();
     }
   }
 
@@ -27,14 +27,14 @@ export function countChars() {
     }
 
     if (charsLength > maxCharsLength) {
-      addCharsLengthError()
+      addCharsLengthError();
     } else {
       textInput.parentElement.classList.remove('error-message');
       charCount.previousElementSibling.textContent = "";
       document.querySelector('#btn-submit').removeAttribute('disabled');
     }
   });
-};
+}
 
 document.addEventListener('DOMContentLoaded', previewImage());
 export function previewImage() {
@@ -49,10 +49,10 @@ export function previewImage() {
       if(imagePreview) {
         imagePreview.src = reader.result;
       }
-    }
+    };
 
     if (file) {
     reader.readAsDataURL(file);
     }
   });
-};
+}

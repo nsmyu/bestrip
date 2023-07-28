@@ -178,8 +178,9 @@ RSpec.describe "UsersRegistrations", type: :system do
     end
   end
 
-  describe "プロフィールの編集" do
+  describe "プロフィールの編集", focus: true do
     let(:user) { create(:user) }
+    let(:other_user) { create(:user, :other) }
 
     before do
       sign_in user
@@ -192,12 +193,16 @@ RSpec.describe "UsersRegistrations", type: :system do
         expect(page).to have_xpath "//input[@value='Conan']"
         expect(page).to have_selector "img[src*='default_avatar']"
 
+        find("#bestrip-id-tooltip").hover
+        expect(page).to have_content "お知らせ"
+
         image_path = Rails.root.join('spec/fixtures/test_image.jpg')
         attach_file 'user[avatar]', image_path, make_visible: true
 
         expect(page).not_to have_selector "img[src*='default_avatar']"
 
         fill_in "ニックネーム", with: "Shinich"
+        fill_in "BesTrip ID", with: "user_id"
         fill_in "user[introduction]", with: "I love traveling to different countries."
         click_on "保存する"
 
@@ -226,12 +231,51 @@ RSpec.describe "UsersRegistrations", type: :system do
         fill_in "user[introduction]", with: "a" * 501
 
         expect(page).to have_content "500文字以内で入力してください"
+        expect(page).to have_content "501"
         expect(find("#btn-submit", visible: false)).to be_disabled
 
         fill_in "user[introduction]", with: "a" * 500
 
         expect(page).not_to have_content "500文字以内で入力してください"
         expect(find("#btn-submit", visible: false)).not_to be_disabled
+      end
+    end
+
+    describe "BesTrip IDの使用可否チェックボタン" do
+      it "入力したIDがユニークな場合、使用可能メッセージが表示されること" do
+        fill_in "BesTrip ID", with: "user_id"
+        click_on "IDが使用可能か確認"
+
+        expect(page).to have_content "このIDはご使用いただけます"
+      end
+
+      it "入力したIDが重複している場合、エラーメッセージが表示されること" do
+        other_user.bestrip_id = "user_id"
+        other_user.save
+
+        fill_in "BesTrip ID", with: "user_id"
+        click_on "IDが使用可能か確認"
+
+        expect(page).to have_content "このIDは他の人が使用しています"
+      end
+
+      it "チェックボタンクリック後（Turbo_frameレンダリング後）、Javascriptが有効であること", js: true do
+        click_on "IDが使用可能か確認"
+        sleep 0.5
+
+        image_path = Rails.root.join('spec/fixtures/test_image.jpg')
+        attach_file 'user[avatar]', image_path, make_visible: true
+
+        expect(page).not_to have_selector "img[src*='default_avatar']"
+
+        find("#bestrip-id-tooltip").hover
+        expect(page).to have_content "お知らせ"
+
+        fill_in "user[introduction]", with: "a" * 501
+
+        expect(page).to have_content "500文字以内で入力してください"
+        expect(page).to have_content "501"
+        expect(find("#btn-submit", visible: false)).to be_disabled
       end
     end
   end
