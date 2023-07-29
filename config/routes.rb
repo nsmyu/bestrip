@@ -14,4 +14,6 @@ Rails.application.routes.draw do
     patch 'users/update_without_password', to: 'users/registrations#update_without_password'
     patch 'users/validate_bestrip_id', to: 'users/registrations#validate_bestrip_id'
   end
+
+  resources :itineraries
 end
