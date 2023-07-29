@@ -76,7 +76,7 @@
       <div class="card card-body mx-3 mx-md-4 mt-n6 p-5">
         <h5 class="mb-5">プロフィールの編集</h5>
         <div class="row">
-          <%= turbo_frame_tag "profile_form", data: { controller: "form", action: "turbo:frame-render->form#setDynamicEffects" } do %>
+          <%= turbo_frame_tag "profile_form" do %>
             <%= form_with model: resource, url: users_update_without_password_path, local: true do |f| %>
               <div class="row mb-4 input-group">
                 <div class="col-sm-3 col-form-label-lg">

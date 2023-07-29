@@ -1,5 +1,6 @@
-document.addEventListener('DOMContentLoaded', countChars());
-export function countChars() {
+import { addInputFunction } from "./material_dashboard/material-dashboard";
+
+function countChars() {
   const textInput = document.querySelector('#text-input');
   const charCount = document.querySelector('#char-count');
   const maxCharsLength = charCount.textContent.slice(2);
@@ -36,8 +37,7 @@ export function countChars() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', previewImage());
-export function previewImage() {
+function previewImage() {
   const imageInput = document.querySelector('#image-input');
 
   imageInput.addEventListener('change', (e) =>{
@@ -56,3 +56,18 @@ export function previewImage() {
     }
   });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  previewImage();
+  countChars();
+});
+
+document.addEventListener('turbo:frame-load', () => {
+  addInputFunction();
+  previewImage();
+  countChars();
+  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+  const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+});
