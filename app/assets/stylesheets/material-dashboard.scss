@@ -66,3 +66,13 @@ input:-webkit-autofill {
   width: 100px;
   object-fit: cover;
 }
+
+.tooltip-inner {
+  background-color: $warning;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+  border-bottom-color: $warning;
+}

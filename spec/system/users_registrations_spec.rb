@@ -193,8 +193,8 @@ RSpec.describe "UsersRegistrations", type: :system do
         expect(page).to have_xpath "//input[@value='Conan']"
         expect(page).to have_selector "img[src*='default_avatar']"
 
-        find("#bestrip-id-tooltip").hover
-        expect(page).to have_content "お知らせ"
+        find(".bi-question-circle-fill").hover
+        expect(page).to have_content "旅のしおりにメンバーを追加するときに使用するIDです。設定すると友だちがあなたをID検索できるようになります。"
 
         image_path = Rails.root.join('spec/fixtures/test_image.jpg')
         attach_file 'user[avatar]', image_path, make_visible: true
@@ -268,8 +268,8 @@ RSpec.describe "UsersRegistrations", type: :system do
 
         expect(page).not_to have_selector "img[src*='default_avatar']"
 
-        find("#bestrip-id-tooltip").hover
-        expect(page).to have_content "お知らせ"
+        find(".bi-question-circle-fill").hover
+        expect(page).to have_content "旅のしおりにメンバーを追加するときに使用するIDです。設定すると友だちがあなたをID検索できるようになります。"
 
         fill_in "user[introduction]", with: "a" * 501
 
