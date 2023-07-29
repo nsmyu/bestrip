@@ -1,2 +1,35 @@
 <%= render 'layouts/sidenav' %>
-<h1>My Trips</h1>
+<main class="main-content position-relative  border-radius-lg ">
+  <div class="container-fluid py-4 px-6">
+    <div class="row">
+      <% @itineraries.each do |itinerary| %>
+        <div class="col-lg-6 col-md-6 mt-4 mb-5 px-4">
+          <%= link_to [:itinerary, id: itinerary.id] do %>
+            <div class="card itinerary-card z-index-2">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                <%= image_tag itinerary.image.url, class: "border-radius-lg shadow-dark w-100" %>
+              </div>
+              <div class="card-body text-dark">
+                <h5 class="mb-0"><%= itinerary.name %></h5>
+                <p ><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
+                <hr class="dark horizontal">
+                <div class="d-flex">
+                  <i class="material-icons text-sm my-auto me-1">group</i>
+                  <p class="mb-0 text-sm">メンバーを入れる</p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</main>
+
+
+<div class="fixed-plugin">
+  <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
+    <i class="material-icons py-2">settings</i>
+  </a>
+</div>
+
