@@ -1,7 +1,6 @@
 
 <!DOCTYPE html>
 <html lang="ja">
-
   <head>
     <title>Bestrip</title>
     <meta charset="utf-8" />
@@ -18,17 +17,14 @@
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-    <!-- CSS Files -->
-
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="g-sidenav-show bg-gray-200">
     <%= render 'layouts/header' %>
     <%= yield %>
     <%= render 'layouts/footer' %>
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-
   </body>
 </html>
