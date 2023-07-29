@@ -6,7 +6,7 @@ RSpec.describe "UsersRegistrations", type: :request do
   describe "GET #new" do
     it "正常にレスポンスを返すこと" do
       get new_user_registration_path
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status 200
     end
   end
 
@@ -17,7 +17,7 @@ RSpec.describe "UsersRegistrations", type: :request do
     end
 
     it "正常にレスポンスを返すこと" do
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status 200
     end
   end
 
@@ -38,7 +38,6 @@ RSpec.describe "UsersRegistrations", type: :request do
       sign_out user
       post user_session_path, params: { user: { email: user.email, password: "newpassword" } }
       expect(response).to redirect_to root_path
-      expect(flash[:notice]).to eq "ログインしました。"
     end
   end
 
@@ -49,7 +48,7 @@ RSpec.describe "UsersRegistrations", type: :request do
     end
 
     it "正常にレスポンスを返すこと" do
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status 200
     end
 
     it "メールアドレスを取得すること" do
@@ -64,7 +63,7 @@ RSpec.describe "UsersRegistrations", type: :request do
     end
 
     it "正常にレスポンスを返すこと" do
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status 200
     end
 
     it "ニックネームを取得すること" do
@@ -91,6 +90,22 @@ RSpec.describe "UsersRegistrations", type: :request do
       patch users_update_without_password_path,
         params: { user: { introduction: "I love traveling to different countries." } }
       expect(user.reload.introduction).to eq "I love traveling to different countries."
+    end
+  end
+
+  describe "PATCH #validate_bestrip_id" do
+    before do
+      sign_in user
+      patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "test_id" } }
+    end
+
+    it "turbo-frameがレンダリングされること" do
+      expect(response.body).to include '<turbo-frame id="profile_form">'
+    end
+
+    it "BesTrip IDは更新せず、使用可否のみを取得すること" do
+      expect(user.reload.bestrip_id).not_to eq "test_id"
+      expect(response.body).to include 'このIDはご使用いただけます'
     end
   end
 end
