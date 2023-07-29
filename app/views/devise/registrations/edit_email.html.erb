@@ -1,10 +1,8 @@
 <%= render 'layouts/sidenav' %>
-<div class="main-content position-relative my-7">
-  <div class="container-fluid px-2 px-md-4">
-    <div class="card card-body mx-3 mx-md-4 mt-n6 p-5">
+<main class="main-content position-relative">
+  <div class="container-fluid py-5 px-sm-6 px-3">
+    <div class="card card-body p-5">
       <h5 class="mb-5">メールアドレスの変更</h5>
-      <div class="row">
-        <div class="row">
         <div class="text-sm mb-3">変更するメールアドレスを入力してください。</div>
           <%= form_with model: resource, url: users_update_without_password_path, data: { turbo: false }, local: true do |f| %>
             <div class="row mb-4 input-group input-group-outline">
@@ -24,7 +22,7 @@
       </div>
     </div>
   </div>
-</div>
+</main>
 <div class="fixed-plugin">
   <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
     <i class="material-icons py-2">settings</i>

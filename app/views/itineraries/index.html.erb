@@ -1,9 +1,9 @@
 <%= render 'layouts/sidenav' %>
-<main class="main-content position-relative  border-radius-lg ">
-  <div class="container-fluid py-4 px-6">
+<main class="main-content position-relative">
+  <div class="container-fluid py-5 px-sm-6 px-3">
     <div class="row">
       <% @itineraries.each do |itinerary| %>
-        <div class="col-lg-6 col-md-6 mt-4 mb-5 px-4">
+        <div class="col-lg-6 col-md-6 pt-4 pb-5 px-3">
           <%= link_to [:itinerary, id: itinerary.id] do %>
             <div class="card itinerary-card z-index-2">
               <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
@@ -27,9 +27,13 @@
 </main>
 
 
-<div class="fixed-plugin">
+<%
+=begin%>
+ <div class="fixed-plugin">
   <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
     <i class="material-icons py-2">settings</i>
   </a>
 </div>
+<%
+=end%>
 

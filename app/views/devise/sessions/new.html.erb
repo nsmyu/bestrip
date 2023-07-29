@@ -1,11 +1,4 @@
-<% if flash[:alert] %>
-  <div class="alert alert-danger alert-dismissible text-white py-2 fw-bold" role="alert">
-    <%= alert %>
-    <button type="button" class="btn-close text-lg py-1 opacity-10" data-bs-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-<% end %>
+<%= render 'layouts/flash_messages' %>
 <main class="main-content mt-0">
   <div class="page-header align-items-start max-vh-100" style="background-image: url(<%= asset_path 'sign_in.jpg' %>);">
     <span class="mask bg-gradient-light opacity-6"></span>

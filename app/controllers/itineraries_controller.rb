@@ -3,9 +3,9 @@ class ItinerariesController < ApplicationController
     @itineraries = Itinerary.where(user_id: current_user.id)
   end
 
-  # def new
-  #   @room = Room.new
-  # end
+  def new
+    @itinerary = Itinerary.new
+  end
 
   # def create
   #   @room = Room.new(room_params)
@@ -18,10 +18,9 @@ class ItinerariesController < ApplicationController
   #   end
   # end
 
-  # def show
-  #   @room = Room.find(params[:id])
-  #   @reservation = Reservation.new
-  # end
+  def show
+    @itinerary = Itinerary.find(params[:id])
+  end
 
   # def edit
   #   @room = Room.find(params[:id])
