@@ -7,6 +7,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_many :itineraries, dependent: :destroy
+
   before_validation :set_user_email, if: :guest_user?, on: :create
 
   validates :name,       presence: true, length: { maximum: 50 }
