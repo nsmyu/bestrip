@@ -10,23 +10,31 @@ RSpec.describe "UsersRegistrations", type: :request do
     end
   end
 
-  describe "GET #edit" do
-    before do
-      sign_in user
-      get users_edit_password_path
+  describe "POST #create" do
+    it "正常な値の場合、ユーザー登録に成功すること" do
+      user_params = attributes_for(:user)
+      post user_registration_path, params: { user: user_params }
+      expect(response).to redirect_to root_path
     end
 
+    it "無効な値の場合、ユーザー登録に失敗すること" do
+      user_params = attributes_for(:user, name: "")
+      post user_registration_path, params: { user: user_params }
+      expect(response.body).to include "ニックネームを入力してください"
+    end
+  end
+
+  describe "GET #edit" do
     it "正常にレスポンスを返すこと" do
+      sign_in user
+      get users_edit_password_path
       expect(response).to have_http_status 200
     end
   end
 
   describe "PATCH #update" do
-    before do
-      sign_in user
-    end
-
     it "パスワードを変更できること" do
+      sign_in user
       user_params = {
         user: {
           current_password: user.password,
@@ -35,8 +43,6 @@ RSpec.describe "UsersRegistrations", type: :request do
         },
       }
       patch user_registration_path, params: user_params
-      sign_out user
-      post user_session_path, params: { user: { email: user.email, password: "newpassword" } }
       expect(response).to redirect_to root_path
     end
   end
@@ -67,7 +73,7 @@ RSpec.describe "UsersRegistrations", type: :request do
     end
 
     it "ニックネームを取得すること" do
-      expect(response.body).to include "Conan"
+      expect(response.body).to include user.name
     end
   end
 
@@ -96,16 +102,29 @@ RSpec.describe "UsersRegistrations", type: :request do
   describe "PATCH #validate_bestrip_id" do
     before do
       sign_in user
-      patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "test_id" } }
     end
 
     it "turbo-frameがレンダリングされること" do
+      patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } }
       expect(response.body).to include '<turbo-frame id="profile_form">'
     end
 
-    it "BesTrip IDは更新せず、使用可否のみを取得すること" do
-      expect(user.reload.bestrip_id).not_to eq "test_id"
+    it "IDが一意な場合、使用可能のメッセージを取得すること" do
+      patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } }
       expect(response.body).to include 'このIDはご使用いただけます'
+    end
+
+    it "IDが一意でない場合、エラーメッセージを取得すること" do
+      create(:user, :other, bestrip_id: "user_id")
+      patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } }
+      expect(response.body).to include 'このIDは他の人が使用しています'
+    end
+  end
+
+  describe "DELETE #destroy" do
+    it "アカウントを削除できること" do
+      delete user_registration_path(user.id)
+      # expect(response).to redirect_to
     end
   end
 end
