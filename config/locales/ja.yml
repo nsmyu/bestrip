@@ -2,3 +2,9 @@ ja:
   time:
     formats:
       default: "%Y/%m/%d %H:%M:%S"
+  activerecord:
+      attributes:
+        itinerary:
+          title: タイトル
+          departure_date: 出発日
+          return_date: 帰宅日
