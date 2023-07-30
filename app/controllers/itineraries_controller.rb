@@ -1,4 +1,6 @@
 class ItinerariesController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @itineraries = Itinerary.where(user_id: current_user.id)
   end
@@ -7,16 +9,15 @@ class ItinerariesController < ApplicationController
     @itinerary = Itinerary.new
   end
 
-  # def create
-  #   @room = Room.new(room_params)
-  #   if @room.save
-  #     flash[:notice] = "新しい施設の登録が完了しました。"
-  #     redirect_to action: :show, id: @room.id
-  #   else
-  #     flash.now[:alert] = "入力内容に誤りがあります。"
-  #     render "rooms/new"
-  #   end
-  # end
+  def create
+    @user = User.find(current_user.id)
+    @itinerary = @user.itineraries.new(itinerary_params)
+    if @itinerary.save
+      redirect_to @itinerary, notice: "新しい旅のプランを作成しました。次はスケジュールを追加してみましょう。"
+    else
+      render :new
+    end
+  end
 
   def show
     @itinerary = Itinerary.find(params[:id])
@@ -37,11 +38,12 @@ class ItinerariesController < ApplicationController
   #   end
   # end
 
-  # def destroy
-  #   @room = Room.find(params[:id])
-  #   @room.destroy
-  #   redirect_to :rooms
-  # end
+  def destroy
+    @itinerary = Itinerary.find(params[:id])
+    deleted_title = @itinerary.title
+    @itinerary.destroy
+    redirect_to :itineraries, notice: "#{deleted_title}を削除しました。"
+  end
 
   # def search
   #   @area = params[:area]
@@ -53,10 +55,10 @@ class ItinerariesController < ApplicationController
   #   end
   # end
 
-  # private
+  private
 
-  # def room_params
-  #   params.require(:room).permit(:room_name, :description, :price, :address, :image, :user_id)
-  # end
+    def itinerary_params
+      params.require(:itinerary).permit(:title, :image, :departure_date, :return_date, :user_id)
+    end
 
 end

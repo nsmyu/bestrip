@@ -10,5 +10,11 @@ FactoryBot.define do
       departure_date { "2024-03-01" }
       return_date    { "2024-03-04" }
     end
+
+    trait :without_title do
+      title          { "" }
+      departure_date { "2024-03-01" }
+      return_date    { "2024-03-04" }
+    end
   end
 end

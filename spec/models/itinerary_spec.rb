@@ -19,7 +19,7 @@ RSpec.describe Itinerary, type: :model do
 
   it "同一ユーザーでタイトルが重複している場合は無効であること" do
     itinerary = create(:itinerary)
-    other_itinerary = build(:itinerary, :other, title: "Trip to Sydney", owner: itinerary.owner)
+    other_itinerary = build(:itinerary, :other, title: itinerary.title, owner: itinerary.owner)
     other_itinerary.valid?
     expect(other_itinerary.errors).to be_of_kind(:title, :taken)
   end

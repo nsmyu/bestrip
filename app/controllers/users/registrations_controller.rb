@@ -39,7 +39,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user.save(context: :without_password)
       flash[:notice] =
         (update_without_password_params.key?(:email) ? "メールアドレス" : "プロフィール") + "を変更しました。"
-      redirect_to root_path
+      redirect_to root_url
     else
       render update_without_password_params.key?(:email) ? :edit_email : :edit_profile
     end

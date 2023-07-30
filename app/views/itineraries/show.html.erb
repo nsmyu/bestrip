@@ -3,7 +3,9 @@
   <div class="container-fluid py-5 px-sm-6 px-3">
     <div class="card card-body p-5">
       <div class="row">
-        <% @itineraries.each do |itinerary| %>
+        <%
+=begin%>
+ <% @itineraries.each do |itinerary| %>
           <div class="col-lg-6 col-md-6 mt-4 mb-5 px-3">
             <%= link_to [:itinerary, id: itinerary.id] do %>
               <div class="card itinerary-card z-index-2">
@@ -23,6 +25,8 @@
             <% end %>
           </div>
         <% end %>
+<%
+=end%>
       </div>
     </div>
   </div>
