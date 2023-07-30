@@ -22,7 +22,7 @@
               ニックネーム<span class="required">*</span>
             <% end %>
             <div class="col-sm-8">
-              <%= f.text_field :name, class: "form-control", autocomplete: "name" %>
+              <%= f.text_field :name, class: "form-control", autocomplete: "name", placeholder: "20文字以内で入力" %>
               <div class="<%= "error-message" if resource.errors.messages.key?(:name) %>" >
                 <%= resource.errors.full_messages_for(:name).first if resource.errors.any? %>
               </div>

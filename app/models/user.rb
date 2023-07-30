@@ -11,7 +11,7 @@ class User < ApplicationRecord
 
   before_validation :set_user_email, if: :guest_user?, on: :create
 
-  validates :name,       presence: true, length: { maximum: 50 }
+  validates :name,       presence: true, length: { maximum: 20 }
   VALID_BESTRIP_ID_REGEX = /\A[\w]{5,20}\z/
   validates :bestrip_id, uniqueness: { case_sensitive: false },
                          length: { minimum: 5, maximum: 20 },

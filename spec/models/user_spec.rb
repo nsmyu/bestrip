@@ -11,8 +11,8 @@ RSpec.describe User, type: :model do
     expect(user.errors).to be_of_kind(:name, :blank)
   end
 
-  it "ニックネームが51文字以上の場合は無効であること" do
-    user = build(:user, name: "a" * 51)
+  it "ニックネームが21文字以上の場合は無効であること" do
+    user = build(:user, name: "a" * 21)
     user.valid?
     expect(user.errors).to be_of_kind(:name, :too_long)
   end
