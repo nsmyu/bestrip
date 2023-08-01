@@ -6,5 +6,6 @@ ja:
       attributes:
         itinerary:
           title: タイトル
+          image: 画像
           departure_date: 出発日
           return_date: 帰宅日

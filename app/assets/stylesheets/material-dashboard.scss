@@ -56,7 +56,8 @@ input:-webkit-autofill {
 }
 
 .required {
-  margin-top: -2px;
+  vertical-align: 3px;
+  margin-top: -3px;
   padding-left: 2px;
   color: $danger;
 }

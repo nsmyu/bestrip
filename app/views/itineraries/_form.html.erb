@@ -1,0 +1,36 @@
+<%= turbo_frame_tag "itinerary" do %>
+  <%= form_with model: itinerary, data: { action: "turbo:submit-end->modal#close" } do |f| %>
+
+      <div class="mb-4 input-group input-group-static">
+        <%= f.label :title, class: "fw-bold" do %>
+          タイトル <span class="required">*</span>
+        <% end%>
+        <%= f.text_field :title, class: "form-control", placeholder: "30文字以内で入力" %>
+      </div>
+      <div class="row">
+        <div class="col mb-4 input-group input-group-static">
+          <%= f.label :departure_date, class: "fw-bold" %>
+          <%= f.date_field :departure_date, class: "form-control fa fw-normal", id: "departure-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
+        </div>
+        <div class="col mb-4 input-group input-group-static">
+          <%= f.label :return_date, class: "fw-bold" %>
+          <%= f.date_field :return_date, class: "form-control fa fw-normal", id: "return-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
+        </div>
+      </div>
+      <div class="mb-4 input-group input-group-outline">
+        <div class="col-sm-8 d-flex">
+          <%= f.label :image, class: "m-0 fw-bold" %>
+        </div>
+        <div class="">
+          <%= image_tag itinerary.image.url, id: 'image-preview', class: "" %>
+          <%= f.file_field :image, accept: "image/*", id: "image-input", class: "d-none" %>
+          <%= f.hidden_field :image_cache %>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn bg-gradient-dark mb-0" data-bs-dismiss="modal">Close</button>
+        <%= f.submit "保存する", class: "btn bg-gradient-primary mb-0" %>
+      </div>
+    </div>
+  <% end%>
+ <% end%>

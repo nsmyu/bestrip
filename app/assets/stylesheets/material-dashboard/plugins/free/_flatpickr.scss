@@ -8,7 +8,7 @@
   -webkit-animation: none;
           animation: none;
   direction: ltr;
-  border: 0;
+  border: 1px solid $gray-400;
   font-size: 14px;
   line-height: 24px;
   border-radius: 0.75rem;
@@ -110,7 +110,7 @@
   bottom: 100%;
 }
 .flatpickr-calendar.arrowTop:before {
-  border-bottom-color: #fff;
+  border-bottom-color: $gray-400;
 }
 .flatpickr-calendar.arrowTop:after {
   border-bottom-color: #fff;
@@ -830,7 +830,6 @@ span.flatpickr-weekday {
   }
 
   .flatpickr-day {
-    &.today,
     &.selected,
     &.startRange,
     &.endRange {

@@ -7,3 +7,4 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js", preload: true
 pin_all_from "app/javascript/controllers",        under: "controllers", preload: true
 pin_all_from "app/javascript/material_dashboard", under: "material_dashboard", preload: true
 pin "custom", preload: true
+pin "datetime", preload: true

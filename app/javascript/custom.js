@@ -58,16 +58,22 @@ function previewImage() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  previewImage();
-  countChars();
+  const path = location.pathname;
+  if (path == "/users/edit_profile") {
+    previewImage();
+    countChars();
+  }
 });
 
 document.addEventListener('turbo:frame-load', () => {
-  addInputFunction();
-  previewImage();
-  countChars();
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
+  const path = location.pathname;
+    if (path == "/users/edit_profile") {
+    addInputFunction();
+    previewImage();
+    countChars();
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+  }
 });
