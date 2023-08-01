@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('turbo:frame-load', () => {
   const path = location.pathname;
-    if (path == "/users/edit_profile") {
+  if (path === "/users/edit_profile") {
     addInputFunction();
     previewImage();
     countChars();
@@ -75,5 +75,8 @@ document.addEventListener('turbo:frame-load', () => {
     const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl)
     })
+  }
+  if (path === "/itineraries") {
+    previewImage();
   }
 });

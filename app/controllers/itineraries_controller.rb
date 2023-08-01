@@ -12,7 +12,6 @@ class ItinerariesController < ApplicationController
   def create
     @user = User.find(current_user.id)
     @itinerary = @user.itineraries.new(itinerary_params)
-
     if @itinerary.save
       flash[:notice] = "新しい旅のプランを作成しました。次はスケジュールを追加してみましょう。"
       respond_to do |format|
@@ -20,7 +19,7 @@ class ItinerariesController < ApplicationController
         format.turbo_stream
       end
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -53,6 +52,6 @@ class ItinerariesController < ApplicationController
   private
 
   def itinerary_params
-    params.require(:itinerary).permit(:title, :image, :departure_date, :return_date, :user_id)
+    params.require(:itinerary).permit(:title, :image, :image_cache, :departure_date, :return_date, :user_id)
   end
 end

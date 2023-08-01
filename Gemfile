@@ -54,6 +54,7 @@ gem "devise"
 gem "devise-i18n"
 
 gem 'carrierwave'
+gem 'mini_magick'
 gem "dartsass-rails", "~> 0.4.1"
 
 group :development, :test do

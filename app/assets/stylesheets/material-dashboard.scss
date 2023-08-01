@@ -62,10 +62,15 @@ input:-webkit-autofill {
   color: $danger;
 }
 
-.resize-avatar {
-  height: 100px;
+.avatar-preview {
   width: 100px;
+  height: 100px;
   object-fit: cover;
+}
+
+.itinerary-image-preview {
+  object-fit: cover;
+  aspect-ratio: 5/3;
 }
 
 .tooltip-inner {
