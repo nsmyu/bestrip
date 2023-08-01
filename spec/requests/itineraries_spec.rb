@@ -37,19 +37,19 @@ RSpec.describe "Itineraries", type: :request do
       end
     end
 
-    # describe "POST #create" do
-    #   it "有効な値の場合、旅のプラン作成に成功すること" do
-    #     itinerary_params = attributes_for(:itinerary)
-    #     post itineraries_path, params: { itinerary: itinerary_params }
-    #     expect(response).to redirect_to itinerary_path(Itinerary.last)
-    #   end
+    describe "POST #create" do
+      it "有効な値の場合、旅のプラン新規作成に成功すること" do
+        itinerary_params = attributes_for(:itinerary)
+        post itineraries_path, params: { itinerary: itinerary_params }
+        expect(response).to redirect_to itinerary_path(Itinerary.last)
+      end
 
-    #   it "無効な値の場合、旅のプラン作成に失敗すること" do
-    #     itinerary_params = attributes_for(:itinerary, title: "")
-    #     post itineraries_path, params: { itinerary: itinerary_params }
-    #     # expect(response.body).to include "タイトルを入力してください"
-    #   end
-    # end
+      it "無効な値の場合、旅のプラン新規作成に失敗すること" do
+        itinerary_params = attributes_for(:itinerary, title: "")
+        post itineraries_path, params: { itinerary: itinerary_params }
+        expect(response.body).to include "タイトルを入力してください"
+      end
+    end
 
     describe "GET #show" do
       it "旅のプラン表示に成功すること" do

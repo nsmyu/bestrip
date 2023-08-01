@@ -2,21 +2,27 @@
   <%= form_with model: itinerary, data: { action: "turbo:submit-end->modal#close" } do |f| %>
     <div class="mb-4 input-group input-group-static">
       <%= f.label :title, class: "fw-bold" do %>
-        タイトル <span class="required">*</span>
+        タイトル（30文字以内で入力） <span class="required">*</span>
       <% end%>
-      <%= f.text_field :title, class: "form-control", placeholder: "30文字以内で入力" %>
+      <%= f.text_field :title, class: "form-control", placeholder: "旅のタイトルを入力" %>
       <div class="<%= "error-message" if itinerary.errors.messages.key?(:title) %>" >
         <%= itinerary.errors.full_messages_for(:title).first if itinerary.errors.any? %>
       </div>
     </div>
     <div class="row">
-      <div class="col mb-4 input-group input-group-static">
+      <div class="col-sm mb-4 input-group input-group-static">
         <%= f.label :departure_date, class: "fw-bold" %>
         <%= f.date_field :departure_date, class: "form-control fa fw-normal", id: "departure-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
+        <div class="<%= "error-message" if itinerary.errors.messages.key?(:departure_date) %>" >
+          <%= itinerary.errors.full_messages_for(:departure_date).first if itinerary.errors.any? %>
+        </div>
       </div>
-      <div class="col mb-4 input-group input-group-static">
+      <div class="col-sm mb-4 input-group input-group-static">
         <%= f.label :return_date, class: "fw-bold" %>
         <%= f.date_field :return_date, class: "form-control fa fw-normal", id: "return-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
+        <div class="<%= "error-message" if itinerary.errors.messages.key?(:return_date) %>" >
+          <%= itinerary.errors.full_messages_for(:return_date).first if itinerary.errors.any? %>
+        </div>
       </div>
     </div>
     <div class="mb-4">

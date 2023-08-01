@@ -1,8 +1,9 @@
 document.addEventListener('turbo:frame-load', () => {
   const departureDate = document.querySelector("#departure-date-pickr");
   const config = {
-    locale     : 'ja',
-    dateFormat : 'Y/m/d（D）',
+    locale       : 'ja',
+    dateFormat   : 'Y/m/d（D）',
+    disableMobile: true,
 	};
 
   departureDate.addEventListener('change', (e) => {

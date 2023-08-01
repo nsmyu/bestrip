@@ -13,11 +13,7 @@ class ItinerariesController < ApplicationController
     @user = User.find(current_user.id)
     @itinerary = @user.itineraries.new(itinerary_params)
     if @itinerary.save
-      flash[:notice] = "新しい旅のプランを作成しました。次はスケジュールを追加してみましょう。"
-      respond_to do |format|
-        format.html { redirect_to itineraries_url }
-        format.turbo_stream
-      end
+      redirect_to @itinerary, notice: "新しい旅のプランを作成しました。次はスケジュールを追加してみましょう。"
     else
       render :new, status: :unprocessable_entity
     end

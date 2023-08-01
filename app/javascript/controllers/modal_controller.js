@@ -3,7 +3,6 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="modal"
 export default class extends Controller {
   connect() {
-    console.log("hey")
     this.modal = new bootstrap.Modal(this.element)
     this.modal.show()
   }
@@ -11,6 +10,8 @@ export default class extends Controller {
   close(event) {
     if (event.detail.success) {
       this.modal.hide()
+      Turbo.visit(event.detail.fetchResponse.response.url, {action: 'replace'})
     }
   }
 }
+

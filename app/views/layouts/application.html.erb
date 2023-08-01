@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <% if !(yield(:control)==="") %>
+      <meta name="turbo-visit-control" content= <%= yield(:control) %> >
+    <% end %>
     <%= favicon_link_tag('favicon.ico') %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 
