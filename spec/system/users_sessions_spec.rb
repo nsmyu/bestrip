@@ -10,8 +10,8 @@ RSpec.describe "UsersSessions", type: :system do
   describe "ログイン" do
     context '有効な値の場合' do
       it "ログインに成功する" do
-        fill_in "メールアドレス", with: user.email
-        fill_in "パスワード", with: user.password
+        fill_in "user[email]", with: user.email
+        fill_in "user[password]", with: user.password
         click_button "ログイン"
 
         aggregate_failures do
@@ -25,8 +25,8 @@ RSpec.describe "UsersSessions", type: :system do
 
     context 'メールアドレスもパスワードも無効な値の場合' do
       it 'ログインに失敗し、フラッシュメッセージが表示されること' do
-        fill_in "メールアドレス", with: ""
-        fill_in "パスワード", with: ""
+        fill_in "user[email]", with: ""
+        fill_in "user[password]", with: ""
         click_button "ログイン"
 
         expect(current_path).to eq new_user_session_path
@@ -39,8 +39,8 @@ RSpec.describe "UsersSessions", type: :system do
 
     context 'メールアドレスは正しいが、パスワードが間違っている場合' do
       it 'ログインに失敗し、フラッシュメッセージが表示されること' do
-        fill_in "メールアドレス", with: user.email
-        fill_in "パスワード", with: "wrongpassword"
+        fill_in "user[email]", with: user.email
+        fill_in "user[password]", with: "wrongpassword"
         click_button "ログイン"
 
         expect(current_path).to eq new_user_session_path

@@ -9,10 +9,10 @@ RSpec.describe "UsersRegistrations", type: :system do
 
     it "有効な値の場合、成功すること" do
       expect {
-        fill_in "ニックネーム", with: user.name
-        fill_in "メールアドレス", with: user.email
-        fill_in "パスワード", match: :first, with: user.password
-        fill_in "パスワード（確認用）", with: user.password_confirmation
+        fill_in "user[name]", with: user.name
+        fill_in "user[email]", with: user.email
+        fill_in "user[password]", match: :first, with: user.password
+        fill_in "user[password_confirmation]", with: user.password_confirmation
         click_button "新規登録"
 
         expect(current_path).to eq root_path
@@ -28,10 +28,10 @@ RSpec.describe "UsersRegistrations", type: :system do
 
     it "無効な形式の場合、失敗すること" do
       expect {
-        fill_in "ニックネーム", with: ""
-        fill_in "メールアドレス", with: "invalid.email"
-        fill_in "パスワード", match: :first, with: "foo"
-        fill_in "パスワード（確認用）", with: "bar"
+        fill_in "user[name]", with: ""
+        fill_in "user[email]", with: "invalid.email"
+        fill_in "user[password]", match: :first, with: "foo"
+        fill_in "user[password_confirmation]", with: "bar"
         click_button "新規登録"
 
         aggregate_failures do
@@ -49,10 +49,10 @@ RSpec.describe "UsersRegistrations", type: :system do
     it "メールアドレスが重複している場合、失敗すること" do
       user.save
       expect {
-        fill_in "ニックネーム", with: "other_user"
-        fill_in "メールアドレス", with: user.email
-        fill_in "パスワード", match: :first, with: "password"
-        fill_in "パスワード（確認用）", with: "password"
+        fill_in "user[name]", with: "other_user"
+        fill_in "user[email]", with: user.email
+        fill_in "user[password]", match: :first, with: "password"
+        fill_in "user[password_confirmation]", with: "password"
         click_button "新規登録"
 
         aggregate_failures do
@@ -77,16 +77,16 @@ RSpec.describe "UsersRegistrations", type: :system do
     context "有効な値の場合" do
       it "成功すること" do
         fill_in "現在のパスワード", with: user.password
-        fill_in "新しいパスワード", match: :first, with: "newpassword"
-        fill_in "新しいパスワード（確認用）", with: "newpassword"
+        fill_in "user[password]", match: :first, with: "newpassword"
+        fill_in "user[password_confirmation]", with: "newpassword"
         click_button "変更する"
 
         expect(current_path).to eq root_path
 
         sign_out user
         visit new_user_session_path
-        fill_in "メールアドレス", with: user.email
-        fill_in "パスワード", with: "newpassword"
+        fill_in "user[email]", with: user.email
+        fill_in "user[password]", with: "newpassword"
         click_button "ログイン"
 
         expect(current_path).to eq root_path
@@ -96,9 +96,9 @@ RSpec.describe "UsersRegistrations", type: :system do
 
     context "無効な値の場合" do
       it "現在のパスワードが間違っている場合、失敗すること" do
-        fill_in "現在のパスワード", with: "wrongpassword"
-        fill_in "新しいパスワード", match: :first, with: "newpassword"
-        fill_in "新しいパスワード（確認用）", with: "newpassword"
+        fill_in "user[current_password]", with: "wrongpassword"
+        fill_in "user[password]", match: :first, with: "newpassword"
+        fill_in "user[password_confirmation]", with: "newpassword"
         click_button "変更する"
 
         aggregate_failures do
@@ -108,9 +108,9 @@ RSpec.describe "UsersRegistrations", type: :system do
       end
 
       it "新しいパスワードが5文字以下の場合、失敗すること" do
-        fill_in "現在のパスワード", with: user.password
-        fill_in "新しいパスワード", match: :first, with: "foo"
-        fill_in "新しいパスワード（確認用）", with: "bar"
+        fill_in "user[current_password]", with: user.password
+        fill_in "user[password]", match: :first, with: "foo"
+        fill_in "user[password_confirmation]", with: "bar"
         click_button "変更する"
 
         aggregate_failures do
@@ -121,9 +121,9 @@ RSpec.describe "UsersRegistrations", type: :system do
       end
 
       it "新しいパスワードに半角英数字以外が含まれる場合、失敗すること" do
-        fill_in "現在のパスワード", with: user.password
-        fill_in "新しいパスワード", match: :first, with: "invalid_password"
-        fill_in "新しいパスワード（確認用）", with: "invalid_password"
+        fill_in "user[current_password]", with: user.password
+        fill_in "user[password]", match: :first, with: "invalid_password"
+        fill_in "user[password_confirmation]", with: "invalid_password"
         click_button "変更する"
 
         aggregate_failures do
@@ -144,7 +144,7 @@ RSpec.describe "UsersRegistrations", type: :system do
 
     context "有効な値の場合" do
       it "成功すること" do
-        fill_in "メールアドレス", with: "new_email_address@example.com"
+        fill_in "user[email]", with: "new_email_address@example.com"
         click_button "変更する"
 
         expect(current_path).to eq root_path
@@ -157,7 +157,7 @@ RSpec.describe "UsersRegistrations", type: :system do
 
     context "無効な値の場合" do
       it "空欄の場合、失敗すること" do
-        fill_in "メールアドレス", with: ""
+        fill_in "user[email]", with: ""
         click_button "変更する"
 
         aggregate_failures do
@@ -167,7 +167,7 @@ RSpec.describe "UsersRegistrations", type: :system do
       end
 
       it "形式が正しくない場合、失敗すること" do
-        fill_in "メールアドレス", with: "invalid_email_address"
+        fill_in "user[email]", with: "invalid_email_address"
         click_button "変更する"
 
         aggregate_failures do
@@ -201,8 +201,8 @@ RSpec.describe "UsersRegistrations", type: :system do
 
         expect(page).not_to have_selector "img[src*='default_avatar']"
 
-        fill_in "ニックネーム", with: "Shinich"
-        fill_in "BesTrip ID", with: "user_id"
+        fill_in "user[name]", with: "Shinich"
+        fill_in "user[bestrip_id]", with: "user_id"
         fill_in "user[introduction]", with: "I love traveling to different countries."
         click_on "保存する"
 
@@ -218,7 +218,7 @@ RSpec.describe "UsersRegistrations", type: :system do
 
     context "無効な値の場合" do
       it "ニックネームが空欄の場合、失敗すること" do
-        fill_in "ニックネーム", with: ""
+        fill_in "user[name]", with: ""
         click_on "保存する"
 
         aggregate_failures do
