@@ -2,7 +2,7 @@ class ItinerariesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @itineraries = Itinerary.where(user_id: current_user.id)
+    @itineraries = Itinerary.where(user_id: current_user.id).order(departure_date: :desc)
   end
 
   def new
