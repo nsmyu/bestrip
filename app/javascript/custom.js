@@ -74,7 +74,7 @@ document.addEventListener('turbo:frame-load', () => {
   })
 });
 
-document.addEventListener('turbo:before-fetch-response', (e) => {
+document.addEventListener('turbo:submit-end', (e) => {
   const response = e.detail.fetchResponse.response
   if (response.redirected) {
     e.preventDefault()

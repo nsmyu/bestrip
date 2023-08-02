@@ -27,7 +27,6 @@ class ItinerariesController < ApplicationController
   end
 
   def update
-    @itinerary = Itinerary.find(params[:id])
     if @itinerary.update(itinerary_params)
       redirect_to @itinerary, notice: "旅のプラン情報を更新しました。"
     else
@@ -36,7 +35,6 @@ class ItinerariesController < ApplicationController
   end
 
   def destroy
-    @itinerary = Itinerary.find(params[:id])
     deleted_title = @itinerary.title
     @itinerary.destroy
     redirect_to :itineraries, notice: "#{deleted_title}を削除しました。"
