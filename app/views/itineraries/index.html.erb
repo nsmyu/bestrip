@@ -2,10 +2,10 @@
 <main class="main-content position-relative">
   <div class="container-fluid py-5 px-sm-6 px-3">
     <div class="row">
-     <% if @itineraries.blank? %>
-      <div class="text-center p-6 mb-10">
-        旅のプランは登録されていません
-      </div>
+      <% if @itineraries.blank? %>
+        <div class="text-center p-6 mb-10">
+          旅のプランは登録されていません
+        </div>
       <% else %>
         <% @itineraries.each do |itinerary| %>
           <div class="col-lg-6 col-md-6 pt-4 pb-5 px-3">
@@ -15,8 +15,8 @@
                   <%= image_tag itinerary.image.url, class: "border-radius-lg shadow-dark w-100" %>
                 </div>
                 <div class="card-body text-dark">
-                  <h5 class="mb-0"><%= itinerary.title %></h5>
-                  <p ><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
+                  <h5 class="mb-1"><%= itinerary.title %></h5>
+                  <p><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
                   <hr class="dark horizontal">
                   <div class="d-flex">
                     <i class="material-icons text-sm my-auto me-1">group</i>

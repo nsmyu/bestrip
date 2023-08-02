@@ -1,40 +1,23 @@
-
-<%
-=begin%>
- <% provide(:control, "reload") %>
-<%
-=end%>
-
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
   <div class="container-fluid py-5 px-sm-6 px-3">
-    <div class="card card-body p-5">
-      <div class="row">
-      <p>SHOW</p>
-        <%
-=begin%>
- <% @itineraries.each do |itinerary| %>
-          <div class="col-lg-6 col-md-6 mt-4 mb-5 px-3">
-            <%= link_to [:itinerary, id: itinerary.id] do %>
-              <div class="card itinerary-card z-index-2">
-                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                  <%= image_tag itinerary.image.url, class: "border-radius-lg shadow-dark w-100" %>
-                </div>
-                <div class="card-body text-dark">
-                  <h5 class="mb-0"><%= itinerary.name %></h5>
-                  <p ><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
-                  <hr class="dark horizontal">
-                  <div class="d-flex">
-                    <i class="material-icons text-sm my-auto me-1">group</i>
-                    <p class="mb-0 text-sm">メンバーを入れる</p>
-                  </div>
-                </div>
-              </div>
+    <div class="card z-index-2 w-md-60 mx-auto">
+      <div class="card-body text-dark">
+        <div class="d-flex border-bottom justify-content-between">
+          <h4 class="modal-title">旅のプラン情報</h4>
+          <%= turbo_frame_tag "itinerary" do %>
+            <%= link_to :edit_itinerary, data: { turbo_frame: "modal" } do %>
+              <i class="material-icons" style="vertical-align: -10px;">edit</i>
             <% end %>
-          </div>
-        <% end %>
-<%
-=end%>
+          <% end %>
+        </div>
+        <%= image_tag @itinerary.image.url, class: "border-radius-lg shadow-dark w-100 my-3" %>
+        <h5 class="mb-1"><%= @itinerary.title %></h5>
+        <p ><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
+        <hr class="dark horizontal">
+        <div class="d-flex">
+          <p class="mb-0 text-sm">作成者：<%= @itinerary.owner.name %></p>
+        </div>
       </div>
     </div>
   </div>
