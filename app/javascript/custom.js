@@ -3,8 +3,9 @@ import { addInputFunction } from "./material_dashboard/material-dashboard";
 function countChars() {
   const textInput = document.querySelector('#text-input');
   const charCount = document.querySelector('#char-count');
+  if (!textInput) return;
+
   const maxCharsLength = charCount.textContent.slice(2);
-  const initialCharsLength = textInput.value.length;
 
   function addCharsLengthError() {
     textInput.parentElement.classList.add('error-message');
@@ -12,9 +13,9 @@ function countChars() {
     document.querySelector("#btn-submit").disabled = true;
   }
 
-  if (initialCharsLength > 0) {
-    charCount.querySelector('span').textContent = initialCharsLength;
-    if (initialCharsLength > maxCharsLength) {
+  if (textInput.value.length > 0) {
+    charCount.querySelector('span').textContent = textInput.value.length;
+    if (textInput.value.length > maxCharsLength) {
       addCharsLengthError();
     }
   }
@@ -39,6 +40,7 @@ function countChars() {
 
 function previewImage() {
   const imageInput = document.querySelector('#image-input');
+  if (!imageInput) return;
 
   imageInput.addEventListener('change', (e) =>{
     const file = e.target.files[0];
@@ -58,33 +60,24 @@ function previewImage() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const path = location.pathname;
-  if (path == "/users/edit_profile") {
-    previewImage();
-    countChars();
-  }
+  previewImage();
+  countChars();
 });
 
 document.addEventListener('turbo:frame-load', () => {
-  const path = location.pathname;
-  if (path === "/users/edit_profile") {
-    addInputFunction();
-    previewImage();
-    countChars();
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
-  }
-  if (path === "/itineraries") {
-    previewImage();
-  }
+  addInputFunction();
+  previewImage();
+  countChars();
+  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+  })
 });
 
-document.addEventListener('turbo:before-fetch-response', (event) => {
-  const response = event.detail.fetchResponse.response
+document.addEventListener('turbo:before-fetch-response', (e) => {
+  const response = e.detail.fetchResponse.response
   if (response.redirected) {
-    event.preventDefault()
-    Turbo.visit(event.detail.fetchResponse.response.url, {action: 'advance'})
+    e.preventDefault()
+    Turbo.visit(e.detail.fetchResponse.response.url, {action: 'advance'})
   }
 })

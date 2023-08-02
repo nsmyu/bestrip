@@ -1,5 +1,6 @@
 class ItinerariesController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_itinerary, only: [:show, :edit, :update, :destroy]
 
   def index
     @itineraries = Itinerary.where(user_id: current_user.id).order(departure_date: :desc)
@@ -13,30 +14,24 @@ class ItinerariesController < ApplicationController
     @user = User.find(current_user.id)
     @itinerary = @user.itineraries.new(itinerary_params)
     if @itinerary.save
-      respond_to do |format|
-        format.html { redirect_to @itinerary, notice: "新しい旅のプランを作成しました。次はスケジュールを追加してみましょう。"}
-      end
+      redirect_to @itinerary, notice: "新しい旅のプランを作成しました。次はスケジュールを追加してみましょう。"
     else
       render :new, status: :unprocessable_entity
     end
   end
 
   def show
-    @itinerary = Itinerary.find(params[:id])
   end
 
   def edit
-    @itinerary = Itinerary.find(params[:id])
   end
 
   def update
     @itinerary = Itinerary.find(params[:id])
-
     if @itinerary.update(itinerary_params)
-      flash[:notice] = "施設情報を更新しました。"
-      redirect_to action: :show, id: @itinerary_params.id
+      redirect_to @itinerary, notice: "旅のプラン情報を更新しました。"
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -51,5 +46,9 @@ class ItinerariesController < ApplicationController
 
   def itinerary_params
     params.require(:itinerary).permit(:title, :image, :image_cache, :departure_date, :return_date, :user_id)
+  end
+
+  def set_itinerary
+    @itinerary = Itinerary.find(params[:id])
   end
 end
