@@ -10,19 +10,31 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm mb-4 input-group input-group-static">
-        <%= f.label :departure_date, class: "fw-bold" %>
+      <div class="col-sm mb-4 mb-sm-0 input-group input-group-static">
+        <%= f.label :departure_date, class: "fw-bold" do %>
+          出発日 <span class="required">*</span>
+        <% end%>
         <%= f.date_field :departure_date, class: "form-control fa fw-normal", id: "departure-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
-        <div class="<%= "error-message" if itinerary.errors.messages.key?(:departure_date) %>" >
+        <div class="col-sm d-sm-none <%= "error-message" if itinerary.errors.messages.key?(:departure_date) %>" >
           <%= itinerary.errors.full_messages_for(:departure_date).first if itinerary.errors.any? %>
         </div>
       </div>
-      <div class="col-sm mb-4 input-group input-group-static">
-        <%= f.label :return_date, class: "fw-bold" %>
+      <div class="col-sm mb-4 mb-sm-0 input-group input-group-static">
+        <%= f.label :return_date, class: "fw-bold" do %>
+          帰宅日 <span class="required">*</span>
+        <% end%>
         <%= f.date_field :return_date, class: "form-control fa fw-normal", id: "return-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
-        <div class="<%= "error-message" if itinerary.errors.messages.key?(:return_date) %>" >
+        <div class="col-sm d-sm-none <%= "error-message" if itinerary.errors.messages.key?(:return_date) %>" >
           <%= itinerary.errors.full_messages_for(:return_date).first if itinerary.errors.any? %>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm mb-4 d-none d-sm-grid <%= "error-message" if itinerary.errors.messages.key?(:departure_date) %>" >
+        <%= itinerary.errors.full_messages_for(:departure_date).first if itinerary.errors.any? %>
+      </div>
+      <div class="col-sm mb-4 d-none d-sm-grid <%= "error-message" if itinerary.errors.messages.key?(:return_date) %>" >
+        <%= itinerary.errors.full_messages_for(:return_date).first if itinerary.errors.any? %>
       </div>
     </div>
     <div class="mb-4">

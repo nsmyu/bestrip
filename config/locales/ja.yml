@@ -9,3 +9,13 @@ ja:
           image: 画像
           departure_date: 出発日
           return_date: 帰宅日
+          errors:
+      errors:
+        models:
+          itinerary:
+            attributes:
+              title:
+                format: "%{message}"
+                blank: タイトルを入力してください
+                taken: このタイトルはすでに使用されています
+                too_long: タイトルは30文字以内で入力してください

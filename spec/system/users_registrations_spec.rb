@@ -178,7 +178,7 @@ RSpec.describe "UsersRegistrations", type: :system do
     end
   end
 
-  describe "プロフィールの編集", focus: true do
+  describe "プロフィールの編集" do
     let(:user) { create(:user) }
     let(:other_user) { create(:user, :other) }
 

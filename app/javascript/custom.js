@@ -80,3 +80,11 @@ document.addEventListener('turbo:frame-load', () => {
     previewImage();
   }
 });
+
+document.addEventListener('turbo:before-fetch-response', (event) => {
+  const response = event.detail.fetchResponse.response
+  if (response.redirected) {
+    event.preventDefault()
+    Turbo.visit(event.detail.fetchResponse.response.url, {action: 'advance'})
+  }
+})
