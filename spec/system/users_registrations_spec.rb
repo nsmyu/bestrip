@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe "UsersRegistrations", type: :system do
   describe "新規アカウント登録" do
     let(:user) { build(:user) }
+
     before do
       visit new_user_registration_path
     end
@@ -50,7 +51,6 @@ RSpec.describe "UsersRegistrations", type: :system do
         fill_in "user[password]", match: :first, with: "password"
         fill_in "user[password_confirmation]", with: "password"
         click_button "新規登録"
-
 
         expect(page).to have_content "アカウント登録"
         expect(page).to have_content "このメールアドレスはすでに登録されています"
@@ -210,7 +210,7 @@ RSpec.describe "UsersRegistrations", type: :system do
         expect(page).to have_content "ニックネームを入力してください"
     end
 
-      it "自己紹介が文字数制限を超えている場合、「保存する」ボタンが押せないこと", js: true do
+      it "自己紹介が501文字以上入力された場合、「保存する」ボタンが押せないこと", js: true do
         fill_in "user[introduction]", with: "a" * 501
 
         expect(page).to have_content "500文字以内で入力してください"
@@ -235,7 +235,6 @@ RSpec.describe "UsersRegistrations", type: :system do
       it "入力したIDが重複している場合、エラーメッセージが表示されること" do
         other_user.bestrip_id = "user_id"
         other_user.save
-
         fill_in "BesTrip ID", with: "user_id"
         click_on "IDが使用可能か確認"
 

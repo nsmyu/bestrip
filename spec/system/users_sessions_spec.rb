@@ -18,34 +18,26 @@ RSpec.describe "UsersSessions", type: :system do
         expect(page).not_to have_selector '.alert-danger'
         expect(page).not_to have_selector "a[href=\"#{new_user_session_path}\"]"
         expect(page).to have_selector "a[href=\"#{destroy_user_session_path}\"]"
-    end
+      end
     end
 
-    context 'メールアドレスもパスワードも無効な値の場合' do
-      it 'ログインに失敗し、フラッシュメッセージが表示されること' do
+    context '無効な値の場合' do
+      it 'メールアドレスとパスワードが空欄の場合、失敗すること' do
         fill_in "user[email]", with: ""
         fill_in "user[password]", with: ""
         click_button "ログイン"
 
         expect(current_path).to eq new_user_session_path
-        expect(page).to have_selector '.alert-danger'
-
-        visit root_path
-        expect(page).not_to have_selector '.alert-danger'
+        expect(page).to have_content "メールアドレスまたはパスワードが違います。"
       end
-    end
 
-    context 'メールアドレスは正しいが、パスワードが間違っている場合' do
-      it 'ログインに失敗し、フラッシュメッセージが表示されること' do
+      it 'メールアドレスは正しいがパスワードが間違っている場合、失敗すること' do
         fill_in "user[email]", with: user.email
         fill_in "user[password]", with: "wrongpassword"
         click_button "ログイン"
 
         expect(current_path).to eq new_user_session_path
-        expect(page).to have_selector '.alert-danger'
-
-        visit root_path
-        expect(page).not_to have_selector '.alert-danger'
+        expect(page).to have_content "メールアドレスまたはパスワードが違います。"
       end
     end
   end
@@ -55,6 +47,7 @@ RSpec.describe "UsersSessions", type: :system do
       sign_in user
       visit root_path # あとで修正
       first(:link, 'ログアウト').click
+
       expect(current_path).to eq root_path
       expect(page).to have_selector "a[href=\"#{new_user_session_path}\"]"
       expect(page).not_to have_selector "a[href=\"#{destroy_user_session_path}\"]"

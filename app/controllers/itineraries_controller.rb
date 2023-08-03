@@ -28,7 +28,7 @@ class ItinerariesController < ApplicationController
 
   def update
     if @itinerary.update(itinerary_params)
-      redirect_to @itinerary, notice: "旅のプラン情報を更新しました。"
+      redirect_to @itinerary, notice: "旅のプラン情報を変更しました。"
     else
       render :edit, status: :unprocessable_entity
     end
