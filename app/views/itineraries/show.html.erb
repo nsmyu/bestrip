@@ -5,11 +5,18 @@
       <div class="card-body text-dark">
         <div class="d-flex border-bottom justify-content-between">
           <h4 class="modal-title">旅のプラン情報</h4>
-          <%= turbo_frame_tag "itinerary" do %>
-            <%= link_to :edit_itinerary, data: { turbo_frame: "modal" } do %>
-              <i class="material-icons" style="vertical-align: -10px;">edit</i>
+          <div>
+            <%= turbo_frame_tag "itinerary" do %>
+              <%= link_to :edit_itinerary, data: { turbo_frame: "modal" } do %>
+                <i class="material-icons text-2xl" style="vertical-align: -10px;">edit</i>
+              <% end %>
             <% end %>
-          <% end %>
+            <% if current_user == @itinerary.owner %>
+              <%= link_to [:itinerary, id: @itinerary.id], data: { turbo_method: :delete, turbo_confirm: 'Are you sure?' }  do %>
+                <i class="material-icons text-2xl px-1 fw-normal" style="vertical-align: -10px;">delete</i>
+              <% end %>
+            <% end %>
+          </div>
         </div>
         <%= image_tag @itinerary.image.url, class: "border-radius-lg shadow-dark w-100 my-3" %>
         <h5 class="mb-1"><%= @itinerary.title %></h5>
