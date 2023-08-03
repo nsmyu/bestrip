@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "Itineraries", type: :request, focus: true do
+RSpec.describe "Itineraries", type: :request do
+  let(:user) { create(:user) }
   let(:itinerary) { create(:itinerary, owner: @user) }
 
   context 'ログインユーザーの場合' do
     before do
-      @user = create(:user)
+      @user = user
       sign_in @user
     end
 
@@ -61,8 +62,7 @@ RSpec.describe "Itineraries", type: :request, focus: true do
         get itinerary_path(itinerary.id)
         aggregate_failures do
           expect(response.body).to include itinerary.title
-          expect(response.body).to include "2024/2/1"
-          expect(response.body).to include "2024/2/8"
+          expect(response.body).to include "2024/2/1 (木) 〜 2024/2/8 (木)"
         end
       end
     end
