@@ -14,13 +14,11 @@ RSpec.describe "UsersSessions", type: :system do
         fill_in "user[password]", with: user.password
         click_button "ログイン"
 
-        aggregate_failures do
-          expect(current_path).to eq root_path
-          expect(page).not_to have_selector '.alert-danger'
-          expect(page).not_to have_selector "a[href=\"#{new_user_session_path}\"]"
-          expect(page).to have_selector "a[href=\"#{destroy_user_session_path}\"]"
-        end
-      end
+        expect(current_path).to eq root_path
+        expect(page).not_to have_selector '.alert-danger'
+        expect(page).not_to have_selector "a[href=\"#{new_user_session_path}\"]"
+        expect(page).to have_selector "a[href=\"#{destroy_user_session_path}\"]"
+    end
     end
 
     context 'メールアドレスもパスワードも無効な値の場合' do

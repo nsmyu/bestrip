@@ -17,12 +17,10 @@ RSpec.describe "UsersRegistrations", type: :system do
 
         expect(current_path).to eq root_path
 
-        aggregate_failures do
           # expect(page).to have_content "登録完了"
           # within ".navbar" do
           #   expect(page).to have_content user.name
           # end
-        end
       }.to change(User, :count).by(1)
     end
 
@@ -34,14 +32,12 @@ RSpec.describe "UsersRegistrations", type: :system do
         fill_in "user[password_confirmation]", with: "bar"
         click_button "新規登録"
 
-        aggregate_failures do
-          expect(page).to have_content "アカウント登録"
-          expect(page).to have_content "メールアドレスを正しく入力してください"
-          expect(page).to have_content "パスワードは6文字以上で入力してください"
-          expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
-          within ".navbar" do
-            expect(page).not_to have_content user.name
-          end
+        expect(page).to have_content "アカウント登録"
+        expect(page).to have_content "メールアドレスを正しく入力してください"
+        expect(page).to have_content "パスワードは6文字以上で入力してください"
+        expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
+        within ".navbar" do
+          expect(page).not_to have_content user.name
         end
       }.not_to change(User, :count)
     end
@@ -55,12 +51,11 @@ RSpec.describe "UsersRegistrations", type: :system do
         fill_in "user[password_confirmation]", with: "password"
         click_button "新規登録"
 
-        aggregate_failures do
-          expect(page).to have_content "アカウント登録"
-          expect(page).to have_content "このメールアドレスはすでに登録されています"
-          within ".navbar" do
-            expect(page).not_to have_content user.name
-          end
+
+        expect(page).to have_content "アカウント登録"
+        expect(page).to have_content "このメールアドレスはすでに登録されています"
+        within ".navbar" do
+          expect(page).not_to have_content user.name
         end
       }.not_to change(User, :count)
     end
@@ -101,10 +96,8 @@ RSpec.describe "UsersRegistrations", type: :system do
         fill_in "user[password_confirmation]", with: "newpassword"
         click_button "変更する"
 
-        aggregate_failures do
-          expect(page).to have_content "パスワードの変更"
-          expect(page).to have_content "現在のパスワードが間違っています"
-        end
+        expect(page).to have_content "パスワードの変更"
+        expect(page).to have_content "現在のパスワードが間違っています"
       end
 
       it "新しいパスワードが5文字以下の場合、失敗すること" do
@@ -113,11 +106,9 @@ RSpec.describe "UsersRegistrations", type: :system do
         fill_in "user[password_confirmation]", with: "bar"
         click_button "変更する"
 
-        aggregate_failures do
-          expect(page).to have_content "パスワードの変更"
-          expect(page).to have_content "パスワードは6文字以上で入力してください"
-          expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
-        end
+        expect(page).to have_content "パスワードの変更"
+        expect(page).to have_content "パスワードは6文字以上で入力してください"
+        expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
       end
 
       it "新しいパスワードに半角英数字以外が含まれる場合、失敗すること" do
@@ -126,10 +117,8 @@ RSpec.describe "UsersRegistrations", type: :system do
         fill_in "user[password_confirmation]", with: "invalid_password"
         click_button "変更する"
 
-        aggregate_failures do
-          expect(page).to have_content "パスワードの変更"
-          expect(page).to have_content "パスワードは半角英数字で入力してください"
-        end
+        expect(page).to have_content "パスワードの変更"
+        expect(page).to have_content "パスワードは半角英数字で入力してください"
       end
     end
   end
@@ -160,20 +149,16 @@ RSpec.describe "UsersRegistrations", type: :system do
         fill_in "user[email]", with: ""
         click_button "変更する"
 
-        aggregate_failures do
-          expect(page).to have_content "メールアドレスの変更"
-          expect(page).to have_content "メールアドレスを入力してください"
-        end
-      end
+        expect(page).to have_content "メールアドレスの変更"
+        expect(page).to have_content "メールアドレスを入力してください"
+    end
 
       it "形式が正しくない場合、失敗すること" do
         fill_in "user[email]", with: "invalid_email_address"
         click_button "変更する"
 
-        aggregate_failures do
-          expect(page).to have_content "メールアドレスの変更"
-          expect(page).to have_content "メールアドレスを正しく入力してください"
-        end
+        expect(page).to have_content "メールアドレスの変更"
+        expect(page).to have_content "メールアドレスを正しく入力してください"
       end
     end
   end
@@ -221,11 +206,9 @@ RSpec.describe "UsersRegistrations", type: :system do
         fill_in "user[name]", with: ""
         click_on "保存する"
 
-        aggregate_failures do
-          expect(page).to have_content "プロフィールの編集"
-          expect(page).to have_content "ニックネームを入力してください"
-        end
-      end
+        expect(page).to have_content "プロフィールの編集"
+        expect(page).to have_content "ニックネームを入力してください"
+    end
 
       it "自己紹介が文字数制限を超えている場合、「保存する」ボタンが押せないこと", js: true do
         fill_in "user[introduction]", with: "a" * 501

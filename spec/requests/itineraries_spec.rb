@@ -60,10 +60,9 @@ RSpec.describe "Itineraries", type: :request do
 
       it "旅のプランの情報を取得すること" do
         get itinerary_path(itinerary.id)
-        aggregate_failures do
-          expect(response.body).to include itinerary.title
-          expect(response.body).to include "2024/2/1 (木) 〜 2024/2/8 (木)"
-        end
+
+        expect(response.body).to include itinerary.title
+        expect(response.body).to include "2024/2/1 (木) 〜 2024/2/8 (木)"
       end
     end
 
@@ -75,11 +74,10 @@ RSpec.describe "Itineraries", type: :request do
 
       it "旅のプランの情報を取得すること" do
         get edit_itinerary_path(itinerary.id)
-        aggregate_failures do
-          expect(response.body).to include itinerary.title
-          expect(response.body).to include itinerary.departure_date.to_s
-          expect(response.body).to include itinerary.return_date.to_s
-        end
+
+        expect(response.body).to include itinerary.title
+        expect(response.body).to include itinerary.departure_date.to_s
+        expect(response.body).to include itinerary.return_date.to_s
       end
     end
 
@@ -93,10 +91,9 @@ RSpec.describe "Itineraries", type: :request do
       it "出発日と帰宅日を変更できること" do
         itinerary_params = attributes_for(:itinerary, departure_date: "2024-04-01", return_date: "2024-04-08")
         patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
-        aggregate_failures do
-          expect(itinerary.reload.departure_date.to_s).to eq "2024-04-01"
-          expect(itinerary.reload.return_date.to_s).to eq "2024-04-08"
-        end
+
+        expect(itinerary.reload.departure_date.to_s).to eq "2024-04-01"
+        expect(itinerary.reload.return_date.to_s).to eq "2024-04-08"
       end
 
       it "旅のプラン情報ページにリダイレクトすること" do
@@ -108,11 +105,10 @@ RSpec.describe "Itineraries", type: :request do
       it "必須項目が空欄の場合は失敗すること" do
         itinerary_params = attributes_for(:itinerary, title: "", departure_date: "", return_date: "")
         patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
-        aggregate_failures do
-          expect(response.body).to include "タイトルを入力してください"
-          expect(response.body).to include "出発日を入力してください"
-          expect(response.body).to include "帰宅日を入力してください"
-        end
+
+        expect(response.body).to include "タイトルを入力してください"
+        expect(response.body).to include "出発日を入力してください"
+        expect(response.body).to include "帰宅日を入力してください"
       end
     end
 

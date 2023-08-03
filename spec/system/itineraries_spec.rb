@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Itineraries", type: :system, focus: true do
+RSpec.describe "Itineraries", type: :system do
   describe "旅のプラン一覧表示" do
     let(:user) { create(:user) }
     let(:itinerary1) { create(:itinerary, owner: @user) }
