@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Itineraries", type: :system, focus: true do
+RSpec.describe "Itineraries", type: :system do
   before do
     @user = create(:user)
     sign_in @user
@@ -188,12 +188,19 @@ RSpec.describe "Itineraries", type: :system, focus: true do
     end
   end
 
-  # describe "削除", js: true do
-  #   @itinerary1 = create(:itinerary, owner: @user)
-  #   visit itinerary_path(itinerary1.id)
-  #   find("i", text: "edit").click
+  describe "削除", js: true, focus: true do
+    let!(:itinerary) { create(:itinerary, owner: @user) }
 
+    it "成功すること" do
+      expect {
+        visit itinerary_path(itinerary.id)
+        find("i", text: "delete").click
+        click_on "削除する"
+        sleep 0.1
+        expect(current_path).to eq itineraries_path
+        expect(page).to have_content "#{itinerary.title}を削除しました。"
+      }.to change(Itinerary, :count).by(-1)
 
-
-  # end
+    end
+  end
 end
