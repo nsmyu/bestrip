@@ -23,7 +23,9 @@ RSpec.describe "Itineraries", type: :system do
       end
 
       it "ログインユーザーの全ての旅のプランを出発日の降順で表示すること" do
-        expect(page.text).to match(/#{@itinerary3.title}[\s\S]*#{@itinerary1.title}[\s\S]*#{@itinerary2.title}/)
+        expect {
+          page.text
+        }.to match(/#{@itinerary3.title}[\s\S]*#{@itinerary1.title}[\s\S]*#{@itinerary2.title}/)
       end
 
       it "他のユーザーの旅のプランが表示されていないこと" do
@@ -188,7 +190,7 @@ RSpec.describe "Itineraries", type: :system do
     end
   end
 
-  describe "削除", js: true, focus: true do
+  describe "削除", js: true do
     let!(:itinerary) { create(:itinerary, owner: @user) }
 
     it "成功すること" do
@@ -200,7 +202,6 @@ RSpec.describe "Itineraries", type: :system do
         expect(current_path).to eq itineraries_path
         expect(page).to have_content "#{itinerary.title}を削除しました。"
       }.to change(Itinerary, :count).by(-1)
-
     end
   end
 end

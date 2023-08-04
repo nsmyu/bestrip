@@ -21,3 +21,6 @@ AllCops:
 Style/BlockDelimiters:
   Exclude:
     - 'spec/system/*'
+
+Layout/DotPosition:
+  Enabled: false

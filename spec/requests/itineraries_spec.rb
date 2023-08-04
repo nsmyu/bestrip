@@ -17,7 +17,7 @@ RSpec.describe "Itineraries", type: :request do
 
     it "ログインユーザーの全ての旅のプランを取得すること" do
       itinerary
-      other_itinerary = create(:itinerary, :other, owner: @user)
+      other_itinerary = create(:itinerary, owner: @user)
       get itineraries_path
       expect(response.body).to include itinerary.title, other_itinerary.title
     end
@@ -48,7 +48,8 @@ RSpec.describe "Itineraries", type: :request do
 
     context "無効な値の場合" do
       it "必須項目が空欄の場合、失敗すること" do
-        itinerary_params = attributes_for(:itinerary, title: "", departure_date: "", return_date: "")
+        itinerary_params =
+          attributes_for(:itinerary, title: "", departure_date: "", return_date: "")
         post itineraries_path, params: { itinerary: itinerary_params }
         expect(response.body).to include "タイトルを入力してください"
         expect(response.body).to include "出発日を入力してください"
@@ -122,7 +123,8 @@ RSpec.describe "Itineraries", type: :request do
       end
 
       it "出発日、帰宅日の変更に成功すること" do
-        itinerary_params = attributes_for(:itinerary, departure_date: "2024-04-01", return_date: "2024-04-08")
+        itinerary_params =
+          attributes_for(:itinerary, departure_date: "2024-04-01", return_date: "2024-04-08")
         patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
         expect(response).to redirect_to itinerary_path(itinerary.id)
         expect(itinerary.reload.departure_date.to_s).to eq "2024-04-01"
@@ -132,7 +134,8 @@ RSpec.describe "Itineraries", type: :request do
 
     context "無効な値の場合" do
       it "必須項目が空欄の場合、失敗すること" do
-        itinerary_params = attributes_for(:itinerary, title: "", departure_date: "", return_date: "")
+        itinerary_params =
+          attributes_for(:itinerary, title: "", departure_date: "", return_date: "")
         patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
         expect(response.body).to include "タイトルを入力してください"
         expect(response.body).to include "出発日を入力してください"

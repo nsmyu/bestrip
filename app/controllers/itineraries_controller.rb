@@ -43,7 +43,8 @@ class ItinerariesController < ApplicationController
   private
 
   def itinerary_params
-    params.require(:itinerary).permit(:title, :image, :image_cache, :departure_date, :return_date, :user_id)
+    params.require(:itinerary)
+      .permit(:title, :image, :image_cache, :departure_date, :return_date, :user_id)
   end
 
   def set_itinerary

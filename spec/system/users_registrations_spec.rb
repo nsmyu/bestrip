@@ -18,10 +18,10 @@ RSpec.describe "UsersRegistrations", type: :system do
 
         expect(current_path).to eq root_path
 
-          # expect(page).to have_content "登録完了"
-          # within ".navbar" do
-          #   expect(page).to have_content user.name
-          # end
+        # expect(page).to have_content "登録完了"
+        # within ".navbar" do
+        #   expect(page).to have_content user.name
+        # end
       }.to change(User, :count).by(1)
     end
 
@@ -148,15 +148,13 @@ RSpec.describe "UsersRegistrations", type: :system do
       it "空欄の場合、失敗すること" do
         fill_in "user[email]", with: ""
         click_button "変更する"
-
         expect(page).to have_content "メールアドレスの変更"
         expect(page).to have_content "メールアドレスを入力してください"
-    end
+      end
 
       it "形式が正しくない場合、失敗すること" do
         fill_in "user[email]", with: "invalid_email_address"
         click_button "変更する"
-
         expect(page).to have_content "メールアドレスの変更"
         expect(page).to have_content "メールアドレスを正しく入力してください"
       end
@@ -208,7 +206,7 @@ RSpec.describe "UsersRegistrations", type: :system do
 
         expect(page).to have_content "プロフィールの編集"
         expect(page).to have_content "ニックネームを入力してください"
-    end
+      end
 
       it "自己紹介が501文字以上入力された場合、「保存する」ボタンが押せないこと", js: true do
         fill_in "user[introduction]", with: "a" * 501
