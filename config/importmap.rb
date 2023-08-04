@@ -8,3 +8,4 @@ pin_all_from "app/javascript/controllers",        under: "controllers", preload:
 pin_all_from "app/javascript/material_dashboard", under: "material_dashboard", preload: true
 pin "custom", preload: true
 pin "datetime", preload: true
+pin "confirm_modal", preload: true
