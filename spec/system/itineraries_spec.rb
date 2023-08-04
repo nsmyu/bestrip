@@ -23,9 +23,8 @@ RSpec.describe "Itineraries", type: :system do
       end
 
       it "ログインユーザーの全ての旅のプランを出発日の降順で表示すること" do
-        expect {
-          page.text
-        }.to match(/#{@itinerary3.title}[\s\S]*#{@itinerary1.title}[\s\S]*#{@itinerary2.title}/)
+        expect(page.text).
+          to match(/#{@itinerary3.title}[\s\S]*#{@itinerary1.title}[\s\S]*#{@itinerary2.title}/)
       end
 
       it "他のユーザーの旅のプランが表示されていないこと" do

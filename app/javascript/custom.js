@@ -74,10 +74,10 @@ document.addEventListener('turbo:frame-load', () => {
   })
 });
 
-document.addEventListener('turbo:submit-end', (e) => {
-  const response = e.detail.fetchResponse.response
-  if (response.redirected) {
-    e.preventDefault()
-    Turbo.visit(e.detail.fetchResponse.response.url, {action: 'advance'})
-  }
-})
+// document.addEventListener('turbo:before-render', (e) => {
+//   const response = e.detail.fetchResponse.response
+//   if (response.redirected) {
+//     e.preventDefault()
+//     Turbo.visit(e.detail.fetchResponse.response.url, {action: 'advance'})
+//   }
+// })
