@@ -12,8 +12,9 @@ class ItinerariesController < ApplicationController
 
   def create
     @user = User.find(current_user.id)
-    @itinerary = @user.itineraries.new(itinerary_params)
+    @itinerary = @user.owned_itineraries.new(itinerary_params)
     if @itinerary.save
+      @itinerary.users << @user
       redirect_to @itinerary, notice: "新しい旅のプランを作成しました。次はスケジュールを追加してみましょう。"
     else
       render :new, status: :unprocessable_entity
@@ -32,6 +33,11 @@ class ItinerariesController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def add_user
+    @user = User.find(params[:id])
+    @itinerary.users << @user
   end
 
   def destroy
