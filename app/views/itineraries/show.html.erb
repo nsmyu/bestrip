@@ -1,10 +1,10 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
   <div class="container-fluid py-5 px-sm-6 px-3">
-    <div class="card z-index-2 w-md-60 mx-auto">
+    <div class="card z-index-2 w-md-60 mx-auto mb-4">
       <div class="card-body text-dark">
         <div class="d-flex border-bottom justify-content-between">
-          <h4 class="modal-title">旅のプラン情報</h4>
+          <h4>旅のプラン情報</h4>
           <div>
             <%= turbo_frame_tag "itinerary" do %>
               <%= link_to :edit_itinerary, data: { turbo_frame: "modal" } do %>
@@ -20,11 +20,21 @@
         </div>
         <%= image_tag @itinerary.image.url, class: "border-radius-lg shadow-dark w-100 my-3" %>
         <h5 class="mb-1"><%= @itinerary.title %></h5>
-        <p ><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
-        <hr class="dark horizontal">
-        <div class="d-flex">
-          <p class="mb-0 text-sm">作成者：<%= @itinerary.owner.name %></p>
+        <p class="my-1"><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
+      </div>
+    </div>
+    <div class="card z-index-2 w-md-60 mx-auto">
+      <div class="card-body text-dark">
+        <div class="border-bottom">
+          <h5>旅のメンバー</h5>
         </div>
+        <% @itinerary.users.each do |user| %>
+          <p class="mt-3"><%= user.name %><span class="text-sm"><%= "（プラン作成者）" if current_user == @itinerary.owner %></span></p>
+          <hr class="dark horizontal">
+        <% end %>
+        <%= link_to [:itinerary, id: @itinerary ] do %>
+          <p class="text-center mb-0"><i class="material-icons" style="vertical-align: -4.5px;">person_add</i> メンバーを追加</p>
+        <% end %>
       </div>
     </div>
   </div>
