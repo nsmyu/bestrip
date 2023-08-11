@@ -68,6 +68,11 @@ input:-webkit-autofill {
   object-fit: cover;
 }
 
+.avatar_thumbnail {
+  width: 40px;
+  height: 40px;
+}
+
 .itinerary-image-preview {
   object-fit: cover;
   aspect-ratio: 5/3;

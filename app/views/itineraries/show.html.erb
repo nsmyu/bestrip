@@ -29,7 +29,10 @@
           <h5>旅のメンバー</h5>
         </div>
         <% @itinerary.members.each do |member| %>
-          <p class="mt-3"><%= member.name %><span class="text-sm"><%= "（プラン作成者）" if current_user == @itinerary.owner %></span></p>
+          <p class="mt-3">
+            <%= image_tag member.avatar.url, id: 'image-preview', class: "rounded-circle avatar_thumbnail me-2" %>
+            <%= member.name %><span class="text-sm"><%= "（プラン作成者）" if current_user == @itinerary.owner %></span>
+          </p>
           <hr class="dark horizontal">
         <% end %>
         <%= turbo_frame_tag "member" do %>
