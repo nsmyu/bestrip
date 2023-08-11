@@ -1,6 +1,6 @@
 class ItinerariesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_itinerary, only: [:show, :edit, :update, :destroy]
+  before_action :set_itinerary, except: [:index, :new, :create, :search_user]
 
   def index
     @itineraries = Itinerary.where(user_id: current_user.id).order(departure_date: :desc)
@@ -33,6 +33,11 @@ class ItinerariesController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def search_user
+    @bestrip_id = params[:bestrip_id]
+    @user = User.find_by(bestrip_id: @bestrip_id)
   end
 
   def add_user

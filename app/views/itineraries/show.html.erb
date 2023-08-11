@@ -28,4 +28,17 @@
       </div>
     </div>
   </div>
+
+  <div>
+    <%= form_with url: :search_user, method: :get do |f| %>
+      <div class="row g-3 justify-content-center first-view-search">
+        <div class="col-11">
+          <%= f.text_field :bestrip_id, class: "form-control", placeholder: "エリア名を入力" %>
+        </div>
+        <div class="col-11">
+          <%= f.submit "検索", class: "button1" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </main>
