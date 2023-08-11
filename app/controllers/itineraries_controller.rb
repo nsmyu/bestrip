@@ -41,11 +41,13 @@ class ItinerariesController < ApplicationController
   def search_user
     @bestrip_id = params[:bestrip_id]
     @user = User.find_by(bestrip_id: @bestrip_id)
+    render :new_member if @user.nil?
   end
 
-  def add_user
-    @user = User.find(params[:id])
-    @itinerary.users << @user
+  def add_member
+    @user = User.find(params[:user_id])
+    @itinerary.members << @user
+    redirect_to @itinerary
   end
 
   def destroy

@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     member do
       get 'new_member', to: 'itineraries#new_member'
       get 'search_user', to: 'itineraries#search_user'
-      get 'add_user', to: 'itineraries#add_user'
+      get 'add_member', to: 'itineraries#add_member'
     end
   end
 end

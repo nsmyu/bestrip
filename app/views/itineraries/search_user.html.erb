@@ -1,9 +1,9 @@
-<%= render "layouts/modal", title: "旅のメンバー追加" do %>
-  <%= turbo_frame_tag "member" do %>
+<%= turbo_frame_tag "member" do %>
+  <%= turbo_frame_tag "user_search" do %>
     <%= form_with url: :search_user_itinerary, method: :get, html: { data: { turbo_frame: "user_search" } } do |f| %>
       <div class="mb-4 input-group input-group-static">
         <%= f.label :title, class: "fw-bold" do %>
-          追加したいユーザーのBesTrip ID
+          追加したいユーザーのBesTrip
         <% end%>
         <%= f.text_field :bestrip_id, class: "form-control", placeholder: "（例）luke_id" %>
         <label type="button" class="input-group-text">
@@ -12,5 +12,10 @@
         </label>
       </div>
     <% end %>
+  <% end %>
+  <%= form_with url: :add_member_itinerary, method: :get, data: { action: "turbo:submit-end->modal#close" } do |f| %>
+    <%= @user.name %>
+    <%= f.hidden_field :user_id, value: @user.id %>
+    <%= f.submit %>
   <% end %>
 <% end %>
