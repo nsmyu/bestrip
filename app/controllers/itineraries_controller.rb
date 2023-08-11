@@ -35,6 +35,9 @@ class ItinerariesController < ApplicationController
     end
   end
 
+  def new_member
+  end
+
   def search_user
     @bestrip_id = params[:bestrip_id]
     @user = User.find_by(bestrip_id: @bestrip_id)

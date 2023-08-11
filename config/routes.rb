@@ -15,7 +15,11 @@ Rails.application.routes.draw do
     patch 'users/validate_bestrip_id', to: 'users/registrations#validate_bestrip_id'
   end
 
-  resources :itineraries
-  get 'search_user', to: 'itineraries#search_user'
-  get 'add_user', to: 'itineraries#add_user'
+  resources :itineraries do
+    member do
+      get 'new_member', to: 'itineraries#new_member'
+      get 'search_user', to: 'itineraries#search_user'
+      get 'add_user', to: 'itineraries#add_user'
+    end
+  end
 end
