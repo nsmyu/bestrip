@@ -1,48 +1,48 @@
 require "rails_helper"
 
 RSpec.describe "Itineraries", type: :system do
+  let!(:user) { create(:user) }
+  let!(:other_user) { create(:user, :other, bestrip_id: "other_user_id") }
+
   before do
-    @user = create(:user)
-    sign_in @user
+    sign_in user
   end
 
   describe "一覧表示" do
     context "旅のプランが登録されていない場合" do
-      it "登録されていない旨のメッセージを表示すること" do
+      it "メッセージを表示すること" do
         visit itineraries_path
         expect(page).to have_content "旅のプランは登録されていません"
       end
     end
 
     context "旅のプランが複数登録されている場合" do
+      let!(:itinerary1) { create(:itinerary, owner: user) }
+      let!(:itinerary2) { create(:itinerary, departure_date: "2024-01-31", owner: user) }
+      let!(:itinerary3) { create(:itinerary, departure_date: "2024-02-02", owner: user) }
+
       before do
-        @itinerary1 = create(:itinerary, owner: @user)
-        @itinerary2 = create(:itinerary, departure_date: "2024-01-31", owner: @user)
-        @itinerary3 = create(:itinerary, departure_date: "2024-02-02", owner: @user)
         visit itineraries_path
       end
 
-      it "ログインユーザーの全ての旅のプランを出発日の降順で表示すること" do
+      it "ログインユーザーの全ての旅のプランを、出発日の降順で表示すること" do
         expect(page.text).
-          to match(/#{@itinerary3.title}[\s\S]*#{@itinerary1.title}[\s\S]*#{@itinerary2.title}/)
+          to match(/#{itinerary3.title}[\s\S]*#{itinerary1.title}[\s\S]*#{itinerary2.title}/)
       end
 
       it "他のユーザーの旅のプランが表示されていないこと" do
-        other_user = create(:user, :other)
         other_users_itinerary = create(:itinerary, owner: other_user)
         expect(page).not_to have_content other_users_itinerary.title
       end
 
       it "旅のプランのカードをクリックすると、旅のプラン情報ページへ遷移すること" do
-        click_on @itinerary1.title
-        expect(current_path).to eq itinerary_path(@itinerary1.id)
+        click_on itinerary1.title
+        expect(current_path).to eq itinerary_path(itinerary1.id)
       end
     end
   end
 
   describe "新規作成", js: true do
-    let(:itinerary) { build(:itinerary) }
-
     before do
       visit itineraries_path
       click_on "旅のプランを作成"
@@ -51,7 +51,7 @@ RSpec.describe "Itineraries", type: :system do
     context "有効な値の場合" do
       it "成功すること" do
         expect {
-          fill_in "itinerary[title]", with: itinerary.title
+          fill_in "itinerary[title]", with: "New Trip"
           fill_in "itinerary[departure_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
           fill_in "itinerary[return_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
 
@@ -87,7 +87,7 @@ RSpec.describe "Itineraries", type: :system do
 
       it "出発日と帰宅日が未入力の場合、失敗すること" do
         expect {
-          fill_in "itinerary[title]", with: itinerary.title
+          fill_in "itinerary[title]", with: "New Trip"
           click_on "保存する"
           expect(page).to have_content "出発日を入力してください"
           expect(page).to have_content "帰宅日を入力してください"
@@ -104,10 +104,10 @@ RSpec.describe "Itineraries", type: :system do
         }.not_to change(User, :count)
       end
 
-      it "タイトルが同じユーザーで重複している場合、失敗すること" do
-        itinerary = create(:itinerary, owner: @user)
+      it "タイトルが同じユーザーで重複している場合、失敗すること"  do
+        existing_itinerary = create(:itinerary, owner: user)
         expect {
-          fill_in "itinerary[title]", with: itinerary.title
+          fill_in "itinerary[title]", with: existing_itinerary.title
           fill_in "itinerary[departure_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
           fill_in "itinerary[return_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
           click_on "保存する"
@@ -127,8 +127,8 @@ RSpec.describe "Itineraries", type: :system do
   end
 
   describe "編集", js: true do
-    let(:itinerary1) { create(:itinerary, owner: @user) }
-    let(:itinerary2) { create(:itinerary, owner: @user) }
+    let!(:itinerary1) { create(:itinerary, owner: user) }
+    let!(:itinerary2) { create(:itinerary, owner: user) }
 
     before do
       visit itinerary_path(itinerary1.id)
@@ -172,7 +172,6 @@ RSpec.describe "Itineraries", type: :system do
       end
 
       it "タイトルが同じユーザーで重複している場合、失敗すること" do
-        itinerary2 = create(:itinerary, owner: @user)
         fill_in "itinerary[title]", with: itinerary2.title
         click_on "保存する"
         expect(page).to have_content "このタイトルはすでに使用されています"
@@ -189,8 +188,44 @@ RSpec.describe "Itineraries", type: :system do
     end
   end
 
+  describe "ユーザー検索、メンバー追加", js: true, focus: true do
+    let!(:itinerary) { create(:itinerary, owner: user) }
+
+    before do
+      visit itinerary_path(itinerary.id)
+      click_on "メンバーを追加"
+    end
+
+    it "成功すること" do
+      expect {
+        fill_in "bestrip_id", with: other_user.bestrip_id
+        find("i", text: "search").click
+
+        expect(page).to have_content other_user.name
+
+        click_on "メンバーに追加"
+
+        expect(current_path).to eq itinerary_path(itinerary.id)
+        expect(page).to have_content other_user.name
+      }.to change(itinerary.members, :count).by(1)
+    end
+
+    it "検索したユーザーが存在しない場合、メッセージが表示されること" do
+      fill_in "bestrip_id", with: "no_user_id"
+      find("i", text: "search").click
+      expect(page).to have_content "ユーザーが見つかりませんでした"
+    end
+
+    it "検索したユーザーが既にメンバーに含まれている場合、メッセージが表示されること" do
+      itinerary.members << other_user
+      fill_in "bestrip_id", with: other_user.bestrip_id
+      find("i", text: "search").click
+      expect(page).to have_content "すでにメンバーに追加されています"
+    end
+  end
+
   describe "削除", js: true do
-    let!(:itinerary) { create(:itinerary, owner: @user) }
+    let!(:itinerary) { create(:itinerary, owner: user) }
 
     it "成功すること" do
       expect {
