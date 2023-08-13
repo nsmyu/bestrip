@@ -1,5 +1,5 @@
 class Itinerary < ApplicationRecord
-  has_many   :itinerary_users
+  has_many   :itinerary_users, dependent: :destroy
   has_many   :members, through: :itinerary_users, source: :user
   belongs_to :owner, class_name: 'User', foreign_key: :user_id
 

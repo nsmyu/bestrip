@@ -1,21 +1,15 @@
-<%= turbo_frame_tag "member" do %>
-  <%= turbo_frame_tag "user_search" do %>
-    <%= form_with url: :search_user_itinerary, method: :get, html: { data: { turbo_frame: "user_search" } } do |f| %>
-      <div class="mb-4 input-group input-group-static">
-        <%= f.label :title, class: "fw-bold" do %>
-          追加したいユーザーのBesTrip
-        <% end%>
-        <%= f.text_field :bestrip_id, class: "form-control", placeholder: "（例）luke_id" %>
-        <label type="button" class="input-group-text">
-          <i class="material-icons fw-bold fs-4">search</i>
-          <%= f.submit class: "d-none" %>
-        </label>
-      </div>
-    <% end %>
-  <% end %>
+<%= turbo_frame_tag "new_member" do %>
+  <%= render "member_form" %>
   <%= form_with url: :add_member_itinerary, method: :get, data: { action: "turbo:submit-end->modal#close" } do |f| %>
-    <%= @user.name %>
-    <%= f.hidden_field :user_id, value: @user.id %>
-    <%= f.submit %>
+    <div class="d-flex flex-column align-items-center my-5">
+      <%= image_tag @user.avatar.url, id: 'image-preview', class: "rounded-circle avatar mb-2" %>
+      <p><%= @user.name %></p>
+      <%= f.hidden_field :user_id, value: @user.id %>
+      <% if @itinerary.members.include?(@user) %>
+        <p>すでにメンバーに追加されています</p>
+      <% else %>
+        <%= f.submit "メンバーに追加", class: "btn bg-gradient-primary mb-0" %>
+      <% end %>
+    </div>
   <% end %>
 <% end %>

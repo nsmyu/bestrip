@@ -28,14 +28,14 @@
         <div class="border-bottom">
           <h5>旅のメンバー</h5>
         </div>
-        <% @itinerary.members.each do |member| %>
+        <% @itinerary_members.each do |member| %>
           <p class="mt-3">
-            <%= image_tag member.avatar.url, id: 'image-preview', class: "rounded-circle avatar_thumbnail me-2" %>
+            <%= image_tag member.avatar.url, id: 'image-preview', class: "rounded-circle avatar-thumbnail me-2" %>
             <%= member.name %><span class="text-sm"><%= "（プラン作成者）" if member == @itinerary.owner %></span>
           </p>
         <% end %>
         <hr class="dark horizontal">
-        <%= turbo_frame_tag "member" do %>
+        <%= turbo_frame_tag "new_member" do %>
           <%= link_to :new_member_itinerary, data: { turbo_frame: "modal" } do %>
             <p class="text-center mb-0"><i class="material-icons" style="vertical-align: -4.5px;">person_add</i> メンバーを追加</p>
           <% end %>

@@ -1,6 +1,6 @@
 class ItinerariesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_itinerary, except: [:index, :new, :create, :search_user]
+  before_action :set_itinerary, except: [:index, :new, :create]
 
   def index
     @itineraries = Itinerary.where(user_id: current_user.id).order(departure_date: :desc)
@@ -14,7 +14,7 @@ class ItinerariesController < ApplicationController
     @user = User.find(current_user.id)
     @itinerary = @user.owned_itineraries.new(itinerary_params)
     if @itinerary.save
-      @itinerary.users << @user
+      @itinerary.members << @user
       redirect_to @itinerary, notice: "新しい旅のプランを作成しました。次はスケジュールを追加してみましょう。"
     else
       render :new, status: :unprocessable_entity
@@ -22,6 +22,7 @@ class ItinerariesController < ApplicationController
   end
 
   def show
+    @itinerary_members = @itinerary.members.order("itinerary_users.id")
   end
 
   def edit
@@ -41,7 +42,10 @@ class ItinerariesController < ApplicationController
   def search_user
     @bestrip_id = params[:bestrip_id]
     @user = User.find_by(bestrip_id: @bestrip_id)
-    render :new_member if @user.nil?
+    if @user.nil?
+      flash.now[:notice] = 'ユーザーが見つかりませんでした'
+      render :new_member
+    end
   end
 
   def add_member
