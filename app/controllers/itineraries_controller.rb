@@ -49,8 +49,14 @@ class ItinerariesController < ApplicationController
   end
 
   def add_member
-    @user = User.find(params[:user_id])
-    @itinerary.members << @user
+    user = User.find(params[:user_id])
+    @itinerary.members << user
+    redirect_to @itinerary
+  end
+
+  def remove_member
+    user = User.find(params[:user_id])
+    @itinerary.itinerary_users.find_by(user_id: user.id).destroy
     redirect_to @itinerary
   end
 
