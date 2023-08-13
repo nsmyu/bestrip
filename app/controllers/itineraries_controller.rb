@@ -3,7 +3,7 @@ class ItinerariesController < ApplicationController
   before_action :set_itinerary, except: [:index, :new, :create]
 
   def index
-    @itineraries = Itinerary.where(user_id: current_user.id).order(departure_date: :desc)
+    @itineraries = current_user.itineraries.order(departure_date: :desc)
   end
 
   def new
