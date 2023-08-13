@@ -194,6 +194,25 @@ RSpec.describe "Itineraries", type: :request do
     end
   end
 
+  describe "DELETE #remove_member" do
+    it "成功すること" do
+      itinerary.members << other_user
+      remove_member_params = { user_id: other_user.id, id: itinerary.id }
+      delete remove_member_itinerary_path(itinerary.id), params: remove_member_params
+      expect(response).to redirect_to itinerary_path(itinerary.id)
+      expect(itinerary.reload.members).not_to include other_user
+    end
+
+    # it "作成者以外はメンバーを削除できないこと" do
+    #   itinerary.members << other_user
+    #   sign_out user
+    #   sign_in other_user
+    #   remove_member_params = { user_id: user.id, id: itinerary.id }
+    #   delete remove_member_itinerary_path(itinerary.id), params: remove_member_params
+    #   expect(itinerary.reload.members).to include user
+    # end
+  end
+
   describe "DELETE #destroy" do
     it "成功すること" do
       delete itinerary_path(itinerary.id)

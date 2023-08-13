@@ -188,7 +188,7 @@ RSpec.describe "Itineraries", type: :system do
     end
   end
 
-  describe "ユーザー検索、メンバー追加", js: true, focus: true do
+  describe "ユーザー検索、メンバー追加", js: true do
     let!(:itinerary) { create(:itinerary, owner: user) }
 
     before do
@@ -221,6 +221,20 @@ RSpec.describe "Itineraries", type: :system do
       fill_in "bestrip_id", with: other_user.bestrip_id
       find("i", text: "search").click
       expect(page).to have_content "すでにメンバーに追加されています"
+    end
+  end
+
+  describe "メンバー削除", js: true, focus: true do
+    let!(:itinerary) { create(:itinerary, owner: user) }
+
+    it "成功すること" do
+      itinerary.members << other_user
+      expect {
+        visit itinerary_path(itinerary.id)
+        find("i", text: "person_remove").click
+        click_on "削除する"
+        expect(current_path).to eq itinerary_path(itinerary.id)
+      }.to change(itinerary.members, :count).by(-1)
     end
   end
 
