@@ -17,9 +17,9 @@ Rails.application.routes.draw do
 
   resources :itineraries do
     member do
-      get 'new_member', to: 'itineraries#new_member'
-      get 'search_user', to: 'itineraries#search_user'
-      get 'add_member', to: 'itineraries#add_member'
+      get   'new_member', to: 'itineraries#new_member'
+      get   'search_user', to: 'itineraries#search_user'
+      patch 'add_member', to: 'itineraries#add_member'
     end
   end
 end

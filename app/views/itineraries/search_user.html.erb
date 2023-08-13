@@ -1,9 +1,9 @@
 <%= turbo_frame_tag "new_member" do %>
   <%= render "member_form" %>
-  <%= form_with url: :add_member_itinerary, method: :get, data: { action: "turbo:submit-end->modal#close" } do |f| %>
+  <%= form_with url: :add_member_itinerary, method: :patch, data: { action: "turbo:submit-end->modal#close" } do |f| %>
     <div class="d-flex flex-column align-items-center my-5">
       <%= image_tag @user.avatar.url, id: 'image-preview', class: "rounded-circle avatar mb-2" %>
-      <p><%= @user.name %></p>
+      <p class="fw-bold"><%= @user.name %></p>
       <%= f.hidden_field :user_id, value: @user.id %>
       <% if @itinerary.members.include?(@user) %>
         <p>すでにメンバーに追加されています</p>

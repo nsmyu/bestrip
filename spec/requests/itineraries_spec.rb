@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "Itineraries", type: :request do
-  let(:user) { create(:user) }
-  let(:itinerary) { create(:itinerary, owner: @user) }
+RSpec.describe "Itineraries", type: :request, focus: true do
+  let!(:user) { create(:user) }
+  let!(:other_user) { create(:user, :other, bestrip_id: "other_user_id") }
+  let!(:itinerary) { create(:itinerary, owner: user) }
 
   before do
-    @user = user
-    sign_in @user
+    sign_in user
   end
 
   describe "GET #index" do
@@ -16,14 +16,12 @@ RSpec.describe "Itineraries", type: :request do
     end
 
     it "ログインユーザーの全ての旅のプランを取得すること" do
-      itinerary
-      other_itinerary = create(:itinerary, owner: @user)
+      other_itinerary = create(:itinerary, owner: user)
       get itineraries_path
       expect(response.body).to include itinerary.title, other_itinerary.title
     end
 
     it "他のユーザーのプランを取得しないこと" do
-      other_user = create(:user, :other)
       other_users_itinerary = create(:itinerary, owner: other_user)
       get itineraries_path
       expect(response.body).not_to include other_users_itinerary.title
@@ -63,7 +61,6 @@ RSpec.describe "Itineraries", type: :request do
       end
 
       it "タイトルが同じユーザーで重複している場合、失敗すること" do
-        itinerary.save
         itinerary_params = attributes_for(:itinerary, title: itinerary.title)
         post itineraries_path, params: { itinerary: itinerary_params }
         expect(response.body).to include "このタイトルはすでに使用されています"
@@ -110,10 +107,6 @@ RSpec.describe "Itineraries", type: :request do
   end
 
   describe "PATCH #update" do
-    before do
-      itinerary
-    end
-
     context "有効な値の場合" do
       it "旅のタイトルの変更に成功すること" do
         itinerary_params = attributes_for(:itinerary, title: "New Title")
@@ -149,7 +142,7 @@ RSpec.describe "Itineraries", type: :request do
       end
 
       it "タイトルが同じユーザーで重複している場合、失敗すること" do
-        other_itinerary = create(:itinerary, title: "Other Trip", owner: @user)
+        other_itinerary = create(:itinerary, title: "Other Trip", owner: user)
         itinerary_params = attributes_for(:itinerary, title: other_itinerary.title)
         patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
         expect(response.body).to include "このタイトルはすでに使用されています"
@@ -160,6 +153,44 @@ RSpec.describe "Itineraries", type: :request do
         patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
         expect(response.body).to include "帰宅日は出発日以降で選択してください"
       end
+    end
+  end
+
+  describe "GET #new_member" do
+    it "正常にレスポンスを返すこと" do
+      get new_member_itinerary_path(itinerary.id)
+      expect(response).to have_http_status 200
+    end
+  end
+
+  describe "GET #search_user" do
+    it "検索したBesTrip IDのユーザーを返すこと" do
+      user_search_params = { bestrip_id: other_user.bestrip_id, id: itinerary.id }
+      get search_user_itinerary_path(itinerary.id), params: user_search_params
+      expect(response.body).to include other_user.name
+    end
+
+    it "検索したBesTrip IDのユーザーが存在しない場合、メッセージを返すこと" do
+      user_search_params = { bestrip_id: "no_user_id", id: itinerary.id }
+      get search_user_itinerary_path(itinerary.id), params: user_search_params
+      expect(response.body).to include "ユーザーが見つかりませんでした"
+    end
+
+    it "検索したBesTrip IDのユーザーが既にメンバーに含まれている場合、メッセージを返すこと" do
+      itinerary.members << other_user
+      user_search_params = { bestrip_id: other_user.bestrip_id, id: itinerary.id }
+      get search_user_itinerary_path(itinerary.id), params: user_search_params
+      expect(response.body).to include other_user.name
+      expect(response.body).to include "すでにメンバーに追加されています"
+    end
+  end
+
+  describe "PATCH #add_member" do
+    it "成功すること" do
+      add_member_params = { user_id: other_user.id, id: itinerary.id }
+      patch add_member_itinerary_path(itinerary.id), params: add_member_params
+      expect(response).to redirect_to itinerary_path(itinerary.id)
+      expect(itinerary.reload.members).to include other_user
     end
   end
 
