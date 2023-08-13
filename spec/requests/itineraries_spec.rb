@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Itineraries", type: :request do
   let!(:user) { create(:user) }
   let!(:other_user) { create(:user, :other, bestrip_id: "other_user_id") }
-  let!(:itinerary) { create(:itinerary, owner: user) }
+  let(:itinerary) { create(:itinerary, owner: user) }
 
   before do
     sign_in user
@@ -17,12 +17,15 @@ RSpec.describe "Itineraries", type: :request do
 
     it "ログインユーザーの全ての旅のプランを取得すること" do
       other_itinerary = create(:itinerary, owner: user)
+      other_users_itinerary = create(:itinerary, owner: other_user)
+      [itinerary, other_itinerary, other_users_itinerary].each { |i| i.members << user }
       get itineraries_path
-      expect(response.body).to include itinerary.title, other_itinerary.title
+      expect(response.body).to include itinerary.title, other_itinerary.title, other_users_itinerary.title
     end
 
     it "他のユーザーのプランを取得しないこと" do
       other_users_itinerary = create(:itinerary, owner: other_user)
+      other_users_itinerary.members << other_user
       get itineraries_path
       expect(response.body).not_to include other_users_itinerary.title
     end

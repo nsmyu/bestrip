@@ -8,7 +8,7 @@ RSpec.describe "Itineraries", type: :system do
     sign_in user
   end
 
-  describe "一覧表示" do
+  describe "一覧表示", focus: true do
     context "旅のプランが登録されていない場合" do
       it "メッセージを表示すること" do
         visit itineraries_path
@@ -19,23 +19,24 @@ RSpec.describe "Itineraries", type: :system do
     context "旅のプランが複数登録されている場合" do
       let!(:itinerary1) { create(:itinerary, owner: user) }
       let!(:itinerary2) { create(:itinerary, departure_date: "2024-01-31", owner: user) }
-      let!(:itinerary3) { create(:itinerary, departure_date: "2024-02-02", owner: user) }
-
-      before do
-        visit itineraries_path
-      end
+      let!(:itinerary3) { create(:itinerary, departure_date: "2024-02-02", owner: other_user) }
 
       it "ログインユーザーの全ての旅のプランを、出発日の降順で表示すること" do
+        [itinerary1, itinerary2, itinerary3].each { |i| i.members << user }
+        visit itineraries_path
         expect(page.text).
           to match(/#{itinerary3.title}[\s\S]*#{itinerary1.title}[\s\S]*#{itinerary2.title}/)
       end
 
       it "他のユーザーの旅のプランが表示されていないこと" do
-        other_users_itinerary = create(:itinerary, owner: other_user)
-        expect(page).not_to have_content other_users_itinerary.title
+        [itinerary1, itinerary2].each { |i| i.members << user }
+        visit itineraries_path
+        expect(page).not_to have_content itinerary3.title
       end
 
       it "旅のプランのカードをクリックすると、旅のプラン情報ページへ遷移すること" do
+        itinerary1.members << user
+        visit itineraries_path
         click_on itinerary1.title
         expect(current_path).to eq itinerary_path(itinerary1.id)
       end
@@ -224,7 +225,7 @@ RSpec.describe "Itineraries", type: :system do
     end
   end
 
-  describe "メンバー削除", js: true, focus: true do
+  describe "メンバー削除", js: true do
     let!(:itinerary) { create(:itinerary, owner: user) }
 
     it "成功すること" do
