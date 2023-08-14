@@ -66,8 +66,12 @@ class ItinerariesController < ApplicationController
 
   def destroy
     deleted_title = @itinerary.title
-    @itinerary.destroy
-    redirect_to :itineraries, notice: "#{deleted_title}を削除しました。"
+    if current_user == @itinerary.owner
+      @itinerary.destroy
+      redirect_to :itineraries, notice: "#{deleted_title}を削除しました。"
+    else
+      redirect_to :itineraries
+    end
   end
 
   private

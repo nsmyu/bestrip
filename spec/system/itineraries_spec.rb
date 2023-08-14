@@ -250,7 +250,7 @@ RSpec.describe "Itineraries", type: :system do
     end
   end
 
-  describe "削除", js: true do
+  describe "削除", js: true, focus: true do
     let!(:itinerary) { create(:itinerary, owner: user) }
 
     it "成功すること" do
@@ -258,9 +258,17 @@ RSpec.describe "Itineraries", type: :system do
         visit itinerary_path(itinerary.id)
         find("i", text: "delete").click
         click_on "削除する"
-        expect(current_path).to eq itineraries_path
         expect(page).to have_content "#{itinerary.title}を削除しました。"
+        expect(current_path).to eq itineraries_path
       }.to change(Itinerary, :count).by(-1)
+    end
+
+    it "作成者以外は削除できない（削除ボタンが表示されない）こと" do
+      itinerary.members << user << other_user
+      sign_out user
+      sign_in other_user
+      visit itinerary_path(itinerary.id)
+      expect(page).not_to have_selector "i", text: "delete"
     end
   end
 end

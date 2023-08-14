@@ -226,9 +226,17 @@ RSpec.describe "Itineraries", type: :request do
   end
 
   describe "DELETE #destroy" do
-    it "成功すること" do
+    it "作成者は旅のプランを削除できること" do
       delete itinerary_path(itinerary.id)
       expect(response).to redirect_to itineraries_path
+    end
+
+    it "作成者以外は旅のプランを削除できないこと" do
+      itinerary.members << user << other_user1
+      sign_out user
+      sign_in other_user1
+      delete itinerary_path(itinerary.id)
+      expect(other_user1.itineraries).to include itinerary
     end
   end
 end
