@@ -19,7 +19,7 @@ RSpec.describe User, type: :model do
 
   it "BesTrip IDが重複している場合は無効であること" do
     create(:user, bestrip_id: "user_id")
-    other_user = build(:user, :other, bestrip_id: "user_id")
+    other_user = build(:user, bestrip_id: "user_id")
     other_user.valid?
     expect(other_user.errors).to be_of_kind(:bestrip_id, :taken)
   end
@@ -43,14 +43,14 @@ RSpec.describe User, type: :model do
   end
 
   it "メールアドレスが他のユーザーと重複している場合は無効であること" do
-    create(:user)
-    user = build(:user, email: "edogawa@example.com")
-    user.valid?
-    expect(user.errors).to be_of_kind(:email, :taken)
+    user = create(:user)
+    other_user = build(:user, email: user.email)
+    other_user.valid?
+    expect(other_user.errors).to be_of_kind(:email, :taken)
   end
 
   it "メールアドレスが不正な形式の場合は無効であること" do
-    user = build(:user, email: "edogawa")
+    user = build(:user, email: "invalid_email_address")
     user.valid?
     expect(user.errors).to be_of_kind(:email, :invalid)
   end

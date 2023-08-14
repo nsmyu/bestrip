@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "Itineraries", type: :request do
   let!(:user) { create(:user) }
-  let!(:other_user) { create(:user, :other, bestrip_id: "other_user_id") }
+  let!(:other_user1) { create(:user, bestrip_id: "other_user1_id") }
+  let!(:other_user2) { create(:user) }
   let(:itinerary) { create(:itinerary, owner: user) }
 
   before do
@@ -17,15 +18,15 @@ RSpec.describe "Itineraries", type: :request do
 
     it "ログインユーザーの全ての旅のプランを取得すること" do
       other_itinerary = create(:itinerary, owner: user)
-      other_users_itinerary = create(:itinerary, owner: other_user)
+      other_users_itinerary = create(:itinerary, owner: other_user1)
       [itinerary, other_itinerary, other_users_itinerary].each { |i| i.members << user }
       get itineraries_path
       expect(response.body).to include itinerary.title, other_itinerary.title, other_users_itinerary.title
     end
 
     it "他のユーザーのプランを取得しないこと" do
-      other_users_itinerary = create(:itinerary, owner: other_user)
-      other_users_itinerary.members << other_user
+      other_users_itinerary = create(:itinerary, owner: other_user1)
+      other_users_itinerary.members << other_user1
       get itineraries_path
       expect(response.body).not_to include other_users_itinerary.title
     end
@@ -168,9 +169,9 @@ RSpec.describe "Itineraries", type: :request do
 
   describe "GET #search_user" do
     it "検索したBesTrip IDのユーザーを返すこと" do
-      user_search_params = { bestrip_id: other_user.bestrip_id, id: itinerary.id }
+      user_search_params = { bestrip_id: other_user1.bestrip_id, id: itinerary.id }
       get search_user_itinerary_path(itinerary.id), params: user_search_params
-      expect(response.body).to include other_user.name
+      expect(response.body).to include other_user1.name
     end
 
     it "検索したBesTrip IDのユーザーが存在しない場合、メッセージを返すこと" do
@@ -180,40 +181,48 @@ RSpec.describe "Itineraries", type: :request do
     end
 
     it "検索したBesTrip IDのユーザーが既にメンバーに含まれている場合、メッセージを返すこと" do
-      itinerary.members << other_user
-      user_search_params = { bestrip_id: other_user.bestrip_id, id: itinerary.id }
+      itinerary.members << other_user1
+      user_search_params = { bestrip_id: other_user1.bestrip_id, id: itinerary.id }
       get search_user_itinerary_path(itinerary.id), params: user_search_params
-      expect(response.body).to include other_user.name
+      expect(response.body).to include other_user1.name
       expect(response.body).to include "すでにメンバーに追加されています"
     end
   end
 
   describe "PATCH #add_member" do
     it "成功すること" do
-      add_member_params = { user_id: other_user.id, id: itinerary.id }
+      add_member_params = { user_id: other_user1.id, id: itinerary.id }
       patch add_member_itinerary_path(itinerary.id), params: add_member_params
       expect(response).to redirect_to itinerary_path(itinerary.id)
-      expect(itinerary.reload.members).to include other_user
+      expect(itinerary.reload.members).to include other_user1
     end
   end
 
   describe "DELETE #remove_member" do
-    it "成功すること" do
-      itinerary.members << other_user
-      remove_member_params = { user_id: other_user.id, id: itinerary.id }
-      delete remove_member_itinerary_path(itinerary.id), params: remove_member_params
-      expect(response).to redirect_to itinerary_path(itinerary.id)
-      expect(itinerary.reload.members).not_to include other_user
+    before do
+      itinerary.members << user << other_user1 << other_user2
     end
 
-    # it "作成者以外はメンバーを削除できないこと" do
-    #   itinerary.members << other_user
-    #   sign_out user
-    #   sign_in other_user
-    #   remove_member_params = { user_id: user.id, id: itinerary.id }
-    #   delete remove_member_itinerary_path(itinerary.id), params: remove_member_params
-    #   expect(itinerary.reload.members).to include user
-    # end
+    it "成功すること" do
+      remove_member_params = { user_id: other_user1.id, id: itinerary.id }
+      delete remove_member_itinerary_path(itinerary.id), params: remove_member_params
+      expect(response).to redirect_to itinerary_path(itinerary.id)
+      expect(itinerary.reload.members).not_to include other_user1
+    end
+
+    it "作成者以外はメンバーを削除できないこと" do
+      sign_out user
+      sign_in other_user1
+      remove_member_params = { user_id: other_user2.id, id: itinerary.id }
+      delete remove_member_itinerary_path(itinerary.id), params: remove_member_params
+      expect(itinerary.reload.members).to include other_user2
+    end
+
+    it "作成者をメンバーから削除することはできないこと" do
+      remove_member_params = { user_id: user.id, id: itinerary.id }
+      delete remove_member_itinerary_path(itinerary.id), params: remove_member_params
+      expect(itinerary.reload.members).to include user
+    end
   end
 
   describe "DELETE #destroy" do

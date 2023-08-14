@@ -115,7 +115,7 @@ RSpec.describe "UsersRegistrations", type: :request do
     end
 
     it "IDが一意でない場合、エラーメッセージを取得すること" do
-      create(:user, :other, bestrip_id: "user_id")
+      create(:user, bestrip_id: "user_id")
       patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } }
       expect(response.body).to include 'このIDは他の人が使用しています'
     end
