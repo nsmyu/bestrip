@@ -8,7 +8,7 @@ RSpec.describe "Itineraries", type: :system do
     sign_in user
   end
 
-  describe "一覧表示" do
+  describe "一覧表示", focus: true do
     context "旅のプランが登録されていない場合" do
       it "メッセージを表示すること" do
         visit itineraries_path
@@ -19,19 +19,29 @@ RSpec.describe "Itineraries", type: :system do
     context "旅のプランが複数登録されている場合" do
       let!(:itinerary1) { create(:itinerary, owner: user) }
       let!(:itinerary2) { create(:itinerary, departure_date: "2024-01-31", owner: user) }
-      let!(:itinerary3) { create(:itinerary, departure_date: "2024-02-02", owner: other_user) }
+      let!(:other_users_itinerary) { create(:itinerary, departure_date: "2024-02-02", owner: other_user) }
 
       it "ログインユーザーの全ての旅のプランを、出発日の降順で表示すること" do
-        [itinerary1, itinerary2, itinerary3].each { |i| i.members << user }
+        [itinerary1, itinerary2, other_users_itinerary].each { |i| i.members << user }
         visit itineraries_path
         expect(page.text).
-          to match(/#{itinerary3.title}[\s\S]*#{itinerary1.title}[\s\S]*#{itinerary2.title}/)
+          to match(/#{other_users_itinerary.title}[\s\S]*#{itinerary1.title}[\s\S]*#{itinerary2.title}/)
+      end
+
+      it "旅のタイトル、出発・帰宅日、メンバーのニックネームを表示すること" do
+        itinerary1.members << user << other_user
+        visit itineraries_path
+        expect(page).to have_content itinerary1.title
+        expect(page).to have_content itinerary1.departure_date.strftime('%Y/%-m/%-d')
+        expect(page).to have_content itinerary1.return_date.strftime('%Y/%-m/%-d')
+        expect(page).to have_content user.name
+        expect(page).to have_content other_user.name
       end
 
       it "他のユーザーの旅のプランが表示されていないこと" do
         [itinerary1, itinerary2].each { |i| i.members << user }
         visit itineraries_path
-        expect(page).not_to have_content itinerary3.title
+        expect(page).not_to have_content other_users_itinerary.title
       end
 
       it "旅のプランのカードをクリックすると、旅のプラン情報ページへ遷移すること" do
@@ -250,7 +260,7 @@ RSpec.describe "Itineraries", type: :system do
     end
   end
 
-  describe "削除", js: true, focus: true do
+  describe "削除", js: true do
     let!(:itinerary) { create(:itinerary, owner: user) }
 
     it "成功すること" do

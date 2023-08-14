@@ -18,9 +18,7 @@
                   <h5 class="mb-1"><%= itinerary.title %></h5>
                   <p><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
                   <hr class="dark horizontal">
-                  <div class="d-flex">
-                    <i class="material-icons me-1">group</i><p class="mb-0 text-sm"></p>
-                  </div>
+                  <p class="mb-0"><i class="material-icons pe-2" style="vertical-align: -4.5px;">group</i><%= member_names(itinerary) %></p>
                 </div>
               </div>
             <% end %>
