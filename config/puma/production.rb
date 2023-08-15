@@ -1,7 +1,7 @@
 environment "production"
 
-tmp_path = "#{File.expand_path("../../..", __FILE__)}/tmp"
-bind "unix://#{tmp_path}/sockets/puma.sock"
+root_dir = '/var/www/bestrip'
+bind "unix://#{root_dir}/sockets/puma.sock"
 
 threads 3, 3
 workers 2
