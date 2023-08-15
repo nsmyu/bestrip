@@ -21,7 +21,8 @@ RSpec.describe "Itineraries", type: :request do
       other_users_itinerary = create(:itinerary, owner: other_user1)
       [itinerary, other_itinerary, other_users_itinerary].each { |i| i.members << user }
       get itineraries_path
-      expect(response.body).to include itinerary.title, other_itinerary.title, other_users_itinerary.title
+      expect(response.body)
+        .to include itinerary.title, other_itinerary.title, other_users_itinerary.title
     end
 
     it "他のユーザーのプランを取得しないこと" do

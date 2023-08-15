@@ -56,7 +56,7 @@ class ItinerariesController < ApplicationController
 
   def remove_member
     member = User.find(params[:user_id])
-    if current_user == @itinerary.owner && member!= @itinerary.owner
+    if current_user == @itinerary.owner && member != @itinerary.owner
       @itinerary.itinerary_users.find_by(user_id: member.id).destroy
       redirect_to @itinerary
     else

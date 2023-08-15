@@ -19,13 +19,17 @@ RSpec.describe "Itineraries", type: :system do
     context "旅のプランが複数登録されている場合" do
       let!(:itinerary1) { create(:itinerary, owner: user) }
       let!(:itinerary2) { create(:itinerary, departure_date: "2024-01-31", owner: user) }
-      let!(:other_users_itinerary) { create(:itinerary, departure_date: "2024-02-02", owner: other_user) }
+      let!(:other_users_itinerary) {
+        create(:itinerary, departure_date: "2024-02-02", owner: other_user)
+      }
 
       it "ログインユーザーの全ての旅のプランを、出発日の降順で表示すること" do
         [itinerary1, itinerary2, other_users_itinerary].each { |i| i.members << user }
         visit itineraries_path
-        expect(page.text).
-          to match(/#{other_users_itinerary.title}[\s\S]*#{itinerary1.title}[\s\S]*#{itinerary2.title}/)
+        expect(page.text)
+          .to match(
+            /#{other_users_itinerary.title}[\s\S]*#{itinerary1.title}[\s\S]*#{itinerary2.title}/
+          )
       end
 
       it "旅のタイトル、出発・帰宅日、メンバーのニックネームを表示すること" do
@@ -115,7 +119,7 @@ RSpec.describe "Itineraries", type: :system do
         }.not_to change(User, :count)
       end
 
-      it "タイトルが同じユーザーで重複している場合、失敗すること"  do
+      it "タイトルが同じユーザーで重複している場合、失敗すること" do
         existing_itinerary = create(:itinerary, owner: user)
         expect {
           fill_in "itinerary[title]", with: existing_itinerary.title
