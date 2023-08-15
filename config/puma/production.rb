@@ -7,6 +7,6 @@ threads 3, 3
 workers 2
 preload_app!
 
-pidfile "#{tmp_path}/pids/puma.pid"
+pidfile "#{root_dir}/pids/puma.pid"
 
 plugin :tmp_restart
