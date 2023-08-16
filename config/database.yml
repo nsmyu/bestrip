@@ -1,10 +1,9 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  collation: utf8_general_ci
-  host: <%= ENV['RDS_HOSTNAME'] || 'localhost' %>
-  username: <%= ENV['RDS_USERNAME'] || 'bestrip' %>
-  password: <%= ENV['RDS_PASSWORD'] %>
+  host: <%= ENV['DB_HOSTNAME'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
@@ -18,4 +17,3 @@ test:
 production:
   <<: *default
   database: bestrip_production
-  # password: <%= ENV["BESTRIP_DATABASE_PASSWORD"] %>

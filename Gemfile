@@ -57,6 +57,7 @@ gem "devise-i18n"
 gem 'carrierwave'
 gem 'mini_magick'
 gem "dartsass-rails", "~> 0.4.1"
+gem 'dotenv-rails'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

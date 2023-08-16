@@ -15,7 +15,8 @@ preload_app!
 
 pidfile File.expand_path('tmp/server.pid')
 
-stdout_redirect File.expand_path('log/puma_access.log'), File.expand_path('log/puma_error.log'), true
+stdout_redirect File.expand_path('log/puma_access.log'), File.expand_path('log/puma_error.log'),
+true
 
 plugin :tmp_restart
 

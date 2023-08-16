@@ -34,4 +34,8 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
+/.env.development
+/.env.test
+/.env.production
+
 .DS_Store
