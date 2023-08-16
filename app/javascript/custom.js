@@ -1,4 +1,4 @@
-import { addInputFunction } from "./material_dashboard/material-dashboard";
+//import { addInputFunction } from "./material_dashboard/material-dashboard";
 
 function countChars() {
   const textInput = document.querySelector('#text-input');
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('turbo:frame-load', () => {
-  addInputFunction();
+  //addInputFunction();
   previewImage();
   countChars();
   const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
