@@ -551,7 +551,8 @@ function getEventTarget(e) {
 // End tabs navigation
 
 window.onload = addInputFunction()
-export function addInputFunction() {
+document.addEventListener('turbo:frame-load', addInputFunction)
+function addInputFunction() {
   // Material Design Input function
   var inputs = document.querySelectorAll('.form-control');
 

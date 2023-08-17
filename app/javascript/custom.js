@@ -1,4 +1,16 @@
+document.addEventListener('DOMContentLoaded', () => {
+  previewImage();
+  countChars();
+});
 
+document.addEventListener('turbo:frame-load', () => {
+  previewImage();
+  countChars();
+  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+  })
+});
 
 function countChars() {
   const textInput = document.querySelector('#text-input');
@@ -58,26 +70,3 @@ function previewImage() {
     }
   });
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  previewImage();
-  countChars();
-});
-
-document.addEventListener('turbo:frame-load', () => {
-
-  previewImage();
-  countChars();
-  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
-});
-
-// document.addEventListener('turbo:before-render', (e) => {
-//   const response = e.detail.fetchResponse.response
-//   if (response.redirected) {
-//     e.preventDefault()
-//     Turbo.visit(e.detail.fetchResponse.response.url, {action: 'advance'})
-//   }
-// })
