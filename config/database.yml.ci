@@ -3,6 +3,6 @@ test:
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
-  password:
+  password: postgres
   host: 127.0.0.1
   database: bestrip_test
