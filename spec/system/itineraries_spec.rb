@@ -198,9 +198,13 @@ RSpec.describe "Itineraries", type: :system do
 
       it "出発日より前の日付は帰宅日として選択できないこと" do
         find("#departure-date-pickr").click
+        expect(page).to have_css '.flatpickr-calendar'
         find('div.dayContainer > span:nth-child(2)').click
+
         find("#return-date-pickr").click
+        expect(page).to have_css '.flatpickr-calendar'
         find('div.dayContainer > span:nth-child(1)').click
+
         click_on "保存する"
         expect(page).to have_content "帰宅日を入力してください"
       end
