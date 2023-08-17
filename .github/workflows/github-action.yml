@@ -42,17 +42,16 @@ jobs:
       - name: Run rspec
         run: bundle exec rspec
 
-  # rubocop:
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 10
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+  rubocop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
 
-  #     - name: Set up Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         bundler-cache: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-  #     - name: Run rubocop
-  #       run: bundle exec rubocop --require rubocop-airbnb
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+
+      - name: Run rubocop
+        run: bundle exec rubocop --require rubocop-airbnb
