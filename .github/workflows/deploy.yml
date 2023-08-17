@@ -1,0 +1,10 @@
+name: EC2 deploy
+
+on:
+  workflow_run:
+    workflows:
+      - Run rspec, rubocop
+    branches:
+      - main
+    types: 
+      - completed
