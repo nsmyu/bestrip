@@ -38,7 +38,8 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-region: ${{ env.AWS_REGION }}
-          role-to-assume: "arn:aws:iam::377862882760:role/oidc-Github-Actions"
+          role-to-assume: ${{ secrets.EC2_ROLE_ARN }}
+          role-session-name: github-actions-deploy-${{ github.event.repository.name }}-${{ github.run_number }}
 
       # - name: Deploy
       #   run: |
