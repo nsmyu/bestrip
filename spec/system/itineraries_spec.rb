@@ -134,7 +134,8 @@ RSpec.describe "Itineraries", type: :system do
         find("#departure-date-pickr").click
         find('div.dayContainer > span:nth-child(2)').click
         find("#return-date-pickr").click
-        expect(page). to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
+        expect(page)
+          .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
     end
   end
@@ -194,7 +195,8 @@ RSpec.describe "Itineraries", type: :system do
         find("#departure-date-pickr").click
         find('div.dayContainer > span:nth-child(2)').click
         find("#return-date-pickr").click
-        expect(page). to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
+        expect(page)
+          .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
     end
   end
