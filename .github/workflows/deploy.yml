@@ -13,9 +13,9 @@ jobs:
     uses: ./.github/workflows/rspec.yml
 
   build:
-    needs: [rubocop, rspec]
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    needs: [rubocop, rspec]
     environment: production
 
     steps:
@@ -26,17 +26,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-     - name: Deploy
-       run: |
+      - name: Deploy
+        run: |
 
          # SSHのセキュリティグループを開放する
-         aws ec2 authorize-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
          # SSH接続して、git pullする
-         echo "${{ secrets.GIT_PRIVATE_KEY }}" > private_key
-         chmod 600 private_key
-         ssh -oStrictHostKeyChecking=no ${{ secrets.EC2_USER_NAME }}@${{ secrets.EC2_HOST_NAME }} -i private_key "cd React && git pull origin main"
+          echo "${{ secrets.GIT_PRIVATE_KEY }}" > private_key
+          chmod 600 private_key
+          ssh -oStrictHostKeyChecking=no ${{ secrets.EC2_USER_NAME }}@${{ secrets.EC2_HOST_NAME }} -i private_key "cd React && git pull origin main"
          # 処理を実行
 
          # SSHのセキュリティグループを閉じる
-         aws ec2 revoke-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
