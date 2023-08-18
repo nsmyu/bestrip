@@ -6,16 +6,17 @@ on:
       - 'main'
 
 jobs:
-  call_reusable_workflow:
+  rubocop:
     uses: ./.github/workflows/rubocop.yml
 
-  call_reusable_workflow:
+  rspec:
+    needs: rubocop
     uses: ./.github/workflows/rspec.yml
 
   build:
+    needs: rspec
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: [rubocop, rspec]
     environment: production
 
     steps:
