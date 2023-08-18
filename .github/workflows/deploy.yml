@@ -19,25 +19,35 @@ jobs:
     timeout-minutes: 10
     environment: production
 
+    env:
+      AWS_REGION: ap-northeast-1
+
     steps:
       - name: Public IP Install
         id: ip
-        uses: haythem/public-ip@v1.2
+        uses: haythem/public-ip@v1.3
 
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Deploy
-        run: |
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-         # SSHのセキュリティグループを開放する
-          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+      # - name: Deploy
+      #   run: |
 
-         # SSH接続して、git pullする
-          echo "${{ secrets.GIT_PRIVATE_KEY }}" > private_key
-          chmod 600 private_key
-          ssh -oStrictHostKeyChecking=no ${{ secrets.EC2_USER_NAME }}@${{ secrets.EC2_HOST_NAME }} -i private_key "cd React && git pull origin main"
-         # 処理を実行
+      #    # SSHのセキュリティグループを開放する
+      #     aws ec2 authorize-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
-         # SSHのセキュリティグループを閉じる
-          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+      #    # SSH接続して、git pullする
+      #     echo "${{ secrets.GIT_PRIVATE_KEY }}" > private_key
+      #     chmod 600 private_key
+      #     ssh -oStrictHostKeyChecking=no ${{ secrets.EC2_USER_NAME }}@${{ secrets.EC2_HOST_NAME }} -i private_key "cd React && git pull origin main"
+      #    # 処理を実行
+
+      #    # SSHのセキュリティグループを閉じる
+      #     aws ec2 revoke-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
