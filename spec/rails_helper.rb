@@ -6,7 +6,7 @@ require_relative '../config/environment'
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 
-Webdrivers::Chromedriver.required_version = "114.0.5735.90"
+# Webdrivers::Chromedriver.required_version = "114.0.5735.90"
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in

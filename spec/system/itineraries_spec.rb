@@ -8,7 +8,7 @@ RSpec.describe "Itineraries", type: :system do
     sign_in user
   end
 
-  describe "一覧表示", focus: true do
+  describe "一覧表示" do
     context "旅のプランが登録されていない場合" do
       it "メッセージを表示すること" do
         visit itineraries_path
@@ -134,10 +134,7 @@ RSpec.describe "Itineraries", type: :system do
         find("#departure-date-pickr").click
         find('div.dayContainer > span:nth-child(2)').click
         find("#return-date-pickr").click
-        find('div.dayContainer > span:nth-child(1)').click
-
-        click_on "保存する"
-        expect(page).to have_content "帰宅日を入力してください"
+        expect(page). to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
     end
   end
@@ -197,10 +194,7 @@ RSpec.describe "Itineraries", type: :system do
         find("#departure-date-pickr").click
         find('div.dayContainer > span:nth-child(2)').click
         find("#return-date-pickr").click
-        find('div.dayContainer > span:nth-child(1)').click
-
-        click_on "保存する"
-        expect(page).to have_content "帰宅日を入力してください"
+        expect(page). to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
     end
   end
