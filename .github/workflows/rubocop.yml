@@ -1,5 +1,10 @@
 name: Run rubocop
 
+on:
+  push:
+    branches:
+      - 'main'
+
 jobs:
   rubocop:
     runs-on: ubuntu-latest
