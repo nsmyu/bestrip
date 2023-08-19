@@ -14,8 +14,7 @@ CarrierWave.configure do |config|
       aws_secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"],
       region: 'ap-northeast-1'
     }
-    # キャッシュをS3に保存
-    # config.cache_storage = :fog
+    config.cache_storage = :fog
   else
     config.storage :file
     config.enable_processing = false if Rails.env.test?
