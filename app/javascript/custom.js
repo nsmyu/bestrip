@@ -51,7 +51,7 @@ function countChars() {
 }
 
 function previewImage() {
-  const imageInput = document.querySelector('#image-input');
+  const imageInput = document.querySelector('#image_input');
   console.log("1")
   if (!imageInput) return;
   console.log("2")
@@ -60,7 +60,7 @@ function previewImage() {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      const imagePreview = document.querySelector('#image-preview');
+      const imagePreview = document.querySelector('#image_preview');
       if(imagePreview) {
         imagePreview.src = reader.result;
       }

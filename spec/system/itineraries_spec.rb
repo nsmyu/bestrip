@@ -71,12 +71,12 @@ RSpec.describe "Itineraries", type: :system do
           fill_in "itinerary[departure_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
           fill_in "itinerary[return_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
 
-          expect(page).to have_selector "img[id='image-preview'][src*='default_itinerary']"
+          expect(page).to have_selector "img[id='image_preview'][src*='default_itinerary']"
 
           image_path = Rails.root.join('spec/fixtures/test_image.jpg')
           attach_file 'itinerary[image]', image_path, make_visible: true
 
-          expect(page).not_to have_selector "img[id='image-preview'][src*='default_itinerary']"
+          expect(page).not_to have_selector "img[id='image_preview'][src*='default_itinerary']"
 
           click_on "保存する"
 
@@ -158,12 +158,12 @@ RSpec.describe "Itineraries", type: :system do
         fill_in "itinerary[departure_date]", with: "Mon Apr 01 2024 00:00:00 GMT+0900"
         fill_in "itinerary[return_date]", with: "Mon Apr 08 2024 00:00:00 GMT+0900"
 
-        expect(page).to have_selector "img[id='image-preview'][src*='default_itinerary']"
+        expect(page).to have_selector "img[id='image_preview'][src*='default_itinerary']"
 
         image_path = Rails.root.join('spec/fixtures/test_image.jpg')
         attach_file 'itinerary[image]', image_path, make_visible: true
 
-        expect(page).not_to have_selector "img[id='image-preview'][src*='default_itinerary']"
+        expect(page).not_to have_selector "img[id='image_preview'][src*='default_itinerary']"
 
         click_on "保存する"
 

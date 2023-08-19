@@ -41,11 +41,11 @@
       <%= f.label :image, class: "m-0 fw-bold" %>
       <label type="button" class="text-primary text-sm">
         <i class="material-icons opacity-10" style="vertical-align: -4px;">add_a_photo</i>
-        <%= f.file_field :image, accept: "image/*", id: "image-input", class: "d-none" %>
+        <%= f.file_field :image, accept: "image/*", id: "image_input", class: "d-none" %>
         <%= f.hidden_field :image_cache %>
       </label>
       <div class="p-1">
-        <%= image_tag itinerary.image.url, id: 'image-preview', class: "border-radius-lg w-100 itinerary-image-preview" %>
+        <%= image_tag itinerary.image.url, id: 'image_preview', class: "border-radius-lg w-100 itinerary-image-preview" %>
       </div>
     </div>
     <div class="modal-footer justify-content-between">
