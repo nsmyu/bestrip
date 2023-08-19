@@ -37,5 +37,5 @@ jobs:
             ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production
             ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production
             sudo systemctl restart nginx
-            touch tmp/restart.txt
+            kill $(cat tmp/server.pid)
             ~/.rbenv/shims/bundle exec rails s -e production
