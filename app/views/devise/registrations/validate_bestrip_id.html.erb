@@ -2,7 +2,7 @@
   <%= form_with model: resource, url: users_update_without_password_path, local: true do |f| %>
     <div class="row mb-4 input-group">
       <div class="col-sm-3 col-form-label-lg">
-        <%= image_tag resource.avatar.url, id: 'image-preview', class: "rounded-circle resize-avatar" %>
+        <%= image_tag resource.avatar.url, id: 'image-preview', class: "rounded-circle avatar" %>
       </div>
       <div class="col-sm-8 d-flex">
         <label type="button" class="btn btn-outline-primary fw-bold mx-0 my-auto">

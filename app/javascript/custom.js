@@ -52,8 +52,9 @@ function countChars() {
 
 function previewImage() {
   const imageInput = document.querySelector('#image-input');
+  console.log("1")
   if (!imageInput) return;
-
+  console.log("2")
   imageInput.addEventListener('change', (e) =>{
     const file = e.target.files[0];
     const reader = new FileReader();

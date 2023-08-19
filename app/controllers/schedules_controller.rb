@@ -47,6 +47,11 @@ class SchedulesController < ApplicationController
 
   private
 
+  def validate_current_user
+    itinerary = Itinerary.find(params[:itinerary_id])
+    redirect_to :root unless itinerary.members.include?(current_user)
+  end
+
   def schedule_params
     params.require(:schedule)
       .permit(:title, :schedule_date, :start_at, :end_at, :icon, :url, :address, :note, :itinerary_id)
