@@ -23,8 +23,12 @@ RSpec.describe "Itineraries", type: :system do
         create(:itinerary, departure_date: "2024-02-02", owner: other_user)
       }
 
+      before do
+        [itinerary1, itinerary2].each { |i| i.members << user << other_user }
+      end
+
       it "ログインユーザーの全ての旅のプランを、出発日の降順で表示すること" do
-        [itinerary1, itinerary2, other_users_itinerary].each { |i| i.members << user }
+        other_users_itinerary.members << user
         visit itineraries_path
         expect(page.text)
           .to match(
@@ -33,7 +37,6 @@ RSpec.describe "Itineraries", type: :system do
       end
 
       it "旅のタイトル、出発・帰宅日、メンバーのニックネームを表示すること" do
-        itinerary1.members << user << other_user
         visit itineraries_path
         expect(page).to have_content itinerary1.title
         expect(page).to have_content itinerary1.departure_date.strftime('%Y/%-m/%-d')
@@ -43,13 +46,11 @@ RSpec.describe "Itineraries", type: :system do
       end
 
       it "他のユーザーの旅のプランが表示されていないこと" do
-        [itinerary1, itinerary2].each { |i| i.members << user }
         visit itineraries_path
         expect(page).not_to have_content other_users_itinerary.title
       end
 
       it "旅のプランのカードをクリックすると、旅のプラン情報ページへ遷移すること" do
-        itinerary1.members << user
         visit itineraries_path
         click_on itinerary1.title
         expect(current_path).to eq itinerary_path(itinerary1.id)
@@ -141,11 +142,12 @@ RSpec.describe "Itineraries", type: :system do
     end
   end
 
-  describe "編集", js: true do
+  describe "編集", js: true, focus: true do
     let!(:itinerary1) { create(:itinerary, owner: user) }
     let!(:itinerary2) { create(:itinerary, owner: user) }
 
     before do
+      itinerary1.members << user
       visit itinerary_path(itinerary1.id)
       find("i", text: "edit").click
     end
@@ -207,6 +209,7 @@ RSpec.describe "Itineraries", type: :system do
     let!(:itinerary) { create(:itinerary, owner: user) }
 
     before do
+      itinerary.members << user
       visit itinerary_path(itinerary.id)
       click_on "メンバーを追加"
     end
@@ -267,6 +270,10 @@ RSpec.describe "Itineraries", type: :system do
   describe "削除", js: true do
     let!(:itinerary) { create(:itinerary, owner: user) }
 
+    before do
+      itinerary.members << user << other_user
+    end
+
     it "成功すること" do
       expect {
         visit itinerary_path(itinerary.id)
@@ -278,7 +285,6 @@ RSpec.describe "Itineraries", type: :system do
     end
 
     it "作成者以外は削除できない（削除ボタンが表示されない）こと" do
-      itinerary.members << user << other_user
       sign_out user
       sign_in other_user
       visit itinerary_path(itinerary.id)

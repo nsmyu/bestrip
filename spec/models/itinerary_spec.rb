@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Itinerary, type: :model, focus: true do
+RSpec.describe Itinerary, type: :model do
   it "タイトル、出発日、帰宅日、user_id(owner)があれば有効であること" do
     expect(create(:itinerary)).to be_valid
   end

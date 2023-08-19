@@ -4,5 +4,9 @@ FactoryBot.define do
     departure_date    { "2024-02-01" }
     return_date       { "2024-02-08" }
     owner
+
+    # after(:build) do |itinerary|
+    #   itinerary.members << owner
+    # end
   end
 end

@@ -7,6 +7,7 @@ RSpec.describe "Itineraries", type: :request do
   let(:itinerary) { create(:itinerary, owner: user) }
 
   before do
+    itinerary.members << user
     sign_in user
   end
 
@@ -19,7 +20,7 @@ RSpec.describe "Itineraries", type: :request do
     it "ログインユーザーの全ての旅のプランを取得すること" do
       other_itinerary = create(:itinerary, owner: user)
       other_users_itinerary = create(:itinerary, owner: other_user1)
-      [itinerary, other_itinerary, other_users_itinerary].each { |i| i.members << user }
+      [other_itinerary, other_users_itinerary].each { |i| i.members << user }
       get itineraries_path
       expect(response.body)
         .to include itinerary.title, other_itinerary.title, other_users_itinerary.title
@@ -89,6 +90,7 @@ RSpec.describe "Itineraries", type: :request do
     end
 
     it "旅のプランの情報を取得すること" do
+      puts itinerary.members.inspect
       expect(response.body).to include itinerary.title
       expect(response.body).to include "2024/2/1 (木)"
       expect(response.body).to include "2024/2/8 (木)"
@@ -201,7 +203,7 @@ RSpec.describe "Itineraries", type: :request do
 
   describe "DELETE #remove_member" do
     before do
-      itinerary.members << user << other_user1 << other_user2
+      itinerary.members << other_user1 << other_user2
     end
 
     it "成功すること" do
@@ -233,7 +235,7 @@ RSpec.describe "Itineraries", type: :request do
     end
 
     it "作成者以外は旅のプランを削除できないこと" do
-      itinerary.members << user << other_user1
+      itinerary.members << other_user1
       sign_out user
       sign_in other_user1
       delete itinerary_path(itinerary.id)

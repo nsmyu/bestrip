@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Schedule, type: :model, focus: true do
+RSpec.describe Schedule, type: :model do
   it "タイトル、itinerary_idがあれば有効であること" do
     expect(build(:schedule)).to be_valid
   end
