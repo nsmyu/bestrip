@@ -83,6 +83,7 @@ end
 group :production do
   gem 'terser'
   gem 'puma-daemon', require: false
+  gem 'fog-aws'
 end
 
 
