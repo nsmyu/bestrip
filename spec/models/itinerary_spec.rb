@@ -39,7 +39,7 @@ RSpec.describe Itinerary, type: :model, focus: true do
   it "帰宅日が出発日より前の場合は無効であること" do
     itinerary = build(:itinerary, departure_date: "2024-03-04", return_date: "2024-03-01")
     itinerary.valid?
-    expect(itinerary.errors.full_messages).to include "帰宅日は出発日以降で選択してください"
+    expect(itinerary.errors).to be_of_kind(:return_date, "は出発日以降で選択してください")
   end
 
   it "user_id(owner)がなければ無効であること" do

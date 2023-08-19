@@ -54,7 +54,7 @@ class SchedulesController < ApplicationController
 
   def schedule_params
     params.require(:schedule)
-      .permit(:title, :start_at, :end_at, :icon, :url, :address, :note, :itinerary_id)
+      .permit(:title, :schedule_date, :start_at, :end_at, :icon, :url, :address, :note, :itinerary_id)
   end
 
   def set_schedule

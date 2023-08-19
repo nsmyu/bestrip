@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_19_091030) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_19_113809) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,6 +46,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_19_091030) do
     t.bigint "itinerary_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "schedule_date"
     t.index ["itinerary_id"], name: "index_schedules_on_itinerary_id"
   end
 
