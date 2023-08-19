@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Itinerary, type: :model do
-  it "タイトル、出発日、帰宅日があれば有効であること" do
+RSpec.describe Itinerary, type: :model, focus: true do
+  it "タイトル、出発日、帰宅日、user_id(owner)があれば有効であること" do
     expect(create(:itinerary)).to be_valid
   end
 
@@ -40,5 +40,11 @@ RSpec.describe Itinerary, type: :model do
     itinerary = build(:itinerary, departure_date: "2024-03-04", return_date: "2024-03-01")
     itinerary.valid?
     expect(itinerary.errors.full_messages).to include "帰宅日は出発日以降で選択してください"
+  end
+
+  it "user_id(owner)がなければ無効であること" do
+    itinerary = build(:itinerary, owner: nil)
+    itinerary.valid?
+    expect(itinerary.errors).to be_of_kind(:owner, :blank)
   end
 end
