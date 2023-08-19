@@ -23,4 +23,6 @@ Rails.application.routes.draw do
       delete 'remove_member', to: 'itineraries#remove_member'
     end
   end
+
+  resources :schedules
 end
