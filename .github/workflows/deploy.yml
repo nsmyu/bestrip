@@ -13,45 +13,30 @@ jobs:
     needs: rubocop
     uses: ./.github/workflows/rspec.yml
 
-  build:
+  deploy:
     needs: rspec
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment: production
-    permissions:
-      id-token: write
-      contents: read
-
-
-    env:
-      AWS_REGION: ap-northeast-1
 
     steps:
-      - name: Public IP Install
-        id: ip
-        uses: haythem/public-ip@v1.3
-
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: Install SSH Key for Deploy
+        uses: appleboy/ssh-action@v1.0.0
         with:
-          aws-region: ${{ env.AWS_REGION }}
-          role-to-assume: ${{ secrets.EC2_ROLE_ARN }}
-          role-session-name: github-actions-deploy-${{ github.event.repository.name }}-${{ github.run_number }}
-
-      # - name: Deploy
-      #   run: |
-
-      #    # SSHのセキュリティグループを開放する
-      #     aws ec2 authorize-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
-
-      #    # SSH接続して、git pullする
-      #     echo "${{ secrets.GIT_PRIVATE_KEY }}" > private_key
-      #     chmod 600 private_key
-      #     ssh -oStrictHostKeyChecking=no ${{ secrets.EC2_USER_NAME }}@${{ secrets.EC2_HOST_NAME }} -i private_key "cd React && git pull origin main"
-      #    # 処理を実行
-
-      #    # SSHのセキュリティグループを閉じる
-      #     aws ec2 revoke-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+          key: ${{ secrets.GIT_PRIVATE_KEY }}
+          host: ${{ secrets.EC2_HOST_NAME }}
+          username: ${{ secrets.EC2_USER_NAME }}
+          port: 22
+          script: |
+            cd /var/www/bestrip
+            git pull origin main
+            ~/.rbenv/shims/bundle install
+            ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production
+            ~/.rbenv/shims/bundle exec rails db:seed RAILS_ENV=production
+            ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production
+            sudo systemctl restart nginx
+            touch tmp/restart.txt
+            ~/.rbenv/shims/bundle exec rails s -e production
