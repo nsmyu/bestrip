@@ -133,8 +133,8 @@ RSpec.describe "Itineraries", type: :system do
       it "出発日より前の日付は帰宅日として選択できないこと" do
         find("#departure-date-pickr").click
         find('div.dayContainer > span:nth-child(2)').click
-        find("#return-date-pickr").click
         sleep 0.1
+        find("#return-date-pickr").click
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
@@ -195,8 +195,8 @@ RSpec.describe "Itineraries", type: :system do
       it "出発日より前の日付は帰宅日として選択できないこと" do
         find("#departure-date-pickr").click
         find('div.dayContainer > span:nth-child(2)').click
-        find("#return-date-pickr").click
         sleep 0.1
+        find("#return-date-pickr").click
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
