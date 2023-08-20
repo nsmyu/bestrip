@@ -9,7 +9,7 @@
       <% else %>
         <% @itineraries.each do |itinerary| %>
           <div class="col-lg-6 col-md-6 pt-4 pb-5 px-3">
-            <%= link_to [:itinerary, id: itinerary.id] do %>
+            <%= link_to schedules_path(itinerary.id) do %>
               <div class="card itinerary-card z-index-2">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
                   <%= image_tag itinerary.image.url, class: "border-radius-lg shadow-dark w-100" %>

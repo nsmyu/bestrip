@@ -19,8 +19,13 @@
           </div>
         </div>
         <%= image_tag @itinerary.image.url, class: "border-radius-lg shadow-dark w-100 my-3" %>
-        <h5 class="my-1"><%= @itinerary.title %></h5>
-        <p class="my-1"><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
+        <p class="mt-1 mb-2"><span class="fw-bold text-xs">タイトル</span><br><%= @itinerary.title %></p>
+        <p class="mb-2"><span class="fw-bold text-xs">旅行期間</span><br><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
+        <p class="mb-1">
+          <span class="fw-bold text-xs d-inline-block mb-2">旅のプラン作成者</span><br>
+          <%= image_tag @itinerary.owner.avatar.url, id: 'image-preview', class: "rounded-circle avatar-thumbnail me-2" %>
+          <%= @itinerary.owner.name %>
+        </p>
       </div>
     </div>
     <div class="card z-index-2 w-md-60 mx-auto">
@@ -30,9 +35,12 @@
         </div>
         <% @itinerary_members.each do |member| %>
           <div class="d-flex justify-content-between mt-3">
-            <div class="">
+            <div>
               <%= image_tag member.avatar.url, id: 'image-preview', class: "rounded-circle avatar-thumbnail me-2" %>
-              <%= member.name %><span class="text-sm"><%= "（プラン作成者）" if member == @itinerary.owner %></span>
+              <%= member.name %>
+              <% if member == @itinerary.owner %>
+                <i class="material-icons" style="vertical-align: -3.5px;">star</i>
+              <% end %>
             </div>
             <% if current_user == @itinerary.owner && member!= @itinerary.owner %>
               <%= link_to [:remove_member_itinerary, id: @itinerary.id, user_id: member.id], data: { turbo_method: :delete, turbo_confirm: member.name + 'をメンバーから削除しますか？' } do %>

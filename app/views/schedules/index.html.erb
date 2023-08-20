@@ -1,0 +1,40 @@
+<%= render 'layouts/sidenav' %>
+<main class="main-content position-relative">
+  <div class="container-fluid py-5 px-sm-6 px-3">
+    <div class="row">
+      <% if @sorted_schedules.blank? %>
+        <div class="text-center p-6 mb-12">
+          スケジュールは登録されていません
+        </div>
+      <% else %>
+        <div class="w-md-70 mx-auto">
+          <% @sorted_schedules.each do |date, schedule| %>
+            <div class="card mb-4">
+              <div class="card-body text-dark">
+                <h5><%= l date %></h5>
+                <% schedule.each do |schedule| %>
+                  <div class="border-top">
+                    <h5><%= schedule.title %></h5>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <%
+=begin%>
+ <div class="fixed-plugin">
+    <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2">
+      <%= turbo_frame_tag "itinerary" do %>
+        <%= link_to :new_itinerary, data: { turbo_frame: "modal" } do %>
+          <p class="mb-0 py-1"><i class="material-icons" style="vertical-align: -4.5px;">add_circle</i> スケジュールを追加</p>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<%
+=end%>
+</main>
