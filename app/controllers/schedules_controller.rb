@@ -9,6 +9,7 @@ class SchedulesController < ApplicationController
 
   def new
     @schedule = Schedule.new
+    @itinerary = Itinerary.find(params[:itinerary_id])
   end
 
   def create

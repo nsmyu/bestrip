@@ -1,0 +1,37 @@
+<%= render 'layouts/sidenav' %>
+<main class="main-content position-relative">
+  <main class="container-fluid py-5 px-sm-6 px-3">
+    <div class="w-md-70 mx-auto">
+      <div class="card mb-4 p-4 text-dark">
+        <div class="border-bottom">
+          <h4>スケジュール作成</h4>
+        </div>
+        <%= form_with model: @schedule, url: itinerary_schedules_path do |f| %>
+          <div class="input-group input-group-outline row mx-0 mb-3">
+            <%= f.label "日付", class: "fw-bold px-0 mb-1" %>
+            <%= f.date_field :schedule_date, class: "form-control fa fw-normal", id: "schedule-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
+            <div class="d-none" id="departure-date"><%= @itinerary.departure_date %></div>
+            <div class="d-none" id="return-date"><%= @itinerary.return_date %></div>
+          </div>
+          <div class="input-group input-group-outline row mx-0 mb-4">
+            <%= f.label :title, class: "fw-bold px-0 mb-1" do %>タイトル<span class="required">*</span><% end%>
+            <%= f.text_field :title, class: "form-control", placeholder: "旅のタイトルを入力" %>
+            <div class="<%= "error-message" if @schedule.errors.messages.key?(:title) %>" >
+              <%= @schedule.errors.full_messages_for(:title).first if @schedule.errors.any? %>
+            </div>
+          </div>
+          <div class="input-group input-group-outline row mx-0 mb-4">
+            <%= f.label "時間", class: "fw-bold px-0 mb-1" %>
+            <%= f.time_field :start_at, class: "form-control fa fw-normal", id: "departure-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
+            <%= f.time_field :end_at, class: "form-control fa fw-normal", id: "return-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn bg-gradient-light mb-0" data-bs-dismiss="modal">キャンセル</button>
+            <%= f.submit "保存する", class: "btn bg-gradient-primary mb-0" %>
+          </div>
+        <% end%>
+      </div>
+    </div>
+  </div>
+</main>
+

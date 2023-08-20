@@ -1,0 +1,46 @@
+<%= turbo_frame_tag "schedule" do %>
+  <%= form_with url: itinerary_schedules_path, data: { action: "turbo:submit-end->modal#close" } do |f| %>
+    <div class="mb-4 input-group input-group-static">
+      <%= f.label :title, class: "fw-bold" do %>
+        タイトル（30文字以内で入力） <span class="required">*</span>
+      <% end%>
+      <%= f.text_field :title, class: "form-control", placeholder: "旅のタイトルを入力" %>
+      <div class="<%= "error-message" if schedule.errors.messages.key?(:title) %>" >
+        <%= schedule.errors.full_messages_for(:title).first if schedule.errors.any? %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm mb-4 mb-sm-0 input-group input-group-static">
+        <%= f.label :start_at, class: "fw-bold" do %>
+          出発日
+        <% end%>
+        <%= f.date_field :start_at, class: "form-control fa fw-normal", id: "departure-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
+      </div>
+      <div class="col-sm mb-4 mb-sm-0 input-group input-group-static">
+        <%= f.label :end_at, class: "fw-bold" do %>
+          帰宅日
+        <% end%>
+        <%= f.date_field :end_at, class: "form-control fa fw-normal", id: "return-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
+      </div>
+    </div>
+    <%
+=begin%>
+ <div class="mb-4">
+      <%= f.label :image, class: "m-0 fw-bold" %>
+      <label type="button" class="text-primary text-sm">
+        <i class="material-icons opacity-10" style="vertical-align: -4px;">add_a_photo</i>
+        <%= f.file_field :image, accept: "image/*", id: "image_input", class: "d-none" %>
+        <%= f.hidden_field :image_cache %>
+      </label>
+      <div class="p-1">
+        <%= image_tag schedule.image.url, id: 'image_preview', class: "border-radius-lg w-100 itinerary-image-preview" %>
+      </div>
+    </div>
+<%
+=end%>
+    <div class="modal-footer justify-content-between">
+      <button type="button" class="btn bg-gradient-light mb-0" data-bs-dismiss="modal">キャンセル</button>
+      <%= f.submit "保存する", class: "btn bg-gradient-primary mb-0" %>
+    </div>
+  <% end%>
+<% end%>
