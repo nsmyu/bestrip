@@ -13,11 +13,11 @@ document.addEventListener('turbo:frame-load', () => {
       ? departureDate.value : departureDate.value.slice(0, -3);
     const minReturnDate = new Date(Date.parse(departureDateValue));
     config.minDate = minReturnDate;
-    flatpickr('#return-date-pickr', config);
+    flatpickr(returnDate, config);
   }
 
-  flatpickr('#return-date-pickr', config);
-  flatpickr('#departure-date-pickr', config);
+  flatpickr(returnDate, config);
+  flatpickr(departureDate, config);
 
   if(departureDate.value) {
     const returnDateValue = returnDate.value

@@ -10,5 +10,4 @@ class Schedule < ApplicationRecord
       errors.add(:schedule_date, "出発日〜帰宅日の間で選択してください")
     end
   end
-
 end

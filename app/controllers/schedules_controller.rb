@@ -28,17 +28,17 @@ class SchedulesController < ApplicationController
   end
 
   def update
-    if  @schedule.update(schedule_params)
-      redirect_to  @schedules, notice: "スケジュール情報を変更しました。"
+    if @schedule.update(schedule_params)
+      redirect_to @schedules, notice: "スケジュール情報を変更しました。"
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    deleted_title =  @schedule.title
-    if current_user ==  @schedule.owner
-       @schedule.destroy
+    deleted_title = @schedule.title
+    if current_user == @schedule.owner
+      @schedule.destroy
       redirect_to :schedules, notice: "#{deleted_title}を削除しました。"
     else
       redirect_to :schedules
@@ -58,6 +58,6 @@ class SchedulesController < ApplicationController
   end
 
   def set_schedule
-     @schedule = Schedule.find(params[:id])
+    @schedule = Schedule.find(params[:id])
   end
 end
