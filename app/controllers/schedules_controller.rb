@@ -3,9 +3,8 @@ class SchedulesController < ApplicationController
   before_action :set_schedule, except: [:index, :new, :create]
 
   def index
-
-    @schedules = Itinerary.find(params[:id]).schedules
-    @sorted_schedules = @schedules.group_by {|s| s.schedule_date }
+    @schedules = Itinerary.find(params[:itinerary_id]).schedules
+    @grouped_schedules = @schedules.group_by(&:schedule_date)
   end
 
   def new
@@ -49,7 +48,7 @@ class SchedulesController < ApplicationController
   private
 
   def validate_current_user
-    itinerary = Itinerary.find(params[:id])
+    itinerary = Itinerary.find(params[:itinerary_id])
     redirect_to :root unless itinerary.members.include?(current_user)
   end
 

@@ -2,20 +2,35 @@
 <main class="main-content position-relative">
   <div class="container-fluid py-5 px-sm-6 px-3">
     <div class="row">
-      <% if @sorted_schedules.blank? %>
+      <% if @grouped_schedules.blank? %>
         <div class="text-center p-6 mb-12">
           スケジュールは登録されていません
         </div>
       <% else %>
         <div class="w-md-70 mx-auto">
-          <% @sorted_schedules.each do |date, schedule| %>
+          <% @grouped_schedules.each do |date, schedule| %>
             <div class="card mb-4">
-              <div class="card-body text-dark">
-                <h5><%= l date %></h5>
+              <div class="text-dark mt-3">
+                <h5 class="ms-4"><%= date ? (l date) : "その他の予定" %></h5>
                 <% schedule.each do |schedule| %>
-                  <div class="border-top">
-                    <h5><%= schedule.title %></h5>
-                  </div>
+                  <%= link_to [:itinerary_schedule, id: schedule.id] do %>
+                    <div class="border-top mx-0 link-area text-dark">
+                      <div class="py-3 row mx-0">
+                        <div class="col-3 col-sm-2 text-center text-primary fw-bold">
+                          <i class="material-icons text-sm" style="vertical-align: -2px;">schedule</i>
+                          <%= schedule.start_at.blank? ? "未定" : schedule.start_at %><br> - <span class="text-sm"><%= schedule.end_at.blank? ? "未定" : schedule.end_at %></span>
+                        </div>
+                        <div class="col-9 col-sm-8 ps-0 d-table">
+                          <div class="d-table-cell align-middle pe-2">
+                            <% if schedule.icon %>
+                              <i class="material-icons px-1" style="vertical-align: -4px;"><%= schedule.icon %></i>
+                            <% end %>
+                            <%= schedule.title %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
                 <% end %>
               </div>
             </div>
@@ -24,17 +39,13 @@
       <% end %>
     </div>
   </div>
-  <%
-=begin%>
- <div class="fixed-plugin">
+  <div class="fixed-plugin">
     <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2">
-      <%= turbo_frame_tag "itinerary" do %>
-        <%= link_to :new_itinerary, data: { turbo_frame: "modal" } do %>
-          <p class="mb-0 py-1"><i class="material-icons" style="vertical-align: -4.5px;">add_circle</i> スケジュールを追加</p>
+      <%= turbo_frame_tag "schedule" do %>
+        <%= link_to :new_itinerary_schedule, data: { turbo_frame: "modal" } do %>
+          <p class="mb-0 py-1"><i class="material-icons" style="vertical-align: -4.5px;">add_circle</i> スケジュール追加</p>
         <% end %>
       <% end %>
     </div>
   </div>
-<%
-=end%>
 </main>
