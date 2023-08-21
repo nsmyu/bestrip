@@ -3,8 +3,16 @@ class SchedulesController < ApplicationController
   before_action :set_schedule, except: [:index, :new, :create]
 
   def index
-    @schedules = Itinerary.find(params[:itinerary_id]).schedules
-    @grouped_schedules = @schedules.group_by(&:schedule_date)
+    unsorted_schedules = Itinerary.find(params[:itinerary_id]).schedules
+    @sorted_schedules = unsorted_schedules
+      .group_by(&:schedule_date)
+      .map do |date, schedules|
+        [
+          date, schedules.sort_by do |schedule|
+            schedule[:start_at] || -1
+          end,
+        ]
+      end
   end
 
   def new
