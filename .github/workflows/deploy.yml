@@ -3,7 +3,7 @@ name: EC2 deploy
 on:
   push:
     branches:
-      - 'main'
+      - 'develop/03-schedule'
 
 jobs:
   rubocop:
@@ -32,7 +32,7 @@ jobs:
           port: 22
           script: |
             cd /var/www/bestrip
-            git pull origin main
+            git pull origin develop/03-schedule
             ~/.rbenv/shims/bundle install
             ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production
             ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production

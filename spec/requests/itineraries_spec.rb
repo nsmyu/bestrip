@@ -3,11 +3,10 @@ require 'rails_helper'
 RSpec.describe "Itineraries", type: :request do
   let!(:user) { create(:user) }
   let!(:other_user1) { create(:user, bestrip_id: "other_user1_id") }
-  let!(:other_user2) { create(:user) }
-  let(:itinerary) { create(:itinerary, owner: user) }
+  let(:other_user2) { create(:user) }
+  let!(:itinerary) { create(:itinerary, owner: user) }
 
   before do
-    itinerary.members << user
     sign_in user
   end
 
@@ -20,7 +19,7 @@ RSpec.describe "Itineraries", type: :request do
     it "ログインユーザーの全ての旅のプランを取得すること" do
       other_itinerary = create(:itinerary, owner: user)
       other_users_itinerary = create(:itinerary, owner: other_user1)
-      [other_itinerary, other_users_itinerary].each { |i| i.members << user }
+      other_users_itinerary.members << user
       get itineraries_path
       expect(response.body)
         .to include itinerary.title, other_itinerary.title, other_users_itinerary.title
@@ -28,7 +27,6 @@ RSpec.describe "Itineraries", type: :request do
 
     it "他のユーザーのプランを取得しないこと" do
       other_users_itinerary = create(:itinerary, owner: other_user1)
-      other_users_itinerary.members << other_user1
       get itineraries_path
       expect(response.body).not_to include other_users_itinerary.title
     end
@@ -149,8 +147,9 @@ RSpec.describe "Itineraries", type: :request do
       end
 
       it "タイトルが同じユーザーで重複している場合、失敗すること" do
-        other_itinerary = create(:itinerary, title: "Other Trip", owner: user)
-        itinerary_params = attributes_for(:itinerary, title: other_itinerary.title)
+        registered_itinerary = create(:itinerary, owner: user)
+        itinerary_params =
+          attributes_for(:itinerary, title: registered_itinerary.title, owner: user)
         patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
         expect(response.body).to include "このタイトルはすでに使用されています"
       end

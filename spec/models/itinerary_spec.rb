@@ -43,7 +43,8 @@ RSpec.describe Itinerary, type: :model do
   end
 
   it "user_id(owner)がなければ無効であること" do
-    itinerary = build(:itinerary, owner: nil)
+    itinerary = build(:itinerary)
+    itinerary.owner = nil
     itinerary.valid?
     expect(itinerary.errors).to be_of_kind(:owner, :blank)
   end
