@@ -22,9 +22,70 @@
           </div>
           <div class="input-group input-group-outline row mx-0 mb-4">
             <%= f.label "時間", class: "fw-bold px-0 mb-1" %>
-            <%= f.time_field :start_at, class: "form-control fa fw-normal", id: "departure-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
-            <%= f.time_field :end_at, class: "form-control fa fw-normal", id: "return-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
+            <%= f.time_field :start_at, class: "form-control fa fw-normal time-pickr", readonly:"", placeholder: " \uf017 開始時間" %>
+            <%= f.time_field :end_at, class: "form-control fa fw-normal time-pickr", readonly:"", placeholder: " \uf017 終了時間" %>
           </div>
+
+          <div class="mb-4">
+            <%= f.label "アイコン", class: "fw-bold px-0 mb-1 d-block" %>
+            <label type="button" class="text-primary">
+              <i class="material-icons opacity-10">restaurant</i>
+              <%= f.radio_button :icon, :restaurant, class: "d-none" %>
+            </label>
+            <label type="button" class="text-primary">
+              <i class="material-icons opacity-10">local_cafe</i>
+              <%= f.radio_button :icon, :local_cafe, class: "d-none" %>
+            </label>
+            <label type="button" class="text-primary">
+              <i class="material-icons opacity-10" style="vertical-align: -4px;">hotel</i>
+              <%= f.radio_button :icon, :hotel, class: "d-none" %>
+            </label>
+            <label type="button" class="text-primary">
+              <i class="material-icons opacity-10" style="vertical-align: -4px;">train</i>
+              <%= f.radio_button :icon, :train, class: "d-none" %>
+            </label>
+            <label type="button" class="text-primary">
+              <i class="material-icons opacity-10" style="vertical-align: -4px;">directions_car</i>
+              <%= f.radio_button :icon, :directions_car, class: "d-none" %>
+            </label>
+            <label type="button" class="text-primary text-sm">
+              <i class="material-icons opacity-10" style="vertical-align: -4px;">directions_bus</i>
+              <%= f.radio_button :icon, :directions_bus, class: "d-none" %>
+            </label>
+            <label type="button" class="text-primary text-sm">
+              <i class="material-icons opacity-10" style="vertical-align: -4px;">flight</i>
+              <%= f.radio_button :icon, :flight, class: "d-none" %>
+            </label>
+            <label type="button" class="text-primary text-sm">
+              <i class="material-icons opacity-10" style="vertical-align: -4px;">directions_walk</i>
+              <%= f.radio_button :icon, :directions_walk, class: "d-none" %>
+            </label>
+            <label type="button" class="text-primary text-sm">
+              <i class="material-icons opacity-10" style="vertical-align: -4px;">directions_bike</i>
+              <%= f.radio_button :icon, :directions_bike, class: "d-none" %>
+            </label>
+            <label type="button" class="text-primary text-sm">
+              <i class="material-icons opacity-10" style="vertical-align: -4px;">attractions</i>
+              <%= f.radio_button :icon, :attractions, class: "d-none" %>
+            </label>
+            <label type="button" class="text-primary text-sm">
+              <i class="material-icons opacity-10" style="vertical-align: -4px;">shopping_cart</i>
+              <%= f.radio_button :icon, :shopping_cart, class: "d-none" %>
+            </label>
+            <label type="button" class="text-primary text-sm">
+              <i class="material-icons opacity-10" style="vertical-align: -4px;">landscape</i>
+              <%= f.radio_button :icon, :landscape, class: "d-none" %>
+            </label>
+            <label type="button" class="text-primary text-sm">
+              <i class="material-icons opacity-10" style="vertical-align: -4px;">castle</i>
+              <%= f.radio_button :icon, :castle, class: "d-none" %>
+            </label>
+            <label type="button" class="text-primary text-sm">
+              <i class="material-icons opacity-10" style="vertical-align: -4px;">local_activity</i>
+              <%= f.radio_button :icon, :local_activity, class: "d-none" %>
+            </label>
+          </div>
+
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn bg-gradient-light mb-0" data-bs-dismiss="modal">キャンセル</button>
             <%= f.submit "保存する", class: "btn bg-gradient-primary mb-0" %>

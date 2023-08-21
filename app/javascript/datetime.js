@@ -36,13 +36,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const returnDate = document.querySelector("#return-date");
   const minScheduleDate = new Date(Date.parse(departureDate.textContent));
   const maxScheduleDate = new Date(Date.parse(returnDate.textContent));
-  const config = {
+  const time = document.querySelectorAll(".time-pickr");
+
+  flatpickr(scheduleDate, {
     locale        : 'ja',
     dateFormat    : 'Y/m/d（D）',
     disableMobile : true,
     minDate       : minScheduleDate,
     maxDate       : maxScheduleDate,
-	};
+  });
 
-  flatpickr(scheduleDate, config);
+  flatpickr(time, {
+    enableTime  : true,
+    noCalendar  : true,
+    dateFormat  : "H:i",
+    time_24hr   : true,
+  });
 });
