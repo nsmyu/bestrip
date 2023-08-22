@@ -1,4 +1,4 @@
-class ItineraryImageUploader < CarrierWave::Uploader::Base
+class ScheduleImageUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   # Override the directory where uploaded files will be stored.
@@ -8,11 +8,11 @@ class ItineraryImageUploader < CarrierWave::Uploader::Base
   end
 
   def default_url
-    'default_itinerary.jpg'
+    'default_schedule.png'
   end
 
   # Process files as they are uploaded:
-  process resize_to_fill: [500, 375, "Center"]
+  process resize_to_fill: [600, 360, "Center"]
   #
   # def scale(width, height)
   #   # do something

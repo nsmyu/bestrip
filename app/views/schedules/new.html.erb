@@ -1,6 +1,6 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
-  <main class="container-fluid py-5 px-sm-6 px-3">
+  <div class="container-fluid py-5 px-sm-6 px-3">
     <div class="w-md-70 mx-auto">
       <div class="card mb-4 p-4 text-dark">
         <div class="border-bottom">
@@ -86,6 +86,15 @@
             </label>
           </div>
 
+          <div class="input-group input-group-outline row mx-0 mb-3">
+            <%= f.label "スポット情報", class: "fw-bold px-0 mb-1" %>
+            <input id="address" type="textbox" value="GeekSalon">
+            <input type="button" value="Encode" onclick="codeAddress()">
+            <%= @schedule.place_name %>
+            <%= @schedule.address %>
+            <%= image_tag @schedule.image.url, id: 'image_preview', class: "border-radius-lg schedule-image-preview" %>
+          </div>
+
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn bg-gradient-light mb-0" data-bs-dismiss="modal">キャンセル</button>
             <%= f.submit "保存する", class: "btn bg-gradient-primary mb-0" %>
@@ -95,4 +104,6 @@
     </div>
   </div>
 </main>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
 

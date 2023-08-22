@@ -140,6 +140,11 @@ GEM
     formatador (1.1.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
+    google_places (2.0.0)
+      httparty (>= 0.13.1)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.2)
@@ -174,6 +179,7 @@ GEM
     minitest (5.19.0)
     msgpack (1.7.2)
     multi_json (1.15.0)
+    multi_xml (0.6.0)
     net-imap (0.3.7)
       date
       net-protocol
@@ -354,6 +360,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   fog-aws
+  google_places
   importmap-rails
   jbuilder
   mini_magick
