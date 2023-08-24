@@ -3,7 +3,7 @@
   <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3">
     <div class="card card-body p-5">
       <h5 class="mb-5">パスワードの変更</h5>
-      <%= form_with model: resource, url: user_registration_path, data: { turbo: false }, local: true do |f| %>
+      <%= form_with model: resource, url: user_registration_path, data: { turbo: false } do |f| %>
         <div class="row mb-4 input-group input-group-outline">
           <%= f.label :current_password, class: "col-sm-3 col-form-label-lg m-0 fw-bold" do %>
             現在のパスワード <span class="required">*</span>
