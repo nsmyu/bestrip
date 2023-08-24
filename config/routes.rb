@@ -21,7 +21,12 @@ Rails.application.routes.draw do
       get    'search_user',   to: 'itineraries#search_user'
       patch  'add_member',    to: 'itineraries#add_member'
       delete 'remove_member', to: 'itineraries#remove_member'
+      get    'search_result', to: 'itineraries#search_result'
+      get    'place',         to: 'itineraries#show_place'
     end
-    resources :schedules
+
+    resources :schedules do
+      get 'new_with_place', on: :collection
+    end
   end
 end

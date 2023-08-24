@@ -56,9 +56,9 @@ gem "devise-i18n"
 
 gem 'carrierwave'
 gem 'mini_magick'
-gem "dartsass-rails", "~> 0.4.1"
+gem 'dartsass-rails', '~> 0.4.1'
 gem 'dotenv-rails'
-gem "faker"
+gem 'faker'
 gem 'google_places'
 
 group :development, :test do

@@ -26,8 +26,10 @@
   </head>
 
   <body class="g-sidenav-show bg-gray-200">
-    <%= render 'layouts/header' %>
-    <%= render 'layouts/flash_messages' %>
+    <div class="sticky-top z-index-10">
+      <%= render 'layouts/header' %>
+      <%= render 'layouts/flash_messages' %>
+    </div>
     <%= yield %>
     <%= render 'layouts/footer' %>
     <%= render 'layouts/confirm_modal' %>

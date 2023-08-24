@@ -1,0 +1,29 @@
+<%= turbo_frame_tag "spot" do %>
+  <%= form_with model: @schedule, url: itinerary_schedules_path, data: { action: "turbo:submit-end->modal#close" } do |f| %>
+    <div class="input-group input-group-outline row mx-0 mb-4">
+      <%= f.label :title, class: "fw-bold px-0 mb-1" do %>タイトル<span class="required">*</span><% end%>
+      <%= f.text_field :title, class: "form-control", placeholder: "旅のタイトルを入力" %>
+      <div class="<%= "error-message" if @schedule.errors.messages.key?(:title) %>" >
+        <%= @schedule.errors.full_messages_for(:title).first if @schedule.errors.any? %>
+      </div>
+    </div>
+    <div class="modal-footer justify-content-between">
+      <button type="button" class="btn bg-gradient-light mb-0" data-bs-dismiss="modal">キャンセル</button>
+      <%= f.submit "保存する", class: "btn bg-gradient-primary mb-0" %>
+    </div>
+  <% end %>
+<% end %>
+
+
+  <%= form_with model: @schedule, url: new_with_place_itinerary_schedules_path(itinerary_id: @itinerary.id), method: :get do |f| %>
+    <% @places.each do |place| %>
+      <label type="button" class="text-primary">
+        <%= place.name %>
+        <%= f.radio_button :title, place.name %>
+      </label>
+    <% end %>
+    <div class="modal-footer justify-content-between">
+      <button type="button" class="btn bg-gradient-light mb-0" data-bs-dismiss="modal">キャンセル</button>
+      <%= f.submit "保存する", class: "btn bg-gradient-primary mb-0" %>
+    </div>
+  <% end %>

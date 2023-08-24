@@ -1,6 +1,6 @@
 class ItinerariesController < ApplicationController
-  before_action :authenticate_user!
-  before_action :set_itinerary, :validate_current_user, except: [:index, :new, :create]
+  before_action :authenticate_user!, :validate_current_user
+  before_action :set_itinerary, except: [:index, :new, :create]
 
   def index
     @itineraries = current_user.itineraries.order(departure_date: :desc)
@@ -26,6 +26,18 @@ class ItinerariesController < ApplicationController
   end
 
   def edit
+  end
+
+  def search_result
+    @query = params[:query]
+    @client = GooglePlaces::Client.new(ENV['GOOGLE_API_KEY'])
+    return if @query.blank?
+    @places = @client.spots_by_query(@query, language: 'ja').first(10)
+  end
+
+  def show_place
+    @client = GooglePlaces::Client.new(ENV['GOOGLE_API_KEY'])
+    @place = @client.spot("ChIJH2P5xULYA2ARc3LaL8TMe7I", language: 'ja')
   end
 
   def update

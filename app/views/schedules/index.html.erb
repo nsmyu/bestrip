@@ -1,6 +1,19 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
-  <div class="container-fluid py-5 px-sm-6 px-3">
+  <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3">
+    <div class="w-md-70 mx-auto mb-4 ">
+      <div class="card rounded-pill place-search">
+        <%= form_with url: [:search_result_itinerary, id: @itinerary.id], html: { data: { turbo_frame: "spot", controller: "search-form", action: "input->search-form#submit" } }, method: :get do |f| %>
+          <div class="px-4 py-1 d-flex">
+            <span class="me-3 d-table"><i class="fas fa-search fa-lg text-accent d-table-cell align-middle"></i></span>
+            <%= f.search_field :query, class: 'form-control', placeholder: 'スポットを探す' %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card position-absolute z-index-3 mt-1 me-3 pt-2 place-list d-none">
+        <%= turbo_frame_tag "spot" %>
+      </div>
+    </div>
     <% if @sorted_schedules.blank? %>
       <div class="text-center p-6 mb-12">
         スケジュールは登録されていません
@@ -12,7 +25,7 @@
             <h5 class="ms-4"><%= date ? (l date) : "その他の予定" %></h5>
             <% schedules.each do |schedule| %>
               <%= link_to [:itinerary_schedule, id: schedule.id] do %>
-                <div class="border-top mx-0 link-area text-dark">
+                <div class="border-top mx-0 link-area">
                   <div class="py-3 row mx-0">
                     <div class="col-3 col-sm-2 text-center text-primary fw-bold d-table">
                       <div class="d-table-cell align-middle text-lg lh-1">
@@ -43,7 +56,7 @@
   <div class="fixed-plugin">
     <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2">
       <%= link_to :new_itinerary_schedule do %>
-        <p class="mb-0 py-1"><i class="material-icons" style="vertical-align: -4.5px;">add_circle</i> スケジュール追加</p>
+        <p class="mb-0 py-1"><i class="material-icons" style="vertical-align: -4.5px;">add_circle</i> スケジュール作成</p>
       <% end %>
     </div>
   </div>

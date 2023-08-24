@@ -62,6 +62,7 @@ $danger:        #F44335 !default;
 $light:         $gray-200 !default;
 $dark:          $h-color !default;
 $dark-blue:     #1A237E !default;
+$accent:        #EC4646 !default;
 
 
 // scss-docs-start theme-colors-map
@@ -76,6 +77,7 @@ $theme-colors: (
   "dark":       $dark,
   "white":      $white,
   "dark-blue":  $dark-blue,
+  "accent":     $accent,
 ) !default;
 // scss-docs-end theme-colors-map
 

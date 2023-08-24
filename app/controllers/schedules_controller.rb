@@ -1,6 +1,7 @@
 class SchedulesController < ApplicationController
   before_action :authenticate_user!, :validate_current_user
-  before_action :set_schedule, except: [:index, :new, :create]
+  before_action :set_schedule, only: [:show, :edit, :update, :destroy]
+  before_action :set_itinerary, only: [:index, :new, :new_with_place, :create]
 
   def index
     unsorted_schedules = Itinerary.find(params[:itinerary_id]).schedules
@@ -9,22 +10,24 @@ class SchedulesController < ApplicationController
       .map do |date, schedules|
         [
           date, schedules.sort_by do |schedule|
-            schedule[:start_at] || -1
+            [schedule.start_at, schedule.created_at] || -1
           end,
         ]
       end
   end
 
   def new
-    @schedule = Schedule.new
-    @itinerary = Itinerary.find(params[:itinerary_id])
+    @schedule = @itinerary.schedules.new
+  end
+
+  def new_with_place
+    @schedule = @itinerary.schedules.new(schedule_params)
   end
 
   def create
-    @itinerary = Itinerary.find(params[:itinerary_id])
     @schedule = @itinerary.schedules.new(schedule_params)
     if @schedule.save
-      redirect_to :schedules, notice: "新しいスケジュールを作成しました。"
+      redirect_to :itinerary_schedules, notice: "新しいスケジュールを作成しました。"
     else
       render :new, status: :unprocessable_entity
     end
@@ -69,5 +72,9 @@ class SchedulesController < ApplicationController
 
   def set_schedule
     @schedule = Schedule.find(params[:id])
+  end
+
+  def set_itinerary
+    @itinerary = Itinerary.find(params[:itinerary_id])
   end
 end

@@ -12,7 +12,7 @@ class ItineraryImageUploader < CarrierWave::Uploader::Base
   end
 
   # Process files as they are uploaded:
-  process resize_to_fill: [500, 375, "Center"]
+  process resize_to_fill: [600, 360, "Center"]
   #
   # def scale(width, height)
   #   # do something

@@ -1,6 +1,6 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
-  <div class="container-fluid py-5 px-sm-6 px-3">
+  <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3">
     <div class="w-md-70 mx-auto">
       <div class="card mb-4 p-4 text-dark">
         <div class="border-bottom">
@@ -88,8 +88,7 @@
 
           <div class="input-group input-group-outline row mx-0 mb-3">
             <%= f.label "スポット情報", class: "fw-bold px-0 mb-1" %>
-            <input id="address" type="textbox" value="GeekSalon">
-            <input type="button" value="Encode" onclick="codeAddress()">
+
             <%= @schedule.place_name %>
             <%= @schedule.address %>
             <%= image_tag @schedule.image.url, id: 'image_preview', class: "border-radius-lg schedule-image-preview" %>
@@ -105,5 +104,4 @@
   </div>
 </main>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
 

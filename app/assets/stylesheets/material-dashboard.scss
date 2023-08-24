@@ -52,7 +52,7 @@
 }
 
 input:-webkit-autofill {
-  transition: background-color 5000s ease-in-out 0s !important;
+  transition: background-color 10000s ease-in-out 0s;
 }
 
 .required {
@@ -93,5 +93,18 @@ input:-webkit-autofill {
 }
 
 .link-area:hover {
+  color: $dark;
   background-color: rgb(81, 194, 213, .1);
+}
+
+.place-search:focus-within + .place-list,
+.place-list:hover {
+  display: block !important;
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 }
