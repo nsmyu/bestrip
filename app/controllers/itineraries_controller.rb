@@ -1,6 +1,6 @@
 class ItinerariesController < ApplicationController
-  before_action :authenticate_user!, :validate_current_user
-  before_action :set_itinerary, except: [:index, :new, :create]
+  before_action :authenticate_user!
+  before_action :set_itinerary, :validate_itinerary_members, except: [:index, :new, :create]
 
   def index
     @itineraries = current_user.itineraries.order(departure_date: :desc)
@@ -88,7 +88,7 @@ class ItinerariesController < ApplicationController
 
   private
 
-  def validate_current_user
+  def validate_itinerary_members
     itinerary = Itinerary.find(params[:id])
     redirect_to :root unless itinerary.members.include?(current_user)
   end
