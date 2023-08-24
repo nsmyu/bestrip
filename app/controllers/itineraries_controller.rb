@@ -1,9 +1,21 @@
 class ItinerariesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_itinerary, :validate_itinerary_members, except: [:index, :new, :create]
+  before_action :set_itinerary, :authenticate_itinerary_member, except: [:index, :new, :create]
 
   def index
     @itineraries = current_user.itineraries.order(departure_date: :desc)
+  end
+
+  def search_place
+    @query = params[:query]
+    @client = GooglePlaces::Client.new(ENV['GOOGLE_API_KEY'])
+    return if @query.blank?
+    @places = @client.spots_by_query(@query, language: 'ja').first(10)
+  end
+
+  def show_place
+    @client = GooglePlaces::Client.new(ENV['GOOGLE_API_KEY'])
+    @place = @client.spot("ChIJH2P5xULYA2ARc3LaL8TMe7I", language: 'ja')
   end
 
   def new
@@ -15,7 +27,7 @@ class ItinerariesController < ApplicationController
     @itinerary = @user.owned_itineraries.new(itinerary_params)
     if @itinerary.save
       @itinerary.members << @user
-      redirect_to @itinerary, notice: "新しい旅のプランを作成しました。次はスケジュールを追加してみましょう。"
+      redirect_to @itinerary, notice: "新しい旅のプランを作成しました。"
     else
       render :new, status: :unprocessable_entity
     end
@@ -28,51 +40,11 @@ class ItinerariesController < ApplicationController
   def edit
   end
 
-  def search_result
-    @query = params[:query]
-    @client = GooglePlaces::Client.new(ENV['GOOGLE_API_KEY'])
-    return if @query.blank?
-    @places = @client.spots_by_query(@query, language: 'ja').first(10)
-  end
-
-  def show_place
-    @client = GooglePlaces::Client.new(ENV['GOOGLE_API_KEY'])
-    @place = @client.spot("ChIJH2P5xULYA2ARc3LaL8TMe7I", language: 'ja')
-  end
-
   def update
     if @itinerary.update(itinerary_params)
       redirect_to @itinerary, notice: "旅のプラン情報を変更しました。"
     else
       render :edit, status: :unprocessable_entity
-    end
-  end
-
-  def new_member
-  end
-
-  def search_user
-    @bestrip_id = params[:bestrip_id]
-    @user = User.find_by(bestrip_id: @bestrip_id)
-    if @user.nil?
-      flash.now[:notice] = 'ユーザーが見つかりませんでした'
-      render :new_member
-    end
-  end
-
-  def add_member
-    user = User.find(params[:user_id])
-    @itinerary.members << user
-    redirect_to @itinerary
-  end
-
-  def remove_member
-    member = User.find(params[:user_id])
-    if current_user == @itinerary.owner && member != @itinerary.owner
-      @itinerary.itinerary_users.find_by(user_id: member.id).destroy
-      redirect_to @itinerary
-    else
-      redirect_to @itinerary
     end
   end
 
@@ -87,11 +59,6 @@ class ItinerariesController < ApplicationController
   end
 
   private
-
-  def validate_itinerary_members
-    itinerary = Itinerary.find(params[:id])
-    redirect_to :root unless itinerary.members.include?(current_user)
-  end
 
   def itinerary_params
     params.require(:itinerary)

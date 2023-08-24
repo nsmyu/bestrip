@@ -1,5 +1,5 @@
 class SchedulesController < ApplicationController
-  before_action :authenticate_user!, :validate_itinerary_members
+  before_action :authenticate_user!, :authenticate_itinerary_member
   before_action :set_schedule, only: [:show, :edit, :update, :destroy]
   before_action :set_itinerary, only: [:index, :new, :new_with_place, :create]
 
@@ -58,11 +58,6 @@ class SchedulesController < ApplicationController
   end
 
   private
-
-  def validate_itinerary_members
-    itinerary = Itinerary.find(params[:itinerary_id])
-    redirect_to :root unless itinerary.members.include?(current_user)
-  end
 
   def schedule_params
     params.require(:schedule)

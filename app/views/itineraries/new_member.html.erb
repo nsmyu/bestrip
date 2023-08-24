@@ -1,8 +1,0 @@
-<%= render "layouts/modal", title: "旅のメンバー追加" do %>
-  <%= turbo_frame_tag "new_member" do %>
-    <%= render "member_form" %>
-    <% if flash[:notice] %>
-      <p class="text-center"><%= notice %></p>
-    <% end %>
-  <% end %>
-<% end %>

@@ -1,0 +1,17 @@
+<%= render "layouts/modal", title: "旅のメンバー追加" do %>
+  <%= form_with url: :search_user_itinerary, html: { data: { turbo_frame: "member" } }, method: :get do |f| %>
+    <div class="mb-4 input-group input-group-static">
+      <%= f.label "追加したいユーザーのBesTrip ID", class: "fw-bold" %>
+      <%= f.text_field :bestrip_id, class: "form-control", placeholder: "（例）luke_id", value: @bestrip_id %>
+      <label type="button" class="input-group-text">
+        <i class="material-icons fw-bold fs-4">search</i>
+        <%= f.submit class: "d-none" %>
+      </label>
+    </div>
+  <% end %>
+  <%= turbo_frame_tag "member" do %>
+    <% if flash[:notice] %>
+      <p class="text-center"><%= notice %></p>
+    <% end %>
+  <% end %>
+<% end %>

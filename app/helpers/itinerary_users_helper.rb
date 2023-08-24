@@ -1,0 +1,2 @@
+module ItineraryUsersHelper
+end

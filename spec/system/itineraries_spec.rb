@@ -80,7 +80,7 @@ RSpec.describe "Itineraries", type: :system do
           click_on "保存する"
 
           # expect(current_path).to eq root_path
-          expect(page).to have_content "新しい旅のプランを作成しました。次はスケジュールを追加してみましょう。"
+          expect(page).to have_content "新しい旅のプランを作成しました。"
           # expect(page).to have_content itinerary.title
           # within ".navbar" do
           #   expect(page).to have_content user.name

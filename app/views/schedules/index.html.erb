@@ -3,7 +3,7 @@
   <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3">
     <div class="w-md-70 mx-auto mb-4 ">
       <div class="card rounded-pill place-search">
-        <%= form_with url: [:search_result_itinerary, id: @itinerary.id], html: { data: { turbo_frame: "spot", controller: "search-form", action: "input->search-form#submit" } }, method: :get do |f| %>
+        <%= form_with url: [:search_place_itinerary, id: @itinerary.id], html: { data: { turbo_frame: "spot", controller: "search-form", action: "input->search-form#submit" } }, method: :get do |f| %>
           <div class="px-4 py-1 d-flex">
             <span class="me-3 d-table"><i class="fas fa-search fa-lg text-accent d-table-cell align-middle"></i></span>
             <%= f.search_field :query, class: 'form-control', placeholder: 'スポットを探す' %>

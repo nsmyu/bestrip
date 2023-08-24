@@ -1,5 +1,5 @@
-<%= turbo_frame_tag "new_member" do %>
-  <%= render "member_form" %>
+
+<%= turbo_frame_tag "member" do %>
   <%= form_with url: :add_member_itinerary, method: :patch, data: { action: "turbo:submit-end->modal#close" } do |f| %>
     <div class="d-flex flex-column align-items-center my-5">
       <%= image_tag @user.avatar.url, id: 'image-preview', class: "rounded-circle avatar mb-2" %>

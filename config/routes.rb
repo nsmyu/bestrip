@@ -17,11 +17,11 @@ Rails.application.routes.draw do
 
   resources :itineraries do
     member do
-      get    'new_member',    to: 'itineraries#new_member'
-      get    'search_user',   to: 'itineraries#search_user'
-      patch  'add_member',    to: 'itineraries#add_member'
-      delete 'remove_member', to: 'itineraries#remove_member'
-      get    'search_result', to: 'itineraries#search_result'
+      get    'new_member',    to: 'itinerary_users#new_member'
+      get    'search_user',   to: 'itinerary_users#search_user'
+      patch  'add_member',    to: 'itinerary_users#add_member'
+      delete 'remove_member', to: 'itinerary_users#remove_member'
+      get    'search_place',  to: 'itineraries#search_place'
       get    'place',         to: 'itineraries#show_place'
     end
 

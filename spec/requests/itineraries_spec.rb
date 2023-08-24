@@ -88,7 +88,6 @@ RSpec.describe "Itineraries", type: :request do
     end
 
     it "旅のプランの情報を取得すること" do
-      puts itinerary.members.inspect
       expect(response.body).to include itinerary.title
       expect(response.body).to include "2024/2/1 (木)"
       expect(response.body).to include "2024/2/8 (木)"
