@@ -1,7 +1,7 @@
 <%= turbo_frame_tag "itinerary" do %>
   <%= form_with model: itinerary, data: { action: "turbo:submit-end->modal#close" } do |f| %>
     <div class="input-group input-group-outline row mx-0 mb-3">
-      <%= f.label :title, class: "fw-bold ms-0 mb-1 px-0" do %>
+      <%= f.label :title, class: "ms-0 mb-1 px-0 fw-bold" do %>
         タイトル（30文字以内で入力）<span class="required">*</span>
       <% end%>
       <%= f.text_field :title, class: "form-control", placeholder: "旅のタイトルを入力" %>
@@ -11,7 +11,7 @@
     </div>
     <div class="row">
       <div class="input-group input-group-outline row mx-0 col-sm mb-3 mb-sm-0">
-        <%= f.label :departure_date, class: "fw-bold ms-0 mb-1 px-0" do %>
+        <%= f.label :departure_date, class: "ms-0 mb-1 px-0 fw-bold" do %>
           出発日 <span class="required">*</span>
         <% end%>
         <%= f.date_field :departure_date, class: "form-control fa fw-normal", id: "departure-date", readonly:"", placeholder: " \uf073 日付を選択" %>
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="input-group input-group-outline row mx-0 col-sm mb-3 mb-sm-0">
-        <%= f.label :return_date, class: "fw-bold ms-0 mb-1 px-0" do %>
+        <%= f.label :return_date, class: "ms-0 mb-1 px-0 fw-bold" do %>
           帰宅日 <span class="required">*</span>
         <% end%>
         <%= f.date_field :return_date, class: "form-control fa fw-normal", id: "return-date", readonly:"", placeholder: " \uf073 日付を選択" %>

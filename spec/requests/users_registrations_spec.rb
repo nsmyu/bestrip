@@ -43,7 +43,7 @@ RSpec.describe "UsersRegistrations", type: :request do
         },
       }
       patch user_registration_path, params: user_params
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to users_edit_password_path
     end
   end
 
@@ -88,8 +88,8 @@ RSpec.describe "UsersRegistrations", type: :request do
     end
 
     it "ニックネームを変更できること" do
-      patch users_update_without_password_path, params: { user: { name: "Shinichi" } }
-      expect(user.reload.name).to eq "Shinichi"
+      patch users_update_without_password_path, params: { user: { name: "New nickname" } }
+      expect(user.reload.name).to eq "New nickname"
     end
 
     it "自己紹介を変更できること" do
@@ -106,7 +106,7 @@ RSpec.describe "UsersRegistrations", type: :request do
 
     it "turbo-frameがレンダリングされること" do
       patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } }
-      expect(response.body).to include '<turbo-frame id="bestrip_id">'
+      expect(response.body).to include '<turbo-frame id="profile_form">'
     end
 
     it "IDが一意な場合、使用可能のメッセージを取得すること" do

@@ -7,8 +7,8 @@ function countChars() {
   const maxCharsLength = charCount.textContent.slice(2);
 
   function addCharsLengthError() {
-    textInput.parentElement.classList.add('error-message');
-    charCount.previousElementSibling.textContent = maxCharsLength + "文字以内で入力してください";
+    console.log(charCount)
+    charCount.classList.add('error-message');
     document.querySelector("#btn-submit").disabled = true;
   }
 
@@ -30,8 +30,7 @@ function countChars() {
     if (charsLength > maxCharsLength) {
       addCharsLengthError();
     } else {
-      textInput.parentElement.classList.remove('error-message');
-      charCount.previousElementSibling.textContent = "";
+      charCount.classList.remove('error-message');
       document.querySelector('#btn-submit').removeAttribute('disabled');
     }
   });
@@ -39,4 +38,5 @@ function countChars() {
 
 document.addEventListener('DOMContentLoaded', countChars)
 document.addEventListener('turbo:frame-load', countChars)
+
 

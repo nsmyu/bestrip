@@ -3,7 +3,7 @@
     <span class="mask bg-gradient-light opacity-6"></span>
     <div class="container mt-7 mb-8">
       <div class="row">
-        <div class="col-lg-4 col-md-8 col-12 mx-auto">
+        <div class="col-xl-4 col-lg-6 col-md-8 col-12 mx-auto">
           <div class="card z-index-0 fadeIn3 fadeInBottom">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-gradient-primary shadow-primary border-radius-lg py-5 pe-1">
@@ -19,6 +19,9 @@
                   </div>
                 <% end %>
               </div>
+              <% if flash[:alert] %>
+                <div class="p-2 border border-danger text-center text-sm text-danger"><%= alert %></div>
+              <% end %>
               <%= form_with model: resource, scope: resource_name, url: session_path(resource_name), data: { turbo: false } do |f| %>
                 <div class="input-group input-group-outline my-3 <%= "is-filled" unless resource[:email].blank? %>">
                   <%= f.label :email, "メールアドレス", class: "form-label" %>
