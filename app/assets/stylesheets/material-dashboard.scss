@@ -43,11 +43,9 @@
   }
 }
 
-.input-group-outline {
-  .is-focused {
-    .form-control {
-      border-color: $primary;
-    }
+.input-group-outline.is-focused {
+  .form-control {
+    border-color: $primary;
   }
 }
 
@@ -97,14 +95,14 @@ input:-webkit-autofill {
   background-color: rgb(81, 194, 213, .1);
 }
 
-.place-search:focus-within + .place-list,
+.place-search:focus-within + div .place-list,
 .place-list:hover {
   display: block !important;
 }
 
 .text-ellipsis {
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+  white-space: nowrap;
+  width: inherit;
+  text-overflow: ellipsis;
 }

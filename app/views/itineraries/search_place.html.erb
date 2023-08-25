@@ -1,19 +1,15 @@
 <%= turbo_frame_tag "spot" do %>
   <% if @places %>
-    <ul class="text-sm mb-0 px-3">
+    <ul class="text-sm mb-0 px-3 d-block w-auto d-none place-list">
       <% @places.each do |place| %>
         <%=link_to [:place_itinerary, place_id: place.place_id], data: { turbo: false } do %>
           <li class="link-area d-flex py-2">
             <div class="d-table">
               <i class="material-icons text-secondary text-2xl px-2 d-table-cell align-middle">location_on</i>
             </div>
-            <div class="d-none d-sm-inline">
-              <%= place.name %>
-              <span class="text-xs text-secondary"><%= place.formatted_address.sub(/日本、〒\d{3}[-]\d{4}/, '') %></span>
-            </div>
-            <div class="d-inline-block d-sm-none">
-              <%= place.name %><br>
-              <span class="text-xs text-secondary text-ellipsis"><%= place.formatted_address.sub(/日本、〒\d{3}[-]\d{4}/, '') %></span>
+            <div >
+              <span class="text-sm"><%= place.name %></span><br class="d-block d-md-none">
+              <span class="text-xs d-block d-md-inline text-secondary overflow-hidden"><%= place.formatted_address.sub(/日本、〒\d{3}[-]\d{4}/, '') %></span>
             </div>
           </li>
         <% end %>

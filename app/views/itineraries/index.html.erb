@@ -1,6 +1,6 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
-  <div class="container-fluid py-5 px-sm-6 px-3">
+  <div class="container-fluid py-4 py-sm-5 px-3 px-sm-6">
     <div class="row">
       <% if @itineraries.blank? %>
         <div class="text-center p-6 mb-12">
@@ -8,17 +8,19 @@
         </div>
       <% else %>
         <% @itineraries.each do |itinerary| %>
-          <div class="col-lg-6 col-md-6 pt-4 pb-5 px-3">
+          <div class="col-6 my-4 mb-sm-5 px-1 px-sm-3">
             <%= link_to itinerary_schedules_path(itinerary.id) do %>
               <div class="card link-area z-index-2">
-                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                <div class="card-header p-0 position-relative mt-n4 mx-1 mx-sm-3 z-index-2 bg-transparent">
                   <%= image_tag itinerary.image.url, class: "border-radius-lg shadow-dark w-100" %>
                 </div>
-                <div class="card-body">
-                  <h5 class="mb-1"><%= itinerary.title %></h5>
-                  <p><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
-                  <hr class="dark horizontal">
-                  <p class="mb-0"><i class="material-icons pe-2" style="vertical-align: -4.5px;">group</i><%= member_names(itinerary) %></p>
+                <div class="card-body p-2 p-sm-4">
+                  <h5 class="mb-1 d-none d-sm-block text-ellipsis"><%= itinerary.title %></h5>
+                  <p class="mb-1 d-sm-none text-center text-ellipsis fw-bold text-sm pt-2"><%= itinerary.title %></p>
+                  <p class="mb-1 d-none d-sm-block"><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
+                  <p class="mb-1 d-block d-sm-none text-xxs text-center"><%= l itinerary.departure_date %> - <%= l itinerary.return_date %></p>
+                  <hr class="dark horizontal d-none d-sm-block">
+                  <p class="mb-0 d-none d-sm-block"><i class="material-icons pe-2" style="vertical-align: -4.5px;">group</i><%= member_names(itinerary) %></p>
                 </div>
               </div>
             <% end %>
