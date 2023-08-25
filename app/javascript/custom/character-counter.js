@@ -1,21 +1,8 @@
-document.addEventListener('DOMContentLoaded', () => {
-  previewImage();
-  countChars();
-});
-
-document.addEventListener('turbo:frame-load', () => {
-  previewImage();
-  countChars();
-  const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  const tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
-});
-
 function countChars() {
   const textInput = document.querySelector('#text-input');
   const charCount = document.querySelector('#char-count');
-  if (!textInput) return;
+
+  if (!charCount) return;
 
   const maxCharsLength = charCount.textContent.slice(2);
 
@@ -50,24 +37,6 @@ function countChars() {
   });
 }
 
-function previewImage() {
-  const imageInput = document.querySelector('#image_input');
+document.addEventListener('DOMContentLoaded', countChars)
+document.addEventListener('turbo:frame-load', countChars)
 
-  if (!imageInput) return;
-
-  imageInput.addEventListener('change', (e) =>{
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      const imagePreview = document.querySelector('#image_preview');
-      if(imagePreview) {
-        imagePreview.src = reader.result;
-      }
-    };
-
-    if (file) {
-    reader.readAsDataURL(file);
-    }
-  });
-}

@@ -46,10 +46,14 @@ if (document.getElementById('navbarBlur')) {
 }
 
 // initialization of Tooltips
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
-})
+function initializeTooltips() {
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+  })
+}
+document.addEventListener('turbo:load', initializeTooltips);
+document.addEventListener('DOMContentLoaded', initializeTooltips);
 
 // when input is focused add focused class for style
 function focused(el) {

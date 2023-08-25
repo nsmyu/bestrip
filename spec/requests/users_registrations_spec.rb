@@ -106,7 +106,7 @@ RSpec.describe "UsersRegistrations", type: :request do
 
     it "turbo-frameがレンダリングされること" do
       patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } }
-      expect(response.body).to include '<turbo-frame id="profile_form">'
+      expect(response.body).to include '<turbo-frame id="bestrip_id">'
     end
 
     it "IDが一意な場合、使用可能のメッセージを取得すること" do

@@ -9,7 +9,7 @@
         <%= form_with model: @schedule, url: itinerary_schedules_path do |f| %>
           <div class="input-group input-group-outline row mx-0 mb-3">
             <%= f.label "日付", class: "fw-bold px-0 mb-1" %>
-            <%= f.date_field :schedule_date, class: "form-control fa fw-normal", id: "schedule-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
+            <%= f.date_field :schedule_date, class: "form-control fa fw-normal", id: "schedule-date", readonly:"", placeholder: " \uf073 日付を選択" %>
             <div class="d-none" id="departure-date"><%= @itinerary.departure_date %></div>
             <div class="d-none" id="return-date"><%= @itinerary.return_date %></div>
           </div>
@@ -22,8 +22,8 @@
           </div>
           <div class="input-group input-group-outline row mx-0 mb-4">
             <%= f.label "時間", class: "fw-bold px-0 mb-1" %>
-            <%= f.time_field :start_at, class: "form-control fa fw-normal time-pickr", readonly:"", placeholder: " \uf017 開始時間" %>
-            <%= f.time_field :end_at, class: "form-control fa fw-normal time-pickr", readonly:"", placeholder: " \uf017 終了時間" %>
+            <%= f.time_field :start_at, class: "form-control fa fw-normal schedule-time", readonly:"", placeholder: " \uf017 開始時間" %>
+            <%= f.time_field :end_at, class: "form-control fa fw-normal schedule-time", readonly:"", placeholder: " \uf017 終了時間" %>
           </div>
 
           <div class="mb-4">

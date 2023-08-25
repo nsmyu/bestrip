@@ -14,13 +14,13 @@
         <%= f.label :start_at, class: "fw-bold" do %>
           出発日
         <% end%>
-        <%= f.date_field :start_at, class: "form-control fa fw-normal", id: "departure-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
+        <%= f.date_field :start_at, class: "form-control fa fw-normal", id: "departure-date", readonly:"", placeholder: " \uf073 日付を選択" %>
       </div>
       <div class="col-sm mb-4 mb-sm-0 input-group input-group-static">
         <%= f.label :end_at, class: "fw-bold" do %>
           帰宅日
         <% end%>
-        <%= f.date_field :end_at, class: "form-control fa fw-normal", id: "return-date-pickr", readonly:"", placeholder: " \uf073 日付を選択" %>
+        <%= f.date_field :end_at, class: "form-control fa fw-normal", id: "return-date", readonly:"", placeholder: " \uf073 日付を選択" %>
       </div>
     </div>
     <%

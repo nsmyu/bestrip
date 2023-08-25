@@ -131,17 +131,17 @@ RSpec.describe "Itineraries", type: :system do
       end
 
       it "出発日より前の日付は帰宅日として選択できないこと" do
-        find("#departure-date-pickr").click
+        find("#departure-date").click
         find('div.dayContainer > span:nth-child(2)').click
         sleep 0.1
-        find("#return-date-pickr").click
+        find("#return-date").click
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
     end
   end
 
-  describe "詳細表示", focus: true do
+  describe "詳細表示" do
     let!(:itinerary) { create(:itinerary, owner: user) }
 
     before do
@@ -210,10 +210,10 @@ RSpec.describe "Itineraries", type: :system do
       end
 
       it "出発日より前の日付は帰宅日として選択できないこと" do
-        find("#departure-date-pickr").click
+        find("#departure-date").click
         find('div.dayContainer > span:nth-child(2)').click
         sleep 0.1
-        find("#return-date-pickr").click
+        find("#return-date").click
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
