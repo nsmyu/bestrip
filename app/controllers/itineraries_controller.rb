@@ -7,7 +7,14 @@ class ItinerariesController < ApplicationController
   end
 
   def search_place
-    @query = params[:query]
+    if params[:schedule]
+      params.require(:schedule).permit(:query)
+      @query = params[:schedule][:query]
+    else
+      params.permit(:query)
+      @query = params[:query]
+    end
+
     @client = GooglePlaces::Client.new(ENV['GOOGLE_API_KEY'])
     return if @query.blank?
     @places = @client.spots_by_query(@query, language: 'ja').first(10)
@@ -60,12 +67,12 @@ class ItinerariesController < ApplicationController
 
   private
 
+  def set_itinerary
+    @itinerary = Itinerary.find(params[:id])
+  end
+
   def itinerary_params
     params.require(:itinerary)
       .permit(:title, :image, :image_cache, :departure_date, :return_date, :user_id)
-  end
-
-  def set_itinerary
-    @itinerary = Itinerary.find(params[:id])
   end
 end

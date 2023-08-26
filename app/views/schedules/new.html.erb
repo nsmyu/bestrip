@@ -6,7 +6,7 @@
         <div class="border-bottom">
           <h4>スケジュール作成</h4>
         </div>
-        <%= form_with model: @schedule, url: itinerary_schedules_path do |f| %>
+        <%= form_with model: @schedule, url: itinerary_schedules_path, id: "schedule-form", html: { data: { itinerary_id: @itinerary.id, } } do |f| %>
           <div class="input-group input-group-outline row mx-0 mb-3">
             <%= f.label "日付", class: "fw-bold px-0 mb-1" %>
             <%= f.date_field :schedule_date, class: "form-control fa fw-normal", id: "schedule-date", readonly:"", placeholder: " \uf073 日付を選択" %>
@@ -86,7 +86,19 @@
             </label>
           </div>
 
-          <div class="input-group input-group-outline row mx-0 mb-3">
+          <div class="w-md-70 mx-auto mb-4 ">
+            <div class="card rounded-pill place-search">
+              <div class="px-4 py-1 d-flex">
+                <span class="me-3 d-table"><i class="fas fa-search fa-lg text-accent d-table-cell align-middle"></i></span>
+                <%= f.search_field :query, id: "query-input", class: 'form-control', placeholder: 'スポットを探す' %>
+              </div>
+            </div>
+            <div class="card position-absolute z-index-3 mt-1 me-3 py-2">
+              <%= turbo_frame_tag "place_within_schedule_form" %>
+            </div>
+          </div>
+
+              <div class="input-group input-group-outline row mx-0 mb-3">
             <%= f.label "スポット情報", class: "fw-bold px-0 mb-1" %>
 
             <%= @schedule.place_name %>

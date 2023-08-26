@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "spot" do %>
+<%= turbo_frame_tag "place" do %>
   <% if @places %>
     <ul class="text-sm mb-0 px-3 d-block w-auto d-none place-list">
       <% @places.each do |place| %>
@@ -7,9 +7,29 @@
             <div class="d-table">
               <i class="material-icons text-secondary text-2xl px-2 d-table-cell align-middle">location_on</i>
             </div>
-            <div >
+            <div class="pe-3">
               <span class="text-sm"><%= place.name %></span><br class="d-md-none">
-              <span class="text-xs d-block d-md-inline text-secondary overflow-hidden"><%= place.formatted_address.sub(/日本、〒\d{3}[-]\d{4}/, '') %></span>
+              <span class="text-xs d-block d-md-inline text-secondary"><%= place.formatted_address.sub(/日本、〒\d{3}[-]\d{4}/, '') %></span>
+            </div>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>
+<%= turbo_frame_tag "place_within_schedule_form" do %>
+  <% if @places %>
+    <ul class="text-sm mb-0 px-3 d-block d-none place-list">
+      <% @places.each do |place| %>
+        <input type="hidden" name="place_id" value="<%= place.place_id %>">
+        <%= button_tag type: :submit, formaction: :add_place_to_schedule, formmethod: :get, class: "d-block border-0 p-0 bg-transparent text-start" do %>
+          <li class="link-area d-flex py-2">
+            <div class="d-table">
+              <i class="material-icons text-secondary text-2xl px-2 d-table-cell align-middle">location_on</i>
+            </div>
+            <div class="pe-3">
+              <span class="text-sm text-dark"><%= place.name %></span><br>
+              <span class="text-xs d-block text-secondary"><%= place.formatted_address.sub(/日本、〒\d{3}[-]\d{4}/, '') %></span>
             </div>
           </li>
         <% end %>

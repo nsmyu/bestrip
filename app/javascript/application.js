@@ -8,5 +8,5 @@ import "material_dashboard/material-dashboard"
 import "custom/character-counter"
 import "custom/confirm-modal"
 import "custom/flatpickr"
+import "custom/form-action"
 import "custom/image-preview"
-

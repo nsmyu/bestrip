@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
     resources :schedules do
       get 'new_with_place', on: :collection
+      get 'add_place_to_schedule', on: :collection
     end
   end
 end
