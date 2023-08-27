@@ -34,6 +34,12 @@ class SchedulesController < ApplicationController
 
   def create
     @schedule = @itinerary.schedules.new(schedule_params)
+    if @schedule.place_id
+      place_id = @schedule.place_id if @schedule.place_id
+      client = GooglePlaces::Client.new(ENV['GOOGLE_API_KEY'])
+      @place = client.spot(place_id, language: 'ja')
+    end
+
     if @schedule.save
       redirect_to :itinerary_schedules, notice: "新しいスケジュールを作成しました。"
     else
@@ -70,8 +76,18 @@ class SchedulesController < ApplicationController
   def schedule_params
     params.require(:schedule)
       .permit(:title,
-              :schedule_date, :start_at, :end_at, :icon, :url, :address, :note, :itinerary_id)
+              :schedule_date,
+              :start_at,
+              :end_at,
+              :icon,
+              :place_name,
+              :address,
+              :image,
+              :place_id,
+              :itinerary_id)
   end
+
+
 
   def set_schedule
     @schedule = Schedule.find(params[:id])

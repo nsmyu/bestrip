@@ -13,6 +13,13 @@ ja:
           departure_date: 出発日
           return_date: 帰宅日
           errors:
+      attributes:
+        schedule:
+          title: タイトル
+          schedule_date: 日付
+          start_at: 開始時間
+          end_at: 終了時間
+          icon: アイコン
       errors:
         models:
           itinerary:

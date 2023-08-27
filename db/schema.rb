@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_22_012634) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_26_081522) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -39,15 +39,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_22_012634) do
     t.time "start_at"
     t.time "end_at"
     t.string "icon"
-    t.string "url"
     t.string "address"
-    t.text "note"
     t.string "image"
     t.bigint "itinerary_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date "schedule_date"
     t.string "place_name"
+    t.string "place_id"
     t.index ["itinerary_id"], name: "index_schedules_on_itinerary_id"
   end
 

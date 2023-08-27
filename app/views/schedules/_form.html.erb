@@ -1,43 +1,135 @@
 <%= turbo_frame_tag "schedule" do %>
-  <%= form_with url: itinerary_schedules_path, data: { action: "turbo:submit-end->modal#close" } do |f| %>
-    <div class="mb-4 input-group input-group-static">
-      <%= f.label :title, class: "fw-bold" do %>
-        タイトル（30文字以内で入力） <span class="required">*</span>
-      <% end%>
-      <%= f.text_field :title, class: "form-control", placeholder: "旅のタイトルを入力" %>
-      <div class="<%= "error-message" if schedule.errors.messages.key?(:title) %>" >
-        <%= schedule.errors.full_messages_for(:title).first if schedule.errors.any? %>
+  <%= form_with model: @schedule, url: itinerary_schedules_path, id: "schedule-form", html: { data: { itinerary_id: @itinerary.id, } } do |f| %>
+    <div class="input-group input-group-outline row mx-0 mb-3">
+      <%= f.label :title, class: "m-0 px-0 fw-bold" do %>タイトル（50文字以内）<span class="required">*</span><% end%>
+      <%= f.text_field :title, class: "form-control", placeholder: "タイトルを入力" %>
+      <div class="<%= "error-message" if @schedule.errors.messages.key?(:title) %>" >
+        <%= @schedule.errors.full_messages_for(:title).first if @schedule.errors.any? %>
       </div>
+    </div>
+    <div class="input-group input-group-outline row mx-0 mb-3">
+      <%= f.label :schedule_date, class: "m-0 px-0 fw-bold" %>
+      <%= f.date_field :schedule_date, class: "form-control fa fw-normal", id: "schedule-date", readonly:"", placeholder: " \uf073 日付を選択" %>
+      <div class="d-none" id="departure-date"><%= @itinerary.departure_date %></div>
+      <div class="d-none" id="return-date"><%= @itinerary.return_date %></div>
     </div>
     <div class="row">
-      <div class="col-sm mb-4 mb-sm-0 input-group input-group-static">
-        <%= f.label :start_at, class: "fw-bold" do %>
-          出発日
-        <% end%>
-        <%= f.date_field :start_at, class: "form-control fa fw-normal", id: "departure-date", readonly:"", placeholder: " \uf073 日付を選択" %>
+      <div class="input-group input-group-outline row col mx-0 mb-3">
+        <%= f.label :start_at, class: "m-0 px-0 fw-bold" %>
+        <%= f.time_field :start_at, class: "form-control fa fw-normal schedule-time", readonly:"", placeholder: " \uf017 時間を選択" %>
       </div>
-      <div class="col-sm mb-4 mb-sm-0 input-group input-group-static">
-        <%= f.label :end_at, class: "fw-bold" do %>
-          帰宅日
-        <% end%>
-        <%= f.date_field :end_at, class: "form-control fa fw-normal", id: "return-date", readonly:"", placeholder: " \uf073 日付を選択" %>
+      <div class="input-group input-group-outline row col mx-0 mb-3">
+        <%= f.label :end_at, class: "m-0 px-0 fw-bold" %>
+        <%= f.time_field :end_at, class: "form-control fa fw-normal schedule-time", readonly:"", placeholder: " \uf017 時間を選択" %>
       </div>
     </div>
-    <%
-=begin%>
- <div class="mb-4">
-      <%= f.label :image, class: "m-0 fw-bold" %>
-      <label type="button" class="text-primary text-sm">
-        <i class="material-icons opacity-10" style="vertical-align: -4px;">add_a_photo</i>
-        <%= f.file_field :image, accept: "image/*", id: "image_input", class: "d-none" %>
-        <%= f.hidden_field :image_cache %>
-      </label>
-      <div class="p-1">
-        <%= image_tag schedule.image.url, id: 'image_preview', class: "border-radius-lg w-100 itinerary-image-preview" %>
+    <div class="mx-0 mb-3">
+      <%= f.label :icon, class: "d-block ms-0 mb-1 px-0 fw-bold" %>
+      <div class="border rounded-2 pt-2 text-center">
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">restaurant</i>
+          <span class="text-xxs d-block pt-1">食事</span>
+          <%= f.radio_button :icon, :restaurant, class: "d-none schedule-icon-btn" %>
+        </label>
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">local_cafe</i>
+          <span class="text-xxs d-block pt-1">休憩</span>
+          <%= f.radio_button :icon, :local_cafe, class: "d-none schedule-icon-btn" %>
+        </label>
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">hotel</i>
+          <span class="text-xxs d-block pt-1">ホテル</span>
+          <%= f.radio_button :icon, :hotel, class: "d-none schedule-icon-btn" %>
+        </label>
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">attractions</i>
+          <span class="text-xxs d-block pt-1">娯楽</span>
+          <%= f.radio_button :icon, :attractions, class: "d-none schedule-icon-btn" %>
+        </label>
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">shopping_cart</i>
+          <span class="text-xxs d-block pt-1">買い物</span>
+          <%= f.radio_button :icon, :shopping_cart, class: "d-none schedule-icon-btn" %>
+        </label>
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">landscape</i>
+          <span class="text-xxs d-block pt-1">自然風景</span>
+          <%= f.radio_button :icon, :landscape, class: "d-none schedule-icon-btn" %>
+        </label>
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">castle</i>
+          <span class="text-xxs d-block pt-1">史跡</span>
+          <%= f.radio_button :icon, :castle, class: "d-none schedule-icon-btn" %>
+        </label>
+        <br>
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">local_activity</i>
+          <span class="text-xxs d-block pt-1">観戦・観劇</span>
+          <%= f.radio_button :icon, :local_activity, class: "d-none schedule-icon-btn" %>
+        </label>
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">train</i>
+          <span class="text-xxs d-block pt-1">電車</span>
+          <%= f.radio_button :icon, :train, class: "d-none schedule-icon-btn" %>
+        </label>
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">directions_car</i>
+          <span class="text-xxs d-block pt-1">車</span>
+          <%= f.radio_button :icon, :directions_car, class: "d-none schedule-icon-btn" %>
+        </label>
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">directions_bus</i>
+          <span class="text-xxs d-block pt-1">バス</span>
+          <%= f.radio_button :icon, :directions_bus, class: "d-none schedule-icon-btn" %>
+        </label>
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">flight</i>
+          <span class="text-xxs d-block pt-1">フライト</span>
+          <%= f.radio_button :icon, :flight, class: "d-none schedule-icon-btn" %>
+        </label>
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">directions_walk</i>
+          <span class="text-xxs d-block pt-1">徒歩</span>
+          <%= f.radio_button :icon, :directions_walk, class: "d-none schedule-icon-btn" %>
+        </label>
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">directions_bike</i>
+          <span class="text-xxs d-block pt-1">自転車</span>
+          <%= f.radio_button :icon, :directions_bike, class: "d-none schedule-icon-btn" %>
+        </label>
       </div>
     </div>
-<%
-=end%>
+    <div class="mb-4">
+      <%= f.label "スポット情報", class: "m-0 px-0 fw-bold" %>
+      <p class="text-xs m-0 mt-1 mb-2">スポットの名称や住所をスケジュールに追加することができます。</p>
+      <div class="place-search">
+        <div class="d-flex input-group input-group-outline mx-0">
+          <span class="ps-2 pe-3 d-table"><i class="fas fa-search text-accent d-table-cell align-middle"></i></span>
+          <%= f.search_field :query, id: "query-input", class: 'form-control border-0', placeholder: '観光名所、ホテル、レストラン等で検索' %>
+        </div>
+      </div>
+      <div class="card position-absolute z-index-10000 ms-5 me-3 py-1 d-none place-list">
+        <%= turbo_frame_tag "place_within_schedule_form" %>
+      </div>
+    </div>
+    <div class="row border px-2 m-2">
+      <% if @place %>
+          <div class="col-8">
+            <p class="text-dark fw-bold"><%= @place.name %></p>
+            <p class="d-flex text-sm text-secondary"><i class="material-icons pe-1 d-table-cell align-middle">location_on</i><%= short_address(@place.formatted_address) %></p>
+          </div>
+          <div class="col-8">
+          <%= image_tag @place.photos[0].fetch_url(800), class: "rounded-circle avatar mb-2" %>
+          </div>
+          <%= f.hidden_field :place_name, value: @place.name %>
+          <%= f.hidden_field :address, value: short_address(@place.formatted_address) %>
+          <%= f.hidden_field :place_id, value: @place.place_id %>
+      <% else %>
+        <div class="py-4 text-center text-secondary">スポット情報</div>
+      <% end %>
+      </div>
+    </div>
+
     <div class="modal-footer justify-content-between">
       <button type="button" class="btn bg-gradient-light mb-0" data-bs-dismiss="modal">キャンセル</button>
       <%= f.submit "保存する", class: "btn bg-gradient-primary mb-0" %>

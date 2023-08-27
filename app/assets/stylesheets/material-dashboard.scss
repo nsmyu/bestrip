@@ -51,6 +51,10 @@
   }
 }
 
+.form-control.active {
+  border-color: $primary !important;
+}
+
 input:-webkit-autofill {
   transition: background-color 10000s ease-in-out 0s !important;
 }
@@ -97,9 +101,13 @@ input:-webkit-autofill {
   background-color: rgb(81, 194, 213, .1);
 }
 
-.place-search:focus-within + div .place-list,
+.place-search:focus-within + .place-list,
 .place-list:hover {
   display: block !important;
+}
+
+.place-search > .input-group > .form-control {
+  background-color: $gray-200
 }
 
 .text-ellipsis {
@@ -108,3 +116,15 @@ input:-webkit-autofill {
   width: inherit;
   text-overflow: ellipsis;
 }
+
+.place-add-icon {
+  cursor: pointer;
+  &:hover {
+    color: $accent !important;
+  }
+}
+
+label:has(.schedule-icon-btn:checked) {
+  color: $primary;
+}
+
