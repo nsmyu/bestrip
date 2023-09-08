@@ -99,7 +99,7 @@
         </label>
       </div>
     </div>
-    <div class="mb-4">
+    <div class="mb-3">
       <%= f.label "スポット情報", class: "m-0 px-0 fw-bold" %>
       <p class="text-xs m-0 mt-1 mb-2">スポットの名称や住所をスケジュールに追加することができます。</p>
       <div class="place-search">
@@ -112,18 +112,14 @@
         <%= turbo_frame_tag "place_within_schedule_form" %>
       </div>
     </div>
-    <div class="row border px-2 m-2">
+    <div class="border p-3 m-2">
       <% if @place %>
-          <div class="col-8">
-            <p class="text-dark fw-bold"><%= @place.name %></p>
-            <p class="d-flex text-sm text-secondary"><i class="material-icons pe-1 d-table-cell align-middle">location_on</i><%= short_address(@place.formatted_address) %></p>
-          </div>
-          <div class="col-8">
-          <%= image_tag @place.photos[0].fetch_url(800), class: "rounded-circle avatar mb-2" %>
-          </div>
-          <%= f.hidden_field :place_name, value: @place.name %>
-          <%= f.hidden_field :address, value: short_address(@place.formatted_address) %>
-          <%= f.hidden_field :place_id, value: @place.place_id %>
+        <p class="text-dark mb-1 fw-bold"><%= @place.name %></p>
+        <p class="d-flex mb-0 text-sm text-secondary"><i class="material-icons pe-1">location_on</i><%= short_address(@place.formatted_address) %></p>
+        <%= image_tag @place.photos[0].fetch_url(800), class: "mt-2 w-100" %>
+        <%= f.hidden_field :place_name, value: @place.name %>
+        <%= f.hidden_field :address, value: short_address(@place.formatted_address) %>
+        <%= f.hidden_field :place_id, value: @place.place_id %>
       <% else %>
         <div class="py-4 text-center text-secondary">スポット情報</div>
       <% end %>
