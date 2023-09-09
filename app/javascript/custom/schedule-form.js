@@ -30,12 +30,6 @@ document.addEventListener('turbo:frame-load', () => {
     const placeIds = document.getElementsByName("place_id")
     const removePlaceBtn = document.querySelector('#remove-place-btn')
 
-    if (addPlaceBtn != null) {
-      scheduleForm.action = `/itineraries/${itineraryId}/schedules`;
-      scheduleForm.method = "post";
-      delete scheduleForm.dataset.turboFrame;
-    }
-
     for(let p of placeIds) {
       p.addEventListener('change', () => {
         scheduleForm.action = `/itineraries/${itineraryId}/add_place_to_schedule`;
@@ -52,5 +46,14 @@ document.addEventListener('turbo:frame-load', () => {
         scheduleForm.dataset.turboFrame = "spot";
       })
     }
+
+    const submitBtn = document.querySelector('#sumit-btn')
+
+    submitBtn.addEventListener('click', () => {
+      scheduleForm.action = `/itineraries/${itineraryId}/schedules`;
+      scheduleForm.method = "post";
+      delete scheduleForm.dataset.turboFrame;
+      scheduleForm.dataset.action = "turbo:submit-end->modal#close";
+    })
   }
 })
