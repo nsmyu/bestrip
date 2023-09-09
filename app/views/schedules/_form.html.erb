@@ -113,11 +113,6 @@
       </div>
     </div>
     <%= turbo_frame_tag "spot" %>
-    <% if @place %>
-      <%= f.hidden_field :place_name, value: @place.name %>
-      <%= f.hidden_field :address, value: short_address(@place.formatted_address) %>
-      <%= f.hidden_field :place_id, value: @place.place_id %>
-    <% end %>
     <div class="modal-footer justify-content-between">
       <button type="button" class="btn bg-gradient-light mb-0" data-bs-dismiss="modal">キャンセル</button>
       <%= f.submit "保存する", class: "btn bg-gradient-primary mb-0", id: "sumit-btn" %>

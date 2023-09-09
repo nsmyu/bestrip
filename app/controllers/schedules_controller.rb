@@ -36,10 +36,13 @@ class SchedulesController < ApplicationController
 
   def create
     @schedule = @itinerary.schedules.new(schedule_params)
-    if @schedule.place_id
-      place_id = @schedule.place_id
+    if params[:place_id]
+      place_id = params[:place_id]
       client = GooglePlaces::Client.new(ENV['GOOGLE_API_KEY'])
-      @place = client.spot(place_id, language: 'ja')
+      place = client.spot(place_id, language: 'ja')
+      @schedule.place_id = place_id
+      @schedule.place_name = place.name
+      @schedule.address = place.formatted_address
     end
 
     if @schedule.save
