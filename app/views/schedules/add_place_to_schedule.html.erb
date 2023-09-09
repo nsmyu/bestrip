@@ -1,10 +1,12 @@
 <%= turbo_frame_tag "spot" do %>
-  <div class="border p-3 m-2">
+  <div class="border px-3 py-2 m-2">
     <% if @place %>
-      <%= button_tag "クリア", type: :submit, formaction: :remove_place_from_schedule, formmethod: :get, id: "remove-place-btn", class: "btn bg-gradient-light btn-sm my-1 fw-bold" %>
-      <p class="text-dark mb-1 fw-bold"><%= @place.name %></p>
-      <p class="d-flex mb-0 text-sm text-secondary"><i class="material-icons pe-1">location_on</i><%= short_address(@place.formatted_address) %></p>
-      <%= image_tag @place.photos[0].fetch_url(800), class: "mt-2 w-100" %>
+      <p class="mb-0 text-dark fw-bold"><%= @place.name %></p>
+      <p class="d-flex mb-0 text-xs text-secondary"><i class="material-icons text-xs pe-1">location_on</i><%= short_address(@place.formatted_address) %></p>
+      <% if @place.photos[0] %>
+        <%= image_tag @place.photos[0].fetch_url(800), class: "p-2 w-100 place-image-preview" %>
+      <% end %>
+      <%= button_tag "スポット情報を削除", type: :submit, formaction: :remove_place_from_schedule, formmethod: :get, id: "remove-place-btn", class: "btn bg-gradient-light btn-sm my-1 fw-bold" %>
     <% end %>
   </div>
 <% end %>

@@ -86,6 +86,11 @@ input:-webkit-autofill {
   width: 200px;
 }
 
+.place-image-preview {
+  object-fit: cover;
+  aspect-ratio: 5/3;
+}
+
 .tooltip-inner {
   background-color: $warning;
   font-size: 13px;
