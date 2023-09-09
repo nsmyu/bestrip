@@ -30,7 +30,6 @@
                     <div class="col-3 col-sm-2 text-center text-primary fw-bold d-table">
                       <div class="d-table-cell align-middle text-lg lh-1">
                         <% if schedule.start_at || schedule.end_at %>
-                        <%= schedule.start_at.strftime( "%H:%M" ) if schedule.start_at %>
                           <%= (l schedule.start_at) if schedule.start_at %><br><span class="text-sm"><%= "- #{(l schedule.end_at)}" if schedule.end_at%></span>
                         <% else %>
                           <i class="material-icons text-sm pe-1" style="vertical-align: -1px;">schedule</i>未定

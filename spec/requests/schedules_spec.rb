@@ -26,7 +26,7 @@ RSpec.describe "Schedules", type: :request do
         .to include schedule1.title, schedule2.title, schedule3.title
     end
 
-    it "他のユーザーのプランを取得しないこと" do
+    it "他の旅のプランのスケジュールを取得しないこと" do
       itinerary2_schedule = create(:schedule, itinerary_id: itinerary2.id)
       get itinerary_schedules_path(itinerary_id: itinerary1.id)
       expect(response.body).not_to include itinerary2_schedule.title
@@ -40,44 +40,64 @@ RSpec.describe "Schedules", type: :request do
     end
   end
 
-  # describe "POST #create" do
-  #   context "有効な値の場合" do
-  #     it "成功すること" do
-  #       itinerary_params = attributes_for(:itinerary)
-  #       post itineraries_path, params: { itinerary: itinerary_params }
-  #       expect(response).to redirect_to itinerary_path(Itinerary.last)
-  #     end
-  #   end
+  describe "GET #add_place_to_schedule" do
+    before do
+      get itinerary_add_place_to_schedule_path(itinerary_id: itinerary1.id),
+        params: { place_id: "ChIJ37pOYqtpAWARpy5Zd54rv4U" }
+    end
 
-  #   context "無効な値の場合" do
-  #     it "必須項目が空欄の場合、失敗すること" do
-  #       itinerary_params =
-  #         attributes_for(:itinerary, title: "", departure_date: "", return_date: "")
-  #       post itineraries_path, params: { itinerary: itinerary_params }
-  #       expect(response.body).to include "タイトルを入力してください"
-  #       expect(response.body).to include "出発日を入力してください"
-  #       expect(response.body).to include "帰宅日を入力してください"
-  #     end
+    it "turbo-frameがレンダリングされること" do
+      expect(response.body).to include '<turbo-frame id="spot">'
+    end
 
-  #     it "タイトルが31文字以上の場合、失敗すること" do
-  #       itinerary_params = attributes_for(:itinerary, title: "a" * 31)
-  #       post itineraries_path, params: { itinerary: itinerary_params }
-  #       expect(response.body).to include "タイトルは30文字以内で入力してください"
-  #     end
+    it "スポットの名前、住所を取得すること" do
+      place = controller.instance_variable_get('@place')
+      expect(response.body).to include place.name
+      expect(response.body).to include short_address(place.formatted_address)
+    end
+  end
 
-  #     it "タイトルが同じユーザーで重複している場合、失敗すること" do
-  #       itinerary_params = attributes_for(:itinerary, title: itinerary.title)
-  #       post itineraries_path, params: { itinerary: itinerary_params }
-  #       expect(response.body).to include "このタイトルはすでに使用されています"
-  #     end
+  describe "GET #remove_place_from_schedule" do
+    before do
+      get itinerary_remove_place_from_schedule_path(itinerary_id: itinerary1.id)
+    end
 
-  #     it "帰宅日が出発日より前の日付の場合、失敗すること" do
-  #       itinerary_params = attributes_for(:itinerary, return_date: "2024-01-31")
-  #       post itineraries_path, params: { itinerary: itinerary_params }
-  #       expect(response.body).to include "帰宅日は出発日以降で選択してください"
-  #     end
-  #   end
-  # end
+    it "turbo-frameがレンダリングされること" do
+      expect(response.body).to include '<turbo-frame id="spot">'
+    end
+
+    it "スポット情報を取得しないこと" do
+      place = controller.instance_variable_get('@place')
+      expect(place).to be nil
+    end
+  end
+
+  describe "POST #create" do
+    context "有効な値の場合" do
+      it "成功すること" do
+        schedule_params = attributes_for(:schedule)
+        post itinerary_schedules_path(itinerary_id: itinerary1.id),
+          params: { schedule: schedule_params }
+        expect(response).to redirect_to itinerary_schedules_path(itinerary_id: itinerary1.id)
+      end
+    end
+
+    context "無効な値の場合" do
+      it "タイトルが空欄の場合、失敗すること" do
+        schedule_params = attributes_for(:schedule, title: "")
+        post itinerary_schedules_path(itinerary_id: itinerary1.id),
+          params: { schedule: schedule_params }
+        expect(response.body).to include "タイトルを入力してください"
+      end
+
+      it "タイトルが31文字以上の場合、失敗すること" do
+        schedule_params = attributes_for(:schedule, title: "a" * 51)
+        post itinerary_schedules_path(itinerary_id: itinerary1.id),
+          params: { schedule: schedule_params }
+        expect(response.body).to include "タイトルは50文字以内で入力してください"
+      end
+    end
+  end
 
   describe "GET #show" do
     before do
@@ -159,71 +179,6 @@ RSpec.describe "Schedules", type: :request do
   #       patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
   #       expect(response.body).to include "帰宅日は出発日以降で選択してください"
   #     end
-  #   end
-  # end
-
-  # describe "GET #new_member" do
-  #   it "正常にレスポンスを返すこと" do
-  #     get new_member_itinerary_path(itinerary.id)
-  #     expect(response).to have_http_status 200
-  #   end
-  # end
-
-  # describe "GET #search_user" do
-  #   it "検索したBesTrip IDのユーザーを返すこと" do
-  #     user_search_params = { bestrip_id: other_user1.bestrip_id, id: itinerary.id }
-  #     get search_user_itinerary_path(itinerary.id), params: user_search_params
-  #     expect(response.body).to include other_user1.name
-  #   end
-
-  #   it "検索したBesTrip IDのユーザーが存在しない場合、メッセージを返すこと" do
-  #     user_search_params = { bestrip_id: "no_user_id", id: itinerary.id }
-  #     get search_user_itinerary_path(itinerary.id), params: user_search_params
-  #     expect(response.body).to include "ユーザーが見つかりませんでした"
-  #   end
-
-  #   it "検索したBesTrip IDのユーザーが既にメンバーに含まれている場合、メッセージを返すこと" do
-  #     itinerary.members << other_user1
-  #     user_search_params = { bestrip_id: other_user1.bestrip_id, id: itinerary.id }
-  #     get search_user_itinerary_path(itinerary.id), params: user_search_params
-  #     expect(response.body).to include other_user1.name
-  #     expect(response.body).to include "すでにメンバーに追加されています"
-  #   end
-  # end
-
-  # describe "PATCH #add_member" do
-  #   it "成功すること" do
-  #     add_member_params = { user_id: other_user1.id, id: itinerary.id }
-  #     patch add_member_itinerary_path(itinerary.id), params: add_member_params
-  #     expect(response).to redirect_to itinerary_path(itinerary.id)
-  #     expect(itinerary.reload.members).to include other_user1
-  #   end
-  # end
-
-  # describe "DELETE #remove_member" do
-  #   before do
-  #     itinerary.members << other_user1 << other_user2
-  #   end
-
-  #   it "成功すること" do
-  #     remove_member_params = { user_id: other_user1.id, id: itinerary.id }
-  #     delete remove_member_itinerary_path(itinerary.id), params: remove_member_params
-  #     expect(response).to redirect_to itinerary_path(itinerary.id)
-  #     expect(itinerary.reload.members).not_to include other_user1
-  #   end
-
-  #   it "作成者以外はメンバーを削除できないこと" do
-  #     sign_out user
-  #     sign_in other_user1
-  #     remove_member_params = { user_id: other_user2.id, id: itinerary.id }
-  #     delete remove_member_itinerary_path(itinerary.id), params: remove_member_params
-  #     expect(itinerary.reload.members).to include other_user2
-  #   end
-
-  #   it "作成者をメンバーから削除することはできないこと" do
-  #     remove_member_params = { user_id: user.id, id: itinerary.id }
-  #     delete remove_member_itinerary_path(itinerary.id), params: remove_member_params
-  #     expect(itinerary.reload.members).to include user
   #   end
   # end
 
