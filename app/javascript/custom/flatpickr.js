@@ -29,18 +29,20 @@ function configureDatePickr() {
     departureDate.addEventListener('change', () => {
       addMinReturnDate()
     });
+  }
 
-    if (scheduleDate) {
-      const minScheduleDate = new Date(Date.parse(departureDate.textContent));
-      const maxScheduleDate = new Date(Date.parse(returnDate.textContent));
+  if (scheduleDate) {
+    const minScheduleDate = new Date(Date.parse(departureDate.textContent));
+    const maxScheduleDate = new Date(Date.parse(returnDate.textContent));
+    config.minDate = minScheduleDate
+    config.maxDate = maxScheduleDate
 
-      flatpickr(scheduleDate, {
-        locale        : 'ja',
-        dateFormat    : 'Y/m/d（D）',
-        disableMobile : true,
-        minDate       : minScheduleDate,
-        maxDate       : maxScheduleDate,
-      });
+    if (scheduleDate.value) {
+      const scheduleDateValue = scheduleDate.value
+      flatpickr(scheduleDate, config);
+      scheduleDate.value = scheduleDateValue
+    } else {
+      flatpickr(scheduleDate, config);
     }
   }
 }
@@ -60,4 +62,3 @@ document.addEventListener('turbo:frame-load', () => {
   configureDatePickr();
   configureTimePickr();
 });
-

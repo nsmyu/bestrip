@@ -1,7 +1,7 @@
 class SchedulesController < ApplicationController
   before_action :authenticate_user!, :authenticate_itinerary_member
   before_action :set_schedule, only: [:show, :edit, :update, :destroy]
-  before_action :set_itinerary, only: [:index, :new, :add_place_to_schedule, :create]
+  before_action :set_itinerary, except: [:show, :edit, :update, :destroy]
 
   def index
     unsorted_schedules = Itinerary.find(params[:itinerary_id]).schedules
@@ -25,11 +25,13 @@ class SchedulesController < ApplicationController
   # end
 
   def add_place_to_schedule
-    @schedule = @itinerary.schedules.new(schedule_params)
     place_id = params[:place_id]
     client = GooglePlaces::Client.new(ENV['GOOGLE_API_KEY'])
     @place = client.spot(place_id, language: 'ja')
-    render :new
+  end
+
+  def remove_place_from_schedule
+    @place = nil
   end
 
   def create
@@ -86,8 +88,6 @@ class SchedulesController < ApplicationController
               :place_id,
               :itinerary_id)
   end
-
-
 
   def set_schedule
     @schedule = Schedule.find(params[:id])

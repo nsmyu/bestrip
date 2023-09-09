@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     end
 
     get 'add_place_to_schedule', to: 'schedules#add_place_to_schedule'
+    get 'remove_place_from_schedule', to: 'schedules#remove_place_from_schedule'
     resources :schedules
   end
 end

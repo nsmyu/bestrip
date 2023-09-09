@@ -1,0 +1,10 @@
+<%= turbo_frame_tag "spot" do %>
+  <div class="border p-3 m-2">
+    <% if @place %>
+      <%= button_tag "クリア", type: :submit, formaction: :remove_place_from_schedule, formmethod: :get, id: "remove-place-btn", class: "btn bg-gradient-light btn-sm my-1 fw-bold" %>
+      <p class="text-dark mb-1 fw-bold"><%= @place.name %></p>
+      <p class="d-flex mb-0 text-sm text-secondary"><i class="material-icons pe-1">location_on</i><%= short_address(@place.formatted_address) %></p>
+      <%= image_tag @place.photos[0].fetch_url(800), class: "mt-2 w-100" %>
+    <% end %>
+  </div>
+<% end %>
