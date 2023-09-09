@@ -2,6 +2,12 @@ document.addEventListener('turbo:frame-load', () => {
   const scheduleForm = document.querySelector('#schedule-form');
 
   if (scheduleForm) {
+    scheduleForm.onkeypress = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+      }
+    }
+
     const itineraryId = scheduleForm.dataset.itineraryId
 
     document.querySelector("#query-input").addEventListener('input', () => {
