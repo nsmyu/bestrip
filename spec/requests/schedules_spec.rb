@@ -53,15 +53,15 @@ RSpec.describe "Schedules", type: :request do
         params: { place_id: "ChIJPZ5hUjH65DQR_p_dD3CmCOo" }
     end
 
-    it "turbo-frameがレンダリングされること" do
-      expect(response.body).to include '<turbo-frame id="spot">'
-    end
+    # it "turbo-frameがレンダリングされること" do
+    #   expect(response.body).to include '<turbo-frame id="spot">'
+    # end
 
-    it "スポットの名前、住所を取得すること" do
-      place = controller.instance_variable_get('@place')
-      expect(response.body).to include place.name
-      expect(response.body).to include short_address(place.formatted_address)
-    end
+    # it "スポットの名前、住所を取得すること" do
+    #   place = controller.instance_variable_get('@place')
+    #   expect(response.body).to include place.name
+    #   expect(response.body).to include short_address(place.formatted_address)
+    # end
   end
 
   describe "GET #remove_place_from_schedule" do

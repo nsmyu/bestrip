@@ -131,15 +131,20 @@ RSpec.describe "Itineraries", type: :system do
           page.execute_script "departure_date.value = '#{itinerary.departure_date}'"
           page.execute_script "return_date.value = '#{itinerary.return_date}'"
           click_on "保存する"
+
           expect(page).to have_content "このタイトルはすでに使用されています"
         }.not_to change(Itinerary, :count)
       end
 
       it "出発日より前の日付は帰宅日として選択できないこと" do
         find("#departure_date").click
+
+        expect(page).to have_selector "div.flatpickr-calendar"
+
         find('div.dayContainer > span:nth-child(2)').click
-        sleep 0.1
         find("#return_date").click
+
+        expect(page).to have_selector "div.flatpickr-calendar"
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
@@ -217,12 +222,15 @@ RSpec.describe "Itineraries", type: :system do
         expect(page).to have_content "タイトルは30文字以内で入力してください"
       end
 
-      it "出発日より前の日付は帰宅日として選択できないこと" do
+      it "出発日より前の日付は帰宅日として選択できないこと", focus: true do
         find("#departure_date").click
+
+        expect(page).to have_selector "div.flatpickr-calendar"
+
         find('div.dayContainer > span:nth-child(2)').click
-        sleep 0.1
         find("#return_date").click
 
+        expect(page).to have_selector "div.flatpickr-calendar"
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
