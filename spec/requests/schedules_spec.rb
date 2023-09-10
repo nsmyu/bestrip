@@ -20,10 +20,17 @@ RSpec.describe "Schedules", type: :request do
     it "旅のプランに含まれるスケジュールを全て取得すること" do
       schedule1 = create(:schedule, itinerary_id: itinerary1.id)
       schedule2 = create(:schedule, itinerary_id: itinerary1.id)
-      schedule3 = create(:schedule, itinerary_id: itinerary1.id)
       get itinerary_schedules_path(itinerary_id: itinerary1.id)
-      expect(response.body)
-        .to include schedule1.title, schedule2.title, schedule3.title
+      expect(response.body).to include schedule1.title, schedule2.title
+    end
+
+    it "スケジュールのタイトル、日付、開始・終了時間を取得すること" do
+      schedule = create(:schedule, itinerary_id: itinerary1.id)
+      get itinerary_schedules_path(itinerary_id: itinerary1.id)
+      expect(response.body).to include schedule.title
+      expect(response.body).to include I18n.l schedule.schedule_date
+      expect(response.body).to include I18n.l schedule.start_at
+      expect(response.body).to include I18n.l schedule.end_at
     end
 
     it "他の旅のプランのスケジュールを取得しないこと" do
@@ -95,6 +102,20 @@ RSpec.describe "Schedules", type: :request do
         post itinerary_schedules_path(itinerary_id: itinerary1.id),
           params: { schedule: schedule_params }
         expect(response.body).to include "タイトルは50文字以内で入力してください"
+      end
+
+      it "日付が出発日より前の場合、失敗すること" do
+        schedule_params = attributes_for(:schedule, schedule_date: "2024-01-31")
+        post itinerary_schedules_path(itinerary_id: itinerary1.id),
+          params: { schedule: schedule_params }
+        expect(response).to have_http_status 422
+      end
+
+      it "日付が帰宅日より後の場合、失敗すること" do
+        schedule_params = attributes_for(:schedule, schedule_date: "2024-02-09")
+        post itinerary_schedules_path(itinerary_id: itinerary1.id),
+          params: { schedule: schedule_params }
+        expect(response).to have_http_status 422
       end
     end
   end

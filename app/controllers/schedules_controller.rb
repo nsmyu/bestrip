@@ -39,8 +39,6 @@ class SchedulesController < ApplicationController
     @schedule = @itinerary.schedules.new(schedule_params)
     if params[:place_id]
       place_id = params[:place_id]
-      client = GooglePlaces::Client.new(ENV['GOOGLE_API_KEY'])
-      place = client.spot(place_id, language: 'ja')
       @schedule.place_id = place_id
     end
 
@@ -79,16 +77,7 @@ class SchedulesController < ApplicationController
 
   def schedule_params
     params.require(:schedule)
-      .permit(:title,
-              :schedule_date,
-              :start_at,
-              :end_at,
-              :icon,
-              :place_name,
-              :address,
-              :image,
-              :place_id,
-              :itinerary_id)
+      .permit(:title, :schedule_date, :start_at, :end_at, :icon, :place_id, :itinerary_id)
   end
 
   def set_schedule
