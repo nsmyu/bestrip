@@ -9,9 +9,9 @@
     </div>
     <div class="input-group input-group-outline row mx-0 mb-3">
       <%= f.label :schedule_date, class: "m-0 px-0 fw-bold" %>
-      <%= f.date_field :schedule_date, class: "form-control fa fw-normal", id: "schedule-date", readonly:"", placeholder: " \uf073 日付を選択" %>
-      <div class="d-none" id="departure-date"><%= @itinerary.departure_date %></div>
-      <div class="d-none" id="return-date"><%= @itinerary.return_date %></div>
+      <%= f.date_field :schedule_date, class: "form-control fa fw-normal", id: "schedule_date", readonly:"", placeholder: " \uf073 日付を選択" %>
+      <div class="d-none" id="departure_date"><%= @itinerary.departure_date %></div>
+      <div class="d-none" id="return_date"><%= @itinerary.return_date %></div>
     </div>
     <div class="row">
       <div class="input-group input-group-outline row col mx-0 mb-3">
@@ -26,6 +26,11 @@
     <div class="mx-0 mb-3">
       <%= f.label :icon, class: "d-block ms-0 mb-1 px-0 fw-bold" %>
       <div class="border rounded-2 pt-2 text-center">
+        <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons opacity-10">horizontal_rule</i>
+          <span class="text-xxs d-block pt-1">なし</span>
+          <%= f.radio_button :icon, nil, class: "d-none schedule-icon-btn" %>
+        </label>
         <label type="button" class="lh-1 p-1 text-center">
           <i class="material-icons opacity-10">restaurant</i>
           <span class="text-xxs d-block pt-1">食事</span>
@@ -64,7 +69,7 @@
         <br>
         <label type="button" class="lh-1 p-1 text-center">
           <i class="material-icons opacity-10">local_activity</i>
-          <span class="text-xxs d-block pt-1">観戦・観劇</span>
+          <span class="text-xxs d-block pt-1">観戦・鑑賞</span>
           <%= f.radio_button :icon, :local_activity, class: "d-none schedule-icon-btn" %>
         </label>
         <label type="button" class="lh-1 p-1 text-center">

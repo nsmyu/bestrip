@@ -5,7 +5,7 @@ RSpec.describe "Schedules", type: :request do
   let!(:other_user) { create(:user) }
   let!(:itinerary1) { create(:itinerary, owner: user) }
   let!(:itinerary2) { create(:itinerary, owner: user) }
-  let(:schedule) { create(:schedule) }
+  let(:schedule) { create(:schedule, itinerary: itinerary1) }
 
   before do
     sign_in user
@@ -43,7 +43,7 @@ RSpec.describe "Schedules", type: :request do
   describe "GET #add_place_to_schedule" do
     before do
       get itinerary_add_place_to_schedule_path(itinerary_id: itinerary1.id),
-        params: { place_id: "ChIJ37pOYqtpAWARpy5Zd54rv4U" }
+        params: { place_id: "ChIJPZ5hUjH65DQR_p_dD3CmCOo" }
     end
 
     it "turbo-frameがレンダリングされること" do
@@ -90,7 +90,7 @@ RSpec.describe "Schedules", type: :request do
         expect(response.body).to include "タイトルを入力してください"
       end
 
-      it "タイトルが31文字以上の場合、失敗すること" do
+      it "タイトルが51文字以上の場合、失敗すること" do
         schedule_params = attributes_for(:schedule, title: "a" * 51)
         post itinerary_schedules_path(itinerary_id: itinerary1.id),
           params: { schedule: schedule_params }

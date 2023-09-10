@@ -1,6 +1,6 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
-  <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3 vh-100">
+  <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3 min-vh-100">
     <div class="w-md-70 mx-auto mb-4 ">
       <div class="card rounded-pill place-search">
         <%= form_with url: [:search_place_itinerary, id: @itinerary.id], html: { data: { turbo_frame: "place", controller: "search-form", action: "input->search-form#submit" } }, method: :get do |f| %>
@@ -22,26 +22,33 @@
       <div class="w-md-70 mx-auto">
         <% @sorted_schedules.each do |date, schedules| %>
           <div class="card mb-4 pt-3 text-dark">
-            <h5 class="ms-4"><%= date ? (l date) : "その他の予定" %></h5>
+            <h5 class="px-4"><%= date ? (l date) : "その他の予定" %></h5>
             <% schedules.each do |schedule| %>
               <%= link_to [:itinerary_schedule, id: schedule.id] do %>
-                <div class="border-top mx-0 link-area">
-                  <div class="py-3 row mx-0">
-                    <div class="col-3 col-sm-2 text-center text-primary fw-bold d-table">
-                      <div class="d-table-cell align-middle text-lg lh-1">
+                <div class="border-top link-area ">
+                  <div class="row height-70 align-items-center">
+                    <div class="col-2 ps-4 ps-sm-2 pe-0 text-center text-primary fw-bold">
+                      <div class="lh-1">
                         <% if schedule.start_at || schedule.end_at %>
                           <%= (l schedule.start_at) if schedule.start_at %><br><span class="text-sm"><%= "- #{(l schedule.end_at)}" if schedule.end_at%></span>
                         <% else %>
-                          <i class="material-icons text-sm pe-1" style="vertical-align: -1px;">schedule</i>未定
+                          --:--
                         <% end %>
                       </div>
                     </div>
-                    <div class="col-9 col-sm-8 ps-0 d-table">
-                      <div class="d-table-cell align-middle pe-2">
-                        <% if schedule.icon %>
-                          <i class="material-icons px-1" style="vertical-align: -4px;"><%= schedule.icon %></i>
-                        <% end %>
-                        <%= schedule.title %>
+                    <div class="col-10 align-items-center">
+                      <div class="row align-items-center">
+                        <div class="col-1 px-sm-0">
+                          <% if schedule.icon %>
+                            <i class="material-icons ps-2 align-middle"><%= schedule.icon %></i>
+                          <% end %>
+                        </div>
+                        <div class="col-11 px-4 ps-sm-0 text-ellipsis">
+                          <%= schedule.title %>
+                          <% if schedule.address %>
+                            <div class="text-xs text-secondary text-ellipsis"><%= schedule.place_name %></div>
+                          <% end %>
+                        </div>
                       </div>
                     </div>
                   </div>

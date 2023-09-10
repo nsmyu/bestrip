@@ -26,13 +26,13 @@ RSpec.describe Schedule, type: :model do
 
   it "スケジュールの日付が帰宅日より後の場合は無効であること" do
     itinerary = create(:itinerary)
-    schedule = build(:schedule, schedule_date: "2024-02-9", itinerary_id: itinerary.id)
+    schedule = build(:schedule, schedule_date: "2024-02-09", itinerary_id: itinerary.id)
     schedule.valid?
     expect(schedule.errors).to be_of_kind(:schedule_date, "出発日〜帰宅日の間で選択してください")
   end
 
   it "itinerary_idがなければ無効であること" do
-    schedule = build(:schedule, itinerary_id: nil)
+    schedule = build(:schedule, schedule_date: nil, itinerary_id: nil)
     schedule.valid?
     expect(schedule.errors).to be_of_kind(:itinerary, :blank)
   end

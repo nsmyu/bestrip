@@ -35,10 +35,10 @@ RSpec.describe "Itineraries", type: :system do
       it "旅のタイトル、出発・帰宅日、メンバーのニックネームを表示すること" do
         itinerary1.members << other_user
         visit itineraries_path
-        expect(page).to have_content itinerary1.title
-        expect(page).to have_content itinerary1.departure_date.strftime('%Y/%-m/%-d')
-        expect(page).to have_content itinerary1.return_date.strftime('%Y/%-m/%-d')
         within(:xpath, "//a[@href='/itineraries/#{itinerary1.id}/schedules']") do
+          expect(page).to have_content itinerary1.title
+          expect(page).to have_content itinerary1.departure_date.strftime('%Y/%-m/%-d')
+          expect(page).to have_content itinerary1.return_date.strftime('%Y/%-m/%-d')
           expect(page).to have_content user.name
           expect(page).to have_content other_user.name
         end
@@ -97,7 +97,7 @@ RSpec.describe "Itineraries", type: :system do
           fill_in "itinerary[return_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
           click_on "保存する"
           expect(page).to have_content "タイトルを入力してください"
-        }.not_to change(User, :count)
+        }.not_to change(Itinerary, :count)
       end
 
       it "出発日と帰宅日が未入力の場合、失敗すること" do
@@ -106,7 +106,7 @@ RSpec.describe "Itineraries", type: :system do
           click_on "保存する"
           expect(page).to have_content "出発日を入力してください"
           expect(page).to have_content "帰宅日を入力してください"
-        }.not_to change(User, :count)
+        }.not_to change(Itinerary, :count)
       end
 
       it "タイトルが31文字以上の場合、失敗すること" do
@@ -116,7 +116,7 @@ RSpec.describe "Itineraries", type: :system do
           fill_in "itinerary[return_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
           click_on "保存する"
           expect(page).to have_content "タイトルは30文字以内で入力してください"
-        }.not_to change(User, :count)
+        }.not_to change(Itinerary, :count)
       end
 
       it "タイトルが同じユーザーで重複している場合、失敗すること" do
@@ -127,14 +127,14 @@ RSpec.describe "Itineraries", type: :system do
           fill_in "itinerary[return_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
           click_on "保存する"
           expect(page).to have_content "このタイトルはすでに使用されています"
-        }.not_to change(User, :count)
+        }.not_to change(Itinerary, :count)
       end
 
       it "出発日より前の日付は帰宅日として選択できないこと" do
-        find("#departure-date").click
+        find("#departure_date").click
         find('div.dayContainer > span:nth-child(2)').click
         sleep 0.1
-        find("#return-date").click
+        find("#return_date").click
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
@@ -210,10 +210,10 @@ RSpec.describe "Itineraries", type: :system do
       end
 
       it "出発日より前の日付は帰宅日として選択できないこと" do
-        find("#departure-date").click
+        find("#departure_date").click
         find('div.dayContainer > span:nth-child(2)').click
         sleep 0.1
-        find("#return-date").click
+        find("#return_date").click
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end

@@ -1,7 +1,7 @@
 function configureDatePickr() {
-  const departureDate = document.querySelector("#departure-date");
-  const returnDate = document.querySelector("#return-date");
-  const scheduleDate = document.querySelector("#schedule-date");
+  const departureDate = document.querySelector("#departure_date");
+  const returnDate = document.querySelector("#return_date");
+  const scheduleDate = document.querySelector("#schedule_date");
   const config = {
     locale        : 'ja',
     dateFormat    : 'Y/m/d（D）',
