@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Itineraries", type: :system do
+RSpec.describe "Itineraries", type: :system, focus: true do
   let!(:user) { create(:user) }
   let!(:other_user) { create(:user, bestrip_id: "other_user_id") }
 
@@ -37,8 +37,8 @@ RSpec.describe "Itineraries", type: :system do
         visit itineraries_path
         within(:xpath, "//a[@href='/itineraries/#{itinerary1.id}/schedules']") do
           expect(page).to have_content itinerary1.title
-          expect(page).to have_content itinerary1.departure_date.strftime('%Y/%-m/%-d')
-          expect(page).to have_content itinerary1.return_date.strftime('%Y/%-m/%-d')
+          expect(page).to have_content I18n.l itinerary1.departure_date
+          expect(page).to have_content I18n.l itinerary1.return_date
           expect(page).to have_content user.name
           expect(page).to have_content other_user.name
         end
@@ -58,6 +58,8 @@ RSpec.describe "Itineraries", type: :system do
   end
 
   describe "新規作成", js: true do
+    let(:itinerary) { build(:itinerary, owner: user) }
+
     before do
       visit itineraries_path
       click_on "旅のプランを作成"
@@ -66,9 +68,9 @@ RSpec.describe "Itineraries", type: :system do
     context "有効な値の場合" do
       it "成功すること" do
         expect {
-          fill_in "itinerary[title]", with: "New Trip"
-          fill_in "itinerary[departure_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
-          fill_in "itinerary[return_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
+          fill_in "itinerary[title]", with: itinerary.title
+          page.execute_script "departure_date.value = '#{itinerary.departure_date}'"
+          page.execute_script "return_date.value = '#{itinerary.return_date}'"
 
           expect(page).to have_selector "img[id='image_preview'][src*='default_itinerary']"
 
@@ -79,12 +81,12 @@ RSpec.describe "Itineraries", type: :system do
 
           click_on "保存する"
 
-          # expect(current_path).to eq root_path
           expect(page).to have_content "新しい旅のプランを作成しました。"
-          # expect(page).to have_content itinerary.title
-          # within ".navbar" do
-          #   expect(page).to have_content user.name
-          # end
+          expect(page).to have_content "旅のプラン情報"
+          expect(page).to have_content itinerary.title
+          expect(page).to have_content I18n.l itinerary.departure_date
+          expect(page).to have_content I18n.l itinerary.return_date
+          expect(page).to have_content user.name
         }.to change(Itinerary, :count).by(1)
       end
     end
@@ -93,17 +95,19 @@ RSpec.describe "Itineraries", type: :system do
       it "タイトルが空欄の場合、失敗すること" do
         expect {
           fill_in "itinerary[title]", with: ""
-          fill_in "itinerary[departure_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
-          fill_in "itinerary[return_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
+          page.execute_script "departure_date.value = '#{itinerary.departure_date}'"
+          page.execute_script "return_date.value = '#{itinerary.return_date}'"
           click_on "保存する"
+
           expect(page).to have_content "タイトルを入力してください"
         }.not_to change(Itinerary, :count)
       end
 
       it "出発日と帰宅日が未入力の場合、失敗すること" do
         expect {
-          fill_in "itinerary[title]", with: "New Trip"
+          fill_in "itinerary[title]", with: itinerary.title
           click_on "保存する"
+
           expect(page).to have_content "出発日を入力してください"
           expect(page).to have_content "帰宅日を入力してください"
         }.not_to change(Itinerary, :count)
@@ -112,9 +116,10 @@ RSpec.describe "Itineraries", type: :system do
       it "タイトルが31文字以上の場合、失敗すること" do
         expect {
           fill_in "itinerary[title]", with: "a" * 31
-          fill_in "itinerary[departure_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
-          fill_in "itinerary[return_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
+          page.execute_script "departure_date.value = '#{itinerary.departure_date}'"
+          page.execute_script "return_date.value = '#{itinerary.return_date}'"
           click_on "保存する"
+
           expect(page).to have_content "タイトルは30文字以内で入力してください"
         }.not_to change(Itinerary, :count)
       end
@@ -123,8 +128,8 @@ RSpec.describe "Itineraries", type: :system do
         existing_itinerary = create(:itinerary, owner: user)
         expect {
           fill_in "itinerary[title]", with: existing_itinerary.title
-          fill_in "itinerary[departure_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
-          fill_in "itinerary[return_date]", with: "Thu Feb 01 2024 00:00:00 GMT+0900"
+          page.execute_script "departure_date.value = '#{itinerary.departure_date}'"
+          page.execute_script "return_date.value = '#{itinerary.return_date}'"
           click_on "保存する"
           expect(page).to have_content "このタイトルはすでに使用されています"
         }.not_to change(Itinerary, :count)
@@ -151,8 +156,8 @@ RSpec.describe "Itineraries", type: :system do
 
     it "旅のタイトル、出発・帰宅日、メンバーのニックネームを表示すること" do
       expect(page).to have_content itinerary.title
-      expect(page).to have_content itinerary.departure_date.strftime('%Y/%-m/%-d')
-      expect(page).to have_content itinerary.return_date.strftime('%Y/%-m/%-d')
+      expect(page).to have_content I18n.l itinerary.departure_date
+      expect(page).to have_content I18n.l itinerary.return_date
       expect(page).to have_content user.name
       expect(page).to have_content other_user.name
     end
@@ -194,18 +199,21 @@ RSpec.describe "Itineraries", type: :system do
       it "タイトルが空欄の場合、失敗すること" do
         fill_in "itinerary[title]", with: ""
         click_on "保存する"
+
         expect(page).to have_content "タイトルを入力してください"
       end
 
       it "タイトルが同じユーザーで重複している場合、失敗すること" do
         fill_in "itinerary[title]", with: itinerary2.title
         click_on "保存する"
+
         expect(page).to have_content "このタイトルはすでに使用されています"
       end
 
       it "タイトルが31文字以上の場合、失敗すること" do
         fill_in "itinerary[title]", with: "a" * 31
         click_on "保存する"
+
         expect(page).to have_content "タイトルは30文字以内で入力してください"
       end
 
@@ -214,6 +222,7 @@ RSpec.describe "Itineraries", type: :system do
         find('div.dayContainer > span:nth-child(2)').click
         sleep 0.1
         find("#return_date").click
+
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
@@ -232,6 +241,7 @@ RSpec.describe "Itineraries", type: :system do
         visit itinerary_path(itinerary.id)
         find("i", text: "delete").click
         click_on "削除する"
+
         expect(page).to have_content "#{itinerary.title}を削除しました。"
         expect(current_path).to eq itineraries_path
       }.to change(Itinerary, :count).by(-1)
@@ -241,6 +251,7 @@ RSpec.describe "Itineraries", type: :system do
       sign_out user
       sign_in other_user
       visit itinerary_path(itinerary.id)
+
       expect(page).not_to have_selector "i", text: "delete"
     end
   end

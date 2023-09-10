@@ -9,7 +9,7 @@ export default class extends Controller {
   close(event) {
     if (event.detail.success) {
       this.modal.hide()
-      Turbo.visit(event.detail.fetchResponse.response.url, { action: 'replace' })
+      Turbo.visit(event.detail.fetchResponse.response.url, { action: 'advance' })
     }
   }
 }

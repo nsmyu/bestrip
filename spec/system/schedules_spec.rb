@@ -74,7 +74,7 @@ RSpec.describe "Schedules", type: :system do
     end
 
     context "有効な値の場合" do
-      it "成功すること", focus: true do
+      it "成功すること" do
         expect {
           fill_in "schedule[title]", with: schedule.title
           page.execute_script "schedule_date.value = '#{schedule.schedule_date}'"
