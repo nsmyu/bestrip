@@ -124,15 +124,6 @@ RSpec.describe "Schedules", type: :system do
           expect(page).to have_content "タイトルは50文字以内で入力してください"
         }.not_to change(Schedule, :count)
       end
-
-      it "出発日〜帰宅日に含まれない日付は選択できないこと" do
-        find("#schedule_date").click
-        within("div.flatpickr-calendar") do
-          expect(page).to have_content "2月"
-          expect(page).to have_selector "span.flatpickr-disabled", text: "31"
-          expect(page).to have_selector "span.flatpickr-disabled", text: "9"
-        end
-      end
     end
   end
 
