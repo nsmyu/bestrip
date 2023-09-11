@@ -47,13 +47,13 @@ RSpec.describe "Schedules", type: :request do
     end
   end
 
-  describe "GET #add_place_to_schedule" do
+  describe "GET #add_place_to_schedule", focus: true do
     before do
       get itinerary_add_place_to_schedule_path(itinerary_id: itinerary1.id),
         params: { place_id: "ChIJPZ5hUjH65DQR_p_dD3CmCOo" }
     end
 
-    # it "turbo-frameがレンダリングされること" do
+    # it "turbo-frameがレンダリングされること", vcr: { cassette_name: 'spot' } do
     #   expect(response.body).to include '<turbo-frame id="spot">'
     # end
 

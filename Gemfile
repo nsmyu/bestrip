@@ -59,7 +59,6 @@ gem 'mini_magick'
 gem 'dartsass-rails', '~> 0.4.1'
 gem 'dotenv-rails'
 gem 'faker'
-gem 'google_places'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
