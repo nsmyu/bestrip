@@ -25,16 +25,6 @@ class SchedulesController < ApplicationController
   #   @schedule = @itinerary.schedules.new(schedule_params)
   # end
 
-  def add_place_to_schedule
-    place_id = params[:place_id]
-    client = GooglePlaces::Client.new(ENV['GOOGLE_API_KEY'])
-    @place = client.spot(place_id, language: 'ja') if place_id
-  end
-
-  def remove_place_from_schedule
-    @place = nil
-  end
-
   def create
     @schedule = @itinerary.schedules.new(schedule_params)
     if params[:place_id]

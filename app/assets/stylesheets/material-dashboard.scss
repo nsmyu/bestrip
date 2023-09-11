@@ -36,6 +36,7 @@
   font-size: 12px;
   margin-top: 1px;
   padding-top: 0;
+  padding-left: 0;
 }
 
 .input-group:has(.error-message) {
@@ -88,7 +89,8 @@ input:-webkit-autofill {
 
 .place-image-preview {
   object-fit: cover;
-  aspect-ratio: 5/3;
+  width: 100px;
+  aspect-ratio: 1/1;
 }
 
 .tooltip-inner {
@@ -106,12 +108,7 @@ input:-webkit-autofill {
   background-color: rgb(81, 194, 213, .1);
 }
 
-.place-search:focus-within + .place-list,
-.place-list:hover {
-  display: block !important;
-}
-
-.place-search > .input-group > .form-control {
+#query_input {
   background-color: $gray-200
 }
 
@@ -121,14 +118,28 @@ input:-webkit-autofill {
   text-overflow: ellipsis;
 }
 
-.place-add-icon {
-  cursor: pointer;
-  &:hover {
-    color: $accent !important;
-  }
+.pac-container {
+  z-index: 10001;
 }
 
 label:has(.schedule-icon-btn:checked) {
   color: $primary;
 }
 
+#place_info_card {
+  display: none;
+}
+
+label:has(#reset_place_btn) {
+  color: $secondary;
+  &:hover {
+    color: $dark;
+  }
+}
+
+label {
+  color: $dark;
+  &:hover {
+    cursor: pointer;
+  }
+}

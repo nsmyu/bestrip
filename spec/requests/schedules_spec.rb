@@ -47,38 +47,6 @@ RSpec.describe "Schedules", type: :request do
     end
   end
 
-  describe "GET #add_place_to_schedule", focus: true do
-    before do
-      get itinerary_add_place_to_schedule_path(itinerary_id: itinerary1.id),
-        params: { place_id: "ChIJPZ5hUjH65DQR_p_dD3CmCOo" }
-    end
-
-    # it "turbo-frameがレンダリングされること", vcr: { cassette_name: 'spot' } do
-    #   expect(response.body).to include '<turbo-frame id="spot">'
-    # end
-
-    # it "スポットの名前、住所を取得すること" do
-    #   place = controller.instance_variable_get('@place')
-    #   expect(response.body).to include place.name
-    #   expect(response.body).to include short_address(place.formatted_address)
-    # end
-  end
-
-  describe "GET #remove_place_from_schedule" do
-    before do
-      get itinerary_remove_place_from_schedule_path(itinerary_id: itinerary1.id)
-    end
-
-    it "turbo-frameがレンダリングされること" do
-      expect(response.body).to include '<turbo-frame id="spot">'
-    end
-
-    it "スポット情報を取得しないこと" do
-      place = controller.instance_variable_get('@place')
-      expect(place).to be nil
-    end
-  end
-
   describe "POST #create" do
     context "有効な値の場合" do
       it "成功すること" do
