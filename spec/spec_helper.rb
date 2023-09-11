@@ -93,3 +93,15 @@ RSpec.configure do |config|
     meta[:aggregate_failures] = true unless meta.key?(:aggregate_failures)
   end
 end
+
+require 'vcr'
+
+VCR.configure do |config|
+  config.cassette_library_dir = 'spec/support/vcr'
+  config.hook_into :webmock
+  config.allow_http_connections_when_no_cassette = true # VCRを使わない場所ではHTTP通信を許可する
+  config.default_cassette_options = {
+    record: :new_episodes,
+    match_requests_on: [:method, :uri, :body] # http通信時にカセットを探索する際のデフォルトのマッチ条件の指定※各テストケースでVCR.useするときに条件の上書きは可能
+  }
+end

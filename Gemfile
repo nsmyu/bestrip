@@ -78,6 +78,8 @@ group :test do
   gem "shoulda-matchers"
   gem "selenium-webdriver"
   gem "webdrivers"
+  gem 'vcr'
+  gem 'webmock'
 end
 
 group :production do
