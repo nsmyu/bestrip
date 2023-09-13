@@ -41,7 +41,6 @@ jobs:
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: |
-          echo "ENV['GOOGLE_API_KEY']=${{ secrets.GOOGLE_API_KEY }}"
           bundle exec rspec
 
       - name: Archive rspec result screenshots
