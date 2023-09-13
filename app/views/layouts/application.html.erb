@@ -34,7 +34,6 @@
     <%= render 'layouts/footer' %>
     <%= render 'layouts/confirm_modal' %>
     <%= turbo_frame_tag "modal" %>
-
-    <script async src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_KEY'] %>&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_KEY'] %>&libraries=places&region=jp&callback=Function.prototype"></script>
   </body>
 </html>

@@ -54,6 +54,12 @@ RSpec.describe "Itineraries", type: :system do
         click_on itinerary1.title
         expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary1.id)
       end
+
+      it "「旅のプランを作成」ボタンをクリックすると、プラン作成ページ覧へ遷移すること" do
+        visit itineraries_path
+        click_on "旅のプランを作成"
+        expect(current_path).to eq new_itinerary_path
+      end
     end
   end
 
@@ -61,8 +67,7 @@ RSpec.describe "Itineraries", type: :system do
     let(:itinerary) { build(:itinerary, owner: user) }
 
     before do
-      visit itineraries_path
-      click_on "旅のプランを作成"
+      visit new_itinerary_path
     end
 
     context "有効な値の場合" do

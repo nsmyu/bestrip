@@ -64,13 +64,19 @@ RSpec.describe "Schedules", type: :system do
         expect(current_path)
           .to eq itinerary_schedule_path(id: schedule1.id, itinerary_id: itinerary1.id)
       end
+
+      it "「スケジュール作成」ボタンをクリックすると、スケジュール作成ページへ遷移すること" do
+        visit itinerary_schedules_path(itinerary_id: itinerary1.id)
+        click_on "スケジュール作成"
+        expect(current_path)
+          .to eq new_itinerary_schedule_path(itinerary_id: itinerary1.id)
+      end
     end
   end
 
-  describe "新規作成", js: true do
+  describe "新規作成", js: true, focus: true  do
     before do
-      visit itinerary_schedules_path(itinerary_id: itinerary1.id)
-      click_on "スケジュール作成"
+      visit new_itinerary_schedule_path(itinerary_id: itinerary1.id)
     end
 
     context "有効な値の場合" do
@@ -78,23 +84,12 @@ RSpec.describe "Schedules", type: :system do
         expect {
           fill_in "schedule[title]", with: schedule.title
           page.execute_script "schedule_date.value = '#{schedule.schedule_date}'"
-          page.execute_script "schedule_start_at.value = '#{schedule.start_at}'"
-          page.execute_script "schedule_end_at.value = '#{schedule.end_at}'"
-          find("i", text: "#{schedule.icon}").click
+          page.execute_script "schedule_start_at.value = '#{I18n.l schedule.start_at}'"
+          page.execute_script "schedule_end_at.value = '#{I18n.l schedule.end_at}'"
 
-          # fill_in "schedule[query]", with: schedule.place_name
-          # save_and_open_page
-          # find("[name='schedule[query]']").click
-          # find("span", text: "#{schedule.place_name}").sibling("label").click
-
-          # expect(page).to have_selector "img[id='image_preview'][src*='default_itinerary']"
-          # image_path = Rails.root.join('spec/fixtures/test_image.jpg')
-          # attach_file 'itinerary[image]', image_path, make_visible: true
-          # expect(page).not_to have_selector "img[id='image_preview'][src*='default_itinerary']"
-
+          find("i", text: "attraction").click
           click_on "保存する"
 
-          expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary1.id)
           expect(page).to have_content "新しいスケジュールを作成しました。"
           within(:xpath, "//div[h5[contains(text(), '#{I18n.l schedule.schedule_date}')]]") do
             expect(page).to have_content schedule.title
@@ -102,7 +97,43 @@ RSpec.describe "Schedules", type: :system do
             expect(page).to have_content I18n.l schedule.end_at
             expect(page).to have_content schedule.icon
           end
+          expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary1.id)
         }.to change(Schedule, :count).by(1)
+      end
+
+      it "スポット情報を追加できること" do
+        fill_in "schedule[title]", with: schedule.title
+        fill_in "query_input", with: "Sydney opera house"
+        sleep 0.2
+        find("#query_input").click
+        find("span.pac-matched", text: "Sydney Opera House", match: :first).click
+
+        within("div#place_info_card") do
+          expect(page).to have_content "Sydney Opera House"
+          expect(page).to have_content "Bennelong Point, Sydney NSW 2000, Australia"
+          expect(page)
+            .to have_selector "img[src*='maps.googleapis.com/maps/api/place/js/PhotoService']"
+        end
+
+        find("i", text: "close").click
+
+        expect(page).not_to have_selector "#place_info_card"
+        expect(page).to have_selector "#place_info_empty"
+
+        fill_in "query_input", with: "Sydney Harbour Bridge"
+        sleep 0.2
+        find("#query_input").click
+        find("span.pac-matched", text: "Sydney Harbour Bridge", match: :first).click
+
+        within("div#place_info_card") do
+          expect(page).to have_content "Sydney Harbour Bridge"
+          expect(page).to have_content "Sydney Hbr Brg, Sydney NSW, Australia"
+          expect(page)
+            .to have_selector "img[src*='maps.googleapis.com/maps/api/place/js/PhotoService']"
+        end
+
+        click_on "保存する"
+        # visit  itinerary_schedule_path(id: )
       end
     end
 
@@ -123,6 +154,25 @@ RSpec.describe "Schedules", type: :system do
 
           expect(page).to have_content "タイトルは50文字以内で入力してください"
         }.not_to change(Schedule, :count)
+      end
+    end
+
+    describe "日付入力のflatpickr" do
+      it "出発日〜帰宅日の間の日付のみ選択可能であること" do
+        find("#schedule_date").click
+        find("span[aria-label='2月 1, 2024']").click
+        expect(page).not_to have_selector ".flatpickr-calendar.open"
+
+        find("#schedule_date").click
+        find("span[aria-label='2月 8, 2024']").click
+        expect(page).not_to have_selector ".flatpickr-calendar.open"
+
+        find("#schedule_date").click
+        within("div.flatpickr-calendar") do
+          expect(page).to have_content "2月"
+          expect(page).to have_selector "span.flatpickr-disabled[aria-label='1月 31, 2024']"
+          expect(page).to have_selector "span.flatpickr-disabled[aria-label='2月 9, 2024']"
+        end
       end
     end
   end

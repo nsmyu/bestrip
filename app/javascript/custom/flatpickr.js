@@ -58,6 +58,11 @@ function configureTimePickr() {
   });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  configureDatePickr();
+  configureTimePickr();
+});
+
 document.addEventListener('turbo:frame-load', () => {
   configureDatePickr();
   configureTimePickr();

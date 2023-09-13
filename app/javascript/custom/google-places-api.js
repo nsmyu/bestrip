@@ -57,6 +57,7 @@
     }
   }
 
+  document.addEventListener('DOMContentLoaded', initAutocomplete);
   document.addEventListener('turbo:frame-load', initAutocomplete);
 }
 
