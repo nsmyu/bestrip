@@ -7,8 +7,6 @@ jobs:
   rspec:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    env:
-      GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
     services:
       postgres:
         image: postgres
@@ -40,8 +38,10 @@ jobs:
           bundle exec rails db:migrate RAILS_ENV=test
 
       - name: Run rspec
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: |
-          echo "ENV['GOOGLE_API_KEY']=${{ secrets.GOOGLE_API_KEY }}" >> $GITHUB_ENV
+          echo "ENV['GOOGLE_API_KEY']=${{ secrets.GOOGLE_API_KEY }}"
           bundle exec rspec
 
       - name: Archive rspec result screenshots

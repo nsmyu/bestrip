@@ -152,9 +152,8 @@ RSpec.describe "Itineraries", type: :system, focus: true do
         find("#departure_date").click
         find('div.dayContainer > span:nth-child(2)').click
         find("#return_date").click
-        expect(page).to have_selector ".flatpickr-calendar.open"
-        find('div.dayContainer > span:nth-child(1)').click
 
+        expect(page).to have_selector ".flatpickr-calendar.open"
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
@@ -238,9 +237,8 @@ RSpec.describe "Itineraries", type: :system, focus: true do
         find("#departure_date").click
         find('div.dayContainer > span:nth-child(2)').click
         find("#return_date").click
-        expect(page).to have_selector ".flatpickr-calendar.open"
-        find('div.dayContainer > span:nth-child(1)').click
 
+        expect(page).to have_selector ".flatpickr-calendar.open"
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
