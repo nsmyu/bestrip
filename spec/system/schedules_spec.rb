@@ -74,7 +74,7 @@ RSpec.describe "Schedules", type: :system do
     end
   end
 
-  describe "新規作成", js: true, focus: true  do
+  describe "新規作成", js: true do
     before do
       visit new_itinerary_schedule_path(itinerary_id: itinerary1.id)
     end

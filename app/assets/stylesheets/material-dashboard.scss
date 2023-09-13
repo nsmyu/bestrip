@@ -83,11 +83,7 @@ input:-webkit-autofill {
   aspect-ratio: 5/3;
 }
 
-.schedule-image-preview {
-  width: 200px;
-}
-
-.place-image-preview {
+#place_photo {
   object-fit: cover;
   width: 100px;
   aspect-ratio: 1/1;

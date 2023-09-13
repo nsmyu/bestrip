@@ -35,7 +35,7 @@
     const placeInfoEmpty = document.getElementById("place_info_empty");
     const placeName = document.getElementById("place_name")
     const placeAddress = document.getElementById("place_address")
-    const placeImage = document.getElementById("place_image")
+    const placePhoto = document.getElementById("place_photo")
 
     placeInfoEmpty.style.display = "none"
     placeInfoCard.style.display = "block"
@@ -43,9 +43,9 @@
     placeAddress.textContent = place.formatted_address
 
     if(place.photos) {
-      placeImage.setAttribute('src', place.photos[0].getUrl())
+      placePhoto.setAttribute('src', place.photos[0].getUrl())
     } else {
-      placeImage.setAttribute('src', "/assets/default_schedule_thumbnail.png")
+      placePhoto.setAttribute('src', "/assets/default_schedule_thumbnail.png")
     }
 
     const resetPlaceBtn = document.getElementById("reset_place_btn")
