@@ -40,7 +40,7 @@ jobs:
       - name: Run rspec
         run: |
           touch .env
-          echo GOOGLE_API_KEY =${{ secrets.GOOGLE_API_KEY }} >> .env
+          echo "GOOGLE_API_KEY =${{ secrets.GOOGLE_API_KEY }}" >> .env
           bundle exec rspec
 
       - name: Archive rspec result screenshots
