@@ -152,6 +152,7 @@ RSpec.describe "Itineraries", type: :system do
         find("#departure_date").click
         find('div.dayContainer > span:nth-child(2)').click
         find("#return_date").click
+        sleep 0.2
 
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
@@ -182,7 +183,6 @@ RSpec.describe "Itineraries", type: :system do
 
     before do
       visit itinerary_path(itinerary1.id)
-
       find("i", text: "edit").click
     end
 
@@ -237,6 +237,7 @@ RSpec.describe "Itineraries", type: :system do
         find("#departure_date").click
         find('div.dayContainer > span:nth-child(2)').click
         find("#return_date").click
+        sleep 0.2
 
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"

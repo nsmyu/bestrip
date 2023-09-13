@@ -160,10 +160,12 @@ RSpec.describe "Schedules", type: :system do
     describe "日付入力のflatpickr" do
       it "出発日〜帰宅日の間の日付のみ選択可能であること" do
         find("#schedule_date").click
+        sleep 0.1
         find("span[aria-label='2月 1, 2024']").click
         expect(page).not_to have_selector ".flatpickr-calendar.open"
 
         find("#schedule_date").click
+        sleep 0.1
         find("span[aria-label='2月 8, 2024']").click
         expect(page).not_to have_selector ".flatpickr-calendar.open"
 
