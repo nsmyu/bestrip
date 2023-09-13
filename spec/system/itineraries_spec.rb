@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Itineraries", type: :system do
+RSpec.describe "Itineraries", type: :system, focus: true do
   let!(:user) { create(:user) }
   let!(:other_user) { create(:user, bestrip_id: "other_user_id") }
 
@@ -152,7 +152,7 @@ RSpec.describe "Itineraries", type: :system do
         find("#departure_date").click
         find('div.dayContainer > span:nth-child(2)').click
         find("#return_date").click
-        sleep 0.2
+        find('div.dayContainer > span:nth-child(1)').click
 
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
@@ -237,7 +237,7 @@ RSpec.describe "Itineraries", type: :system do
         find("#departure_date").click
         find('div.dayContainer > span:nth-child(2)').click
         find("#return_date").click
-        sleep 0.2
+        find('div.dayContainer > span:nth-child(1)').click
 
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"

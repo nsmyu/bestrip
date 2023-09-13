@@ -40,7 +40,9 @@ jobs:
           bundle exec rails db:migrate RAILS_ENV=test
 
       - name: Run rspec
-        run: bundle exec rspec
+        run: |
+          echo "ENV['GOOGLE_API_KEY']=${{ secrets.GOOGLE_API_KEY }}" >> $GITHUB_ENV
+          bundle exec rspec
 
       - name: Archive rspec result screenshots
         if: failure()
