@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Itineraries", type: :system, focus: true do
+RSpec.describe "Itineraries", type: :system do
   let!(:user) { create(:user) }
   let!(:other_user) { create(:user, bestrip_id: "other_user_id") }
 
@@ -150,11 +150,11 @@ RSpec.describe "Itineraries", type: :system, focus: true do
     describe "出発日・帰宅日入力のflatpickr" do
       it "出発日より前の日付は帰宅日として選択できないこと" do
         find("#departure_date").click
-        sleep 0.1
+        expect(page).to have_selector ".flatpickr-calendar.open", wait: 3
         find('div.dayContainer > span:nth-child(2)').click
-        find("#return_date").click
 
-        expect(page).to have_selector ".flatpickr-calendar.open"
+        find("#return_date").click
+        expect(page).to have_selector ".flatpickr-calendar.open", wait: 3
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
@@ -233,14 +233,14 @@ RSpec.describe "Itineraries", type: :system, focus: true do
       end
     end
 
-    describe "出発日・帰宅日入力のflatpickr" do
+    describe "出発日・帰宅日入力のflatpickr", focus: true do
       it "出発日より前の日付は帰宅日として選択できないこと" do
         find("#departure_date").click
-        sleep 0.1
+        expect(page).to have_selector ".flatpickr-calendar.open", wait: 3
         find('div.dayContainer > span:nth-child(2)').click
-        find("#return_date").click
 
-        expect(page).to have_selector ".flatpickr-calendar.open"
+        find("#return_date").click
+        expect(page).to have_selector ".flatpickr-calendar.open", wait: 3
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
       end
