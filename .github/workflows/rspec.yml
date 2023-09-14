@@ -6,6 +6,8 @@ on:
 jobs:
   rspec:
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_API_KEY: ${{ vars.GOOGLE_API_KEY }}
     timeout-minutes: 10
     services:
       postgres:
@@ -37,10 +39,8 @@ jobs:
           bundle exec rails db:create RAILS_ENV=test
           bundle exec rails db:migrate RAILS_ENV=test
 
-      - name: Decrypt secrets
-        uses: zgosalvez/github-actions-decrypt-secrets@v2
-        env:
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
 
       - name: Create dotenv file
         run: |
