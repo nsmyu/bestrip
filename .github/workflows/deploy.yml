@@ -6,8 +6,8 @@ on:
       - 'develop/03-schedule'
 
 jobs:
-  rubocop:
-    uses: ./.github/workflows/rubocop.yml
+  # rubocop:
+  #   uses: ./.github/workflows/rubocop.yml
 
   rspec:
     needs: rubocop

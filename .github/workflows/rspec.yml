@@ -7,7 +7,7 @@ jobs:
   rspec:
     runs-on: ubuntu-latest
     env:
-      GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+      GOOGLE_API_KEY: ${{ vars.GOOGLE_API_KEY }}
     timeout-minutes: 10
     services:
       postgres:
@@ -24,15 +24,6 @@ jobs:
           --health-retries 10
 
     steps:
-      - name: display
-        run: |
-          echo "$GOOGLE_API_KEY" | awk '$1=$1' FS= OFS=" "
-
-          touch .env
-          echo GOOGLE_API_KEY = $GOOGLE_API_KEY >> .env
-
-          cat .env | awk '$1=$1' FS= OFS=" "
-
       - name: Checkout code
         uses: actions/checkout@v3
 
