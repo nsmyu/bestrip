@@ -37,9 +37,12 @@ jobs:
           bundle exec rails db:create RAILS_ENV=test
           bundle exec rails db:migrate RAILS_ENV=test
 
-      - name: Create dotenv file
+      - name: Decrypt secrets
+        uses: zgosalvez/github-actions-decrypt-secrets@v2
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+
+      - name: Create dotenv file
         run: |
           touch .env
           echo GOOGLE_API_KEY = $GOOGLE_API_KEY >> .env
