@@ -6,8 +6,6 @@ on:
 jobs:
   rspec:
     runs-on: ubuntu-latest
-    env:
-      GOOGLE_API_KEY: ${{ vars.GOOGLE_API_KEY }}
     timeout-minutes: 10
     services:
       postgres:
@@ -43,6 +41,8 @@ jobs:
         run: |
           touch .env
           echo GOOGLE_API_KEY = $GOOGLE_API_KEY >> .env
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
 
       - name: Run rspec
         run: |

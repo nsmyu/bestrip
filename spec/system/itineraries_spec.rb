@@ -236,7 +236,7 @@ RSpec.describe "Itineraries", type: :system, focus: true do
     describe "出発日・帰宅日入力のflatpickr" do
       it "出発日より前の日付は帰宅日として選択できないこと" do
         find("#departure_date").click
-        sleep 0.2
+        sleep 0.1
         find('div.dayContainer > span:nth-child(2)').click
         find("#return_date").click
 
