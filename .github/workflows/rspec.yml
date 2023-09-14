@@ -41,6 +41,7 @@ jobs:
 
       - name: Create dotenv file
         run: |
+          #!/bin/bash
           touch .env
           echo GOOGLE_API_KEY = ${{ secrets.GOOGLE_API_KEY }} >> .env
 
