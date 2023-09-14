@@ -12,6 +12,7 @@ jobs:
   rspec:
     # needs: rubocop
     uses: ./.github/workflows/rspec.yml
+    secrets: inherit
 
   deploy:
     needs: rspec

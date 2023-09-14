@@ -6,7 +6,6 @@ on:
 jobs:
   rspec:
     runs-on: ubuntu-latest
-    secrets: inherit
     env:
       GOOGLE_API_KEY: ${{ vars.GOOGLE_API_KEY }}
     timeout-minutes: 10
