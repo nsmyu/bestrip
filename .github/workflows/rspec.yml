@@ -39,13 +39,11 @@ jobs:
           bundle exec rails db:create RAILS_ENV=test
           bundle exec rails db:migrate RAILS_ENV=test
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Create dotenv file
+      - shell: bash
         run: |
           touch .env
-          echo GOOGLE_API_KEY = $GOOGLE_API_KEY >> .env
+          echo GOOGLE_API_KEY = ${{ secrets.GOOGLE_API_KEY }} >> .env
 
       - name: Run rspec
         run: |
