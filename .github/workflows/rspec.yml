@@ -6,8 +6,6 @@ on:
 jobs:
   rspec:
     runs-on: ubuntu-latest
-    env:
-      GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
     timeout-minutes: 10
     services:
       postgres:
@@ -41,7 +39,10 @@ jobs:
 
       - name: Create dotenv file
         run: |
-          #!/bin/bash
+          echo $GOOGLE_API_KEY
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: |
           touch .env
           echo GOOGLE_API_KEY = ${{ secrets.GOOGLE_API_KEY }} >> .env
 
