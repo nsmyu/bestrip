@@ -24,6 +24,16 @@ jobs:
           --health-retries 10
 
     steps:
+      - name: display
+        run: |
+          echo "$GOOGLE_API_KEY" |  awk '$1=$1' FS= OFS=" "
+
+          touch .env
+          echo GOOGLE_API_KEY = $GOOGLE_API_KEY >> .env
+
+          cat .env | awk '$1=$1' FS= OFS=" "
+
+    steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
