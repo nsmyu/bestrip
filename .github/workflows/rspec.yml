@@ -38,13 +38,11 @@ jobs:
           bundle exec rails db:migrate RAILS_ENV=test
 
       - name: Create dotenv file
-        run: |
-          echo $GOOGLE_API_KEY
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: |
           touch .env
-          echo GOOGLE_API_KEY = ${{ secrets.GOOGLE_API_KEY }} >> .env
+          echo GOOGLE_API_KEY = ${GOOGLE_API_KEY} >> .env
 
       - name: Run rspec
         run: |
