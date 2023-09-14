@@ -6,6 +6,8 @@ on:
 jobs:
   rspec:
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
     timeout-minutes: 10
     services:
       postgres:
@@ -38,11 +40,9 @@ jobs:
           bundle exec rails db:migrate RAILS_ENV=test
 
       - name: Set API key
-        env:
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: |
           touch .env
-          echo GOOGLE_API_KEY = "$GOOGLE_API_KEY" >> .env
+          echo GOOGLE_API_KEY = $GOOGLE_API_KEY >> .env
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
