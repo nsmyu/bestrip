@@ -1,10 +1,10 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
-  <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3">
+  <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3 min-vh-100">
     <div class="card z-index-2 w-md-60 mx-auto mb-4">
       <div class="card-body text-dark">
         <div class="d-flex border-bottom justify-content-between">
-          <h4>旅のプラン情報</h4>
+          <h5>旅のプラン情報</h5>
           <div>
             <%= turbo_frame_tag "itinerary" do %>
               <%= link_to :edit_itinerary, data: { turbo_frame: "modal" } do %>
@@ -19,9 +19,9 @@
           </div>
         </div>
         <%= image_tag @itinerary.image.url, class: "border-radius-lg shadow-dark w-100 my-3" %>
-        <p class="mt-1 mb-2"><span class="fw-bold text-xs">タイトル</span><br><%= @itinerary.title %></p>
-        <p class="mb-2"><span class="fw-bold text-xs">旅行期間</span><br><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
-        <p class="mb-1">
+        <p class="mt-1"><span class="fw-bold text-xs">タイトル</span><br><%= @itinerary.title %></p>
+        <p><span class="fw-bold text-xs">旅行期間</span><br><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
+        <p>
           <span class="fw-bold text-xs d-inline-block mb-2">旅のプラン作成者</span><br>
           <%= image_tag @itinerary.owner.avatar.url, id: 'image-preview', class: "rounded-circle avatar-thumbnail me-2" %>
           <%= @itinerary.owner.name %>

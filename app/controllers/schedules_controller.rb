@@ -1,7 +1,6 @@
 class SchedulesController < ApplicationController
   before_action :authenticate_user!, :authenticate_itinerary_member
   before_action :set_schedule, only: [:show, :edit, :update, :destroy]
-  before_action :set_itinerary, except: [:show, :edit, :update, :destroy]
 
   def index
     unsorted_schedules = Itinerary.find(params[:itinerary_id]).schedules.order(:schedule_date)
@@ -18,20 +17,11 @@ class SchedulesController < ApplicationController
   end
 
   def new
-    @schedule = @itinerary.schedules.new
+    @schedule = Itinerary.find(params[:itinerary_id]).schedules.new
   end
 
-  # def new_with_place
-  #   @schedule = @itinerary.schedules.new(schedule_params)
-  # end
-
   def create
-    @schedule = @itinerary.schedules.new(schedule_params)
-    if params[:place_id]
-      place_id = params[:place_id]
-      @schedule.place_id = place_id
-    end
-
+    @schedule = Itinerary.find(params[:itinerary_id]).schedules.new(schedule_params)
     if @schedule.save
       redirect_to :itinerary_schedules, notice: "新しいスケジュールを作成しました。"
     else
@@ -72,9 +62,5 @@ class SchedulesController < ApplicationController
 
   def set_schedule
     @schedule = Schedule.find(params[:id])
-  end
-
-  def set_itinerary
-    @itinerary = Itinerary.find(params[:itinerary_id])
   end
 end

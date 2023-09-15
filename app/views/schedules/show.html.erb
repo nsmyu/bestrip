@@ -1,7 +1,54 @@
-
- <button type="button" class="btn bg-gradient-light mb-0" id="test">キャンセル</button>
-
- <div id="map"></div>
-
-
-
+<%= render 'layouts/sidenav' %>
+<main class="main-content position-relative">
+  <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3 min-vh-100">
+    <div class="card z-index-2 w-md-60 mx-auto mb-4">
+      <div class="card-body text-dark">
+        <div class="d-flex border-bottom justify-content-between">
+          <h5>スケジュール詳細</h5>
+          <div>
+            <% if @schedule.itinerary.members.include?(current_user) %>
+              <%= turbo_frame_tag "schedule" do %>
+                <%= link_to [:edit_itinerary_schedule, id: @schedule.id, itinerary_id: @schedule.itinerary.id], data: { turbo_frame: "modal" } do %>
+                  <i class="material-icons text-2xl" style="vertical-align: -10px;">edit</i>
+                <% end %>
+              <% end %>
+              <%= link_to [:itinerary_schedule, id: @schedule.id, itinerary_id: @schedule.itinerary.id], data: { turbo_method: :delete, turbo_confirm: 'この旅のプランを削除しますか？この操作は取り消せません。' } do %>
+                <i class="material-icons text-2xl px-1 fw-normal" style="vertical-align: -10px;">delete</i>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+        <div class="py-3">
+          <p class="fw-bold text-dark text-lg text-ellipsis">
+            <% if @schedule.icon %>
+              <i class="material-icons"><%= @schedule.icon %></i>
+            <% end %>
+            <%= @schedule.title %>
+          </p>
+          <p class="mb-0"><%= @schedule.schedule_date ? (l @schedule.schedule_date) : "日付未定" %></p>
+          <p><%= @schedule.start_at ? (l @schedule.start_at) : "未定" %> - <%= @schedule.end_at ? (l @schedule.end_at) : "未定" %></p>
+        </div>
+        <div class="mb-4">
+          <label class="fw-bold" >スポット情報</label>
+          <% if @schedule.place_id%>
+            <div class="border mt-2" id="place_info_card">
+              <div class="d-flex" >
+                <img src="" class= "pe-1" id="place_photo">
+                <div class="p-2 pe-4 position-relative w-100">
+                  <p class="mb-1 text-sm text-dark fw-bold" id="place_name"></p>
+                  <p class="mb-0 text-xs text-secondary" id="place_address"></p>
+                  <label class="m-0 position-absolute end-1 top-1"><i class="material-icons">close</i>
+                  <button type="button" class="d-none border-0 bg-transparent text-xs" id="reset_place_btn"></button></label>
+                </div>
+              </div>
+            </div>
+          <% else %>
+            <div class="border mt-2" id="place_info_empty">
+              <p class="mb-0 text-sm text-center text-secondary py-4">未登録</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
