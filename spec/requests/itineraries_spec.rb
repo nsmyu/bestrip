@@ -24,6 +24,16 @@ RSpec.describe "Itineraries", type: :request do
         .to include itinerary.title, other_itinerary.title, other_users_itinerary.title
     end
 
+    it "旅のプランのタイトル、出発日・帰宅日、メンバー名を取得すること" do
+      itinerary.members << other_user1
+      get itineraries_path
+      expect(response.body).to include itinerary.title
+      expect(response.body).to include I18n.l itinerary.departure_date
+      expect(response.body).to include I18n.l itinerary.return_date
+      expect(response.body).to include itinerary.owner.name, other_user1.name
+      expect(response.body).to include other_user1.name
+    end
+
     it "他のユーザーのプランを取得しないこと" do
       other_users_itinerary = create(:itinerary, owner: other_user1)
       get itineraries_path
