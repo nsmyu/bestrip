@@ -45,12 +45,8 @@ class SchedulesController < ApplicationController
 
   def destroy
     deleted_title = @schedule.title
-    if current_user == @schedule.owner
-      @schedule.destroy
-      redirect_to :schedules, notice: "#{deleted_title}を削除しました。"
-    else
-      redirect_to :schedules
-    end
+    @schedule.destroy
+    redirect_to :itinerary_schedules, notice: "#{deleted_title}を削除しました。"
   end
 
   private

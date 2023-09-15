@@ -14,7 +14,7 @@
         <%= f.label :departure_date, class: "m-0 px-0 fw-bold" do %>
           出発日 <span class="required">*</span>
         <% end%>
-        <%= f.date_field :departure_date, class: "form-control fa fw-normal", id: "departure_date", readonly:"", placeholder: " \uf073 日付を選択" %>
+        <%= f.date_field :departure_date, class: "form-control fa fw-normal", id: "departure_date", readonly: "", placeholder: " \uf073 日付を選択" %>
         <div class="col-sm d-sm-none px-0 <%= "error-message" if itinerary.errors.messages.key?(:departure_date) %>" >
           <%= itinerary.errors.full_messages_for(:departure_date).first if itinerary.errors.any? %>
         </div>
@@ -23,7 +23,7 @@
         <%= f.label :return_date, class: "m-0 px-0 fw-bold" do %>
           帰宅日 <span class="required">*</span>
         <% end%>
-        <%= f.date_field :return_date, class: "form-control fa fw-normal", id: "return_date", readonly:"", placeholder: " \uf073 日付を選択" %>
+        <%= f.date_field :return_date, class: "form-control fa fw-normal", id: "return_date", readonly: "", placeholder: " \uf073 日付を選択" %>
         <div class="col-sm d-sm-none px-0 <%= "error-message" if itinerary.errors.messages.key?(:return_date) %>" >
           <%= itinerary.errors.full_messages_for(:return_date).first if itinerary.errors.any? %>
         </div>

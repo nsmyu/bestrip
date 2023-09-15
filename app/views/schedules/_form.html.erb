@@ -9,18 +9,18 @@
     </div>
     <div class="input-group input-group-outline row mx-0 mb-4">
       <%= f.label :schedule_date, class: "m-0 px-0 fw-bold" %>
-      <%= f.date_field :schedule_date, class: "form-control fa fw-normal", id: "schedule_date", readonly:"", placeholder: " \uf073 日付を選択" %>
+      <%= f.date_field :schedule_date, class: "form-control fa fw-normal", id: "schedule_date", readonly: "", placeholder: " \uf073 日付を選択" %>
       <div class="d-none" id="departure_date"><%= @schedule.itinerary.departure_date %></div>
       <div class="d-none" id="return_date"><%= @schedule.itinerary.return_date %></div>
     </div>
     <div class="row">
       <div class="input-group input-group-outline row col mx-0 mb-4">
         <%= f.label :start_at, class: "m-0 px-0 fw-bold" %>
-        <%= f.time_field :start_at, class: "form-control fa fw-normal schedule-time", readonly:"", placeholder: " \uf017 時間を選択" %>
+        <%= f.time_field :start_at, class: "form-control fa fw-normal schedule-time", readonly: "", placeholder: " \uf017 時間を選択" %>
       </div>
       <div class="input-group input-group-outline row col mx-0 mb-4">
         <%= f.label :end_at, class: "m-0 px-0 fw-bold" %>
-        <%= f.time_field :end_at, class: "form-control fa fw-normal schedule-time", readonly:"", placeholder: " \uf017 時間を選択" %>
+        <%= f.time_field :end_at, class: "form-control fa fw-normal schedule-time", readonly: "", placeholder: " \uf017 時間を選択" %>
       </div>
     </div>
     <div class="mb-4">

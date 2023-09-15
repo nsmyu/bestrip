@@ -96,14 +96,15 @@ RSpec.describe "Schedules", type: :request do
     it "正常にレスポンスを返すこと" do
       expect(response).to have_http_status 200
     end
-  end
 
-  #   it "旅のプランの情報を取得すること" do
-  #     puts itinerary.members.inspect
-  #     expect(response.body).to include itinerary.title
-  #     expect(response.body).to include "2024/2/1 (木)"
-  #     expect(response.body).to include "2024/2/8 (木)"
-  #   end
+    it "スケジュールの情報を取得すること" do
+      expect(response.body).to include schedule.title
+      expect(response.body).to include schedule.icon
+      expect(response.body).to include I18n.l schedule.schedule_date
+      expect(response.body).to include I18n.l schedule.start_at
+      expect(response.body).to include I18n.l schedule.end_at
+    end
+  end
 
   describe "GET #edit" do
     before do
@@ -113,13 +114,15 @@ RSpec.describe "Schedules", type: :request do
     it "正常にレスポンスを返すこと" do
       expect(response).to have_http_status 200
     end
-  end
 
-  #   it "旅のプランの情報を取得すること" do
-  #     expect(response.body).to include itinerary.title
-  #     expect(response.body).to include itinerary.departure_date.to_s
-  #     expect(response.body).to include itinerary.return_date.to_s
-  #   end
+    it "スケジュールの情報を取得すること" do
+      expect(response.body).to include schedule.title
+      expect(response.body).to include schedule.icon
+      expect(response.body).to include schedule.schedule_date.to_s
+      expect(response.body).to include I18n.l schedule.start_at
+      expect(response.body).to include I18n.l schedule.end_at
+    end
+  end
 
   # describe "PATCH #update" do
   #   context "有効な値の場合" do
@@ -171,18 +174,10 @@ RSpec.describe "Schedules", type: :request do
   #   end
   # end
 
-  # describe "DELETE #destroy" do
-  #   it "作成者は旅のプランを削除できること" do
-  #     delete itinerary_path(itinerary.id)
-  #     expect(response).to redirect_to itineraries_path
-  #   end
-
-  #   it "作成者以外は旅のプランを削除できないこと" do
-  #     itinerary.members << other_user1
-  #     sign_out user
-  #     sign_in other_user1
-  #     delete itinerary_path(itinerary.id)
-  #     expect(other_user1.itineraries).to include itinerary
-  #   end
-  # end
+  describe "DELETE #destroy" do
+    it "成功すること" do
+      delete itinerary_schedule_path(itinerary_id: itinerary1.id, id: schedule.id)
+      expect(response).to redirect_to itinerary_schedules_path
+    end
+  end
 end
