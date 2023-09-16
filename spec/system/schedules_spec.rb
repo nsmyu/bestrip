@@ -101,11 +101,12 @@ RSpec.describe "Schedules", type: :system do
         }.to change(Schedule, :count).by(1)
       end
 
-      it "スポット情報を追加できること" do
+      it "スポット情報を追加できること", focus: true do
         fill_in "schedule[title]", with: schedule.title
         fill_in "query_input", with: "Sydney opera house"
         sleep 0.2
         find("#query_input").click
+        sleep 0.1
         find("span.pac-matched", text: "Sydney Opera House", match: :first).click
 
         within("div#place_info_card") do
@@ -123,6 +124,7 @@ RSpec.describe "Schedules", type: :system do
         fill_in "query_input", with: "Sydney Harbour Bridge"
         sleep 0.2
         find("#query_input").click
+        sleep 0.1
         find("span.pac-matched", text: "Sydney Harbour Bridge", match: :first).click
 
         within("div#place_info_card") do
