@@ -25,8 +25,11 @@
     const options = {
       fields: ["name", "formatted_address", "photos", "place_id" ],
     };
-    autocomplete = new google.maps.places.Autocomplete(input, options);
-    autocomplete.addListener('place_changed', showPlaceInfo)
+
+    if(input) {
+      autocomplete = new google.maps.places.Autocomplete(input, options);
+      autocomplete.addListener('place_changed', showPlaceInfo);
+    };
   }
 
   function showPlaceInfo() {

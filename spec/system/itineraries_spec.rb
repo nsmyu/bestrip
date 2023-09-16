@@ -177,8 +177,8 @@ RSpec.describe "Itineraries", type: :system do
     context "有効な値の場合" do
       it "成功すること" do
         fill_in "itinerary[title]", with: "New Title"
-        fill_in "itinerary[departure_date]", with: "Mon Apr 01 2024 00:00:00 GMT+0900"
-        fill_in "itinerary[return_date]", with: "Mon Apr 08 2024 00:00:00 GMT+0900"
+        page.execute_script "departure_date.value = '2024-04-01'"
+        page.execute_script "return_date.value = '2024-04-08'"
 
         expect(page).to have_selector "img[id='image_preview'][src*='default_itinerary']"
 

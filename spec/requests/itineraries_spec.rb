@@ -31,7 +31,6 @@ RSpec.describe "Itineraries", type: :request do
       expect(response.body).to include I18n.l itinerary.departure_date
       expect(response.body).to include I18n.l itinerary.return_date
       expect(response.body).to include itinerary.owner.name, other_user1.name
-      expect(response.body).to include other_user1.name
     end
 
     it "他のユーザーのプランを取得しないこと" do

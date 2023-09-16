@@ -84,8 +84,8 @@ RSpec.describe "Schedules", type: :system do
         expect {
           fill_in "schedule[title]", with: schedule.title
           page.execute_script "schedule_date.value = '#{schedule.schedule_date}'"
-          page.execute_script "schedule_start_at.value = '#{I18n.l schedule.start_at}'"
-          page.execute_script "schedule_end_at.value = '#{I18n.l schedule.end_at}'"
+          page.execute_script "schedule_start_at.value = '#{schedule.start_at}'"
+          page.execute_script "schedule_end_at.value = '#{schedule.end_at}'"
 
           find("i", text: "attraction").click
           click_on "保存する"
@@ -159,19 +159,15 @@ RSpec.describe "Schedules", type: :system do
 
     describe "日付入力のflatpickr" do
       it "出発日〜帰宅日の間の日付のみ選択可能であること" do
-        find("#schedule_date").click
-        sleep 0.1
+        find("#schedule_date", visible: false).sibling("input").click
         find("span[aria-label='2月 1, 2024']").click
         expect(page).not_to have_selector ".flatpickr-calendar.open"
 
-        sleep 0.2
-
-        find("#schedule_date").click
-        sleep 0.1
+        find("#schedule_date", visible: false).sibling("input").click
         find("span[aria-label='2月 8, 2024']").click
         expect(page).not_to have_selector ".flatpickr-calendar.open"
 
-        find("#schedule_date").click
+        find("#schedule_date", visible: false).sibling("input").click
         within("div.flatpickr-calendar") do
           expect(page).to have_selector "span.flatpickr-disabled[aria-label='1月 31, 2024']"
           expect(page).to have_selector "span.flatpickr-disabled[aria-label='2月 9, 2024']"
