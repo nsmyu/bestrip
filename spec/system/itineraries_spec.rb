@@ -59,11 +59,13 @@ RSpec.describe "Itineraries", type: :system do
         expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary1.id)
       end
 
-      it "「旅のプランを作成」ボタンをクリックすると、プラン作成ページ覧へ遷移すること" do
+      it "「旅のプランを作成」ボタンをクリックすると、プラン作成モーダルを表示すること", js: true do
         visit itineraries_path
         click_on "旅のプランを作成"
 
-        expect(current_path).to eq new_itinerary_path
+        within(".modal") do
+          expect(page).to have_content "旅のプラン新規作成"
+        end
       end
     end
   end
@@ -173,6 +175,15 @@ RSpec.describe "Itineraries", type: :system do
       expect(page).to have_content I18n.l itinerary.return_date
       expect(page).to have_content user.name
       expect(page).to have_content other_user.name
+    end
+
+    it "鉛筆アイコンをクリックすると、プラン編集モーダルを表示すること", js: true do
+      find("i", text: "edit").click
+
+      within(".modal") do
+        expect(page).to have_content "旅のプラン情報編集"
+        expect(page).to have_xpath "//input[@value='#{itinerary.title}']"
+      end
     end
   end
 

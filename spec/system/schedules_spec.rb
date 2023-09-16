@@ -19,7 +19,7 @@ RSpec.describe "Schedules", type: :system do
       end
     end
 
-    context "スケジュールが複数登録されている場合" do
+    context "スケジュールが登録されている場合" do
       let!(:schedule1) { create(:schedule, itinerary: itinerary1) }
 
       it "スケジュールを日付の昇順で表示すること" do
@@ -44,6 +44,7 @@ RSpec.describe "Schedules", type: :system do
 
       it "スケジュールの日付、開始・終了時間、タイトル、アイコンを表示すること" do
         visit itinerary_schedules_path(itinerary_id: itinerary1.id)
+
         within(:xpath, "//div[h5[contains(text(), '#{I18n.l schedule1.schedule_date}')]]") do
           expect(page).to have_content schedule1.icon
           expect(page).to have_content schedule1.title
@@ -55,21 +56,43 @@ RSpec.describe "Schedules", type: :system do
       it "他の旅のプランのスケジュールが表示されていないこと" do
         other_itinerary_schedule = create(:schedule, itinerary: itinerary2)
         visit itinerary_schedules_path(itinerary_id: itinerary1.id)
+
         expect(page).not_to have_content other_itinerary_schedule.title
       end
+    end
 
-      it "スケジュールをクリックすると、スケジュール詳細ページへ遷移すること" do
+    describe "リンクのテスト" do
+      let!(:schedule) { create(:schedule, itinerary: itinerary1) }
+
+      it "ドロップダウンメニューの「情報を見る」をクリックすると、スケジュール詳細モーダルを表示すること", js: true do
         visit itinerary_schedules_path(itinerary_id: itinerary1.id)
-        click_on schedule1.title
-        expect(current_path)
-          .to eq itinerary_schedule_path(id: schedule1.id, itinerary_id: itinerary1.id)
+        find(".schedule-dropdown-icon", match: :first).click
+        click_on "情報を見る", match: :first
+
+        within(".modal") do
+          expect(page).to have_content "スケジュール詳細"
+          expect(page).to have_content schedule.title
+        end
       end
 
-      it "「スケジュール作成」ボタンをクリックすると、スケジュール作成ページへ遷移すること" do
+      it "ドロップダウンメニューの「編集」をクリックすると、スケジュール編集モーダルを表示すること", js: true do
+        visit itinerary_schedules_path(itinerary_id: itinerary1.id)
+        find(".schedule-dropdown-icon", match: :first).click
+        click_on "編集", match: :first
+
+        within(".modal") do
+          expect(page).to have_content "スケジュール編集"
+          expect(page).to have_xpath "//input[@value='#{schedule.title}']"
+        end
+      end
+
+      it "「スケジュール作成」ボタンをクリックすると、スケジュール編集モーダルを表示すること", js: true do
         visit itinerary_schedules_path(itinerary_id: itinerary1.id)
         click_on "スケジュール作成"
-        expect(current_path)
-          .to eq new_itinerary_schedule_path(itinerary_id: itinerary1.id)
+
+        within(".modal") do
+          expect(page).to have_content "スケジュール作成"
+        end
       end
     end
   end
@@ -104,9 +127,8 @@ RSpec.describe "Schedules", type: :system do
       it "スポット情報を追加できること", focus: true do
         fill_in "schedule[title]", with: schedule.title
         fill_in "query_input", with: "Sydney opera house"
-        sleep 0.2
+        sleep 0.5
         find("#query_input").click
-        sleep 0.1
         find("span.pac-matched", text: "Sydney Opera House", match: :first).click
 
         within("div#place_info_card") do
@@ -122,9 +144,8 @@ RSpec.describe "Schedules", type: :system do
         expect(page).to have_selector "#place_info_empty"
 
         fill_in "query_input", with: "Sydney Harbour Bridge"
-        sleep 0.2
+        sleep 0.5
         find("#query_input").click
-        sleep 0.1
         find("span.pac-matched", text: "Sydney Harbour Bridge", match: :first).click
 
         within("div#place_info_card") do
