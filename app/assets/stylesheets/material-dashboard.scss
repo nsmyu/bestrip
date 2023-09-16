@@ -139,3 +139,15 @@ label {
     cursor: pointer;
   }
 }
+
+.dropdown-menu {
+  &:before {
+    display: none !important;
+  }
+}
+
+.schedule-dropdown-icon {
+  &:hover {
+    color: $primary !important;
+  }
+}

@@ -34,6 +34,7 @@ function configureTimePickr() {
     enableTime  : true,
     noCalendar  : true,
     time_24hr   : true,
+    disableMobile: true,
   });
 }
 

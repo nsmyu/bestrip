@@ -9,35 +9,98 @@
       <div class="w-md-70 mx-auto">
         <% @sorted_schedules.each do |date, schedules| %>
           <div class="card mb-4 pt-3 text-dark">
-            <h5 class="px-4"><%= date ? (l date) : "その他の予定" %></h5>
-            <% schedules.each do |schedule| %>
-              <%= link_to [:itinerary_schedule, id: schedule.id] do %>
-                <div class="border-top link-area ">
-                  <div class="row height-70 align-items-center">
-                    <div class="col-2 ps-4 ps-sm-2 pe-0 text-center text-primary fw-bold">
-                      <div class="lh-1">
-                        <% if schedule.start_at || schedule.end_at %>
-                          <%= (l schedule.start_at) if schedule.start_at %><br><span class="text-sm"><%= "- #{(l schedule.end_at)}" if schedule.end_at%></span>
-                        <% else %>
-                          --:--
+            <h5 class="px-3 px-sm-4"><%= date ? (l date) : "その他の予定" %></h5>
+            <% schedules.each_with_index do |schedule, i| %>
+              <div class="border-top">
+                <div class="row d-none d-sm-flex height-70 align-items-center">
+                  <div class="col-2 ps-2 pe-0 text-center text-primary fw-bold">
+                    <div class="lh-1">
+                      <% if schedule.start_at || schedule.end_at %>
+                        <%= (l schedule.start_at) if schedule.start_at %><br><span class="text-sm"><%= "- #{(l schedule.end_at)}" if schedule.end_at%></span>
+                      <% else %>
+                        --:--
+                      <% end %>
+                    </div>
+                  </div>
+                  <div class="col-9 ">
+                    <div class="row">
+                      <div class="col-1 px-0 align-items-center">
+                        <% if schedule.icon %>
+                          <i class="material-icons ps-2" style="vertical-align: -4px;"><%= schedule.icon %></i>
                         <% end %>
                       </div>
-                    </div>
-                    <div class="col-10 align-items-center">
-                      <div class="row align-items-center">
-                        <div class="col-1 px-sm-0">
-                          <% if schedule.icon %>
-                            <i class="material-icons ps-2 align-middle"><%= schedule.icon %></i>
-                          <% end %>
-                        </div>
-                        <div class="col-11 px-4 ps-sm-0 text-ellipsis">
-                          <%= schedule.title %>
-                        </div>
+                      <div class="col-11 ps-0 text-ellipsis">
+                        <%= schedule.title %>
                       </div>
                     </div>
                   </div>
+                  <div class="col-1 ps-0">
+                    <div class="dropdown text-right">
+                      <label for="schedule_dropdown_<%= i %>"><i class="material-icons ps-1 align-middle text-secondary schedule-dropdown-icon">more_vert</i></label>
+                      <button class="d-none" id="schedule_dropdown_<%= i %>" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                      <ul class="border dropdown-menu dropdown-menu-end mt-4" aria-labelledby="schedule_dropdown_<%= i %>"></li>
+                        <li>
+                          <%= link_to [:itinerary_schedule, id: schedule.id], class: "dropdown-item", data: { turbo_frame: "modal" } do %>
+                            <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">article</span>情報を見る
+                          <% end %>
+                        </li>
+                        <li class="align-items-center">
+                          <%= link_to [:edit_itinerary_schedule, id: schedule.id, itinerary_id: schedule.itinerary.id], class: "dropdown-item", data: { turbo_frame: "modal" } do %>
+                            <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">edit</span>編集
+                          <% end %>
+                        </li>
+                        <li>
+                          <%= link_to [:itinerary_schedule, id: schedule.id, itinerary_id: schedule.itinerary.id], class: "dropdown-item text-danger", data: { turbo_method: :delete, turbo_confirm: 'スケジュールを削除しますか？この操作は取り消せません。' } do %>
+                            <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">delete</span>削除
+                          <% end %>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-              <% end %>
+                <div class="d-sm-none px-3 py-2 height-70">
+                  <div class="d-flex justify-content-between">
+                    <div class="text-sm text-primary fw-bold">
+                      <% if schedule.start_at || schedule.end_at %>
+                        <%= (l schedule.start_at) if schedule.start_at %><%= " - #{(l schedule.end_at)}" if schedule.end_at%>
+                      <% else %>
+                        --:--
+                      <% end %>
+                    </div>
+                    <div class="dropdown text-right">
+                      <label for="schedule_dropdown_<%= i + 1000 %>" class="mb-0"><i class="material-icons ps-1 text-secondary schedule-dropdown-icon">more_horiz</i></label>
+                      <button class="d-none" id="schedule_dropdown_<%= i + 1000 %>" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                      <ul class="border dropdown-menu dropdown-menu-end mt-2" aria-labelledby="schedule_dropdown_<%= i + 1000 %>"></li>
+                        <li>
+                          <%= link_to [:itinerary_schedule, id: schedule.id], class: "dropdown-item", data: { turbo_frame: "modal" } do %>
+                            <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">article</span>情報を見る
+                          <% end %>
+                        </li>
+                        <li class="align-items-center">
+                          <%= link_to [:edit_itinerary_schedule, id: schedule.id, itinerary_id: schedule.itinerary.id], class: "dropdown-item", data: { turbo_frame: "modal" } do %>
+                            <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">edit</span>編集
+                          <% end %>
+                        </li>
+                        <li>
+                          <%= link_to [:itinerary_schedule, id: schedule.id, itinerary_id: schedule.itinerary.id], class: "dropdown-item text-danger", data: { turbo_method: :delete, turbo_confirm: 'スケジュールを削除しますか？この操作は取り消せません。' } do %>
+                            <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">delete</span>削除
+                          <% end %>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row text-sm">
+                    <div class="col-1">
+                      <% if schedule.icon %>
+                        <i class="material-icons fs-6" style="vertical-align: -3px;"><%= schedule.icon %></i>
+                      <% end %>
+                    </div>
+                    <div class="col-11 text-ellipsis">
+                      <%= schedule.title %>
+                    </div>
+                  </div>
+                </div>
+              </div>
             <% end %>
           </div>
         <% end %>
