@@ -111,6 +111,11 @@ RSpec.describe "Schedules", type: :request do
       expect(response.body).to include I18n.l schedule.start_at
       expect(response.body).to include I18n.l schedule.end_at
     end
+
+    it "スポット情報をGoogle Places APIから取得すること", vcr: "google_api_response", focus: true do
+      expect(response.body).to include "シドニー・オペラハウス"
+      expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
+    end
   end
 
   describe "GET #edit" do

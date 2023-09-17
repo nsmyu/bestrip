@@ -189,14 +189,15 @@ RSpec.describe "Schedules", type: :system do
       end
 
       it "メモが501文字以上入力された場合、「保存する」ボタンが押せないこと" do
+        fill_in "schedule[note]", with: "a" * 500
+
+        expect(page).to have_content "500"
+        expect(find("#submit_btn", visible: false)).not_to be_disabled
+
         fill_in "schedule[note]", with: "a" * 501
 
         expect(page).to have_content "501"
         expect(find("#submit_btn", visible: false)).to be_disabled
-
-        fill_in "schedule[note]", with: "a" * 500
-
-        expect(find("#submit_btn", visible: false)).not_to be_disabled
       end
     end
 

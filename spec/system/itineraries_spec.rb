@@ -265,7 +265,7 @@ RSpec.describe "Itineraries", type: :system do
       itinerary.members << other_user
     end
 
-    it "成功すること", focus: true do
+    it "成功すること" do
       expect {
         visit itinerary_path(itinerary.id)
         find("i", text: "delete").click

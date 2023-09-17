@@ -38,4 +38,6 @@
 /.env.test
 /.env.production
 
+/spec/support/vcr/*
+
 .DS_Store
