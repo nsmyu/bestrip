@@ -212,11 +212,11 @@ RSpec.describe "UsersRegistrations", type: :system do
         fill_in "user[introduction]", with: "a" * 501
 
         expect(page).to have_content "501"
-        expect(find("#btn-submit", visible: false)).to be_disabled
+        expect(find("#submit_btn", visible: false)).to be_disabled
 
         fill_in "user[introduction]", with: "a" * 500
 
-        expect(find("#btn-submit", visible: false)).not_to be_disabled
+        expect(find("#submit_btn", visible: false)).not_to be_disabled
       end
     end
 

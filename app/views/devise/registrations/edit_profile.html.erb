@@ -49,14 +49,14 @@
               <%= f.label :introduction, class: "mx-0 mb-1 px-0 fw-bold" do %>
                 自己紹介（500文字以内）
               <% end %>
-              <%= f.text_area :introduction, id: "text-input", class: "form-control mb-1", rows: "7", placeholder: "500文字以内で入力" %>
+              <%= f.text_area :introduction, id: "text_input", class: "form-control mb-1", rows: "7", placeholder: "500文字以内で入力" %>
               <div class="d-flex justify-content-between px-0">
                 <div></div>
-                <div id="char-count" class="text-xs"><span>0</span>/500</div>
+                <div id="char_count" class="text-xs"><span>0</span>/500</div>
               </div>
             </div>
             <div class="mt-3 text-center ms-auto">
-              <%= f.submit "保存する", id: "btn-submit", class: "btn bg-gradient-primary mt-4 px-6 btn-lg", data: { turbo: false } %>
+              <%= f.submit "保存する", id: "submit_btn", class: "btn bg-gradient-primary mt-4 px-6 btn-lg", data: { turbo: false } %>
             </div>
           <% end %>
         <% end %>

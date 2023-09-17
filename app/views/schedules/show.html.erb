@@ -37,4 +37,12 @@
       <p class="text-sm text-secondary">登録されていません</p>
     <% end %>
   </div>
+  <div class="mb-4">
+    <p class="text-sm fw-bold text-dark" >メモ</p>
+    <% if @schedule.note.present? %>
+      <p class="text-sm text-secondary"><%= @schedule.note %></p>
+    <% else %>
+      <p class="text-sm text-secondary">登録されていません</p>
+    <% end %>
+  </div>
 <% end %>

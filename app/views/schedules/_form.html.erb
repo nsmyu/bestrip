@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <div class="mx-0 mb-3">
+    <div class="mx-0 mb-4">
       <%= f.label :icon, class: "d-block ms-0 mb-1 px-0 fw-bold" %>
       <div class="border rounded-2 pt-2 text-center">
         <label type="button" class="lh-1 p-1 text-center">
@@ -127,9 +127,17 @@
         </label>
       </div>
     </div>
+    <div class="input-group input-group-outline row mx-0 mb-4">
+      <%= f.label "メモ（500文字以内）", class: "m-0 px-0 fw-bold" %>
+      <%= f.text_area :note, id: "text_input", class: "form-control", placeholder: "メモを入力" %>
+      <div class="d-flex justify-content-between px-0">
+        <div></div>
+        <div id="char_count" class="text-xs"><span>0</span>/500</div>
+      </div>
+    </div>
     <div class="modal-footer justify-content-between">
       <button type="button" class="btn bg-gradient-light mb-0" data-bs-dismiss="modal">キャンセル</button>
-      <%= f.submit "保存する", class: "btn bg-gradient-primary mb-0", id: "sumit-btn" %>
+      <%= f.submit "保存する", class: "btn bg-gradient-primary mb-0", id: "submit_btn" %>
     </div>
   <% end %>
 <% end %>

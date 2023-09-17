@@ -1,39 +1,39 @@
 function countChars() {
-  const textInput = document.querySelector('#text-input');
-  const charCount = document.querySelector('#char-count');
+  const textInput = document.querySelector('#text_input');
+  const charCount = document.querySelector('#char_count');
 
-  if (!charCount) return;
+  if (textInput) {
+    const maxCharsLength = charCount.textContent.slice(2);
 
-  const maxCharsLength = charCount.textContent.slice(2);
+    function addCharsLengthError() {
+      console.log(charCount)
+      charCount.classList.add('error-message');
+      document.querySelector("#submit_btn").disabled = true;
+    }
 
-  function addCharsLengthError() {
-    console.log(charCount)
-    charCount.classList.add('error-message');
-    document.querySelector("#btn-submit").disabled = true;
+    if (textInput.value.length > 0) {
+      charCount.querySelector('span').textContent = textInput.value.length;
+      if (textInput.value.length > maxCharsLength) {
+        addCharsLengthError();
+      }
+    }
+
+    textInput.addEventListener('input', (e) =>{
+      const text = e.target;
+      const charsLength = text.value.length;
+
+      if (text) {
+        charCount.querySelector('span').textContent = charsLength;
+      }
+
+      if (charsLength > maxCharsLength) {
+        addCharsLengthError();
+      } else {
+        charCount.classList.remove('error-message');
+        document.querySelector('#submit_btn').removeAttribute('disabled');
+      }
+    });
   }
-
-  if (textInput.value.length > 0) {
-    charCount.querySelector('span').textContent = textInput.value.length;
-    if (textInput.value.length > maxCharsLength) {
-      addCharsLengthError();
-    }
-  }
-
-  textInput.addEventListener('input', (e) =>{
-    const text = e.target;
-    const charsLength = text.value.length;
-
-    if (text) {
-      charCount.querySelector('span').textContent = charsLength;
-    }
-
-    if (charsLength > maxCharsLength) {
-      addCharsLengthError();
-    } else {
-      charCount.classList.remove('error-message');
-      document.querySelector('#btn-submit').removeAttribute('disabled');
-    }
-  });
 }
 
 document.addEventListener('DOMContentLoaded', countChars)

@@ -19,6 +19,7 @@ ja:
           start_at: 開始時間
           end_at: 終了時間
           icon: アイコン
+          note: メモ
       errors:
         models:
           itinerary:

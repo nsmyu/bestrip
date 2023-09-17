@@ -2,6 +2,7 @@ class Schedule < ApplicationRecord
   belongs_to :itinerary
 
   validates :title, presence: true, length: { maximum: 50 }
+  validates :note, length: { maximum: 500 }
   validate :schedule_date_must_be_between_departure_date_and_return_date
 
   def schedule_date_must_be_between_departure_date_and_return_date
