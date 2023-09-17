@@ -70,6 +70,11 @@
           <%= f.radio_button :icon, :hotel, class: "d-none schedule-icon-btn" %>
         </label>
         <label type="button" class="lh-1 p-1 text-center">
+          <i class="material-icons">castle</i>
+          <span class="text-xxs d-block pt-1">観光名所</span>
+          <%= f.radio_button :icon, :castle, class: "d-none schedule-icon-btn" %>
+        </label>
+        <label type="button" class="lh-1 p-1 text-center">
           <i class="material-icons">attractions</i>
           <span class="text-xxs d-block pt-1">娯楽</span>
           <%= f.radio_button :icon, :attractions, class: "d-none schedule-icon-btn" %>
@@ -81,18 +86,13 @@
         </label>
         <label type="button" class="lh-1 p-1 text-center">
           <i class="material-icons">landscape</i>
-          <span class="text-xxs d-block pt-1">自然風景</span>
+          <span class="text-xxs d-block pt-1">自然</span>
           <%= f.radio_button :icon, :landscape, class: "d-none schedule-icon-btn" %>
-        </label>
-        <label type="button" class="lh-1 p-1 text-center">
-          <i class="material-icons">castle</i>
-          <span class="text-xxs d-block pt-1">史跡</span>
-          <%= f.radio_button :icon, :castle, class: "d-none schedule-icon-btn" %>
         </label>
         <br>
         <label type="button" class="lh-1 p-1 text-center">
           <i class="material-icons">local_activity</i>
-          <span class="text-xxs d-block pt-1">観戦・鑑賞</span>
+          <span class="text-xxs d-block pt-1">アクティビティ</span>
           <%= f.radio_button :icon, :local_activity, class: "d-none schedule-icon-btn" %>
         </label>
         <label type="button" class="lh-1 p-1 text-center">

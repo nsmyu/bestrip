@@ -3,12 +3,14 @@
     <div class="row mb-1 mx-0 text-dark">
       <p class="col-11 d-inline ps-0 text-lg"><%= @schedule.title %></p>
       <% if @schedule.icon.present? %>
-        <i class="col-1 material-icons pt-1 fs-4"><%= @schedule.icon %></i>
+        <div class="col-1 ps-0 ps-sm-2">
+          <i class="material-icons d-inline-block rounded-circle schedule-icon"><%= @schedule.icon %></i>
+        </div>
       <% end %>
     </div>
     <p class="text-dark text-sm">
       <%= @schedule.schedule_date ? (l @schedule.schedule_date) : "日付未定" %>&ensp;
-      <span class="material-symbols-outlined fs-6 fw-light" style="vertical-align: -3.5px;">schedule</span>
+      <span class="material-symbols-outlined fs-6 fw-light" style="vertical-align: -3px;">schedule</span>
       <%= @schedule.start_at ? (l @schedule.start_at) : "未定" %> - <%= @schedule.end_at ? (l @schedule.end_at) : "未定" %>
     </p>
   </div>
@@ -16,7 +18,7 @@
     <p class="text-sm fw-bold text-dark" >スポット情報</p>
     <% if @schedule.place_id.present? %>
       <% if @error_message %>
-        <p class="text-sm text-danger"><span class="material-symbols-outlined fs-6 pe-1"  style="vertical-align: -2.8px;">error</span><%= @error_message %></p>
+        <p class="text-sm text-danger"><span class="material-symbols-outlined fs-6 pe-1" style="vertical-align: -2.8px;">error</span><%= @error_message %></p>
       <% else %>
         <div class="border mt-2">
           <div class="d-flex" >
@@ -24,17 +26,15 @@
             <div class="p-2 pe-4 position-relative w-100">
               <p class="mb-1 text-sm text-dark fw-bold"><%= @place_name.to_s %></p>
               <p class="mb-0 text-xs text-secondary"><%= @place_address.to_s %></p>
-              <label class="m-0 position-absolute end-1 top-1">
+              <%= link_to [:place_itinerary, id: @schedule.itinerary.id], class: "m-0 position-absolute end-1 top-1", target: ["_blank"], data: { turbo: false } do %>
                 <i class="material-symbols-outlined fs-5">open_in_new</i>
-                <%= link_to [:place_itinerary, id: @schedule.itinerary.id], class: "d-none" %>
-                <button type="button" class="d-none border-0 bg-transparent text-xs"></button>
-              </label>
+              <% end %>
             </div>
           </div>
         </div>
       <% end %>
     <% else %>
-      <p class="text-sm text-secondary">：登録されていません</p>
+      <p class="text-sm text-secondary">登録されていません</p>
     <% end %>
   </div>
 <% end %>

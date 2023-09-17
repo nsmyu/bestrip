@@ -9,11 +9,12 @@
       <div class="w-md-70 mx-auto">
         <% @sorted_schedules.each do |date, schedules| %>
           <div class="card mb-4 pt-3 text-dark">
-            <h5 class="px-3 px-sm-4"><%= date ? (l date) : "その他の予定" %></h5>
+            <h5 class="d-none d-sm-block px-4"><%= date ? (l date) : "その他の予定" %></h5>
+            <h6 class="d-sm-none px-3"><%= date ? (l date) : "その他の予定" %></h6>
             <% schedules.each_with_index do |schedule, i| %>
               <div class="border-top">
                 <div class="row d-none d-sm-flex height-70 align-items-center">
-                  <div class="col-2 ps-2 pe-0 text-center text-primary fw-bold">
+                  <div class="col-2 ps-2 pe-0 text-center fw-bold">
                     <div class="lh-1">
                       <% if schedule.start_at || schedule.end_at %>
                         <%= (l schedule.start_at) if schedule.start_at %><br><span class="text-sm"><%= "- #{(l schedule.end_at)}" if schedule.end_at%></span>
@@ -25,8 +26,8 @@
                   <div class="col-9 ">
                     <div class="row">
                       <div class="col-1 px-0 align-items-center">
-                        <% if schedule.icon %>
-                          <i class="material-icons ps-2" style="vertical-align: -4px;"><%= schedule.icon %></i>
+                        <% if schedule.icon.present? %>
+                          <i class="material-icons d-inline-block rounded-circle schedule-icon" style="vertical-align: -4px;"><%= schedule.icon %></i>
                         <% end %>
                       </div>
                       <div class="col-11 ps-0 text-ellipsis">
@@ -36,7 +37,9 @@
                   </div>
                   <div class="col-1 ps-0">
                     <div class="dropdown">
-                      <label for="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>"><i class="material-icons ps-1 align-middle text-secondary schedule-dropdown-icon">more_vert</i></label>
+                      <label for="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>">
+                        <i class="material-icons ps-1 align-middle text-secondary schedule-dropdown-icon">more_vert</i>
+                      </label>
                       <button class="d-none" id="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>" data-bs-toggle="dropdown" aria-expanded="false"></button>
                       <ul class="border dropdown-menu dropdown-menu-end mt-4" aria-labelledby="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>"></li>
                         <li>
@@ -60,7 +63,7 @@
                 </div>
                 <div class="d-sm-none px-3 py-2 height-70">
                   <div class="d-flex justify-content-between">
-                    <div class="text-sm text-primary fw-bold">
+                    <div class="text-sm fw-bold">
                       <% if schedule.start_at || schedule.end_at %>
                         <%= (l schedule.start_at) if schedule.start_at %><%= " - #{(l schedule.end_at)}" if schedule.end_at%>
                       <% else %>
@@ -89,14 +92,14 @@
                       </ul>
                     </div>
                   </div>
-                  <div class="row text-sm">
+                  <div class="row align-items-center">
                     <div class="col-1">
-                      <% if schedule.icon %>
-                        <i class="material-icons fs-6" style="vertical-align: -3px;"><%= schedule.icon %></i>
+                      <% if schedule.icon.present? %>
+                        <i class="material-icons d-inline-block rounded-circle schedule-icon" style="vertical-align: -1px;"><%= schedule.icon %></i>
                       <% end %>
                     </div>
-                    <div class="col-11 text-ellipsis">
-                      <%= schedule.title %>
+                    <div class="col-11">
+                      <p class="text-sm text-ellipsis"><%= schedule.title %></p>
                     </div>
                   </div>
                 </div>

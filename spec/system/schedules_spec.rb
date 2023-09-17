@@ -180,7 +180,7 @@ RSpec.describe "Schedules", type: :system do
       end
     end
 
-    describe "日付入力のflatpickr" do
+    describe "日付入力のflatpickr", focus: true do
       it "出発日〜帰宅日の間の日付のみ選択可能であること" do
         find("#schedule_date", visible: false).sibling("input").click
         find("span[aria-label='2月 1, 2024']").click

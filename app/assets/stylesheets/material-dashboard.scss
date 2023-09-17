@@ -155,3 +155,17 @@ label {
 p {
   margin-bottom: 0;
 }
+
+.schedule-icon {
+  padding: 6px;
+  margin-top: 2.8px;
+  color: white;
+  font-size: 16px;
+  opacity: 0.8;
+
+  @include media-breakpoint-down(sm) {
+    padding: 5px;
+    font-size: 14px;
+  }
+
+}
