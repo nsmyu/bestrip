@@ -111,11 +111,9 @@
     <% end %>
   </div>
   <div class="fixed-plugin">
-    <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2">
-      <%= turbo_frame_tag "schedule" do %>
-        <%= link_to :new_itinerary_schedule, data: { turbo_frame: "modal" } do %>
-          <p class="mb-0 py-1"><i class="material-icons" style="vertical-align: -4.5px;">add_circle</i> スケジュール作成</p>
-        <% end %>
+    <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2 btn bg-gradient-primary">
+      <%= link_to :new_itinerary_schedule, data: { turbo_frame: "modal" } do %>
+        <p class="py-1 text-white fw-bold"><i class="material-icons" style="vertical-align: -3.5px;">add_circle</i> スケジュール作成</p>
       <% end %>
     </div>
   </div>

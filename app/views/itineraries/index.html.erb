@@ -9,7 +9,7 @@
       <% else %>
         <% @itineraries.each do |itinerary| %>
           <div class="col-6 my-4 mb-sm-5 px-1 px-sm-3">
-            <%= link_to itinerary_schedules_path(itinerary.id) do %>
+            <%= link_to itinerary_schedules_path(itinerary.id), data: { turbo: false } do %>
               <div class="card link-area z-index-2">
                 <div class="card-header p-0 position-relative mt-n4 mx-1 mx-sm-3 z-index-2 bg-transparent">
                   <%= image_tag itinerary.image.url, class: "border-radius-lg shadow-dark w-100" %>
@@ -30,9 +30,9 @@
     </div>
   </div>
   <div class="fixed-plugin">
-    <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2">
+    <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2 btn bg-gradient-primary">
       <%= link_to :new_itinerary, data: { turbo_frame: "modal" } do %>
-        <p class="py-1"><i class="material-icons" style="vertical-align: -4.5px;">add_circle</i> 旅のプランを作成</p>
+        <p class="py-1 text-white fw-bold"><i class="material-icons" style="vertical-align: -3.5px;">add_circle</i> 旅のプランを作成</p>
       <% end %>
     </div>
   </div>

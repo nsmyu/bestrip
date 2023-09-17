@@ -186,6 +186,8 @@ RSpec.describe "Schedules", type: :system do
         find("span[aria-label='2月 1, 2024']").click
         expect(page).not_to have_selector ".flatpickr-calendar.open"
 
+        sleep 0.5
+
         find("#schedule_date", visible: false).sibling("input").click
         find("span[aria-label='2月 8, 2024']").click
         expect(page).not_to have_selector ".flatpickr-calendar.open"
