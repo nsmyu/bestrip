@@ -16,4 +16,5 @@ for (const icon of icons) {
 }
 
 document.addEventListener('DOMContentLoaded', changeScheduleIconColor);
+document.addEventListener('turbo:load', changeScheduleIconColor);
 document.addEventListener('turbo:frame-load', changeScheduleIconColor);

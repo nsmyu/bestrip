@@ -109,6 +109,7 @@ RSpec.describe "Schedules", type: :system do
           page.execute_script "schedule_date.value = '#{schedule.schedule_date}'"
           page.execute_script "schedule_start_at.value = '#{schedule.start_at}'"
           page.execute_script "schedule_end_at.value = '#{schedule.end_at}'"
+          fill_in "schedule[note]", with: schedule.note
 
           find("i", text: "attraction").click
           click_on "保存する"
@@ -121,15 +122,20 @@ RSpec.describe "Schedules", type: :system do
             expect(page).to have_content schedule.icon
           end
           expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary1.id)
+
+          find(".schedule-dropdown-icon", match: :first).click
+          click_on "情報を見る", match: :first
+
+          expect(page).to have_content schedule.note
         }.to change(Schedule, :count).by(1)
       end
 
       it "スポット情報を追加できること", focus: true do
         fill_in "schedule[title]", with: schedule.title
-        fill_in "query_input", with: "Sydney opera house"
+        fill_in "query_input", with: "シドニー オペラハウス"
         sleep 0.5
         find("#query_input").click
-        find("span.pac-matched", text: "Sydney Opera House", match: :first).click
+        find("span.pac-matched", text: "シドニー・オペラハウス", match: :first).click
 
         within("div#place_info_card") do
           expect(page).to have_content "Sydney Opera House"
@@ -143,20 +149,25 @@ RSpec.describe "Schedules", type: :system do
         expect(page).not_to have_selector "#place_info_card"
         expect(page).to have_selector "#place_info_empty"
 
-        fill_in "query_input", with: "Sydney Harbour Bridge"
+        fill_in "query_input", with: "クイーンビクトリアビルディング"
         sleep 0.5
         find("#query_input").click
-        find("span.pac-matched", text: "Sydney Harbour Bridge", match: :first).click
+        find("span.pac-matched", text: "クイーン・ビクトリア・ビルディング", match: :first).click
 
         within("div#place_info_card") do
-          expect(page).to have_content "Sydney Harbour Bridge"
-          expect(page).to have_content "Sydney Hbr Brg, Sydney NSW, Australia"
+          expect(page).to have_content "Queen Victoria Building"
+          expect(page).to have_content "455 George St, Sydney NSW 2000, Australia"
           expect(page)
             .to have_selector "img[src*='maps.googleapis.com/maps/api/place/js/PhotoService']"
         end
 
         click_on "保存する"
-        # visit  itinerary_schedule_path(id: )
+        find(".schedule-dropdown-icon", match: :first).click
+        click_on "情報を見る", match: :first
+
+        within(".modal") do
+          expect(page).to have_content "クイーン・ビクトリア・ビルディング"
+        end
       end
     end
 
@@ -178,9 +189,20 @@ RSpec.describe "Schedules", type: :system do
           expect(page).to have_content "タイトルは50文字以内で入力してください"
         }.not_to change(Schedule, :count)
       end
+
+      it "メモが501文字以上入力された場合、「保存する」ボタンが押せないこと" do
+        fill_in "schedule[note]", with: "a" * 501
+
+        expect(page).to have_content "501"
+        expect(find("#submit_btn", visible: false)).to be_disabled
+
+        fill_in "schedule[note]", with: "a" * 500
+
+        expect(find("#submit_btn", visible: false)).not_to be_disabled
+      end
     end
 
-    describe "日付入力のflatpickr", focus: true do
+    describe "日付入力のflatpickr" do
       it "出発日〜帰宅日の間の日付のみ選択可能であること" do
         find("#schedule_date", visible: false).sibling("input").click
         find("span[aria-label='2月 1, 2024']").click

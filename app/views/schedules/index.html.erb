@@ -25,12 +25,12 @@
                   </div>
                   <div class="col-9 ">
                     <div class="row">
-                      <div class="col-1 px-0 align-items-center">
+                      <div class="col-1 px-0">
                         <% if schedule.icon.present? %>
-                          <i class="material-icons d-inline-block rounded-circle schedule-icon" style="vertical-align: -4px;"><%= schedule.icon %></i>
+                          <i class="material-icons d-inline-block rounded-circle schedule-icon"><%= schedule.icon %></i>
                         <% end %>
                       </div>
-                      <div class="col-11 ps-0 text-ellipsis">
+                      <div class="col-11 ps-0 d-flex align-items-center text-ellipsis">
                         <%= schedule.title %>
                       </div>
                     </div>
@@ -95,7 +95,7 @@
                   <div class="row align-items-center">
                     <div class="col-1">
                       <% if schedule.icon.present? %>
-                        <i class="material-icons d-inline-block rounded-circle schedule-icon mt-0" style="vertical-align: -1px;"><%= schedule.icon %></i>
+                        <i class="material-icons d-inline-block rounded-circle schedule-icon" style="vertical-align: -1px;"><%= schedule.icon %></i>
                       <% end %>
                     </div>
                     <div class="col-11">

@@ -5,7 +5,8 @@ FactoryBot.define do
     start_at      { "13:00:00" }
     end_at        { "17:00:00" }
     icon          { "attraction" }
-    place_id      { "ChIJPZ5hUjH65DQR_p_dD3CmCOo" }
+    place_id      { "ChIJ3S-JXmauEmsRUcIaWtf4MzE" }
+    note          { "The Sydney Opera House Tour, 2:00pm, $43" }
     itinerary
   end
 end

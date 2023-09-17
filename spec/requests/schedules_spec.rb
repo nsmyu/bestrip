@@ -85,6 +85,13 @@ RSpec.describe "Schedules", type: :request do
           params: { schedule: schedule_params }
         expect(response).to have_http_status 422
       end
+
+      it "メモが501文字以上の場合、失敗すること" do
+        schedule_params = attributes_for(:schedule, note: "a" * 501)
+        post itinerary_schedules_path(itinerary_id: itinerary1.id),
+          params: { schedule: schedule_params }
+        expect(response).to have_http_status 422
+      end
     end
   end
 

@@ -31,6 +31,12 @@ RSpec.describe Schedule, type: :model do
     expect(schedule.errors).to be_of_kind(:schedule_date, "出発日〜帰宅日の間で選択してください")
   end
 
+  it "タイトルが51文字以上の場合は無効であること" do
+    schedule = build(:schedule, note: "a" * 501)
+    schedule.valid?
+    expect(schedule.errors).to be_of_kind(:note, :too_long)
+  end
+
   it "itinerary_idがなければ無効であること" do
     schedule = build(:schedule, schedule_date: nil, itinerary_id: nil)
     schedule.valid?

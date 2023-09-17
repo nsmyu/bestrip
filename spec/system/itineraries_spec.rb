@@ -149,7 +149,7 @@ RSpec.describe "Itineraries", type: :system do
       end
     end
 
-    describe "出発日・帰宅日入力のflatpickr", focus: true do
+    describe "出発日・帰宅日入力のflatpickr" do
       it "出発日より前の日付は帰宅日として選択できないこと" do
         find("#departure_date", visible: false).sibling("input").click
         find('div.dayContainer > span:nth-child(2)').click
@@ -247,6 +247,7 @@ RSpec.describe "Itineraries", type: :system do
       it "出発日より前の日付は帰宅日として選択できないこと" do
         find("#departure_date", visible: false).sibling("input").click
         find('div.dayContainer > span:nth-child(2)').click
+        sleep 0.3
         find("#return_date", visible: false).sibling("input").click
         find("div.dayContainer")
 
