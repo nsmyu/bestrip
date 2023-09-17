@@ -3,8 +3,7 @@ require "rails_helper"
 RSpec.describe "Schedules", type: :system do
   let!(:user) { create(:user) }
   let!(:other_user) { create(:user) }
-  let!(:itinerary1) { create(:itinerary, owner: user) }
-  let!(:itinerary2) { create(:itinerary, owner: user) }
+  let!(:itinerary) { create(:itinerary, owner: user) }
   let(:schedule) { build(:schedule) }
 
   before do
@@ -14,36 +13,36 @@ RSpec.describe "Schedules", type: :system do
   describe "一覧表示" do
     context "スケジュールが登録されていない場合" do
       it "メッセージを表示すること" do
-        visit itinerary_schedules_path(itinerary_id: itinerary1.id)
+        visit itinerary_schedules_path(itinerary_id: itinerary.id)
         expect(page).to have_content "スケジュールは登録されていません"
       end
     end
 
     context "スケジュールが登録されている場合" do
-      let!(:schedule1) { create(:schedule, itinerary: itinerary1) }
+      let!(:schedule1) { create(:schedule, itinerary: itinerary) }
 
       it "スケジュールを日付の昇順で表示すること" do
-        schedule2 = create(:schedule, schedule_date: "2024-02-01", itinerary: itinerary1)
-        schedule3 = create(:schedule, schedule_date: "2024-02-03", itinerary: itinerary1)
+        schedule2 = create(:schedule, schedule_date: "2024-02-01", itinerary: itinerary)
+        schedule3 = create(:schedule, schedule_date: "2024-02-03", itinerary: itinerary)
 
-        visit itinerary_schedules_path(itinerary_id: itinerary1.id)
+        visit itinerary_schedules_path(itinerary_id: itinerary.id)
         expect(page.text)
           .to match(/#{schedule2.title}[\s\S]*#{schedule1.title}[\s\S]*#{schedule3.title}/)
       end
 
       it "同日のスケジュールを開始時間の昇順で表示すること" do
-        schedule2 = create(:schedule, start_at: "12:00:00", itinerary: itinerary1)
-        schedule3 = create(:schedule, start_at: "14:00:00", itinerary: itinerary1)
+        schedule2 = create(:schedule, start_at: "12:00:00", itinerary: itinerary)
+        schedule3 = create(:schedule, start_at: "14:00:00", itinerary: itinerary)
 
-        visit itinerary_schedules_path(itinerary_id: itinerary1.id)
-        within(:xpath, "//div[h5[contains(text(), '#{I18n.l schedule1.schedule_date}')]]") do
+        visit itinerary_schedules_path(itinerary_id: itinerary.id)
+        within(:xpath, "//div[h5[contains(text(), '#{I18n.l schedule.schedule_date}')]]") do
           expect(page.text)
             .to match(/#{schedule2.title}[\s\S]*#{schedule1.title}[\s\S]*#{schedule3.title}/)
         end
       end
 
-      it "スケジュールの日付、開始・終了時間、タイトル、アイコンを表示すること" do
-        visit itinerary_schedules_path(itinerary_id: itinerary1.id)
+      it "スケジュールのタイトル、アイコン、日付、時間を表示すること" do
+        visit itinerary_schedules_path(itinerary_id: itinerary.id)
 
         within(:xpath, "//div[h5[contains(text(), '#{I18n.l schedule1.schedule_date}')]]") do
           expect(page).to have_content schedule1.icon
@@ -54,18 +53,19 @@ RSpec.describe "Schedules", type: :system do
       end
 
       it "他の旅のプランのスケジュールが表示されていないこと" do
-        other_itinerary_schedule = create(:schedule, itinerary: itinerary2)
-        visit itinerary_schedules_path(itinerary_id: itinerary1.id)
+        other_itinerary = create(:itinerary, owner: user)
+        other_itinerary_schedule = create(:schedule, itinerary: other_itinerary)
+        visit itinerary_schedules_path(itinerary_id: itinerary.id)
 
         expect(page).not_to have_content other_itinerary_schedule.title
       end
     end
 
     describe "リンクのテスト" do
-      let!(:schedule) { create(:schedule, itinerary: itinerary1) }
+      let!(:schedule) { create(:schedule, itinerary: itinerary) }
 
       it "ドロップダウンメニューの「情報を見る」をクリックすると、スケジュール詳細モーダルを表示すること", js: true do
-        visit itinerary_schedules_path(itinerary_id: itinerary1.id)
+        visit itinerary_schedules_path(itinerary_id: itinerary.id)
         find(".schedule-dropdown-icon", match: :first).click
         click_on "情報を見る", match: :first
 
@@ -76,7 +76,7 @@ RSpec.describe "Schedules", type: :system do
       end
 
       it "ドロップダウンメニューの「編集」をクリックすると、スケジュール編集モーダルを表示すること", js: true do
-        visit itinerary_schedules_path(itinerary_id: itinerary1.id)
+        visit itinerary_schedules_path(itinerary_id: itinerary.id)
         find(".schedule-dropdown-icon", match: :first).click
         click_on "編集", match: :first
 
@@ -87,7 +87,7 @@ RSpec.describe "Schedules", type: :system do
       end
 
       it "「スケジュール作成」ボタンをクリックすると、スケジュール編集モーダルを表示すること", js: true do
-        visit itinerary_schedules_path(itinerary_id: itinerary1.id)
+        visit itinerary_schedules_path(itinerary_id: itinerary.id)
         click_on "スケジュール作成"
 
         within(".modal") do
@@ -99,7 +99,7 @@ RSpec.describe "Schedules", type: :system do
 
   describe "新規作成", js: true do
     before do
-      visit new_itinerary_schedule_path(itinerary_id: itinerary1.id)
+      visit new_itinerary_schedule_path(itinerary_id: itinerary.id)
     end
 
     context "有効な値の場合" do
@@ -117,11 +117,11 @@ RSpec.describe "Schedules", type: :system do
           expect(page).to have_content "新しいスケジュールを作成しました。"
           within(:xpath, "//div[h5[contains(text(), '#{I18n.l schedule.schedule_date}')]]") do
             expect(page).to have_content schedule.title
+            expect(page).to have_content schedule.icon
             expect(page).to have_content I18n.l schedule.start_at
             expect(page).to have_content I18n.l schedule.end_at
-            expect(page).to have_content schedule.icon
           end
-          expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary1.id)
+          expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary.id)
 
           find(".schedule-dropdown-icon", match: :first).click
           click_on "情報を見る", match: :first
@@ -130,7 +130,7 @@ RSpec.describe "Schedules", type: :system do
         }.to change(Schedule, :count).by(1)
       end
 
-      it "スポット情報を追加できること", focus: true do
+      it "スポット情報を追加できること" do
         fill_in "schedule[title]", with: schedule.title
         fill_in "query_input", with: "シドニー オペラハウス"
         sleep 0.5
@@ -165,9 +165,7 @@ RSpec.describe "Schedules", type: :system do
         find(".schedule-dropdown-icon", match: :first).click
         click_on "情報を見る", match: :first
 
-        within(".modal") do
-          expect(page).to have_content "クイーン・ビクトリア・ビルディング"
-        end
+        expect(page).to have_content "クイーン・ビクトリア・ビルディング"
       end
     end
 
@@ -223,22 +221,22 @@ RSpec.describe "Schedules", type: :system do
     end
   end
 
-  # describe "詳細表示" do
-  #   let!(:itinerary) { create(:itinerary, owner: user) }
+  describe "詳細表示" do
+    let!(:schedule) { create(:schedule, itinerary: itinerary) }
 
-  #   before do
-  #     itinerary.members << other_user
-  #     visit itinerary_path(itinerary.id)
-  #   end
+    it "スケジュールのタイトル、アイコン、日付、時間、メモ、スポット情報を表示すること" do
+      visit itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+      expect(page).to have_content schedule.title
+      expect(page).to have_content schedule.icon
+      expect(page).to have_content I18n.l schedule.schedule_date
+      expect(page).to have_content I18n.l schedule.start_at
+      expect(page).to have_content I18n.l schedule.end_at
+      expect(page).to have_content schedule.note
+      expect(page).to have_content "シドニー・オペラハウス"
+    end
 
-  #   it "旅のタイトル、出発・帰宅日、メンバーのニックネームを表示すること" do
-  #     expect(page).to have_content itinerary.title
-  #     expect(page).to have_content itinerary.departure_date.strftime('%Y/%-m/%-d')
-  #     expect(page).to have_content itinerary.return_date.strftime('%Y/%-m/%-d')
-  #     expect(page).to have_content user.name
-  #     expect(page).to have_content other_user.name
-  #   end
-  # end
+    # リンクのテスト
+  end
 
   # describe "編集", js: true do
   #   let!(:itinerary1) { create(:itinerary, owner: user) }
@@ -302,28 +300,22 @@ RSpec.describe "Schedules", type: :system do
   #   end
   # end
 
-  # describe "削除", js: true do
-  #   let!(:itinerary) { create(:itinerary, owner: user) }
+  describe "削除", js: true do
+    let!(:schedule) { create(:schedule, itinerary: itinerary) }
 
-  #   before do
-  #     itinerary.members << other_user
-  #   end
+    it "成功すること" do
+      expect {
+        visit itinerary_schedules_path(itinerary_id: itinerary.id)
+        find(".schedule-dropdown-icon", match: :first).click
+        click_on "削除", match: :first
 
-  #   it "成功すること" do
-  #     expect {
-  #       visit itinerary_path(itinerary.id)
-  #       find("i", text: "delete").click
-  #       click_on "削除する"
-  #       expect(page).to have_content "#{itinerary.title}を削除しました。"
-  #       expect(current_path).to eq itineraries_path
-  #     }.to change(Itinerary, :count).by(-1)
-  #   end
+        expect(page).to have_content "このスケジュールを削除しますか？この操作は取り消せません。"
 
-  #   it "作成者以外は削除できない（削除ボタンが表示されない）こと" do
-  #     sign_out user
-  #     sign_in other_user
-  #     visit itinerary_path(itinerary.id)
-  #     expect(page).not_to have_selector "i", text: "delete"
-  #   end
-  # end
+        click_on "削除する"
+
+        expect(page).to have_content "#{schedule.title}を削除しました。"
+        expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary.id)
+      }.to change(Schedule, :count).by(-1)
+    end
+  end
 end

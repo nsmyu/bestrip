@@ -153,6 +153,7 @@ RSpec.describe "Itineraries", type: :system do
       it "出発日より前の日付は帰宅日として選択できないこと" do
         find("#departure_date", visible: false).sibling("input").click
         find('div.dayContainer > span:nth-child(2)').click
+        sleep 0.3
         find("#return_date", visible: false).sibling("input").click
         find("div.dayContainer")
 
@@ -264,10 +265,13 @@ RSpec.describe "Itineraries", type: :system do
       itinerary.members << other_user
     end
 
-    it "成功すること" do
+    it "成功すること", focus: true do
       expect {
         visit itinerary_path(itinerary.id)
         find("i", text: "delete").click
+
+        expect(page).to have_content "この旅のプランを削除しますか？この操作は取り消せません。"
+
         click_on "削除する"
 
         expect(page).to have_content "#{itinerary.title}を削除しました。"
