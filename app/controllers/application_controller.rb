@@ -5,6 +5,6 @@ class ApplicationController < ActionController::Base
     else
       itinerary = Itinerary.find(params[:id])
     end
-    redirect_to :root unless itinerary.members.include?(current_user)
+    redirect_to :root if itinerary.members.exclude?(current_user)
   end
 end

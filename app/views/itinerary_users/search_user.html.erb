@@ -8,7 +8,7 @@
       <% if @itinerary.members.include?(@user) %>
         <p>すでにメンバーに追加されています</p>
       <% else %>
-        <%= f.submit "メンバーに追加", class: "btn bg-gradient-primary mb-0" %>
+        <%= f.submit "メンバーに追加", class: "btn bg-gradient-primary" %>
       <% end %>
     </div>
   <% end %>

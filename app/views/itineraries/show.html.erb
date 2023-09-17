@@ -19,8 +19,8 @@
           </div>
         </div>
         <%= image_tag @itinerary.image.url, class: "border-radius-lg shadow-dark w-100 my-3" %>
-        <p class="mt-1"><span class="fw-bold text-xs">タイトル</span><br><%= @itinerary.title %></p>
-        <p><span class="fw-bold text-xs">旅行期間</span><br><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
+        <p class="my-2"><span class="fw-bold text-xs">タイトル</span><br><%= @itinerary.title %></p>
+        <p class="my-2"><span class="fw-bold text-xs">旅行期間</span><br><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
         <p>
           <span class="fw-bold text-xs d-inline-block mb-2">旅のプラン作成者</span><br>
           <%= image_tag @itinerary.owner.avatar.url, id: 'image-preview', class: "rounded-circle avatar-thumbnail me-2" %>
@@ -52,7 +52,7 @@
         <hr class="dark horizontal">
         <%= turbo_frame_tag "new_member" do %>
           <%= link_to :new_member_itinerary, data: { turbo_frame: "modal" } do %>
-            <p class="text-center mb-0"><i class="material-icons" style="vertical-align: -4.5px;">person_add</i> メンバーを追加</p>
+            <p class="text-center"><i class="material-icons" style="vertical-align: -4.5px;">person_add</i> メンバーを追加</p>
           <% end %>
         <% end %>
       </div>

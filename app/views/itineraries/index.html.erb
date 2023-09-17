@@ -20,7 +20,7 @@
                   <p class="mb-1 d-none d-sm-block"><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
                   <p class="mb-1 d-block d-sm-none text-xxs text-center"><%= l itinerary.departure_date %> - <%= l itinerary.return_date %></p>
                   <hr class="dark horizontal d-none d-sm-block">
-                  <p class="mb-0 d-none d-sm-block"><i class="material-icons pe-2" style="vertical-align: -4.5px;">group</i><%= member_names(itinerary) %></p>
+                  <p class="d-none d-sm-block"><i class="material-icons pe-2" style="vertical-align: -4.5px;">group</i><%= member_names(itinerary) %></p>
                 </div>
               </div>
             <% end %>
@@ -32,7 +32,7 @@
   <div class="fixed-plugin">
     <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2">
       <%= link_to :new_itinerary, data: { turbo_frame: "modal" } do %>
-        <p class="mb-0 py-1"><i class="material-icons" style="vertical-align: -4.5px;">add_circle</i> 旅のプランを作成</p>
+        <p class="py-1"><i class="material-icons" style="vertical-align: -4.5px;">add_circle</i> 旅のプランを作成</p>
       <% end %>
     </div>
   </div>

@@ -1,32 +1,40 @@
 <%= render "layouts/modal", title: "スケジュール詳細" do %>
-  <div >
-    <p class="text-dark text-ellipsis">
-      <% if @schedule.icon %>
-        <i class="material-icons"><%= @schedule.icon %></i>
+  <div class="mb-4">
+    <div class="row mb-1 mx-0 text-dark">
+      <p class="col-11 d-inline ps-0 text-lg"><%= @schedule.title %></p>
+      <% if @schedule.icon.present? %>
+        <i class="col-1 material-icons pt-1 fs-4"><%= @schedule.icon %></i>
       <% end %>
-      <%= @schedule.title %>
+    </div>
+    <p class="text-dark text-sm">
+      <%= @schedule.schedule_date ? (l @schedule.schedule_date) : "日付未定" %>&ensp;
+      <span class="material-symbols-outlined fs-6 fw-light" style="vertical-align: -3.5px;">schedule</span>
+      <%= @schedule.start_at ? (l @schedule.start_at) : "未定" %> - <%= @schedule.end_at ? (l @schedule.end_at) : "未定" %>
     </p>
-    <p class="mb-0"><%= @schedule.schedule_date ? (l @schedule.schedule_date) : "日付未定" %></p>
-    <p><%= @schedule.start_at ? (l @schedule.start_at) : "未定" %> - <%= @schedule.end_at ? (l @schedule.end_at) : "未定" %></p>
   </div>
   <div class="mb-4">
-    <label class="fw-bold" >スポット情報</label>
-    <% if @schedule.place_id%>
-      <div class="border mt-2" id="place_info_card">
-        <div class="d-flex" >
-          <img src="" class= "pe-1" id="place_photo">
-          <div class="p-2 pe-4 position-relative w-100">
-            <p class="mb-1 text-sm text-dark fw-bold" id="place_name"></p>
-            <p class="mb-0 text-xs text-secondary" id="place_address"></p>
-            <label class="m-0 position-absolute end-1 top-1"><i class="material-icons">close</i>
-            <button type="button" class="d-none border-0 bg-transparent text-xs" id="reset_place_btn"></button></label>
+    <p class="text-sm fw-bold text-dark" >スポット情報</p>
+    <% if @schedule.place_id.present? %>
+      <% if @error_message %>
+        <p class="text-sm text-danger"><span class="material-symbols-outlined fs-6 pe-1"  style="vertical-align: -2.8px;">error</span><%= @error_message %></p>
+      <% else %>
+        <div class="border mt-2">
+          <div class="d-flex" >
+            <img src="<%= @place_photo_url %>" class= "pe-1" id="place_photo">
+            <div class="p-2 pe-4 position-relative w-100">
+              <p class="mb-1 text-sm text-dark fw-bold"><%= @place_name.to_s %></p>
+              <p class="mb-0 text-xs text-secondary"><%= @place_address.to_s %></p>
+              <label class="m-0 position-absolute end-1 top-1">
+                <i class="material-symbols-outlined fs-5">open_in_new</i>
+                <%= link_to [:place_itinerary, id: @schedule.itinerary.id], class: "d-none" %>
+                <button type="button" class="d-none border-0 bg-transparent text-xs"></button>
+              </label>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
     <% else %>
-      <div class="border mt-2" id="place_info_empty">
-        <p class="mb-0 text-sm text-center text-secondary py-4">未登録</p>
-      </div>
+      <p class="text-sm text-secondary">：登録されていません</p>
     <% end %>
   </div>
 <% end %>

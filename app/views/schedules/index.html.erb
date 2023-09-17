@@ -36,9 +36,9 @@
                   </div>
                   <div class="col-1 ps-0">
                     <div class="dropdown">
-                      <label for="schedule_dropdown_<%= i %>"><i class="material-icons ps-1 align-middle text-secondary schedule-dropdown-icon">more_vert</i></label>
-                      <button class="d-none" id="schedule_dropdown_<%= i %>" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                      <ul class="border dropdown-menu dropdown-menu-end mt-4" aria-labelledby="schedule_dropdown_<%= i %>"></li>
+                      <label for="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>"><i class="material-icons ps-1 align-middle text-secondary schedule-dropdown-icon">more_vert</i></label>
+                      <button class="d-none" id="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                      <ul class="border dropdown-menu dropdown-menu-end mt-4" aria-labelledby="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>"></li>
                         <li>
                           <%= link_to [:itinerary_schedule, id: schedule.id], class: "dropdown-item", data: { turbo_frame: "modal" } do %>
                             <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">article</span>情報を見る
@@ -68,9 +68,9 @@
                       <% end %>
                     </div>
                     <div class="dropdown">
-                      <label for="schedule_dropdown_<%= i + 1000 %>" class="mb-0"><i class="material-icons ps-1 text-secondary schedule-dropdown-icon">more_horiz</i></label>
-                      <button class="d-none" id="schedule_dropdown_<%= i + 1000 %>" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                      <ul class="border dropdown-menu dropdown-menu-end mt-2" aria-labelledby="schedule_dropdown_<%= i + 1000 %>"></li>
+                      <label for="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s + "mb") : i.to_s + "mb" %>" class="mb-0"><i class="material-icons ps-1 text-secondary schedule-dropdown-icon">more_horiz</i></label>
+                      <button class="d-none" id="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s + "mb") : i.to_s + "mb" %>" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                      <ul class="border dropdown-menu dropdown-menu-end mt-2" aria-labelledby="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s + "mb") : i.to_s + "mb" %>"></li>
                         <li>
                           <%= link_to [:itinerary_schedule, id: schedule.id], class: "dropdown-item", data: { turbo_frame: "modal" } do %>
                             <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">article</span>情報を見る

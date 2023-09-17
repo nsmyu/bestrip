@@ -39,7 +39,7 @@
           <img src="" class= "pe-1" id="place_photo">
           <div class="p-2 pe-4 position-relative w-100">
             <p class="mb-1 text-sm text-dark fw-bold" id="place_name"></p>
-            <p class="mb-0 text-xs text-secondary" id="place_address"></p>
+            <p class="text-xs text-secondary" id="place_address"></p>
             <label class="m-0 position-absolute end-1 top-1"><i class="material-icons">close</i>
             <button type="button" class="d-none border-0 bg-transparent text-xs" id="reset_place_btn"></button></label>
           </div>
@@ -52,7 +52,7 @@
         <label type="button" class="lh-1 p-1 text-center">
           <i class="material-icons">horizontal_rule</i>
           <span class="text-xxs d-block pt-1">なし</span>
-          <%= f.radio_button :icon, nil, class: "d-none schedule-icon-btn" %>
+          <%= f.radio_button :icon, "", class: "d-none schedule-icon-btn" %>
         </label>
         <label type="button" class="lh-1 p-1 text-center">
           <i class="material-icons">restaurant</i>

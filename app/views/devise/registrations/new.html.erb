@@ -13,7 +13,7 @@
             </div>
             <div class="card-body">
               <%= form_with model: resource, scope: resource_name, url: registration_path(resource_name) do |f| %>
-                <div class="input-group input-group-outline mb-3 <%= "is-filled" unless resource[:name].blank? %>" >
+                <div class="input-group input-group-outline mb-3 <%= "is-filled" if resource[:name].present? %>" >
                   <%= f.label :name, class: "form-label" do%>
                     ニックネーム（20文字以内で入力）<span class="required">*</span>
                   <% end %>
@@ -22,7 +22,7 @@
                     <%= resource.errors.full_messages_for(:name).first if resource.errors.any? %>
                   </div>
                 </div>
-                <div class="input-group input-group-outline mb-3 <%= "is-filled" unless resource[:email].blank? %>">
+                <div class="input-group input-group-outline mb-3 <%= "is-filled" if resource[:email].present? %>">
                   <%= f.label :email, class: "form-label" do%>
                     メールアドレス<span class="required">*</span>
                   <% end %>
@@ -50,7 +50,7 @@
                   </div>
                 </div>
                 <div class="text-center actions">
-                  <%= f.submit "新規登録", data: { turbo: false }, class: "btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0" %>
+                  <%= f.submit "新規登録", data: { turbo: false }, class: "btn btn-lg bg-gradient-primary btn-lg w-100 mt-4" %>
                 </div>
               <% end %>
             </div>
