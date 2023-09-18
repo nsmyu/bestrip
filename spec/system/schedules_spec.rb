@@ -109,9 +109,8 @@ RSpec.describe "Schedules", type: :system do
           page.execute_script "schedule_date.value = '#{schedule.schedule_date}'"
           page.execute_script "schedule_start_at.value = '#{schedule.start_at}'"
           page.execute_script "schedule_end_at.value = '#{schedule.end_at}'"
+          find("i", text: "#{schedule.icon}").click
           fill_in "schedule[note]", with: schedule.note
-
-          find("i", text: "attraction").click
           click_on "保存する"
 
           expect(page).to have_content "新しいスケジュールを作成しました。"
@@ -222,7 +221,7 @@ RSpec.describe "Schedules", type: :system do
     end
   end
 
-  describe "詳細表示" do
+  describe "詳細表示", js: true do
     let!(:schedule) { create(:schedule, itinerary: itinerary) }
 
     it "スケジュールのタイトル、アイコン、日付、時間、メモ、スポット情報を表示すること" do
@@ -239,67 +238,107 @@ RSpec.describe "Schedules", type: :system do
     # リンクのテスト
   end
 
-  # describe "編集", js: true do
-  #   let!(:itinerary1) { create(:itinerary, owner: user) }
-  #   let!(:itinerary2) { create(:itinerary, owner: user) }
+  describe "編集", js: true, focus: true do
+    let!(:schedule) { create(:schedule, itinerary: itinerary) }
 
-  #   before do
-  #     visit itinerary_path(itinerary1.id)
-  #     find("i", text: "edit").click
-  #   end
+    before do
+      visit edit_itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+    end
 
-  #   context "有効な値の場合" do
-  #     it "成功すること" do
-  #       fill_in "itinerary[title]", with: "New Title"
-  #       fill_in "itinerary[departure_date]", with: "Mon Apr 01 2024 00:00:00 GMT+0900"
-  #       fill_in "itinerary[return_date]", with: "Mon Apr 08 2024 00:00:00 GMT+0900"
+    context "有効な値の場合" do
+      it "成功すること(スポット情報以外)" do
+        fill_in "schedule[title]", with: "New title"
+        page.execute_script "schedule_date.value = '2024-02-03'"
+        page.execute_script "schedule_start_at.value = '14:00:00'"
+        page.execute_script "schedule_end_at.value = '16:00:00'"
+        find("i", text: "shopping_cart").click
+        fill_in "schedule[note]", with: "New note"
+        click_on "保存する"
 
-  #       expect(page).to have_selector "img[id='image_preview'][src*='default_itinerary']"
+        expect(page).to have_content "スケジュール情報を変更しました。"
+        within(:xpath, "//div[h5[contains(text(), '2024/2/3')]]") do
+          expect(page).to have_content "New title"
+          expect(page).to have_content "shopping_cart"
+          expect(page).to have_content '14:00'
+          expect(page).to have_content '16:00'
+        end
+        expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary.id)
 
-  #       image_path = Rails.root.join('spec/fixtures/test_image.jpg')
-  #       attach_file 'itinerary[image]', image_path, make_visible: true
+        find(".schedule-dropdown-icon", match: :first).click
+        click_on "情報を見る", match: :first
 
-  #       expect(page).not_to have_selector "img[id='image_preview'][src*='default_itinerary']"
+        expect(page).to have_content "New note"
+      end
 
-  #       click_on "保存する"
+      it "スポット情報を変更できること" do
+        fill_in "query_input", with: "クイーンビクトリアビルディング"
+        sleep 0.5
+        find("#query_input").click
+        find("span.pac-matched", text: "クイーン・ビクトリア・ビルディング", match: :first).click
 
-  #       expect(current_path).to eq itinerary_path(itinerary1.id)
-  #       expect(page).to have_content "旅のプラン情報を変更しました。"
-  #       expect(page).to have_content "New Title"
-  #       expect(page).to have_content "2024/4/1 (月) 〜 2024/4/8 (月)"
-  #       expect(page).to have_selector "img[src*='test_image.jpg']"
-  #     end
-  #   end
+        within("div#place_info_card") do
+          expect(page).to have_content "Queen Victoria Building"
+          expect(page).to have_content "455 George St, Sydney NSW 2000, Australia"
+          expect(page)
+            .to have_selector "img[src*='maps.googleapis.com/maps/api/place/js/PhotoService']"
+        end
 
-  #   context "無効な値の場合" do
-  #     it "タイトルが空欄の場合、失敗すること" do
-  #       fill_in "itinerary[title]", with: ""
-  #       click_on "保存する"
-  #       expect(page).to have_content "タイトルを入力してください"
-  #     end
+        click_on "保存する"
+        find(".schedule-dropdown-icon", match: :first).click
+        click_on "情報を見る", match: :first
 
-  #     it "タイトルが同じユーザーで重複している場合、失敗すること" do
-  #       fill_in "itinerary[title]", with: itinerary2.title
-  #       click_on "保存する"
-  #       expect(page).to have_content "このタイトルはすでに使用されています"
-  #     end
+        expect(page).to have_content "クイーン・ビクトリア・ビルディング"
+      end
+    end
 
-  #     it "タイトルが31文字以上の場合、失敗すること" do
-  #       fill_in "itinerary[title]", with: "a" * 31
-  #       click_on "保存する"
-  #       expect(page).to have_content "タイトルは30文字以内で入力してください"
-  #     end
+    context "無効な値の場合" do
+      it "タイトルが空欄の場合、失敗すること" do
+        fill_in "schedule[title]", with: ""
+        click_on "保存する"
 
-  #     it "出発日より前の日付は帰宅日として選択できないこと" do
-  #       find("#departure-date").click
-  #       find('div.dayContainer > span:nth-child(2)').click
-  #       sleep 0.1
-  #       find("#return-date").click
-  #       expect(page)
-  #         .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
-  #     end
-  #   end
-  # end
+        expect(page).to have_content "タイトルを入力してください"
+      end
+
+      it "タイトルが51文字以上の場合、失敗すること" do
+        fill_in "schedule[title]", with: "a" * 51
+        click_on "保存する"
+
+        expect(page).to have_content "タイトルは50文字以内で入力してください"
+      end
+
+      it "メモが501文字以上入力された場合、「保存する」ボタンが押せないこと" do
+        fill_in "schedule[note]", with: "a" * 500
+
+        expect(page).to have_content "500"
+        expect(find("#submit_btn", visible: false)).not_to be_disabled
+
+        fill_in "schedule[note]", with: "a" * 501
+
+        expect(page).to have_content "501"
+        expect(find("#submit_btn", visible: false)).to be_disabled
+      end
+    end
+
+    describe "日付入力のflatpickr" do
+      it "出発日〜帰宅日の間の日付のみ選択可能であること" do
+        find("#schedule_date", visible: false).sibling("input").click
+        find("span[aria-label='2月 1, 2024']").click
+        expect(page).not_to have_selector ".flatpickr-calendar.open"
+
+        sleep 0.5
+
+        find("#schedule_date", visible: false).sibling("input").click
+        find("span[aria-label='2月 8, 2024']").click
+        expect(page).not_to have_selector ".flatpickr-calendar.open"
+
+        find("#schedule_date", visible: false).sibling("input").click
+        within("div.flatpickr-calendar") do
+          expect(page).to have_selector "span.flatpickr-disabled[aria-label='1月 31, 2024']"
+          expect(page).to have_selector "span.flatpickr-disabled[aria-label='2月 9, 2024']"
+        end
+      end
+    end
+  end
 
   describe "削除", js: true do
     let!(:schedule) { create(:schedule, itinerary: itinerary) }

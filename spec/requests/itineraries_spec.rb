@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Itineraries", type: :request do
   let!(:user) { create(:user) }
-  let!(:other_user1) { create(:user, bestrip_id: "other_user1_id") }
+  let!(:other_user) { create(:user, bestrip_id: "other_user_id") }
   let!(:itinerary) { create(:itinerary, owner: user) }
 
   before do
@@ -17,7 +17,7 @@ RSpec.describe "Itineraries", type: :request do
 
     it "ログインユーザーの全ての旅のプランを取得すること" do
       other_itinerary = create(:itinerary, owner: user)
-      other_users_itinerary = create(:itinerary, owner: other_user1)
+      other_users_itinerary = create(:itinerary, owner: other_user)
       other_users_itinerary.members << user
       get itineraries_path
       expect(response.body)
@@ -25,16 +25,16 @@ RSpec.describe "Itineraries", type: :request do
     end
 
     it "旅のプランのタイトル、出発日・帰宅日、メンバー名を取得すること" do
-      itinerary.members << other_user1
+      itinerary.members << other_user
       get itineraries_path
       expect(response.body).to include itinerary.title
       expect(response.body).to include I18n.l itinerary.departure_date
       expect(response.body).to include I18n.l itinerary.return_date
-      expect(response.body).to include itinerary.owner.name, other_user1.name
+      expect(response.body).to include itinerary.owner.name, other_user.name
     end
 
     it "他のユーザーのプランを取得しないこと" do
-      other_users_itinerary = create(:itinerary, owner: other_user1)
+      other_users_itinerary = create(:itinerary, owner: other_user)
       get itineraries_path
       expect(response.body).not_to include other_users_itinerary.title
     end
@@ -176,11 +176,11 @@ RSpec.describe "Itineraries", type: :request do
     end
 
     it "作成者以外は旅のプランを削除できないこと" do
-      itinerary.members << other_user1
+      itinerary.members << other_user
       sign_out user
-      sign_in other_user1
+      sign_in other_user
       delete itinerary_path(itinerary.id)
-      expect(other_user1.itineraries).to include itinerary
+      expect(other_user.itineraries).to include itinerary
     end
   end
 end
