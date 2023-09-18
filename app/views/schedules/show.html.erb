@@ -26,7 +26,7 @@
             <div class="p-2 pe-4 position-relative w-100">
               <p class="mb-1 text-sm text-dark fw-bold"><%= @place_name.to_s %></p>
               <p class="mb-0 text-xs text-secondary"><%= @place_address.to_s %></p>
-              <%= link_to [:place_itinerary, id: @schedule.itinerary.id], class: "m-0 position-absolute end-1 top-1", target: ["_blank"], data: { turbo: false } do %>
+              <%= link_to [:place_itinerary, id: @schedule.itinerary.id], class: "m-0 position-absolute end-1 top-1 text-secondary hover-primary", target: ["_blank"], data: { turbo: false } do %>
                 <i class="material-symbols-outlined fs-5">open_in_new</i>
               <% end %>
             </div>

@@ -4,7 +4,7 @@ FactoryBot.define do
     schedule_date { "2024-02-02" }
     start_at      { "13:00:00" }
     end_at        { "17:00:00" }
-    icon          { "attraction" }
+    icon          { "castle" }
     place_id      { "ChIJ3S-JXmauEmsRUcIaWtf4MzE" }
     note          { "The Sydney Opera House Tour, 2:00pm, $43" }
     itinerary

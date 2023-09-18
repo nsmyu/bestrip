@@ -48,12 +48,12 @@
                           <% end %>
                         </li>
                         <li class="align-items-center">
-                          <%= link_to [:edit_itinerary_schedule, id: schedule.id, itinerary_id: schedule.itinerary.id], class: "dropdown-item", data: { turbo_frame: "modal" } do %>
+                          <%= link_to [:edit_itinerary_schedule, itinerary_id: schedule.itinerary.id, id: schedule.id], class: "dropdown-item", data: { turbo_frame: "modal" } do %>
                             <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">edit</span>編集
                           <% end %>
                         </li>
                         <li>
-                          <%= link_to [:itinerary_schedule, id: schedule.id, itinerary_id: schedule.itinerary.id], class: "dropdown-item text-danger", data: { turbo_method: :delete, turbo_confirm: 'このスケジュールを削除しますか？この操作は取り消せません。' } do %>
+                          <%= link_to [:itinerary_schedule, itinerary_id: schedule.itinerary.id, id: schedule.id], class: "dropdown-item text-danger", data: { turbo_method: :delete, turbo_confirm: 'このスケジュールを削除しますか？この操作は取り消せません。' } do %>
                             <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">delete</span>削除
                           <% end %>
                         </li>
@@ -80,12 +80,12 @@
                           <% end %>
                         </li>
                         <li class="align-items-center">
-                          <%= link_to [:edit_itinerary_schedule, id: schedule.id, itinerary_id: schedule.itinerary.id], class: "dropdown-item", data: { turbo_frame: "modal" } do %>
+                          <%= link_to [:edit_itinerary_schedule, itinerary_id: schedule.itinerary.id, id: schedule.id], class: "dropdown-item", data: { turbo_frame: "modal" } do %>
                             <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">edit</span>編集
                           <% end %>
                         </li>
                         <li>
-                          <%= link_to [:itinerary_schedule, id: schedule.id, itinerary_id: schedule.itinerary.id], class: "dropdown-item text-danger", data: { turbo_method: :delete, turbo_confirm: 'このスケジュールを削除しますか？この操作は取り消せません。' } do %>
+                          <%= link_to [:itinerary_schedule, itinerary_id: schedule.itinerary.id, id: schedule.id], class: "dropdown-item text-danger", data: { turbo_method: :delete, turbo_confirm: 'このスケジュールを削除しますか？この操作は取り消せません。' } do %>
                             <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">delete</span>削除
                           <% end %>
                         </li>
