@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  private
+
   def authenticate_itinerary_member
     if params[:itinerary_id]
       itinerary = Itinerary.find(params[:itinerary_id])

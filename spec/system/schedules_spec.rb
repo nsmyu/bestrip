@@ -146,7 +146,7 @@ RSpec.describe "Schedules", type: :system do
         find("i", text: "close").click
 
         expect(page).not_to have_selector "#place_info_card"
-        expect(page).to have_selector "#place_info_empty"
+        expect(page).to have_selector "#empty_place_info_card"
 
         fill_in "query_input", with: "クイーンビクトリアビルディング"
         sleep 0.5

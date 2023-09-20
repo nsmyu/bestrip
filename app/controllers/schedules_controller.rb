@@ -1,7 +1,8 @@
 class SchedulesController < ApplicationController
-  before_action :authenticate_user!, :authenticate_itinerary_member
+  include GoogleApiConnectable
+
+  before_action :authenticate_user!, :authenticate_itinerary_member, :set_itinerary
   before_action :set_schedule, only: [:show, :edit, :update, :destroy]
-  before_action :set_itinerary, only: [:new, :create, :edit, :update]
 
   def index
     unsorted_schedules = Itinerary.find(params[:itinerary_id]).schedules.order(:schedule_date)
@@ -32,35 +33,16 @@ class SchedulesController < ApplicationController
 
   def show
     if @schedule.place_id.present?
-      place_id = @schedule.place_id
-
-      uri = URI.parse("https://maps.googleapis.com/maps/api/place/details/json")
-      http_client = Net::HTTP.new(uri.host, uri.port)
-      http_client.use_ssl = true
-
-      params = [
-        "?place_id=#{place_id}",
-        "&fields=name%2Cformatted_address%2Cphotos",
-        "&key=#{ENV['GOOGLE_API_KEY']}",
-        "&language=ja&region=JP",
-      ]
-
-      req = Net::HTTP::Get.new(uri + params.join)
-      response = http_client.request(req)
-      data = JSON.parse(response.body, symbolize_names: true)
-
-      if data[:error_message].blank?
-        @place_name = data[:result][:name]
-        @place_address = data[:result][:formatted_address]
-        photo_reference = data[:result][:photos][0][:photo_reference]
-        @place_photo_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=#{photo_reference}&key=#{ENV['GOOGLE_API_KEY']}"
-      else
-        @error_message = "スポット情報が取得できませんでした"
-      end
+      @place_id = @schedule.place_id
+      get_place_details(@place_id)
     end
   end
 
   def edit
+    if @schedule.place_id.present?
+      @place_id = @schedule.place_id
+      get_place_details(@place_id)
+    end
   end
 
   def update

@@ -24,8 +24,8 @@
           <div class="d-flex" >
             <img src="<%= @place_photo_url %>" class= "pe-1" id="place_photo">
             <div class="p-2 pe-4 position-relative w-100">
-              <p class="mb-1 text-sm text-dark fw-bold"><%= @place_name.to_s %></p>
-              <p class="mb-0 text-xs text-secondary"><%= @place_address.to_s %></p>
+              <p class="mb-1 text-sm text-dark fw-bold"><%= @place_name %></p>
+              <p class="mb-0 text-xs text-secondary"><%= @place_address %></p>
               <%= link_to [:place_itinerary, id: @schedule.itinerary.id], class: "m-0 position-absolute end-1 top-1 text-secondary hover-primary", target: ["_blank"], data: { turbo: false } do %>
                 <i class="material-symbols-outlined fs-5">open_in_new</i>
               <% end %>
