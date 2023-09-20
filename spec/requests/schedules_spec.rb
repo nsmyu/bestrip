@@ -110,9 +110,10 @@ RSpec.describe "Schedules", type: :request do
       expect(response.body).to include I18n.l schedule.schedule_date
       expect(response.body).to include I18n.l schedule.start_at
       expect(response.body).to include I18n.l schedule.end_at
+      expect(response.body).to include schedule.note
     end
 
-    it "スポット情報をGoogle Places APIから取得すること", vcr: "google_api_response", focus: true do
+    it "スポット情報をGoogle Places APIから取得すること", vcr: "google_api_response" do
       expect(response.body).to include "シドニー・オペラハウス"
       expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
     end
@@ -133,12 +134,13 @@ RSpec.describe "Schedules", type: :request do
       expect(response.body).to include schedule.schedule_date.to_s
       expect(response.body).to include I18n.l schedule.start_at
       expect(response.body).to include I18n.l schedule.end_at
+      expect(response.body).to include schedule.note
     end
 
-    # it "スポット情報をGoogle Places APIから取得すること", vcr: "google_api_response", focus: true do
-    #   expect(response.body).to include "シドニー・オペラハウス"
-    #   expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
-    # end
+    it "スポット情報をGoogle Places APIから取得すること", vcr: "google_api_response" do
+      expect(response.body).to include "シドニー・オペラハウス"
+      expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
+    end
   end
 
   describe "PATCH #update" do

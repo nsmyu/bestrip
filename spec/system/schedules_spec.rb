@@ -238,7 +238,7 @@ RSpec.describe "Schedules", type: :system do
     # リンクのテスト
   end
 
-  describe "編集", js: true, focus: true do
+  describe "編集", js: true do
     let!(:schedule) { create(:schedule, itinerary: itinerary) }
 
     before do
