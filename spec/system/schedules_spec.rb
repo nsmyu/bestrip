@@ -224,17 +224,24 @@ RSpec.describe "Schedules", type: :system do
   describe "詳細表示", js: true do
     let!(:schedule) { create(:schedule, itinerary: itinerary) }
 
-    it "スケジュールのタイトル、アイコン、日付、時間、メモ、スポット情報を表示すること" do
+    before do
       visit itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+    end
+
+    it "スケジュールのタイトル、アイコン、日付、時間、メモを表示すること" do
       expect(page).to have_content schedule.title
       expect(page).to have_content schedule.icon
       expect(page).to have_content I18n.l schedule.schedule_date
       expect(page).to have_content I18n.l schedule.start_at
       expect(page).to have_content I18n.l schedule.end_at
       expect(page).to have_content schedule.note
-      expect(page).to have_content "シドニー・オペラハウス"
     end
 
+    it "スケジュールのスポット情報を表示すること" do
+      expect(page).to have_content "シドニー・オペラハウス"
+      expect(page).to have_content "Bennelong Point, Sydney NSW 2000 オーストラリア"
+      expect(page).to have_selector "img[src*='maps.googleapis.com/maps/api/place/photo']"
+    end
     # リンクのテスト
   end
 
