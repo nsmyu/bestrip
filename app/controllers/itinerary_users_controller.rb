@@ -2,7 +2,7 @@ class ItineraryUsersController < ApplicationController
   before_action :authenticate_user!, :authenticate_itinerary_member
   before_action :set_itinerary
 
-  def new_member
+  def new
   end
 
   def search_user
@@ -10,17 +10,17 @@ class ItineraryUsersController < ApplicationController
     @user = User.find_by(bestrip_id: @bestrip_id)
     if @user.nil?
       flash.now[:notice] = 'ユーザーが見つかりませんでした'
-      render :new_member
+      render :new
     end
   end
 
-  def add_member
+  def create
     user = User.find(params[:user_id])
     @itinerary.members << user
     redirect_to @itinerary
   end
 
-  def remove_member
+  def destroy
     member = User.find(params[:user_id])
     if current_user == @itinerary.owner && member != @itinerary.owner
       @itinerary.itinerary_users.find_by(user_id: member.id).destroy

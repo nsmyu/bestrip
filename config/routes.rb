@@ -17,10 +17,8 @@ Rails.application.routes.draw do
 
   resources :itineraries do
     member do
-      get    'new_member',    to: 'itinerary_users#new_member'
-      get    'search_user',   to: 'itinerary_users#search_user'
-      patch  'add_member',    to: 'itinerary_users#add_member'
-      delete 'remove_member', to: 'itinerary_users#remove_member'
+      resources :itinerary_users, only: [:new, :create, :destroy]
+      get 'search_user', to: 'itinerary_users#search_user'
     end
 
     resources :schedules

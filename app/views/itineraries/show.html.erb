@@ -43,18 +43,16 @@
               <% end %>
             </div>
             <% if current_user == @itinerary.owner && member!= @itinerary.owner %>
-              <%= link_to [:remove_member_itinerary, id: @itinerary.id, user_id: member.id], data: { turbo_method: :delete, turbo_confirm: member.name + 'をメンバーから削除しますか？' } do %>
+              <%= link_to [:itinerary_user, id: @itinerary.id, user_id: member.id], data: { turbo_method: :delete, turbo_confirm: member.name + 'をメンバーから削除しますか？' } do %>
                 <i class="material-icons px-1 fw-normal" style="vertical-align: -10px;">person_remove</i>
               <% end %>
             <% end %>
           </div>
         <% end %>
         <hr class="dark horizontal">
-        <%= turbo_frame_tag "new_member" do %>
-          <%= link_to :new_member_itinerary, data: { turbo_frame: "modal" } do %>
+          <%= link_to :new_itinerary_user, data: { turbo_frame: "modal" } do %>
             <p class="text-center"><i class="material-icons" style="vertical-align: -4.5px;">person_add</i> メンバーを追加</p>
           <% end %>
-        <% end %>
       </div>
     </div>
   </div>
