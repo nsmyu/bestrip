@@ -1,6 +1,9 @@
 class ItineraryUsersController < ApplicationController
-  before_action :authenticate_user!, :authenticate_itinerary_member
-  before_action :set_itinerary
+  before_action -> {
+    authenticate_user!
+    set_itinerary
+    authenticate_itinerary_member(@itinerary)
+  }
 
   def new
   end
@@ -28,11 +31,5 @@ class ItineraryUsersController < ApplicationController
     else
       redirect_to @itinerary
     end
-  end
-
-  private
-
-  def set_itinerary
-    @itinerary = Itinerary.find(params[:id])
   end
 end

@@ -1,7 +1,11 @@
 class SchedulesController < ApplicationController
   include GoogleApiConnectable
 
-  before_action :authenticate_user!, :authenticate_itinerary_member, :set_itinerary
+  before_action -> {
+    authenticate_user!
+    set_itinerary
+    authenticate_itinerary_member(@itinerary)
+  }
   before_action :set_schedule, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -68,9 +72,5 @@ class SchedulesController < ApplicationController
 
   def set_schedule
     @schedule = Schedule.find(params[:id])
-  end
-
-  def set_itinerary
-    @itinerary = Itinerary.find(params[:itinerary_id])
   end
 end

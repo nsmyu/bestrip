@@ -1,6 +1,9 @@
 class ItinerariesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_itinerary, :authenticate_itinerary_member, except: [:index, :new, :create]
+  before_action -> {
+    set_itinerary
+    authenticate_itinerary_member(@itinerary)
+  }, except: [:index, :new, :create]
 
   def index
     @itineraries = current_user.itineraries.order(departure_date: :desc)
@@ -47,10 +50,6 @@ class ItinerariesController < ApplicationController
   end
 
   private
-
-  def set_itinerary
-    @itinerary = Itinerary.find(params[:id])
-  end
 
   def itinerary_params
     params.require(:itinerary)
