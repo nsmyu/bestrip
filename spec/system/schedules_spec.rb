@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Schedules", type: :system do
+RSpec.describe "Schedules", type: :system, focus: true do
   let!(:user) { create(:user) }
   let!(:other_user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
@@ -141,6 +141,7 @@ RSpec.describe "Schedules", type: :system do
           expect(page).to have_content "Bennelong Point, Sydney NSW 2000, Australia"
           expect(page)
             .to have_selector "img[src*='maps.googleapis.com/maps/api/place/js/PhotoService']"
+          expect(page).to have_selector "iframe[src$='place_id:#{schedule.place_id}']"
         end
 
         find("i", text: "close").click
@@ -241,8 +242,8 @@ RSpec.describe "Schedules", type: :system do
       expect(page).to have_content "シドニー・オペラハウス"
       expect(page).to have_content "Bennelong Point, Sydney NSW 2000 オーストラリア"
       expect(page).to have_selector "img[src*='maps.googleapis.com/maps/api/place/photo']"
+      expect(page).to have_selector "iframe[src$='place_id:#{schedule.place_id}']"
     end
-    # リンクのテスト
   end
 
   describe "編集", js: true do
@@ -288,6 +289,7 @@ RSpec.describe "Schedules", type: :system do
           expect(page).to have_content "455 George St, Sydney NSW 2000, Australia"
           expect(page)
             .to have_selector "img[src*='maps.googleapis.com/maps/api/place/js/PhotoService']"
+          expect(page).to have_selector "iframe[src$='place_id:ChIJISz8NjyuEmsRFTQ9Iw7Ear8']"
         end
 
         click_on "保存する"
