@@ -36,13 +36,20 @@
       </div>
       <div class="border mt-2" id="place_info_card">
         <div class="d-flex" >
-          <img src="<%= @place_photo_url %>" class= "pe-1" id="place_photo">
+          <img src="<%= @place_photo_url %>" class= "p-1" id="place_photo">
           <div class="p-2 pe-4 position-relative w-100">
-            <p class="mb-1 text-sm text-dark fw-bold" id="place_name"><%= @place_name %></p>
+            <p class="text-sm text-dark" id="place_name"><%= @place_name %></p>
             <p class="text-xs text-secondary" id="place_address"><%= @place_address %></p>
             <label class="m-0 position-absolute end-1 top-1"><i class="material-icons">close</i>
             <button type="button" class="d-none border-0 bg-transparent text-xs" id="reset_place_btn"></button></label>
           </div>
+        </div>
+        <div class="px-1">
+          <iframe
+            src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_API_KEY'] %>&zoom=15&q=place_id:<%= @place_id %>"
+            id="map_frame" loading="lazy" frameborder="0" style="border:0"
+            referrerpolicy="no-referrer-when-downgrade" >
+          </iframe>
         </div>
       </div>
     </div>

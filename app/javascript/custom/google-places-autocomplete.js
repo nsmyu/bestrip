@@ -1,28 +1,13 @@
-function googlePlacesAutocomplete() {
+function initAutocomplete() {
   const placeId = document.getElementById("place_id");
   const placeInfoCard = document.getElementById("place_info_card");
   const emptyplaceInfoCard = document.getElementById("empty_place_info_card");
-
-  if(placeId && placeId.value) {
-    emptyplaceInfoCard.style.display = "none"
-    placeInfoCard.style.display = "block"
-  }
-
-  const resetPlaceBtn = document.getElementById("reset_place_btn");
-  if(resetPlaceBtn) {
-    resetPlaceBtn.addEventListener("click", () => {
-      placeId.value = null;
-      emptyplaceInfoCard.style.display = "block";
-      placeInfoCard.style.display = "none";
-    })
-  }
-
   const input = document.getElementById('query_input');
-  const options = {
-    fields: ["name", "formatted_address", "photos", "place_id", "geometry"],
-  };
 
-  if(input) {
+  if (input) {
+    const options = {
+      fields: ["name", "formatted_address", "photos", "place_id"],
+    };
     const autocomplete = new google.maps.places.Autocomplete(input, options);
     autocomplete.addListener('place_changed', showPlaceInfo);
 
@@ -31,21 +16,34 @@ function googlePlacesAutocomplete() {
       const placeName = document.getElementById("place_name");
       const placeAddress = document.getElementById("place_address");
       const placePhoto = document.getElementById("place_photo");
+      const mapFrame = document.getElementById("map_frame")
 
       emptyplaceInfoCard.style.display = "none"
       placeInfoCard.style.display = "block"
+      placeId.value = place.place_id
       placeName.textContent = place.name
       placeAddress.textContent = place.formatted_address
-      placeId.value = place.place_id
+      mapFrame.setAttribute('src', mapFrame.src.split(/place_id:/)[0] + `place_id:${place.place_id}`)
 
-      if(place.photos) {
+      if (place.photos) {
         placePhoto.setAttribute('src', place.photos[0].getUrl())
       } else {
         placePhoto.setAttribute('src', "/assets/default_schedule_thumbnail.png")
       }
     }
+
+    document.getElementById("reset_place_btn").addEventListener("click", () => {
+      placeId.value = null;
+      emptyplaceInfoCard.style.display = "block";
+      placeInfoCard.style.display = "none";
+    })
+  }
+
+  if (placeId && placeId.value) {
+    emptyplaceInfoCard.style.display = "none";
+    placeInfoCard.style.display = "block";
   }
 }
 
-document.addEventListener('DOMContentLoaded', googlePlacesAutocomplete);
-document.addEventListener('turbo:frame-load', googlePlacesAutocomplete);
+document.addEventListener('DOMContentLoaded', initAutocomplete);
+document.addEventListener('turbo:frame-load', initAutocomplete);

@@ -24,16 +24,16 @@
           <div class="d-flex" >
             <img src="<%= @place_photo_url %>" class= "p-1" id="place_photo">
             <div class="p-2 position-relative w-100">
-              <p class="mb-1 text-sm text-dark fw-bold"><%= @place_name %></p>
-              <p class="mb-0 text-xs text-secondary"><%= @place_address %></p>
+              <p class="text-sm text-dark"><%= @place_name %></p>
+              <p class="text-xs text-secondary"><%= @place_address %></p>
             </div>
           </div>
           <div class="px-1">
-          <iframe
-            src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_API_KEY'] %>&zoom=15&q=place_id:<%= @place_id %>"
-            id="map_frame" loading="lazy" frameborder="0" style="border:0"
-            referrerpolicy="no-referrer-when-downgrade" >
-          </iframe>
+            <iframe
+              src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_API_KEY'] %>&zoom=15&q=place_id:<%= @place_id %>"
+              id="map_frame" loading="lazy" frameborder="0" style="border:0"
+              referrerpolicy="no-referrer-when-downgrade" >
+            </iframe>
           </div>
         </div>
       <% end %>
