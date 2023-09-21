@@ -3,7 +3,7 @@ function googlePlacesAutocomplete() {
   const placeInfoCard = document.getElementById("place_info_card");
   const emptyplaceInfoCard = document.getElementById("empty_place_info_card");
 
-  if(placeId.value) {
+  if(placeId && placeId.value) {
     emptyplaceInfoCard.style.display = "none"
     placeInfoCard.style.display = "block"
   }
@@ -19,7 +19,7 @@ function googlePlacesAutocomplete() {
 
   const input = document.getElementById('query_input');
   const options = {
-    fields: ["name", "formatted_address", "photos", "place_id"],
+    fields: ["name", "formatted_address", "photos", "place_id", "geometry"],
   };
 
   if(input) {

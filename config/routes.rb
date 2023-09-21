@@ -21,7 +21,6 @@ Rails.application.routes.draw do
       get    'search_user',   to: 'itinerary_users#search_user'
       patch  'add_member',    to: 'itinerary_users#add_member'
       delete 'remove_member', to: 'itinerary_users#remove_member'
-      get    'place',         to: 'itineraries#show_place'
     end
 
     resources :schedules
