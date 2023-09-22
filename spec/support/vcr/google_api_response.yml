@@ -46944,4 +46944,51 @@ http_interactions:
       encoding: UTF-8
       string: '{"value":"about:blank"}'
   recorded_at: Wed, 20 Sep 2023 13:16:56 GMT
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/place/details/json?fields=name,formatted_address,photos&key=<API_KEY>&language=ja&place_id=invalid_place_id&region=JP
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Fri, 22 Sep 2023 13:14:33 GMT
+      Expires:
+      - Fri, 22 Sep 2023 13:19:33 GMT
+      Cache-Control:
+      - public, max-age=300
+      Server:
+      - scaffolding on HTTPServer2
+      Content-Length:
+      - '134'
+      X-Xss-Protection:
+      - '0'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Server-Timing:
+      - gfet4t7; dur=83
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+           "error_message" : "Invalid request. Invalid 'placeid' parameter.",
+           "html_attributions" : [],
+           "status" : "INVALID_REQUEST"
+        }
+  recorded_at: Fri, 22 Sep 2023 13:14:33 GMT
 recorded_with: VCR 6.2.0

@@ -96,50 +96,70 @@ RSpec.describe "Schedules", type: :request do
   end
 
   describe "GET #show" do
-    before do
-      get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+    context "有効なリクエストの場合" do
+      before do
+        get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+      end
+
+      it "正常にレスポンスを返すこと" do
+        expect(response).to have_http_status 200
+      end
+
+      it "スケジュールの情報を取得すること" do
+        expect(response.body).to include schedule.title
+        expect(response.body).to include schedule.icon
+        expect(response.body).to include I18n.l schedule.schedule_date
+        expect(response.body).to include I18n.l schedule.start_at
+        expect(response.body).to include I18n.l schedule.end_at
+        expect(response.body).to include schedule.note
+      end
+
+      it "スポット情報をGoogle APIから取得すること", vcr: "google_api_response" do
+        expect(response.body).to include "シドニー・オペラハウス"
+        expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
+      end
     end
 
-    it "正常にレスポンスを返すこと" do
-      expect(response).to have_http_status 200
-    end
-
-    it "スケジュールの情報を取得すること" do
-      expect(response.body).to include schedule.title
-      expect(response.body).to include schedule.icon
-      expect(response.body).to include I18n.l schedule.schedule_date
-      expect(response.body).to include I18n.l schedule.start_at
-      expect(response.body).to include I18n.l schedule.end_at
-      expect(response.body).to include schedule.note
-    end
-
-    it "スポット情報をGoogle Places APIから取得すること", vcr: "google_api_response" do
-      expect(response.body).to include "シドニー・オペラハウス"
-      expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
+    context "無効なリクエストの場合" do
+      it "place_idが間違っている(変更されている)場合、エラーメッセージを取得すること", vcr: "google_api_response" do
+        schedule = create(:schedule, place_id: "invalid_place_id", itinerary: itinerary)
+        get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+        expect(response.body).to include "スポット情報を取得できませんでした"
+      end
     end
   end
 
   describe "GET #edit" do
-    before do
-      get edit_itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+    context "有効なリクエストの場合" do
+      before do
+        get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+      end
+
+      it "正常にレスポンスを返すこと" do
+        expect(response).to have_http_status 200
+      end
+
+      it "スケジュールの情報を取得すること" do
+        expect(response.body).to include schedule.title
+        expect(response.body).to include schedule.icon
+        expect(response.body).to include I18n.l schedule.schedule_date
+        expect(response.body).to include I18n.l schedule.start_at
+        expect(response.body).to include I18n.l schedule.end_at
+        expect(response.body).to include schedule.note
+      end
+
+      it "スポット情報をGoogle Places APIから取得すること", vcr: "google_api_response" do
+        expect(response.body).to include "シドニー・オペラハウス"
+        expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
+      end
     end
 
-    it "正常にレスポンスを返すこと" do
-      expect(response).to have_http_status 200
-    end
-
-    it "スケジュールの情報を取得すること" do
-      expect(response.body).to include schedule.title
-      expect(response.body).to include schedule.icon
-      expect(response.body).to include schedule.schedule_date.to_s
-      expect(response.body).to include I18n.l schedule.start_at
-      expect(response.body).to include I18n.l schedule.end_at
-      expect(response.body).to include schedule.note
-    end
-
-    it "スポット情報をGoogle Places APIから取得すること", vcr: "google_api_response" do
-      expect(response.body).to include "シドニー・オペラハウス"
-      expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
+    context "無効なリクエストの場合" do
+      it "place_idが間違っている(変更されている)場合、エラーメッセージを取得すること", vcr: "google_api_response" do
+        schedule = create(:schedule, place_id: "invalid_place_id", itinerary: itinerary)
+        get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+        expect(response.body).to include "スポット情報を取得できませんでした"
+      end
     end
   end
 

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Schedules", type: :system, focus: true do
+RSpec.describe "Schedules", type: :system do
   let!(:user) { create(:user) }
   let!(:other_user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
@@ -223,26 +223,36 @@ RSpec.describe "Schedules", type: :system, focus: true do
   end
 
   describe "詳細表示", js: true do
-    let!(:schedule) { create(:schedule, itinerary: itinerary) }
+    context "有効な値の場合" do
+      let!(:schedule) { create(:schedule, itinerary: itinerary) }
 
-    before do
-      visit itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+      before do
+        visit itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+      end
+
+      it "スケジュールのタイトル、アイコン、日付、時間、メモを表示すること" do
+        expect(page).to have_content schedule.title
+        expect(page).to have_content schedule.icon
+        expect(page).to have_content I18n.l schedule.schedule_date
+        expect(page).to have_content I18n.l schedule.start_at
+        expect(page).to have_content I18n.l schedule.end_at
+        expect(page).to have_content schedule.note
+      end
+
+      it "スケジュールのスポット情報を表示すること" do
+        expect(page).to have_content "シドニー・オペラハウス"
+        expect(page).to have_content "Bennelong Point, Sydney NSW 2000 オーストラリア"
+        expect(page).to have_selector "img[src*='maps.googleapis.com/maps/api/place/photo']"
+        expect(page).to have_selector "iframe[src$='place_id:#{schedule.place_id}']"
+      end
     end
 
-    it "スケジュールのタイトル、アイコン、日付、時間、メモを表示すること" do
-      expect(page).to have_content schedule.title
-      expect(page).to have_content schedule.icon
-      expect(page).to have_content I18n.l schedule.schedule_date
-      expect(page).to have_content I18n.l schedule.start_at
-      expect(page).to have_content I18n.l schedule.end_at
-      expect(page).to have_content schedule.note
-    end
-
-    it "スケジュールのスポット情報を表示すること" do
-      expect(page).to have_content "シドニー・オペラハウス"
-      expect(page).to have_content "Bennelong Point, Sydney NSW 2000 オーストラリア"
-      expect(page).to have_selector "img[src*='maps.googleapis.com/maps/api/place/photo']"
-      expect(page).to have_selector "iframe[src$='place_id:#{schedule.place_id}']"
+    context "無効な値の場合", focus: true do
+      it "place_idが間違っている(変更されている)場合、エラーメッセージを表示すること" do
+        schedule = create(:schedule, place_id: "invalid_place_id", itinerary: itinerary)
+        visit itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+        expect(page).to have_content "スポット情報を取得できませんでした"
+      end
     end
   end
 

@@ -23,7 +23,7 @@ module GoogleApiConnectable
         photo_reference = data[:result][:photos][0][:photo_reference]
         @place_photo_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=#{photo_reference}&key=#{ENV['GOOGLE_API_KEY']}"
       else
-        @error_message = "スポット情報が取得できませんでした（#{data[:error_message]}）"
+        @error_message = "スポット情報を取得できませんでした（#{data[:error_message]}）"
       end
     else
       @error_message = "HTTP ERROR: code=#{response.code} message=#{response.message}"
