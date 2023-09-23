@@ -3,9 +3,11 @@ class Itinerary < ApplicationRecord
   has_many   :members, through: :itinerary_users, source: :user
   belongs_to :owner, class_name: 'User', foreign_key: :user_id
   has_many   :schedules, dependent: :destroy
+  has_many   :favorites, dependent: :destroy
 
   validates :title, presence: true, length: { maximum: 30 }, uniqueness: { scope: :user_id }
   validates :departure_date, :return_date, presence: true
+  validates :favorites, length: { maximum: 50 }
   validate :return_date_must_be_after_departure_date
 
   def return_date_must_be_after_departure_date

@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_17_102418) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_23_013228) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "favorites", force: :cascade do |t|
+    t.string "place_id", null: false
+    t.bigint "itinerary_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["itinerary_id"], name: "index_favorites_on_itinerary_id"
+  end
 
   create_table "itineraries", force: :cascade do |t|
     t.string "title", null: false
@@ -66,6 +74,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_17_102418) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "favorites", "itineraries"
   add_foreign_key "itinerary_users", "itineraries"
   add_foreign_key "itinerary_users", "users"
   add_foreign_key "schedules", "itineraries"
