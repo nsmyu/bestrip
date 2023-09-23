@@ -131,9 +131,9 @@ RSpec.describe "Schedules", type: :system do
 
       it "スポット情報を追加できること" do
         fill_in "schedule[title]", with: schedule.title
-        fill_in "query_input", with: "シドニー オペラハウス"
+        fill_in "autocomplete_text_input", with: "シドニー オペラハウス"
         sleep 0.5
-        find("#query_input").click
+        find("#autocomplete_text_input").click
         find("span.pac-matched", text: "シドニー・オペラハウス", match: :first).click
 
         within("div#place_info_card") do
@@ -149,9 +149,9 @@ RSpec.describe "Schedules", type: :system do
         expect(page).not_to have_selector "#place_info_card"
         expect(page).to have_selector "#empty_place_info_card"
 
-        fill_in "query_input", with: "クイーンビクトリアビルディング"
+        fill_in "autocomplete_text_input", with: "クイーンビクトリアビルディング"
         sleep 0.5
-        find("#query_input").click
+        find("#autocomplete_text_input").click
         find("span.pac-matched", text: "クイーン・ビクトリア・ビルディング", match: :first).click
 
         within("div#place_info_card") do
@@ -289,9 +289,9 @@ RSpec.describe "Schedules", type: :system do
       end
 
       it "スポット情報を変更できること" do
-        fill_in "query_input", with: "クイーンビクトリアビルディング"
+        fill_in "autocomplete_text_input", with: "クイーンビクトリアビルディング"
         sleep 0.5
-        find("#query_input").click
+        find("#autocomplete_text_input").click
         find("span.pac-matched", text: "クイーン・ビクトリア・ビルディング", match: :first).click
 
         within("div#place_info_card") do

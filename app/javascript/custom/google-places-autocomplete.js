@@ -1,43 +1,45 @@
 function initAutocomplete() {
-  const placeId = document.getElementById("place_id");
+  const input = document.getElementById('autocomplete_text_input');
+
+  if (!input) return;
+
   const placeInfoCard = document.getElementById("place_info_card");
   const emptyplaceInfoCard = document.getElementById("empty_place_info_card");
-  const input = document.getElementById('query_input');
+  const placeId = document.getElementById("place_id");
+  const options = {
+    fields: ["name", "formatted_address", "photos", "place_id"],
+  };
+  const autocomplete = new google.maps.places.Autocomplete(input, options);
 
-  if (input) {
-    const options = {
-      fields: ["name", "formatted_address", "photos", "place_id"],
-    };
-    const autocomplete = new google.maps.places.Autocomplete(input, options);
-    autocomplete.addListener('place_changed', showPlaceInfo);
+  autocomplete.addListener('place_changed', () => {
+    const place = autocomplete.getPlace();
 
-    function showPlaceInfo() {
-      const place = autocomplete.getPlace();
-      const placeName = document.getElementById("place_name");
-      const placeAddress = document.getElementById("place_address");
-      const placePhoto = document.getElementById("place_photo");
-      const mapFrame = document.getElementById("map_frame")
+    if (!place) return;
 
-      emptyplaceInfoCard.style.display = "none"
-      placeInfoCard.style.display = "block"
-      placeId.value = place.place_id
-      placeName.textContent = place.name
-      placeAddress.textContent = place.formatted_address
-      mapFrame.setAttribute('src', mapFrame.src.split(/place_id:/)[0] + `place_id:${place.place_id}`)
+    const placeName = document.getElementById("place_name");
+    const placeAddress = document.getElementById("place_address");
+    const placePhoto = document.getElementById("place_photo");
+    const mapFrame = document.getElementById("map_frame")
 
-      if (place.photos) {
-        placePhoto.setAttribute('src', place.photos[0].getUrl())
-      } else {
-        placePhoto.setAttribute('src', "/assets/default_schedule_thumbnail.png")
-      }
+    emptyplaceInfoCard.style.display = "none"
+    placeInfoCard.style.display = "block"
+    placeId.value = place.place_id
+    placeName.textContent = place.name
+    placeAddress.textContent = place.formatted_address
+    mapFrame.setAttribute('src', mapFrame.src.split(/place_id:/)[0] + `place_id:${place.place_id}`)
+
+    if (place.photos) {
+      placePhoto.setAttribute('src', place.photos[0].getUrl())
+    } else {
+      placePhoto.setAttribute('src', "/assets/default_schedule_thumbnail.png")
     }
+  })
 
-    document.getElementById("reset_place_btn").addEventListener("click", () => {
-      placeId.value = null;
-      emptyplaceInfoCard.style.display = "block";
-      placeInfoCard.style.display = "none";
-    })
-  }
+  document.getElementById("reset_place_btn").addEventListener("click", () => {
+    placeId.value = null;
+    emptyplaceInfoCard.style.display = "block";
+    placeInfoCard.style.display = "none";
+  })
 
   if (placeId && placeId.value) {
     emptyplaceInfoCard.style.display = "none";
