@@ -3,7 +3,7 @@ name: EC2 deploy
 on:
   push:
     branches:
-      - 'develop/03-schedule'
+      - 'develop/04-favorite'
 
 jobs:
   rubocop:

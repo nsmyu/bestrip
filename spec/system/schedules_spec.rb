@@ -247,7 +247,7 @@ RSpec.describe "Schedules", type: :system do
       end
     end
 
-    context "無効な値の場合", focus: true do
+    context "無効な値の場合" do
       it "place_idが間違っている(変更されている)場合、エラーメッセージを表示すること" do
         schedule = create(:schedule, place_id: "invalid_place_id", itinerary: itinerary)
         visit itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
