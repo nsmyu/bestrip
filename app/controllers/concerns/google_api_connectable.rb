@@ -18,15 +18,22 @@ module GoogleApiConnectable
     when Net::HTTPSuccess
       data = JSON.parse(response.body, symbolize_names: true)
       if data[:error_message].blank?
-        @place_name = data[:result][:name].to_s
-        @place_address = data[:result][:formatted_address].to_s
-        photo_reference = data[:result][:photos][0][:photo_reference]
-        @place_photo_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=#{photo_reference}&key=#{ENV['GOOGLE_API_KEY']}"
+        set_place_attributes(data)
       else
         @error_message = "スポット情報を取得できませんでした（#{data[:error_message]}）"
       end
     else
       @error_message = "HTTP ERROR: code=#{response.code} message=#{response.message}"
+    end
+  end
+
+  def set_place_attributes(data)
+    @place_name = data[:result][:name].to_s
+    @place_address = data[:result][:formatted_address].to_s
+
+    if data[:result][:photos]
+      photo_reference = data[:result][:photos][0][:photo_reference]
+      @place_photo_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=#{photo_reference}&key=#{ENV['GOOGLE_API_KEY']}"
     end
   end
 end

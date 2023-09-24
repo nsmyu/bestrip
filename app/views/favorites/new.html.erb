@@ -1,0 +1,12 @@
+<%= render "layouts/modal", title: "スポット情報" do %>
+  <div class="modal-footer mt-4">
+    <%= form_with model: [@itinerary, @favorite], html: { data: { action: "turbo:submit-end->modal#close", turbo: false }} do |f| %>
+      <%= f.hidden_field :place_id, value: @place_id%>
+      <% if @favorite.persisted? %>
+        <button class="btn btn-sm btn-outline-primary" disabled>行きたい場所リストに追加済み</button>
+      <% else %>
+        <%= f.submit "行きたい場所リストに追加する", class: "btn bg-gradient-primary" %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

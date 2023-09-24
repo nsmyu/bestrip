@@ -177,3 +177,20 @@ label {
   width: 600px;
   height: 400px
 }
+
+.rating-icon {
+  font-size: 16px;
+  color: #E7711B;
+  vertical-align: -3.5px;
+}
+
+.infowindow_place_photo {
+  object-fit: cover;
+  width: 260px;
+  aspect-ratio: 8/3;
+}
+
+.infowindow-content {
+  width: 260px;
+  height: auto;
+}
