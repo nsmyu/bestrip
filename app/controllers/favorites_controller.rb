@@ -19,8 +19,6 @@ class FavoritesController < ApplicationController
   def create
     favorite = @itinerary.favorites.new(favorite_params)
     favorite.save
-    render "search_places/search_places", status: :unprocessable_entity
-    # redirect_to [:search_places_itinerary, id: @itinerary.id]
   end
 
   def destroy
