@@ -57,8 +57,7 @@ function initSearchBox() {
             <div class="my-2">
             <p id="firstHeading" class="text-sm text-dark fw-bold">${places[i].name}</p>
             <p class="text-xs text-dark fw-bold">
-              <i class="material-icons rating-icon">star</i>
-              ${places[i].rating}
+            <i class="material-icons rating-icon">star</i>${places[i].rating}
             </p>
             </div>
             <a href="/itineraries/${document.getElementById("itinerary_id").value}/favorites/new?place_id=${places[i].place_id}" class="btn btn-sm btn-outline-primary mb-0 w-100" data-turbo-frame="modal">情報を見る</a>

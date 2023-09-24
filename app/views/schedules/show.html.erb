@@ -22,7 +22,7 @@
       <% else %>
         <div class="border mt-2">
           <div class="d-flex" >
-            <img src="<%= @place_photo_url %>" class= "p-1" id="place_photo">
+            <%= image_tag @place_photo_urls ? @place_photo_urls[0] : "default_schedule_thumbnail.png", class: "p-1", id: "place_photo" %>
             <div class="p-2 position-relative w-100">
               <p class="text-sm text-dark"><%= @place_name %></p>
               <p class="text-xs text-secondary"><%= @place_address %></p>

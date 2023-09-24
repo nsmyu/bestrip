@@ -1,4 +1,5 @@
 <%= render "layouts/modal", title: "スポット情報" do %>
+<%= render 'photo_carousel' %>
   <div class="modal-footer mt-4">
     <%= form_with model: [@itinerary, @favorite], html: { data: { action: "turbo:submit-end->modal#close" }} do |f| %>
       <%= f.hidden_field :place_id, value: @place_id%>

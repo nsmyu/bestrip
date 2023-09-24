@@ -32,8 +32,10 @@ module GoogleApiConnectable
     @place_address = data[:result][:formatted_address].to_s
 
     if data[:result][:photos]
-      photo_reference = data[:result][:photos][0][:photo_reference]
-      @place_photo_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=#{photo_reference}&key=#{ENV['GOOGLE_API_KEY']}"
+      photo_references =  data[:result][:photos].map { |photo| photo[:photo_reference] }
+      @place_photo_urls = photo_references.map do |photo_reference|
+        "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=#{photo_reference}&key=#{ENV['GOOGLE_API_KEY']}"
+      end
     end
   end
 end

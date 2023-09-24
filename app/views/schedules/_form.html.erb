@@ -39,7 +39,7 @@
         </div>
         <div class="border mt-2" id="place_info_card">
           <div class="d-flex" >
-            <img src="<%= @place_photo_url %>" class= "p-1" id="place_photo">
+            <%= image_tag (@place_photo_urls ? @place_photo_urls[0] : "default_schedule_thumbnail.png"), class: "p-1", id: "place_photo" %>
             <div class="p-2 pe-4 position-relative w-100">
               <p class="text-sm text-dark" id="place_name"><%= @place_name %></p>
               <p class="text-xs text-secondary" id="place_address"><%= @place_address %></p>
