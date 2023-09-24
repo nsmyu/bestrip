@@ -33,7 +33,6 @@ function initSearchBox() {
         return;
       }
 
-      console.log(places[i])
       markers[i]= new google.maps.Marker({
         map,
         position: places[i].geometry.location,
@@ -55,8 +54,8 @@ function initSearchBox() {
             <div id="bodyContent">
             <img src=${photo_url} class="infowindow_place_photo">
             <div class="my-2">
-            <p id="firstHeading" class="text-sm text-dark fw-bold">${places[i].name}</p>
-            <p class="text-xs text-dark fw-bold">
+            <p id="firstHeading" class="text-sm text-dark fw-bold lh-sm">${places[i].name}</p>
+            <p class="text-xs text-dark fw-bold pt-1">
             <i class="material-icons rating-icon">star</i>${places[i].rating}
             </p>
             </div>
@@ -65,11 +64,13 @@ function initSearchBox() {
             </div>`
         })
 
-      markers[i].addListener('mouseover', () => {
-        for (const j in markers) {
-          infowindow[j].close(map, markers[j]);
-        }
-        infowindow[i].open(map, markers[i])
+        "mouseover click".split(' ').forEach((eventType) => {
+        markers[i].addListener(eventType, () => {
+          for (const j in markers) {
+            infowindow[j].close(map, markers[j]);
+          }
+          infowindow[i].open(map, markers[i])
+        })
       })
 
       if (places[i].geometry.viewport) {

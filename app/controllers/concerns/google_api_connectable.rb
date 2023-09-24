@@ -7,7 +7,7 @@ module GoogleApiConnectable
     http_client.use_ssl = true
     uri.query = URI.encode_www_form({
       place_id: place_id,
-      fields: "name,formatted_address,photos",
+      fields: "name,formatted_address,photos,rating,opening_hours,international_phone_number,url,website",
       key: ENV['GOOGLE_API_KEY'],
       language: "ja",
       region: "JP",
@@ -28,8 +28,13 @@ module GoogleApiConnectable
   end
 
   def set_place_attributes(data)
-    @place_name = data[:result][:name].to_s
-    @place_address = data[:result][:formatted_address].to_s
+    @place_name = data[:result][:name]
+    @place_address = data[:result][:formatted_address]
+    @place_rating = data[:result][:rating]
+    @place_opening_hours = data[:result][:opening_hours]
+    @place_phone_number = data[:result][:international_phone_number]
+    @place_url = data[:result][:url]
+    @place_website = data[:result][:website]
 
     if data[:result][:photos]
       photo_references =  data[:result][:photos].map { |photo| photo[:photo_reference] }
