@@ -8,7 +8,6 @@ class FavoritesController < ApplicationController
   }
 
   def index
-
   end
 
   def new
@@ -25,7 +24,6 @@ class FavoritesController < ApplicationController
   end
 
   def destroy
-
   end
 
   private

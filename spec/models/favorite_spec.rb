@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Favorite, type: :model do
+RSpec.describe Favorite, type: :model, focus: true do
   it "place_id、itinerary_idがあれば有効であること" do
     expect(build(:favorite)).to be_valid
   end
@@ -9,6 +9,13 @@ RSpec.describe Favorite, type: :model do
     favorite = build(:favorite, place_id: nil)
     favorite.valid?
     expect(favorite.errors).to be_of_kind(:place_id, :blank)
+  end
+
+  it "同じ旅のプランでplace_idが重複している場合は無効であること" do
+    favorite = create(:favorite)
+    other_favorite = build(:favorite, place_id: favorite.place_id, itinerary: favorite.itinerary)
+    other_favorite.valid?
+    expect(other_favorite.errors).to be_of_kind(:place_id, :taken)
   end
 
   it "itinerary_idがなければ無効であること" do

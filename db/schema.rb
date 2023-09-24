@@ -20,6 +20,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_23_013228) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["itinerary_id"], name: "index_favorites_on_itinerary_id"
+    t.index ["place_id", "itinerary_id"], name: "index_favorites_on_place_id_and_itinerary_id", unique: true
   end
 
   create_table "itineraries", force: :cascade do |t|
