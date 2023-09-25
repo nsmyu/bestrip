@@ -31,18 +31,18 @@
         <span class="ps-1 pe-2 d-table"><i class="fas fa-search text-accent d-table-cell align-middle"></i></span>
         <input class='form-control border-0' id="autocomplete_text_input" type="search" size="50" placeholder="観光名所、ホテル、レストランで検索" autocomplete="false">
       </div>
-      <% if @error_message %>
-        <p class="text-sm text-danger"><span class="material-symbols-outlined fs-6 pe-1" style="vertical-align: -2.8px;">error</span><%= @error_message %></p>
+      <% if @error %>
+        <p class="mt-2 text-sm text-danger"><span class="material-symbols-outlined fs-6 pe-1" style="vertical-align: -2.8px;">error</span><%= @error %></p>
       <% else %>
         <div class="border mt-2" id="empty_place_info_card">
           <p class="mb-0 text-sm text-center text-secondary py-4"><i class="material-icons pe-1" style="vertical-align: -4.5px;">add_location_alt</i>検索からスポット情報を追加</p>
         </div>
         <div class="border mt-2" id="place_info_card">
           <div class="d-flex" >
-            <%= image_tag (@place_photo_urls ? @place_photo_urls[0] : "default_schedule_thumbnail.png"), class: "p-1", id: "place_photo" %>
+            <%= image_tag @place_photo_urls ? @place_photo_urls[0] : "default_schedule_thumbnail.png", class: "modal-small-place-image", id: "place_photo" %>
             <div class="p-2 pe-4 position-relative w-100">
-              <p class="text-sm text-dark" id="place_name"><%= @place_name %></p>
-              <p class="text-xs text-secondary" id="place_address"><%= @place_address %></p>
+              <p class="text-sm text-dark" id="place_name"><%= @place_details[:name] if @place_details %></p>
+              <p class="text-xs text-secondary" id="place_address"><%= @place_details[:address] if @place_details %></p>
               <label class="m-0 position-absolute end-1 top-1"><i class="material-icons">close</i>
               <button type="button" class="d-none border-0 bg-transparent text-xs" id="reset_place_btn"></button></label>
             </div>

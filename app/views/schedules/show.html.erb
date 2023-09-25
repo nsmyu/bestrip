@@ -17,15 +17,15 @@
   <div class="mb-4">
     <p class="text-sm fw-bold text-dark" >スポット情報</p>
     <% if @schedule.place_id.present? %>
-      <% if @error_message %>
-        <p class="text-sm text-danger"><span class="material-symbols-outlined fs-6 pe-1" style="vertical-align: -2.8px;">error</span><%= @error_message %></p>
+      <% if @error %>
+        <p class="text-sm text-danger"><span class="material-symbols-outlined fs-6 pe-1" style="vertical-align: -2.8px;">error</span><%= @error %></p>
       <% else %>
         <div class="border mt-2">
           <div class="d-flex" >
-            <%= image_tag @place_photo_urls ? @place_photo_urls[0] : "default_schedule_thumbnail.png", class: "p-1", id: "place_photo" %>
+            <%= image_tag @place_photo_urls ? @place_photo_urls[0] : "default_schedule_thumbnail.png", class: "modal-small-place-image", id: "place_photo" %>
             <div class="p-2 position-relative w-100">
-              <p class="text-sm text-dark"><%= @place_name %></p>
-              <p class="text-xs text-secondary"><%= @place_address %></p>
+              <p class="text-sm text-dark"><%= @place_details[:name] %></p>
+              <p class="text-xs text-secondary"><%= @place_details[:address] %></p>
             </div>
           </div>
           <div class="px-1">

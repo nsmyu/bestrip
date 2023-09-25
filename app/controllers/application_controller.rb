@@ -12,4 +12,28 @@ class ApplicationController < ActionController::Base
       @itinerary = Itinerary.find(params[:id])
     end
   end
+
+  def get_place_details(place_id)
+    query_params = GooglePlacesApi::Request.new(place_id)
+    result = query_params.request
+
+    case result
+    when Hash
+      if result[:error_message].blank?
+        @place_details = GooglePlacesApi::Request.attributes_for(result)
+        set_photo_urls(@place_details[:photos]) if @place_details[:photos]
+      else
+        @error = "スポット情報を取得できませんでした（#{result[:error_message]})"
+      end
+    else
+      @error = "スポット情報を取得できませんでした（#{result})"
+    end
+  end
+
+  def set_photo_urls(place_photos)
+    photo_references =  place_photos.pluck(:photo_reference)
+    @place_photo_urls = photo_references.map do |photo_reference|
+      "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=#{photo_reference}&key=#{ENV['GOOGLE_API_KEY']}"
+    end
+  end
 end

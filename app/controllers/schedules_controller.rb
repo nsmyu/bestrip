@@ -1,5 +1,5 @@
 class SchedulesController < ApplicationController
-  include GoogleApiConnectable
+  include GooglePlacesApi
 
   before_action -> {
     authenticate_user!
