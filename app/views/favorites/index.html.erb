@@ -1,1 +1,20 @@
-
+<%= render 'layouts/sidenav' %>
+<main class="main-content position-relative">
+  <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3 min-vh-100">
+    <% if @itinerary.favorites.blank? %>
+      <p class="text-center text-dark">行きたい場所リストは空です</p>
+    <% else %>
+      <div class="w-md-70 mx-auto">
+        <% @place_details_list.each do |place| %>
+          <% if place[:error] %>
+            <%= place[:error] %>
+          <% else %>
+            <%= place[:name] %>
+            <%= place[:address] %>
+            <%= place[:place_id] %><br>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</main>

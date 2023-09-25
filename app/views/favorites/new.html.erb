@@ -1,49 +1,53 @@
 <%= render "layouts/modal", title: "スポット情報" do %>
-  <%= render 'photo_carousel' %>
-  <div class="mb-3 pb-2 border-bottom">
-    <p class="fs-4 mt-2 text-dark fw-bold lh-sm"><%= @place_name %></p>
-    <% if @place_rating %>
-      <p class="text-xs text-dark fw-bold pt-1"><i class="material-icons rating-icon pe-1">star</i><%= @place_rating %></p>
-    <% end %>
-  </div>
-  <div class="row my-1 py-2">
-    <i class="col-1 material-icons pe-1 text-primary">location_on</i>
-    <p class="col-11 text-sm text-dark"><%= @place_address %></p>
-  </div>
-  <% if @place_opening_hours %>
+  <% if @error %>
+    <p class="text-sm text-danger"><span class="material-symbols-outlined fs-6 pe-1" style="vertical-align: -2.8px;">error</span><%= @error %></p>
+  <% else %>
+    <%= render 'photo_carousel' %>
+    <div class="mb-3 pb-2 border-bottom">
+      <p class="fs-4 mt-2 text-dark fw-bold lh-sm"><%= @place_details[:name] %></p>
+      <% if @place_details[:rating] %>
+        <p class="text-xs text-dark fw-bold pt-1">クチコミ評価<i class="material-icons rating-icon ps-1">star</i><%= @place_details[:rating] %></p>
+      <% end %>
+    </div>
     <div class="row my-1 py-2">
-      <i class="col-1 material-icons pe-1 text-primary">schedule</i>
-      <div class="col-11">
-        <% @place_opening_hours[:weekday_text].each do |opening_hour| %>
-          <p class="text-sm text-dark"><%= opening_hour %></p>
-        <% end %>
+      <i class="col-1 material-icons pe-1 text-primary">location_on</i>
+      <p class="col-11 text-sm text-dark"><%= @place_details[:address] %></p>
+    </div>
+    <% if @place_details[:opening_hours] %>
+      <div class="row my-1 py-2">
+        <i class="col-1 material-icons pe-1 text-primary">schedule</i>
+        <div class="col-11">
+          <% @place_details[:opening_hours][:weekday_text].each do |opening_hour| %>
+            <p class="text-sm text-dark"><%= opening_hour %></p>
+          <% end %>
+        </div>
       </div>
-    </div>
-  <% end %>
-  <% if @place_phone_number %>
-    <div class="row my-3">
-      <i class="col-1 material-icons pe-1 text-primary">call</i>
-      <p class="col-11 text-sm text-dark"><%= @place_phone_number %></p>
-    </div>
-  <% end %>
-  <% if @place_url %>
-    <div class="row my-1 py-2 link-area">
-      <i class="col-1 material-icons pe-1 text-primary">open_in_new</i>
-      <%= link_to "Google Mapで見る", @place_url, class: "col-11 text-sm text-dark", target: :_blank %>
-    </div>
-  <% end %>
-  <% if @place_website %>
-    <div class="row my-1 py-2 link-area">
-      <i class="col-1 material-icons pe-1 text-primary">public</i>
-      <%= link_to "公式サイト", @place_website, class: "col-11 text-sm text-dark", target: :_blank %>
-    </div>
-  <% end %>
-  <%= form_with model: [@itinerary, @favorite], html: { data: { action: "turbo:submit-end->modal#close" }} do |f| %>
-    <%= f.hidden_field :place_id, value: @place_id%>
-    <% if favorites_list_includes?(@itinerary, @place_id) %>
-      <button class="btn btn-outline-primary d-block mt-3 w-100" disabled>行きたい場所リストに追加済み</button>
-    <% else %>
-      <%= f.submit "行きたい場所リストに追加する", class: "btn bg-gradient-primary d-block mt-3 w-100" %>
+    <% end %>
+    <% if @place_details[:phone_number] %>
+      <div class="row my-3">
+        <i class="col-1 material-icons pe-1 text-primary">call</i>
+        <p class="col-11 text-sm text-dark"><%= @place_details[:phone_number] %></p>
+      </div>
+    <% end %>
+    <% if @place_details[:url] %>
+      <div class="row my-1 py-2 link-area">
+        <i class="col-1 material-icons pe-1 text-primary">open_in_new</i>
+        <%= link_to "Google Mapで見る", @place_details[:url], class: "col-11 text-sm text-dark", target: :_blank %>
+      </div>
+    <% end %>
+    <% if @place_details[:website] %>
+      <div class="row my-1 py-2 link-area">
+        <i class="col-1 material-icons pe-1 text-primary">public</i>
+        <%= link_to "公式サイト", @place_details[:website], class: "col-11 text-sm text-dark", target: :_blank %>
+      </div>
+    <% end %>
+    <%= form_with model: [@itinerary, @favorite], html: { data: { action: "turbo:submit-end->modal#close" }} do |f| %>
+      <%= f.hidden_field :place_id, value: @place_details[:place_id] %>
+      <% if favorites_list_includes?(@itinerary, @place_details[:place_id]) %>
+        <button class="btn btn-outline-primary d-block mt-3 w-100" disabled>行きたい場所リストに追加済み</button>
+      <% else %>
+        <%= f.submit "行きたい場所リストに追加する", class: "btn bg-gradient-primary d-block mt-3 w-100" %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

@@ -7,7 +7,8 @@ module GoogleApiConnectable
     http_client.use_ssl = true
     uri.query = URI.encode_www_form({
       place_id: place_id,
-      fields: "name,formatted_address,photos,rating,opening_hours,international_phone_number,url,website",
+      fields:
+        "name,formatted_address,photos,rating,opening_hours,international_phone_number,url,website",
       key: ENV['GOOGLE_API_KEY'],
       language: "ja",
       region: "JP",
@@ -37,7 +38,7 @@ module GoogleApiConnectable
     @place_website = data[:result][:website]
 
     if data[:result][:photos]
-      photo_references =  data[:result][:photos].map { |photo| photo[:photo_reference] }
+      photo_references =  data[:result][:photos].pluck(:photo_reference)
       @place_photo_urls = photo_references.map do |photo_reference|
         "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=#{photo_reference}&key=#{ENV['GOOGLE_API_KEY']}"
       end

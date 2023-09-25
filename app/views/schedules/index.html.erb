@@ -2,9 +2,7 @@
 <main class="main-content position-relative">
   <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3 min-vh-100">
     <% if @sorted_schedules.blank? %>
-      <div class="text-center p-6">
-        スケジュールは登録されていません
-      </div>
+      <p class="text-center text-dark">スケジュールは登録されていません</p>
     <% else %>
       <div class="w-md-70 mx-auto">
         <% @sorted_schedules.each do |date, schedules| %>

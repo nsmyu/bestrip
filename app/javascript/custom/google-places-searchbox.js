@@ -52,11 +52,11 @@ function initSearchBox() {
             <div id="siteNotice">
             </div>
             <div id="bodyContent">
-            <img src=${photo_url} class="infowindow_place_photo">
+            <img src=${photo_url} class="infowindow_place_photo border-radius-lg">
             <div class="my-2">
             <p id="firstHeading" class="text-sm text-dark fw-bold lh-sm">${places[i].name}</p>
             <p class="text-xs text-dark fw-bold pt-1">
-            <i class="material-icons rating-icon">star</i>${places[i].rating}
+            クチコミ評価<i class="material-icons rating-icon ps-1">star</i>${places[i].rating}
             </p>
             </div>
             <a href="/itineraries/${document.getElementById("itinerary_id").value}/favorites/new?place_id=${places[i].place_id}" class="btn btn-sm btn-outline-primary mb-0 w-100" data-turbo-frame="modal">情報を見る</a>

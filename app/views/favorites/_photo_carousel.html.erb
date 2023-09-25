@@ -5,7 +5,7 @@
         <button type="button" data-bs-target="#photo_carousel" data-bs-slide-to="<%= i %>" class="<%= "active" if i.zero? %>"></button>
       <% end %>
     </div>
-    <div class="carousel-inner">
+    <div class="carousel-inner border-radius-lg">
       <% @place_photo_urls.each_with_index do |url, i| %>
         <%= image_tag url, class: "carousel-item modal-large-image #{ "active" if i.zero? }" %>
       <% end %>
