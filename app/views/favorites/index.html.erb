@@ -21,7 +21,7 @@
                     <%= place[:rating] %>
                   </p>
                   <div class="d-flex">
-                  <%= link_to "情報を見る", new_itinerary_schedule_path(place_id: place[:place_id]), data: { turbo_frame: "modal" }, class: "btn btn-sm btn-outline-primary mb-0 me-2 py-2 w-100" %>
+                  <%= link_to "情報を見る", [:itinerary_favorite, id: place[:favorite_id]], data: { turbo_frame: "modal" }, class: "btn btn-sm btn-outline-primary mb-0 me-2 py-2 w-100" %>
                   <%= link_to "スケジュール作成", new_itinerary_schedule_path(place_id: place[:place_id]), data: { turbo_frame: "modal" }, class: "btn btn-sm btn-primary mb-0 ms-2 py-2 w-100" %>
                   </div>
                 <% end %>

@@ -18,7 +18,7 @@ class FavoritesController < ApplicationController
       when Hash
         if result[:error_message].blank?
           place_details = GooglePlacesApi::Request.attributes_for(result)
-          place_details[:place_id] = favorite.place_id
+          place_details[:favorite_id] = favorite.id
           if place_details[:photos]
             set_photo_urls(place_details[:photos])
             place_details[:photo_url] = @place_photo_urls[0]
@@ -45,6 +45,11 @@ class FavoritesController < ApplicationController
     @favorite = @itinerary.favorites.new(favorite_params)
     @place_id = @favorite.place_id
     @favorite.save
+  end
+
+  def show
+    favorite = Favorite.find(params[:id])
+    get_place_details(favorite.place_id)
   end
 
   def destroy
