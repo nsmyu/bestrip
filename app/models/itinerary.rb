@@ -7,7 +7,6 @@ class Itinerary < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: 30 }, uniqueness: { scope: :user_id }
   validates :departure_date, :return_date, presence: true
-  validates :favorites, length: { maximum: 50 }
   validate :return_date_must_be_after_departure_date
 
   def return_date_must_be_after_departure_date

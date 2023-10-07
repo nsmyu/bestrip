@@ -1,0 +1,10 @@
+<%= turbo_frame_tag "alert" do %>
+  <%= form_with model: [@itinerary, @favorite] do |f| %>
+    <%= f.hidden_field :place_id, value: @place_id %>
+    <% if favorites_list_includes?(@itinerary, @place_id) %>
+      <button class="btn btn-outline-primary d-block mt-3 w-100" disabled>行きたい場所リストに追加済み</button>
+    <% else %>
+      <%= f.submit "行きたい場所リストに追加する", class: "btn bg-gradient-primary d-block mt-3 w-100" %>
+    <% end %>
+  <% end %>
+<% end %>

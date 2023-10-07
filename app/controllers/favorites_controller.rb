@@ -36,8 +36,9 @@ class FavoritesController < ApplicationController
   end
 
   def create
-    favorite = @itinerary.favorites.new(favorite_params)
-    favorite.save
+    @favorite = @itinerary.favorites.new(favorite_params)
+    @place_id = @favorite.place_id
+    @favorite.save
   end
 
   def destroy

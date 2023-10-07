@@ -41,12 +41,17 @@
         <%= link_to "公式サイト", @place_details[:website], class: "col-11 text-sm text-dark", target: :_blank %>
       </div>
     <% end %>
-    <%= form_with model: [@itinerary, @favorite], html: { data: { action: "turbo:submit-end->modal#close" }} do |f| %>
-      <%= f.hidden_field :place_id, value: @place_id %>
-      <% if favorites_list_includes?(@itinerary, @place_id) %>
-        <button class="btn btn-outline-primary d-block mt-3 w-100" disabled>行きたい場所リストに追加済み</button>
-      <% else %>
-        <%= f.submit "行きたい場所リストに追加する", class: "btn bg-gradient-primary d-block mt-3 w-100" %>
+    <%= turbo_frame_tag "alert" do %>
+      <%= form_with model: [@itinerary, @favorite] do |f| %>
+        <%= f.hidden_field :place_id, value: @place_id %>
+        <% if favorites_list_includes?(@itinerary, @place_id) %>
+          <button class="btn btn-outline-primary d-block mt-3 w-100" disabled>行きたい場所リストに追加済み</button>
+        <% elsif @itinerary.favorites.count >= 3 %>
+          <%= f.submit "行きたい場所リストに追加する", class: "btn bg-gradient-primary d-block mt-3 mb-0 w-100", disabled: true %>
+          <p class="error-message">ひとつの旅のプランにつき、行きたい場所リストへの登録は300件までです</p>
+        <% else %>
+          <%= f.submit "行きたい場所リストに追加する", class: "btn bg-gradient-primary d-block mt-3 w-100" %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>

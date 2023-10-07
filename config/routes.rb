@@ -23,6 +23,6 @@ Rails.application.routes.draw do
     end
 
     resources :schedules
-    resources :favorites
+    resources :favorites, only: [:index, :new, :create, :destroy]
   end
 end
