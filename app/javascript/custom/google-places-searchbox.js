@@ -42,7 +42,7 @@ function initSearchBox() {
       if (places[i].photos) {
         photo_url = places[i].photos[0].getUrl()
       } else {
-        photo_url = "/assets/default_schedule_thumbnail.png"
+        photo_url = "/assets/default_place.png"
       }
 
       infowindow[i] =
@@ -52,7 +52,7 @@ function initSearchBox() {
             <div id="siteNotice">
             </div>
             <div id="bodyContent">
-            <img src=${photo_url} class="infowindow_place_photo border-radius-lg">
+            <img src=${photo_url} class="infowindow_place_photo border-radius-lg w-100">
             <div class="my-2">
             <p id="firstHeading" class="text-sm text-dark fw-bold lh-sm">${places[i].name}</p>
             <p class="text-xs text-dark fw-bold pt-1">

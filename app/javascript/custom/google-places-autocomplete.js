@@ -31,7 +31,7 @@ function initAutocomplete() {
     if (place.photos) {
       placePhoto.setAttribute('src', place.photos[0].getUrl())
     } else {
-      placePhoto.setAttribute('src', "/assets/default_schedule_thumbnail.png")
+      placePhoto.setAttribute('src', "/assets/default_place_thumbnail.png")
     }
   })
 

@@ -82,7 +82,7 @@ input:-webkit-autofill {
   height: 40px;
 }
 
-.modal-large-image {
+.modal-image, .favorite-image {
   object-fit: cover;
   aspect-ratio: 5/3;
 }

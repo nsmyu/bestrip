@@ -17,11 +17,17 @@ class FavoritesController < ApplicationController
       case result
       when Hash
         if result[:error_message].blank?
-          @place_details_list << GooglePlacesApi::Request
-            .attributes_for(result)
-            .merge(place_id: favorite.place_id)
+          place_details = GooglePlacesApi::Request.attributes_for(result)
+          place_details[:place_id] = favorite.place_id
+          if place_details[:photos]
+            set_photo_urls(place_details[:photos])
+            place_details[:photo_url] = @place_photo_urls[0]
+          else
+            place_details[:photo_url] = "default_place.png"
+          end
+          @place_details_list << place_details
         else
-          @place_details_list << { error: "スポット情報を取得できませんでした（#{result[:error_message]})" }
+          @place_details_list << { error: "スポット情報を取得できませんでした（#{result[:error_message]})", photo_url: "default_place.png" }
         end
       else
         flash.now[:alert] = "スポット情報を取得できませんでした（#{result})"

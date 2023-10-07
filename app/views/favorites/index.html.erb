@@ -1,20 +1,35 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
   <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3 min-vh-100">
-    <% if @itinerary.favorites.blank? %>
-      <p class="text-center text-dark">行きたい場所リストは空です</p>
-    <% else %>
-      <div class="w-md-70 mx-auto">
+    <div class="row">
+      <% if @itinerary.favorites.blank? %>
+        <p class="text-center text-dark">行きたい場所は登録されていません</p>
+      <% else %>
         <% @place_details_list.each do |place| %>
-          <% if place[:error] %>
-            <%= place[:error] %>
-          <% else %>
-            <%= place[:name] %>
-            <%= place[:address] %>
-            <%= place[:place_id] %><br>
-          <% end %>
+          <div class="col-md-6 col-lg-4 mt-3 mb-5 px-3">
+            <div class="card">
+              <div class="card-header position-relative mt-n3 mx-3 p-0 z-index-2 bg-transparent">
+                <%= image_tag place[:photo_url], class: "favorite-image border-radius-lg shadow-dark w-100" %>
+              </div>
+              <div class="card-body p-3">
+                <% if place[:error] %>
+                  <p class="error-message"><%= place[:error] %></p>
+                <% else %>
+                  <p class="text-dark fw-bold lh-sm text-ellipsis"><%= place[:name] %></p>
+                  <p class="mb-3 text-xs text-dark fw-bold pt-1">
+                    クチコミ評価<i class="material-icons rating-icon ps-1">star</i>
+                    <%= place[:rating] %>
+                  </p>
+                  <div class="d-flex">
+                  <%= link_to "情報を見る", new_itinerary_schedule_path(place_id: place[:place_id]), data: { turbo_frame: "modal" }, class: "btn btn-sm btn-outline-primary mb-0 me-2 py-2 w-100" %>
+                  <%= link_to "スケジュール作成", new_itinerary_schedule_path(place_id: place[:place_id]), data: { turbo_frame: "modal" }, class: "btn btn-sm btn-primary mb-0 ms-2 py-2 w-100" %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
         <% end %>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </main>
