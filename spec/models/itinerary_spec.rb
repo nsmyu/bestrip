@@ -48,11 +48,4 @@ RSpec.describe Itinerary, type: :model do
     itinerary.valid?
     expect(itinerary.errors).to be_of_kind(:owner, :blank)
   end
-
-  it "favoriteが51個以上紐付けられた場合は無効であること" do
-    itinerary = create(:itinerary)
-    itinerary.favorites = build_list(:favorite, 51, :fake, itinerary: itinerary)
-    itinerary.valid?
-    expect(itinerary.errors).to be_of_kind(:favorites, :too_long)
-  end
 end
