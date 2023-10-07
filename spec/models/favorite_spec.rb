@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Favorite, type: :model, focus: true do
+RSpec.describe Favorite, type: :model do
   it "place_id、itinerary_idがあれば有効であること" do
     expect(build(:favorite)).to be_valid
   end
@@ -24,7 +24,7 @@ RSpec.describe Favorite, type: :model, focus: true do
     expect(favorite.errors).to be_of_kind(:itinerary, :blank)
   end
 
-  it "ひとつのitineraryに対して301個以上の登録は無効であること" do
+  it "ひとつのitineraryにつき301個以上の登録は無効であること" do
     itinerary = create(:itinerary)
     expect { create_list(:favorite, 301, itinerary: itinerary) }
       .to raise_error(ActiveRecord::RecordInvalid)

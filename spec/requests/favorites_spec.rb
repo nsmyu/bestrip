@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Favorites", type: :request, focus: true do
+RSpec.describe "Favorites", type: :request do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
   let(:favorite) { create(:favorite, :opera_house, itinerary: itinerary) }
