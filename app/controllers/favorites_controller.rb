@@ -42,6 +42,8 @@ class FavoritesController < ApplicationController
   end
 
   def destroy
+    Favorite.find(params[:id]).destroy
+    redirect_to :itinerary_favorites, notice: "行きたい場所リストから削除しました。"
   end
 
   private

@@ -41,7 +41,7 @@
         <%= link_to "公式サイト", @place_details[:website], class: "col-11 text-sm text-dark", target: :_blank %>
       </div>
     <% end %>
-    <%= turbo_frame_tag "alert" do %>
+    <%= turbo_frame_tag "favorite" do %>
       <%= form_with model: [@itinerary, @favorite] do |f| %>
         <%= f.hidden_field :place_id, value: @place_id %>
         <% if favorites_list_includes?(@itinerary, @place_id) %>

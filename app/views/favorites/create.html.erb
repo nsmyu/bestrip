@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "alert" do %>
+<%= turbo_frame_tag "favorite" do %>
   <%= form_with model: [@itinerary, @favorite] do |f| %>
     <%= f.hidden_field :place_id, value: @place_id %>
     <% if favorites_list_includes?(@itinerary, @place_id) %>
