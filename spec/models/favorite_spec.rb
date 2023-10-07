@@ -26,7 +26,7 @@ RSpec.describe Favorite, type: :model, focus: true do
 
   it "ひとつのitineraryに対して301個以上の登録は無効であること" do
     itinerary = create(:itinerary)
-    expect { create_list(:favorite, 301, :fake, itinerary: itinerary) }
+    expect { create_list(:favorite, 301, itinerary: itinerary) }
       .to raise_error(ActiveRecord::RecordInvalid)
   end
 end

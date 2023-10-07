@@ -121,7 +121,7 @@ RSpec.describe "Schedules", type: :request do
     end
 
     context "無効なリクエストの場合" do
-      it "place_idが間違っている(変更されている)場合、エラーメッセージを取得すること", vcr: "google_api_response" do
+      it "place_idが無効な(変更されている)場合、エラーメッセージを取得すること", vcr: "google_api_response" do
         schedule = create(:schedule, place_id: "invalid_place_id", itinerary: itinerary)
         get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
         expect(response.body).to include "スポット情報を取得できませんでした"
@@ -155,7 +155,7 @@ RSpec.describe "Schedules", type: :request do
     end
 
     context "無効なリクエストの場合" do
-      it "place_idが間違っている(変更されている)場合、エラーメッセージを取得すること", vcr: "google_api_response" do
+      it "place_idが無効な(変更されている)場合、エラーメッセージを取得すること", vcr: "google_api_response" do
         schedule = create(:schedule, place_id: "invalid_place_id", itinerary: itinerary)
         get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
         expect(response.body).to include "スポット情報を取得できませんでした"

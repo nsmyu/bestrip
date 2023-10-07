@@ -48,7 +48,7 @@
           <button class="btn btn-outline-primary d-block mt-3 w-100" disabled>行きたい場所リストに追加済み</button>
         <% elsif @itinerary.favorites.count >= 3 %>
           <%= f.submit "行きたい場所リストに追加する", class: "btn bg-gradient-primary d-block mt-3 mb-0 w-100", disabled: true %>
-          <p class="error-message">ひとつの旅のプランにつき、行きたい場所リストへの登録は300件までです</p>
+          <p class="error-message">ひとつの旅のプランにつき、行きたい場所リストへの登録は300件までです。</p>
         <% else %>
           <%= f.submit "行きたい場所リストに追加する", class: "btn bg-gradient-primary d-block mt-3 w-100" %>
         <% end %>
