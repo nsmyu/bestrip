@@ -1,8 +1,15 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
   <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3 min-vh-100">
-    <input class='form-control border-0' id="searchbox_text_input" type="search" size="50" placeholder="観光名所、ホテル、レストランで検索" autocomplete="false">
-    <div id="map"></div>
-    <input class="d-none" id="itinerary_id" value="<%= @itinerary.id %>">
+    <div class="w-md-90 mx-auto">
+      <div class="card mb-2 p-2 text-dark ">
+        <div class="d-flex input-group input-group-outline mx-0">
+          <span class="ps-1 pe-2 d-table"><i class="fas fa-search text-primary d-table-cell align-middle"></i></span>
+          <input class='form-control border-0 input-bg-gray' id="searchbox_text_input" type="search" placeholder="観光名所、ホテル、レストラン等を検索" autocomplete="false">
+          <input class="d-none" id="itinerary_id" value="<%= @itinerary.id %>">
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
   </div>
 </main>
