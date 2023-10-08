@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Favorites", type: :system, focus: true do
+RSpec.describe "Favorites", type: :system do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
 
@@ -32,6 +32,19 @@ RSpec.describe "Favorites", type: :system, focus: true do
         visit itinerary_favorites_path(itinerary_id: itinerary.id)
 
         expect(page).to have_content "スポット情報を取得できませんでした"
+      end
+
+      it "「スケジュール作成」をクリックすると、スポット情報を含むスケジュール作成モーダルを表示すること", focus: true do
+        create(:favorite, :opera_house, itinerary: itinerary)
+        visit itinerary_favorites_path(itinerary_id: itinerary.id)
+        within(:xpath, "//div[p[contains(text(), 'シドニー・オペラハウス')]]") do
+          click_on "スケジュール作成"
+        end
+
+        within(".modal", match: :first) do
+          expect(page).to have_content "スケジュール作成"
+          expect(page).to have_content "シドニー・オペラハウス"
+        end
       end
     end
   end

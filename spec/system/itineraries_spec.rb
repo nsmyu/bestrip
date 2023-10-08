@@ -59,7 +59,7 @@ RSpec.describe "Itineraries", type: :system do
         expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary1.id)
       end
 
-      it "「旅のプランを作成」ボタンをクリックすると、プラン作成モーダルを表示すること", js: true do
+      it "「旅のプランを作成」をクリックすると、プラン作成モーダルを表示すること", js: true do
         visit itineraries_path
         click_on "旅のプランを作成"
 
