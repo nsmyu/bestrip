@@ -27,7 +27,10 @@ class FavoritesController < ApplicationController
           end
           @place_details_list << place_details
         else
-          @place_details_list << { error: "スポット情報を取得できませんでした（#{result[:error_message]})", photo_url: "default_place.png" }
+          @place_details_list << {
+            error: "スポット情報を取得できませんでした（#{result[:error_message]})",
+            photo_url: "default_place.png",
+          }
         end
       else
         flash.now[:alert] = "スポット情報を取得できませんでした（#{result})"

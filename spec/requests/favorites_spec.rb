@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Favorites", type: :request do
+RSpec.describe "Favorites", type: :request, focus: true do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
   let(:favorite) { create(:favorite, :opera_house, itinerary: itinerary) }
@@ -27,6 +27,12 @@ RSpec.describe "Favorites", type: :request do
       create(:favorite, :opera_house, itinerary_id: other_itinerary.id)
       get itinerary_schedules_path(itinerary_id: itinerary.id)
       expect(response.body).not_to include "シドニー・オペラハウス"
+    end
+
+    it "place_idが無効な（変更されている）場合、エラーメッセージを取得すること" do
+      create(:favorite, place_id: "invalid_place_id", itinerary_id: itinerary.id)
+      get itinerary_favorites_path(itinerary_id: itinerary.id)
+      expect(response.body).to include "スポット情報を取得できませんでした"
     end
   end
 
@@ -67,6 +73,19 @@ RSpec.describe "Favorites", type: :request do
         params: { favorite: favorite_params }
       expect(response.body).to include '<turbo-frame id="favorite">'
       expect(response.body).to include '行きたい場所リストに追加済み'
+    end
+  end
+
+  describe "GET #show" do
+    it "正常にレスポンスを返すこと", vcr: "google_api_response" do
+      get itinerary_favorite_path(itinerary_id: itinerary.id, id: favorite.id)
+      expect(response).to have_http_status 200
+    end
+
+    it "スポット情報をGoogle APIから取得すること", vcr: "google_api_response" do
+      get itinerary_favorite_path(itinerary_id: itinerary.id, id: favorite.id)
+      expect(response.body).to include "シドニー・オペラハウス"
+      expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
     end
   end
 
