@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Favorites", type: :request, focus: true do
+RSpec.describe "Favorites", type: :request do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
   let(:favorite) { create(:favorite, :opera_house, itinerary: itinerary) }
@@ -15,29 +15,29 @@ RSpec.describe "Favorites", type: :request, focus: true do
       expect(response).to have_http_status 200
     end
 
-    it "行きたい場所リストに登録されているスポットを全て取得すること", vcr: "google_api_response" do
+    it "行きたい場所リストを全て取得すること", vcr: "google_api_response" do
       favorite
-      create(:favorite, :queen_victoria_building, itinerary_id: itinerary.id)
+      create(:favorite, :queen_victoria_building, itinerary: itinerary)
       get itinerary_favorites_path(itinerary_id: itinerary.id)
       expect(response.body).to include "シドニー・オペラハウス", "クイーン・ビクトリア・ビルディング"
     end
 
     it "他の旅のプランのスケジュールを取得しないこと", vcr: "google_api_response" do
       other_itinerary = create(:itinerary, owner: user)
-      create(:favorite, :opera_house, itinerary_id: other_itinerary.id)
+      create(:favorite, :opera_house, itinerary: other_itinerary)
       get itinerary_schedules_path(itinerary_id: itinerary.id)
       expect(response.body).not_to include "シドニー・オペラハウス"
     end
 
     it "place_idが無効な（変更されている）場合、エラーメッセージを取得すること" do
-      create(:favorite, place_id: "invalid_place_id", itinerary_id: itinerary.id)
+      create(:favorite, place_id: "invalid_place_id", itinerary: itinerary)
       get itinerary_favorites_path(itinerary_id: itinerary.id)
       expect(response.body).to include "スポット情報を取得できませんでした"
     end
   end
 
   describe "GET #new" do
-    context "選択したスポットが行きたい場所リストへ登録可能な場合" do
+    context "行きたい場所リストに登録可能な場合" do
       it "正常にレスポンスを返すこと", vcr: "google_api_response" do
         get new_itinerary_favorite_path(itinerary_id: itinerary.id, place_id: favorite.place_id)
         expect(response).to have_http_status 200
@@ -50,14 +50,14 @@ RSpec.describe "Favorites", type: :request, focus: true do
       end
     end
 
-    context "選択したスポットが行きたい場所リストへ登録不可能な場合" do
-      it "既に行きたい場所リストに登録済みの場合、メッセージを取得すること" do
+    context "行きたい場所リストに登録不可能な場合" do
+      it "既に登録済みの場合、メッセージを取得すること" do
         favorite
         get new_itinerary_favorite_path(itinerary_id: itinerary.id, place_id: favorite.place_id)
         expect(response.body).to include "行きたい場所リストに追加済み"
       end
 
-      it "行きたい場所リストに上限の300件が登録されている場合、メッセージを取得すること" do
+      it "上限の300件まで登録されている場合、メッセージを取得すること" do
         create_list(:favorite, 300, itinerary: itinerary)
         new_favorite = build(:favorite, :opera_house)
         get new_itinerary_favorite_path(itinerary_id: itinerary.id, place_id: new_favorite.place_id)

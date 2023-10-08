@@ -21,8 +21,8 @@
                     <%= place[:rating] %>
                   </p>
                   <div class="d-flex justify-content-between">
-                    <%= link_to "情報を見る", [:itinerary_favorite, id: place[:favorite_id]], data: { turbo_frame: "modal" }, class: "btn btn-sm btn-outline-primary mb-0 me-2 w-100" %>
-                    <%= link_to [:itinerary_favorite, id: place[:favorite_id]], data: { turbo_method: :delete, turbo_confirm: 'このスポットを行きたい場所リストから削除しますか？この操作は取り消せません。' }, class: "text-secondary" do %>
+                    <%= link_to "スポット情報を見る", [:itinerary_favorite, id: place[:favorite_id]], data: { turbo_frame: "modal" }, class: "btn btn-sm btn-outline-primary mb-0 me-2 w-100" %>
+                    <%= link_to [:itinerary_favorite, id: place[:favorite_id]], data: { turbo_method: :delete, turbo_confirm: 'このスポットを行きたい場所リストから削除しますか？' }, class: "text-secondary" do %>
                       <i class="material-symbols-outlined" style="vertical-align: -11px;">delete</i>
                     <% end %>
                   </div>
