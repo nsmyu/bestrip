@@ -26,7 +26,7 @@
                       <i class="material-symbols-outlined" style="vertical-align: -11px;">delete</i>
                     <% end %>
                   </div>
-                  <%= link_to "スケジュール作成", new_itinerary_schedule_path(place_id: place[:place_id]), data: { turbo_frame: "modal" }, class: "btn btn-sm btn-primary mt-2 mb-0 w-100" %>
+                  <%= link_to "スケジュール作成", new_itinerary_schedule_path(favorite_id: place[:favorite_id]), data: { turbo_frame: "modal" }, class: "btn btn-sm btn-primary mt-2 mb-0 w-100" %>
                 <% end %>
               </div>
             </div>
