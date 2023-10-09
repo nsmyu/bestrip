@@ -1,32 +1,37 @@
 require 'rails_helper'
 
 RSpec.describe Post, type: :model, focus: true do
-  it "タイトル、写真、itinerary_users_idがあれば有効であること" do
+  it "タイトル、写真、itinerary_id及び関連付けされたuser_idがあれば有効であること" do
     expect(build(:post)).to be_valid
   end
 
-  # it "place_idがなければ無効であること" do
-  #   favorite = build(:favorite, place_id: nil)
-  #   favorite.valid?
-  #   expect(favorite.errors).to be_of_kind(:place_id, :blank)
-  # end
+  it "タイトルがなければ無効であること" do
+    post = build(:post, title: nil)
+    post.valid?
+    expect(post.errors).to be_of_kind(:title, :blank)
+  end
 
-  # it "同じ旅のプランでplace_idが重複している場合は無効であること" do
-  #   favorite = create(:favorite)
-  #   other_favorite = build(:favorite, place_id: favorite.place_id, itinerary: favorite.itinerary)
-  #   other_favorite.valid?
-  #   expect(other_favorite.errors).to be_of_kind(:place_id, :taken)
-  # end
+  it "タイトルが31文字以上の場合は無効であること" do
+    post = build(:post, title: "a" * 31)
+    post.valid?
+    expect(post.errors).to be_of_kind(:title, :too_long)
+  end
 
-  # it "itinerary_idがなければ無効であること" do
-  #   favorite = build(:favorite, itinerary: nil)
-  #   favorite.valid?
-  #   expect(favorite.errors).to be_of_kind(:itinerary, :blank)
-  # end
+  it "写真がなければ無効であること" do
+    post = build(:post, photos: nil)
+    post.valid?
+    expect(post.errors).to be_of_kind(:photos, :blank)
+  end
 
-  # it "ひとつのitineraryにつき301個以上の登録は無効であること" do
-  #   itinerary = create(:itinerary)
-  #   expect { create_list(:favorite, 301, itinerary: itinerary) }
-  #     .to raise_error(ActiveRecord::RecordInvalid)
-  # end
+  it "キャプションが1001文字以上の場合は無効であること" do
+    post = build(:post, caption: "a" * 1001)
+    post.valid?
+    expect(post.errors).to be_of_kind(:caption, :too_long)
+  end
+
+  it "itinerary_id及び関連付けされたuser_idがなければ無効であること" do
+    post = build(:post, itinerary: nil, user: nil)
+    post.valid?
+    expect(post.errors).to be_of_kind(:itinerary, :blank)
+  end
 end
