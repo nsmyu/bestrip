@@ -20,6 +20,11 @@ ja:
           end_at: 終了時間
           icon: アイコン
           note: メモ
+        post:
+          title: タイトル
+          photos: 写真
+          caption: キャプション
+          itinerary: 旅のプラン
       errors:
         models:
           itinerary:
@@ -29,3 +34,8 @@ ja:
                 blank: タイトルを入力してください
                 taken: このタイトルはすでに使用されています
                 too_long: タイトルは30文字以内で入力してください
+          post:
+            attributes:
+              photos:
+                format: "%{message}"
+                blank: 写真は1枚以上選択してください

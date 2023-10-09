@@ -12,12 +12,18 @@ class PostsController < ApplicationController
 
   def new
     authenticate_user!
-    @current_users_itineraries = Itinerary.where(user_id: current_user.id).pluck(:title, :id)
-
+    @current_users_itineraries = current_user.itineraries.pluck(:title, :id)
     @post = Post.new
   end
 
   def create
+    @current_users_itineraries = current_user.itineraries.pluck(:title, :id)
+    @post = User.find(current_user.id).posts.new(post_params)
+    if @post.save
+      redirect_to @posts, notice: "旅の思い出を投稿しました。"
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def show
@@ -35,7 +41,7 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title,  { photos: [] }, :caption, :itinerary_users_id)
+    params.require(:post).permit(:title,  { photos: [] }, :caption, :itinerary_id)
   end
 
   def set_schedule
