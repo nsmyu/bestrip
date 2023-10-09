@@ -22,7 +22,6 @@ ja:
           note: メモ
         post:
           title: タイトル
-          photos: 写真
           caption: キャプション
           itinerary: 旅のプラン
       errors:

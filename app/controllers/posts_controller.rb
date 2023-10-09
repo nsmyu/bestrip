@@ -41,7 +41,7 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title,  { photos: [] }, :caption, :itinerary_id)
+    params.require(:post).permit(:title, :caption, :itinerary_id)
   end
 
   def set_schedule

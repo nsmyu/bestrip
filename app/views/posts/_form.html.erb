@@ -11,11 +11,6 @@
     <label type="button" class="text-primary text-sm">
       <i class="material-icons opacity-10" style="vertical-align: -4px;">add_a_photo</i>
       <%= f.file_field :photos, accept: "image/*", multiple: true, id: "image_input", class: "d-none" %>
-      <%
-=begin%>
- <%= f.hidden_field :image_cache %>
-<%
-=end%>
     </label>
     <%
 =begin%>

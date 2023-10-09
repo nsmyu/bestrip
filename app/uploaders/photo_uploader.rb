@@ -1,4 +1,4 @@
-class PostPhotosUploader < CarrierWave::Uploader::Base
+class PhotoUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   # Override the directory where uploaded files will be stored.
