@@ -11,6 +11,10 @@ class PostsController < ApplicationController
   end
 
   def new
+    authenticate_user!
+    @current_users_itineraries = Itinerary.where(user_id: current_user.id).pluck(:title, :id)
+
+    @post = Post.new
   end
 
   def create
@@ -31,7 +35,7 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :caption, { photos: [] })
+    params.require(:post).permit(:title,  { photos: [] }, :caption, :itinerary_users_id)
   end
 
   def set_schedule

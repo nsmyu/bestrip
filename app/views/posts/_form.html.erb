@@ -1,0 +1,43 @@
+<%= form_with model: post, data: { action: "turbo:submit-end->modal#close" } do |f| %>
+  <div class="input-group input-group-outline row mx-0 mb-3">
+    <%= f.select :itinerary_users_id, @current_users_itineraries, { include_blank: "思い出を投稿する旅のプランを選択" }, class: "form-control" %>
+  </div>
+  <div class="input-group input-group-outline row mx-0 mb-3">
+    <%= f.label :title, class: "m-0 px-0 fw-bold" do %>
+      タイトル（30文字以内）<span class="required">*</span>
+    <% end%>
+    <%= f.text_field :title, class: "form-control", placeholder: "思い出のタイトルを入力" %>
+    <div class="<%= "error-message px-0" if post.errors.messages.key?(:title) %>" >
+      <%= post.errors.full_messages_for(:title).first if post.errors.any? %>
+    </div>
+  </div>
+  <%
+=begin%>
+ <div>
+    <%= f.label :photos, class: "m-0 fw-bold" do %>
+      写真（最大10枚）<span class="required">*</span>
+    <% end%>
+    <label type="button" class="text-primary text-sm">
+      <i class="material-icons opacity-10" style="vertical-align: -4px;">add_a_photo</i>
+      <%= f.file_field :photos, accept: "image/*", multiple: true, id: "image_input", class: "d-none" %>
+      <%= f.hidden_field :image_cache %>
+    </label>
+    <div class="p-1">
+      <%= image_tag post.photos.url, id: 'image_preview', class: "border-radius-lg w-100 modal-image" %>
+    </div>
+  </div>
+<%
+=end%>
+  <div class="input-group input-group-outline row mx-0 mb-4">
+    <%= f.label "キャプション（1000文字以内）", class: "m-0 px-0 fw-bold" %>
+    <%= f.text_area :caption, id: "text_input", class: "form-control", rows: "7", placeholder: "キャプションを入力" %>
+    <div class="d-flex justify-content-between px-0">
+      <div></div>
+      <div id="char_count" class="text-xs"><span>0</span>/1000</div>
+    </div>
+  </div>
+  <div class="modal-footer justify-content-between mt-4">
+    <button type="button" class="btn bg-gradient-light" data-bs-dismiss="modal">キャンセル</button>
+    <%= f.submit "保存する", class: "btn bg-gradient-primary" %>
+  </div>
+<% end%>
