@@ -1,5 +1,6 @@
 class Post < ApplicationRecord
-  belongs_to :itinerary_users
+  belongs_to :itinerary
+  belongs_to :user
 
   validates :title, presence: true, length: { maximum: 30 }
   validates :photos, presence: true

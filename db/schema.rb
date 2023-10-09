@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_09_025527) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_09_094143) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,10 +47,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_025527) do
     t.string "title", null: false
     t.json "photos", null: false
     t.text "caption"
-    t.bigint "itinerary_users_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["itinerary_users_id"], name: "index_posts_on_itinerary_users_id"
+    t.bigint "user_id", null: false
+    t.bigint "itinerary_id", null: false
+    t.index ["itinerary_id"], name: "index_posts_on_itinerary_id"
+    t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "schedules", force: :cascade do |t|
@@ -88,6 +90,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_025527) do
   add_foreign_key "favorites", "itineraries"
   add_foreign_key "itinerary_users", "itineraries"
   add_foreign_key "itinerary_users", "users"
-  add_foreign_key "posts", "itinerary_users", column: "itinerary_users_id"
+  add_foreign_key "posts", "itineraries"
+  add_foreign_key "posts", "users"
   add_foreign_key "schedules", "itineraries"
 end
