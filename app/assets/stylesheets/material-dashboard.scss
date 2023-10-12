@@ -35,6 +35,10 @@ p {
   margin-bottom: 0;
 }
 
+label {
+  color: $dark;
+}
+
 input:-webkit-autofill {
   transition: background-color 10000s ease-in-out 0s !important;
 }
@@ -65,10 +69,13 @@ input:-webkit-autofill {
 }
 
 .required {
-  vertical-align: 3px;
-  margin-top: -3px;
-  padding-left: 2px;
+  margin-left: 3px;
+  padding: 0 3px;
+  vertical-align: 1.5px;
+  border-radius: 2px;
+  border: 1px solid $danger;
   color: $danger;
+  font-size: 11px;
 }
 
 .avatar {
@@ -139,13 +146,6 @@ label:has(#reset_place_btn) {
   }
 }
 
-label {
-  color: $dark;
-  &:hover {
-    cursor: pointer;
-  }
-}
-
 .dropdown-menu {
   &:before {
     display: none !important;
@@ -206,4 +206,19 @@ label {
   @include media-breakpoint-down(sm) {
     width: 220px;
   }
+}
+
+.label-for-photo {
+  display: none;
+
+  &:has(.active-field) {
+    display: block;
+    width: fit-content !important;
+  }
+}
+
+.post-photo-preview {
+  object-fit: cover;
+  width: 100%;
+  aspect-ratio: 1/1;
 }

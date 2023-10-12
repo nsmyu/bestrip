@@ -1,7 +1,7 @@
 
 <%= form_with model: [itinerary, schedule], html: { data: { action: "turbo:submit-end->modal#close" } } do |f| %>
   <div class="input-group input-group-outline row mx-0 mb-4">
-    <%= f.label :title, class: "m-0 px-0 fw-bold" do %>タイトル（50文字以内）<span class="required">*</span><% end%>
+    <%= f.label :title, class: "m-0 px-0 fw-bold" do %>タイトル（50文字以内）<span class="required">必須</span><% end%>
     <%= f.text_field :title, class: "form-control", placeholder: "タイトルを入力" %>
     <div class="<%= "error-message" if schedule.errors.messages.key?(:title) %>" >
       <%= schedule.errors.full_messages_for(:title).first if schedule.errors.any? %>
@@ -60,78 +60,78 @@
   <div class="mx-0 mb-4">
     <%= f.label :icon, class: "d-block ms-0 mb-1 px-0 fw-bold" %>
     <div class="border rounded-2 pt-2 text-center">
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">horizontal_rule</i>
         <span class="text-xxs d-block pt-1">なし</span>
         <%= f.radio_button :icon, "", class: "d-none schedule-icon-btn" %>
       </label>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">restaurant</i>
         <span class="text-xxs d-block pt-1">食事</span>
         <%= f.radio_button :icon, :restaurant, class: "d-none schedule-icon-btn" %>
       </label>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">local_cafe</i>
         <span class="text-xxs d-block pt-1">休憩</span>
         <%= f.radio_button :icon, :local_cafe, class: "d-none schedule-icon-btn" %>
       </label>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">hotel</i>
         <span class="text-xxs d-block pt-1">ホテル</span>
         <%= f.radio_button :icon, :hotel, class: "d-none schedule-icon-btn" %>
       </label>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">castle</i>
         <span class="text-xxs d-block pt-1">観光名所</span>
         <%= f.radio_button :icon, :castle, class: "d-none schedule-icon-btn" %>
       </label>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">attractions</i>
         <span class="text-xxs d-block pt-1">娯楽</span>
         <%= f.radio_button :icon, :attractions, class: "d-none schedule-icon-btn" %>
       </label>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">shopping_cart</i>
         <span class="text-xxs d-block pt-1">買い物</span>
         <%= f.radio_button :icon, :shopping_cart, class: "d-none schedule-icon-btn" %>
       </label>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">landscape</i>
         <span class="text-xxs d-block pt-1">自然</span>
         <%= f.radio_button :icon, :landscape, class: "d-none schedule-icon-btn" %>
       </label>
       <br>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">local_activity</i>
         <span class="text-xxs d-block pt-1">アクティビティ</span>
         <%= f.radio_button :icon, :local_activity, class: "d-none schedule-icon-btn" %>
       </label>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">train</i>
         <span class="text-xxs d-block pt-1">電車</span>
         <%= f.radio_button :icon, :train, class: "d-none schedule-icon-btn" %>
       </label>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">directions_car</i>
         <span class="text-xxs d-block pt-1">車</span>
         <%= f.radio_button :icon, :directions_car, class: "d-none schedule-icon-btn" %>
       </label>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">directions_bus</i>
         <span class="text-xxs d-block pt-1">バス</span>
         <%= f.radio_button :icon, :directions_bus, class: "d-none schedule-icon-btn" %>
       </label>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">flight</i>
         <span class="text-xxs d-block pt-1">フライト</span>
         <%= f.radio_button :icon, :flight, class: "d-none schedule-icon-btn" %>
       </label>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">directions_walk</i>
         <span class="text-xxs d-block pt-1">徒歩</span>
         <%= f.radio_button :icon, :directions_walk, class: "d-none schedule-icon-btn" %>
       </label>
-      <label type="button" class="lh-1 p-1 text-center">
+      <label type="button" class="lh-1 p-1 text-center cursor-pointer">
         <i class="material-icons">directions_bike</i>
         <span class="text-xxs d-block pt-1">自転車</span>
         <%= f.radio_button :icon, :directions_bike, class: "d-none schedule-icon-btn" %>

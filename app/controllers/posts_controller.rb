@@ -6,6 +6,7 @@ class PostsController < ApplicationController
   #   authenticate_itinerary_member(@itinerary)
   # }
   # before_action :set_schedule, only: [:show, :edit, :update, :destroy]
+  MAX_PHOTOS_COUNT = 5
 
   def index
   end
@@ -14,13 +15,14 @@ class PostsController < ApplicationController
     authenticate_user!
     @current_users_itineraries = current_user.itineraries.pluck(:title, :id)
     @post = Post.new
+    MAX_PHOTOS_COUNT.times { @post.photos.build }
   end
 
   def create
     @current_users_itineraries = current_user.itineraries.pluck(:title, :id)
     @post = User.find(current_user.id).posts.new(post_params)
     if @post.save
-      redirect_to @posts, notice: "旅の思い出を投稿しました。"
+      redirect_to :posts, notice: "旅の思い出を投稿しました。"
     else
       render :new, status: :unprocessable_entity
     end
@@ -41,7 +43,7 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :caption, :itinerary_id)
+    params.require(:post).permit(:title, :caption, :itinerary_id, [photos_attributes: [:url]])
   end
 
   def set_schedule

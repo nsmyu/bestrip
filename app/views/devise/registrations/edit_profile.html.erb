@@ -14,7 +14,7 @@
               </div>
               <div class="ms-4 d-flex">
                 <label type="button" class="btn btn-outline-primary fw-bold my-auto px-2">
-                  <i class="material-icons opacity-10 me-2"  style="vertical-align: -4px;">add_a_photo</i>画像を変更
+                  <i class="material-icons opacity-10 me-2" style="vertical-align: -4px;">add_a_photo</i>画像を変更
                   <%= f.file_field :avatar, accept: "image/*", id: "image_input", class: "d-none" %>
                   <%= f.hidden_field :avatar_cache %>
                 </label>
@@ -23,7 +23,7 @@
              <div class="d-block mb-4 text-xs text-dark">「保存する」ボタンを押すと画像の変更が保存されます。</div>
             <div class="input-group input-group-outline row mx-0 mb-4">
               <%= f.label :name, class: "mx-0 mb-1 px-0 fw-bold" do %>
-                ニックネーム（20文字以内）<span class="required">*</span>
+                ニックネーム（20文字以内）<span class="required">必須</span>
               <% end %>
               <%= f.text_field :name, class: "form-control", autocomplete: "name", placeholder: "ニックネームを入力" %>
               <div class="<%= "error-message" if resource.errors.messages.key?(:name) %>" >

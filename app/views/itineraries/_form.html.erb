@@ -1,7 +1,7 @@
 <%= form_with model: itinerary, data: { action: "turbo:submit-end->modal#close" } do |f| %>
   <div class="input-group input-group-outline row mx-0 mb-3">
     <%= f.label :title, class: "m-0 px-0 fw-bold" do %>
-      タイトル（30文字以内で入力）<span class="required">*</span>
+      タイトル（30文字以内で入力）<span class="required">必須</span>
     <% end%>
     <%= f.text_field :title, class: "form-control", placeholder: "旅のタイトルを入力" %>
     <div class="<%= "error-message px-0" if itinerary.errors.messages.key?(:title) %>" >
@@ -11,7 +11,7 @@
   <div class="row">
     <div class="input-group input-group-outline row mx-0 col-sm mb-3 mb-sm-0">
       <%= f.label :departure_date, class: "m-0 px-0 fw-bold" do %>
-        出発日 <span class="required">*</span>
+        出発日 <span class="required">必須</span>
       <% end%>
       <%= f.date_field :departure_date, class: "form-control fa fw-normal", id: "departure_date", readonly: "", placeholder: " \uf073 日付を選択" %>
       <div class="col-sm d-sm-none px-0 <%= "error-message" if itinerary.errors.messages.key?(:departure_date) %>" >
@@ -20,7 +20,7 @@
     </div>
     <div class="input-group input-group-outline row mx-0 col-sm mb-3 mb-sm-0">
       <%= f.label :return_date, class: "m-0 px-0 fw-bold" do %>
-        帰宅日 <span class="required">*</span>
+        帰宅日 <span class="required">必須</span>
       <% end%>
       <%= f.date_field :return_date, class: "form-control fa fw-normal", id: "return_date", readonly: "", placeholder: " \uf073 日付を選択" %>
       <div class="col-sm d-sm-none px-0 <%= "error-message" if itinerary.errors.messages.key?(:return_date) %>" >
@@ -37,9 +37,9 @@
     </div>
   </div>
   <div>
-    <%= f.label :image, class: "m-0 fw-bold" %>
-    <label type="button" class="text-primary text-sm">
-      <i class="material-icons opacity-10" style="vertical-align: -4px;">add_a_photo</i>
+    <%= f.label :image, class: "m-0 fw-bold" %><br>
+    <label type="button" class="btn btn-sm btn-outline-primary my-1 mx-0">
+      <i class="material-icons opacity-10 me-2 text-sm" style="vertical-align: -2px;">add_a_photo</i>画像を変更
       <%= f.file_field :image, accept: "image/*", id: "image_input", class: "d-none" %>
       <%= f.hidden_field :image_cache %>
     </label>
