@@ -8,7 +8,7 @@ function previewImage() {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
         const imagePreview = document.querySelector('#image_preview');
-        imagePreview.src = this.result;
+        imagePreview.src = reader.result;
       };
     });
   }
