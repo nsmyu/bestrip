@@ -135,18 +135,6 @@ RSpec.describe "Itineraries", type: :system do
           expect(page).to have_content "タイトルは30文字以内で入力してください"
         }.not_to change(Itinerary, :count)
       end
-
-      it "タイトルが同じユーザーで重複している場合、失敗すること" do
-        existing_itinerary = create(:itinerary, owner: user)
-        expect {
-          fill_in "itinerary[title]", with: existing_itinerary.title
-          page.execute_script "departure_date.value = '#{itinerary.departure_date}'"
-          page.execute_script "return_date.value = '#{itinerary.return_date}'"
-          click_on "保存する"
-
-          expect(page).to have_content "このタイトルはすでに使用されています"
-        }.not_to change(Itinerary, :count)
-      end
     end
 
     describe "出発日・帰宅日入力のflatpickr" do
@@ -227,13 +215,6 @@ RSpec.describe "Itineraries", type: :system do
         click_on "保存する"
 
         expect(page).to have_content "タイトルを入力してください"
-      end
-
-      it "タイトルが同じユーザーで重複している場合、失敗すること" do
-        fill_in "itinerary[title]", with: itinerary2.title
-        click_on "保存する"
-
-        expect(page).to have_content "このタイトルはすでに使用されています"
       end
 
       it "タイトルが31文字以上の場合、失敗すること" do

@@ -17,13 +17,6 @@ RSpec.describe Itinerary, type: :model do
     expect(itinerary.errors).to be_of_kind(:title, :too_long)
   end
 
-  it "同一ユーザーでタイトルが重複している場合は無効であること" do
-    itinerary = create(:itinerary)
-    other_itinerary = build(:itinerary, title: itinerary.title, owner: itinerary.owner)
-    other_itinerary.valid?
-    expect(other_itinerary.errors).to be_of_kind(:title, :taken)
-  end
-
   it "出発日がなければ無効であること" do
     itinerary = build(:itinerary, departure_date: nil)
     itinerary.valid?

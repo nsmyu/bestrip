@@ -31,7 +31,6 @@ ja:
               title:
                 format: "%{message}"
                 blank: タイトルを入力してください
-                taken: このタイトルはすでに使用されています
                 too_long: タイトルは30文字以内で入力してください
           post:
             attributes:

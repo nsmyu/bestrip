@@ -72,12 +72,6 @@ RSpec.describe "Itineraries", type: :request do
         expect(response.body).to include "タイトルは30文字以内で入力してください"
       end
 
-      it "タイトルが同じユーザーで重複している場合、失敗すること" do
-        itinerary_params = attributes_for(:itinerary, title: itinerary.title)
-        post itineraries_path, params: { itinerary: itinerary_params }
-        expect(response.body).to include "このタイトルはすでに使用されています"
-      end
-
       it "帰宅日が出発日より前の日付の場合、失敗すること" do
         itinerary_params = attributes_for(:itinerary, return_date: "2024-01-31")
         post itineraries_path, params: { itinerary: itinerary_params }
@@ -151,14 +145,6 @@ RSpec.describe "Itineraries", type: :request do
         itinerary_params = attributes_for(:itinerary, title: "a" * 31)
         patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
         expect(response.body).to include "タイトルは30文字以内で入力してください"
-      end
-
-      it "タイトルが同じユーザーで重複している場合、失敗すること" do
-        registered_itinerary = create(:itinerary, owner: user)
-        itinerary_params =
-          attributes_for(:itinerary, title: registered_itinerary.title, owner: user)
-        patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
-        expect(response.body).to include "このタイトルはすでに使用されています"
       end
 
       it "帰宅日が出発日より前の日付の場合、失敗すること" do
