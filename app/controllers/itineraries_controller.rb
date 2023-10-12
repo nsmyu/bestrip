@@ -19,8 +19,6 @@ class ItinerariesController < ApplicationController
     if @itinerary.save
       @itinerary.members << @user
       redirect_to @itinerary, notice: "新しい旅のプランを作成しました。"
-    else
-      render :new, status: :unprocessable_entity
     end
   end
 
@@ -34,8 +32,6 @@ class ItinerariesController < ApplicationController
   def update
     if @itinerary.update(itinerary_params)
       redirect_to @itinerary, notice: "旅のプラン情報を変更しました。"
-    else
-      render :edit, status: :unprocessable_entity
     end
   end
 

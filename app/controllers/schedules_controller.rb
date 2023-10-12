@@ -35,8 +35,6 @@ class SchedulesController < ApplicationController
     @schedule = @itinerary.schedules.new(schedule_params)
     if @schedule.save
       redirect_to :itinerary_schedules, notice: "新しいスケジュールを作成しました。"
-    else
-      render :new, status: :unprocessable_entity
     end
   end
 
@@ -57,8 +55,6 @@ class SchedulesController < ApplicationController
   def update
     if @schedule.update(schedule_params)
       redirect_to :itinerary_schedules, notice: "スケジュール情報を変更しました。"
-    else
-      render "edit", status: :unprocessable_entity
     end
   end
 

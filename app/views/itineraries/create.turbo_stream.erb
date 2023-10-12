@@ -1,0 +1,20 @@
+<%= turbo_stream.update "title_error" do %>
+  <%= render 'error', itinerary: @itinerary, attribute: :title %>
+<% end %>
+<%= turbo_stream.update "departure_date_error" do %>
+  <%= render 'error', itinerary: @itinerary, attribute: :departure_date %>
+<% end %>
+<%= turbo_stream.update "return_date_error" do %>
+  <%= render 'error', itinerary: @itinerary, attribute: :return_date %>
+<% end %>
+<%= turbo_stream.update "departure_date_error_mb" do %>
+  <%= render 'error', itinerary: @itinerary, attribute: :departure_date %>
+<% end %>
+<%= turbo_stream.update "return_date_error_mb" do %>
+  <%= render 'error', itinerary: @itinerary, attribute: :return_date %>
+<% end %>
+<%= turbo_stream.update "error_notice" do %>
+  <% if @itinerary.errors.any? %>
+    <p class="error-message">入力内容に誤りがあります。赤字箇所をご確認ください。</p>
+  <% end %>
+<% end %>
