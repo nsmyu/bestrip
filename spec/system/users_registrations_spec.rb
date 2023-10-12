@@ -170,7 +170,7 @@ RSpec.describe "UsersRegistrations", type: :system do
       visit users_edit_profile_path
     end
 
-    context "有効な値の場合", js: true do
+    context "有効な値の場合", js: true, focus: true do
       it "成功すること" do
         expect(page).to have_content "プロフィール編集"
         expect(page).to have_xpath "//input[@value='#{user.name}']"

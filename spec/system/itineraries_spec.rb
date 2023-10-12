@@ -78,7 +78,7 @@ RSpec.describe "Itineraries", type: :system do
     end
 
     context "有効な値の場合" do
-      it "成功すること" do
+      it "成功すること", focus: true do
         expect {
           fill_in "itinerary[title]", with: itinerary.title
           page.execute_script "departure_date.value = '#{itinerary.departure_date}'"
