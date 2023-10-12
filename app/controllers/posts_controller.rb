@@ -23,8 +23,6 @@ class PostsController < ApplicationController
     @post = User.find(current_user.id).posts.new(post_params)
     if @post.save
       redirect_to :posts, notice: "旅の思い出を投稿しました。"
-    else
-      render :new, status: :unprocessable_entity
     end
   end
 

@@ -2,9 +2,7 @@
   <div class="input-group input-group-outline row mx-0 mb-4">
     <label class="m-0 px-0 fw-bold">思い出を投稿する旅のプラン<span class="required">必須</span></label>
     <%= f.select :itinerary_id, @current_users_itineraries, { include_blank: "旅のプランを選択" }, class: "form-control" %>
-    <div class="<%= "error-message px-0" if post.errors.messages.key?(:itinerary) %>" >
-      <%= post.errors.full_messages_for(:itinerary).first if post.errors.any? %>
-    </div>
+    <div class="px-0" id="itinerary_error"></div>
   </div>
   <div class="mb-4" data-controller="photos">
     <label class="m-0 px-0 fw-bold d-block">写真（最大20枚）<span class="required">1枚以上必須</span></label>
@@ -13,11 +11,12 @@
         <label for="photo_input_<%= photo.index %>" class="btn btn-sm btn-outline-primary my-1 mx-0 label-for-photo" data-photos-target="select">
           <i class="material-icons opacity-10 me-2 text-sm" style="vertical-align: -2px;">add_a_photo</i>画像を選択
           <%= photo.file_field :url, accept: "image/*", id: "photo_input_#{photo.index}" , class: "d-none #{ "active-field" if photo.index.zero? }", data: { photos_target: "input", action: "change->photos#selectPhotos" } %>
-          <%= f.hidden_field :avatar_cache %>
         </label>
       <% end %>
       <div class="row mx-0 px-0" data-photos-target="preview">
 
+<%
+=begin%>
 
         <% post.photos.each do |photo| %>
           <% if photo.url.present? %>
@@ -29,18 +28,18 @@
           </div>
           <% end %>
         <% end %>
+<%
+=end%>
       </div>
     </div>
-    <p data-photos-target="error" class="text-danger"></p>
+    <div class="px-0" id="photos_error"></div>
   </div>
   <div class="input-group input-group-outline row mx-0 mb-4">
     <%= f.label :title, class: "m-0 px-0 fw-bold" do %>
       タイトル（30文字以内）<span class="required">必須</span>
     <% end %>
     <%= f.text_field :title, class: "form-control", placeholder: "タイトルを入力" %>
-    <div class="<%= "error-message px-0" if post.errors.messages.key?(:title) %>" >
-      <%= post.errors.full_messages_for(:title).first if post.errors.any? %>
-    </div>
+    <div class="px-0" id="title_error"></div>
   </div>
   <div class="input-group input-group-outline row mx-0 mb-4">
     <%= f.label "キャプション（1000文字以内）", class: "m-0 px-0 fw-bold" %>

@@ -35,6 +35,8 @@ ja:
                 too_long: タイトルは30文字以内で入力してください
           post:
             attributes:
+              itinerary:
+                format: 旅のプランを選択してください
               photos:
                 format: "%{message}"
-                blank: 写真は1枚以上選択してください
+                too_short: 写真は1枚以上選択してください

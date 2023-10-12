@@ -1,0 +1,9 @@
+<%= turbo_stream.update "itinerary_error" do %>
+  <%= render 'error', post: @post, attribute: :itinerary %>
+<% end %>
+<%= turbo_stream.update "photos_error" do %>
+  <%= render 'error', post: @post, attribute: :photos %>
+<% end %>
+<%= turbo_stream.update "title_error" do %>
+  <%= render 'error', post: @post, attribute: :title %>
+<% end %>

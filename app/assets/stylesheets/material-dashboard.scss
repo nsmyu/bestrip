@@ -51,13 +51,6 @@ input:-webkit-autofill {
   padding-left: 0;
 }
 
-.input-group:has(.error-message) {
-  input, textarea, select {
-    width: 100%;
-    border-color: $danger !important;
-  }
-}
-
 .input-group-outline.is-focused {
   .form-control {
     border-color: $primary;
