@@ -33,7 +33,7 @@ class FavoritesController < ApplicationController
           }
         end
       else
-        flash.now[:alert] = "スポット情報を取得できませんでした（#{result})"
+        flash.now[:notice] = "スポット情報を取得できませんでした（#{result})"
       end
     end
   end

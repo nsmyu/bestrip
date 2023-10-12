@@ -6,7 +6,7 @@ class Itinerary < ApplicationRecord
   has_many   :favorites, dependent: :destroy
   has_many   :posts, dependent: :destroy
 
-  validates :title, presence: true, length: { maximum: 30 }, uniqueness: { scope: :user_id }
+  validates :title, presence: true, length: { maximum: 30 }
   validates :departure_date, :return_date, presence: true
   validate :return_date_must_be_after_departure_date
 
