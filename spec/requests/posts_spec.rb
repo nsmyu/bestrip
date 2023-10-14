@@ -34,7 +34,7 @@ RSpec.describe "Posts", type: :request do
     # end
   end
 
-  describe "GET #new" do
+  describe "GET #new", focus: true do
     it "正常にレスポンスを返すこと" do
       get new_post_path
       expect(response).to have_http_status 200

@@ -11,7 +11,6 @@ export default class extends Controller {
       const response = event.detail.fetchResponse.response
       if (response.redirected) {
         this.modal.hide()
-        Turbo.visit(response.url, { action: 'advance' })
       }
     }
   }

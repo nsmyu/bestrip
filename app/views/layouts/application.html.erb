@@ -24,6 +24,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
     <%= javascript_importmap_tags %>
     <meta name="turbo-cache-control" content="no-cache">
+    <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_KEY'] %>&libraries=places&region=jp&callback=Function.prototype"></script>
   </head>
 
   <body class="g-sidenav-show bg-gray-200">
@@ -35,6 +36,5 @@
     <%= render 'layouts/footer' %>
     <%= render 'layouts/confirm_modal' %>
     <%= turbo_frame_tag "modal" %>
-    <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_KEY'] %>&libraries=places&region=jp&callback=Function.prototype"></script>
   </body>
 </html>
