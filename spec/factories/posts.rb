@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :post do
     sequence(:title) { |n| "Post_#{n}" }
     itinerary
-    user { itinerary.owner }
+    user
 
     trait :with_photo do
       after(:build) do |post|

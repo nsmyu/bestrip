@@ -130,10 +130,10 @@ RSpec.describe "Schedules", type: :request do
     end
   end
 
-  describe "GET #edit" do
+  describe "GET #edit", focus: true do
     context "有効なリクエストの場合" do
       before do
-        get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+        get edit_itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
       end
 
       it "正常にレスポンスを返すこと" do
@@ -143,9 +143,9 @@ RSpec.describe "Schedules", type: :request do
       it "スケジュールの情報を取得すること" do
         expect(response.body).to include schedule.title
         expect(response.body).to include schedule.icon
-        expect(response.body).to include I18n.l schedule.schedule_date
-        expect(response.body).to include I18n.l schedule.start_at
-        expect(response.body).to include I18n.l schedule.end_at
+        expect(response.body).to include schedule.schedule_date.to_s
+        expect(response.body).to include schedule.start_at.strftime("%-H:%M")
+        expect(response.body).to include schedule.end_at.strftime("%-H:%M")
         expect(response.body).to include schedule.note
       end
 

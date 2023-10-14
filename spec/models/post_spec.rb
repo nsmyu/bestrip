@@ -24,9 +24,15 @@ RSpec.describe Post, type: :model do
   end
 
   it "itinerary_idがなければ無効であること" do
-    post = build(:post, itinerary: nil, user: nil)
+    post = build(:post, itinerary: nil)
     post.valid?
     expect(post.errors).to be_of_kind(:itinerary, :blank)
+  end
+
+  it "user_idがなければ無効であること" do
+    post = build(:post, user: nil)
+    post.valid?
+    expect(post.errors).to be_of_kind(:user, :blank)
   end
 
   it "写真が1枚も紐付けされていない場合は無効であること" do
