@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["form", "field", "preview", "photoBox"]
+  static targets = ["form", "field", "preview", "photoBox", "submit"]
 
   selectPhotos(){
     const activeField = document.querySelector(".active-field")
@@ -10,15 +10,14 @@ export default class extends Controller {
 
     if (this.photoBoxTargets.length < 4) {
       const nextField = activeField.parentElement.cloneNode(true)
-      nextField.value = null
       nextField.setAttribute("for", `photo_field_${id + 1}`)
       nextField.children[1].value = null
       nextField.children[1].setAttribute("id", `photo_field_${id + 1}`)
       nextField.children[1].classList.add("active-field")
+      nextField.children[1].setAttribute("name", `post[photos_attributes][${id + 1}][url]`)
       this.formTarget.appendChild(nextField)
       activeField.classList.remove("active-field")
     } else {
-      activeField.disabled = true
       activeField.parentElement.classList.add("disabled")
     }
 
@@ -67,16 +66,18 @@ export default class extends Controller {
     } else {
       const lastFieldId = Number(this.fieldTargets.slice(-1)[0].id.replace(/photo_field_/g, ''))
       const activeField = document.querySelector(".active-field")
-      const nextField = activeField.parentElement.cloneNode(true)
+      const nextField = this.fieldTargets[0].parentElement.cloneNode(true)
       nextField.setAttribute("for", `photo_field_${lastFieldId + 1}`)
       nextField.children[1].value = null
       nextField.children[1].setAttribute("id", `photo_field_${lastFieldId + 1}`)
       nextField.children[1].classList.add("active-field")
+      nextField.children[1].setAttribute("name", `post[photos_attributes][${lastFieldId + 1}][url]`)
       nextField.children[1].disabled = false
       nextField.classList.remove("disabled")
       this.formTarget.appendChild(nextField)
-      activeField.classList.remove("active-field")
+      if (activeField) {
+        activeField.classList.remove("active-field")
+      }
     }
   }
 }
-
