@@ -1,21 +1,27 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "preview"]
+  static targets = ["form", "field", "preview", "photoBox"]
 
   selectPhotos(){
     const activeField = document.querySelector(".active-field")
-    const id = Number(activeField.id.replace(/photo_input_/g, ''))
+    const id = Number(activeField.id.replace(/photo_field_/g, ''))
     const file = activeField.files[0]
-    const emptyInputs = this.inputTargets.filter(input => !input.value)
 
-    if (emptyInputs.length > 0) {
-      emptyInputs[0].classList.add("active-field")
+    if (this.photoBoxTargets.length < 4) {
+      const nextField = activeField.parentElement.cloneNode(true)
+      nextField.value = null
+      nextField.setAttribute("for", `photo_field_${id + 1}`)
+      nextField.children[1].value = null
+      nextField.children[1].setAttribute("id", `photo_field_${id + 1}`)
+      nextField.children[1].classList.add("active-field")
+      this.formTarget.appendChild(nextField)
       activeField.classList.remove("active-field")
     } else {
       activeField.disabled = true
       activeField.parentElement.classList.add("disabled")
     }
+
     this.previewPhoto(file, id)
   }
 
@@ -32,6 +38,7 @@ export default class extends Controller {
       img.src = reader.result
       img.setAttribute("class", "post-photo-preview")
       imgBox.setAttribute("class", "col-3 p-1 position-relative")
+      imgBox.setAttribute("data-photos-target", "photoBox")
       deleteBtn.setAttribute("class", "position-absolute top-5 end-5 link cursor-pointer")
       deleteBtn.setAttribute("id", `delete_btn_${id}`)
       deleteBtn.setAttribute("data-action", "click->photos#deletePhoto")
@@ -46,15 +53,30 @@ export default class extends Controller {
   }
 
   deletePhoto(event){
-    const previewToDelete = event.currentTarget
-    const inputToDelete = document.querySelector(`#photo_input_${ previewToDelete.id.replace(/delete_btn_/g, '') }`)
+    const deleteTarget = event.currentTarget
+    const deleteTargetId = Number(deleteTarget.id.replace(/delete_btn_/g, ''))
+    const deleteTargetField = document.querySelector(`#photo_field_${deleteTargetId}`)
 
-    previewToDelete.parentElement.remove()
-    document.querySelector(".active-field").classList.remove("active-field")
-    inputToDelete.value = ""
-    inputToDelete.disabled = false
-    inputToDelete.parentElement.classList.remove("disabled")
-    inputToDelete.classList.add("active-field")
+    deleteTarget.parentElement.remove()
+    deleteTargetField.parentElement.remove()
+
+    const emptyFields = this.fieldTargets.filter(field => !field.value)
+
+    if (emptyFields.length > 0) {
+      emptyFields[0].classList.add("active-field")
+    } else {
+      const lastFieldId = Number(this.fieldTargets.slice(-1)[0].id.replace(/photo_field_/g, ''))
+      const activeField = document.querySelector(".active-field")
+      const nextField = activeField.parentElement.cloneNode(true)
+      nextField.setAttribute("for", `photo_field_${lastFieldId + 1}`)
+      nextField.children[1].value = null
+      nextField.children[1].setAttribute("id", `photo_field_${lastFieldId + 1}`)
+      nextField.children[1].classList.add("active-field")
+      nextField.children[1].disabled = false
+      nextField.classList.remove("disabled")
+      this.formTarget.appendChild(nextField)
+      activeField.classList.remove("active-field")
+    }
   }
 }
 

@@ -4,33 +4,31 @@
     <%= f.select :itinerary_id, @current_users_itineraries, { include_blank: "旅のプランを選択" }, class: "form-control" %>
     <div class="px-0" id="itinerary_error"></div>
   </div>
-  <div class="mb-4" data-controller="photos">
+  <div class="mb-4" data-controller="photos" >
     <label class="m-0 px-0 fw-bold d-block">写真（最大20枚）<span class="required">1枚以上必須</span></label>
-    <div class="">
+    <div data-photos-target="form">
       <%= f.fields_for :photos do |photo| %>
-        <label for="photo_input_<%= photo.index %>" class="btn btn-sm btn-outline-primary my-1 mx-0 label-for-photo" data-photos-target="select">
+        <label for="photo_field_<%= photo.index %>" class="btn btn-sm btn-outline-primary my-1 mx-0 label-for-photo">
           <i class="material-icons opacity-10 me-2 text-sm" style="vertical-align: -2px;">add_a_photo</i>画像を選択
-          <%= photo.file_field :url, accept: "image/*", id: "photo_input_#{photo.index}" , class: "d-none #{ "active-field" if photo.index.zero? }", data: { photos_target: "input", action: "change->photos#selectPhotos" } %>
+          <%= photo.file_field :url, accept: "image/*", id: "photo_field_#{photo.index}" , class: "d-none #{ "active-field" if photo.index.zero? }", data: { photos_target: "field", action: "change->photos#selectPhotos" } %>
         </label>
       <% end %>
-      <div class="row mx-0 px-0" data-photos-target="preview">
+    </div>
 
-<%
+
+    <div class="row mx-0 px-0" data-photos-target="preview">
+      <%
 =begin%>
-
-        <% post.photos.each do |photo| %>
-          <% if photo.url.present? %>
-            <div class="image-box inline-flex mx-1 mb-5" data-controller="photos" data-photos-target="photo_box">
-              <%= image_tag photo.url %>
-              <div class="text-center">
-              <a class="link cursor-pointer" data-action="click->images#deleteImage">削除</a>
-            </div>
+ <% post.photos.each do |photo| %>
+        <% if photo.url.present? %>
+          <div class="image-box inline-flex mx-1 mb-5" data-controller="photos" data-photos-target="photo_box">
+            <%= image_tag photo.url %>
+            <a class="link cursor-pointer" data-action="click->images#deleteImage">削除</a>
           </div>
-          <% end %>
         <% end %>
+      <% end %>
 <%
 =end%>
-      </div>
     </div>
     <div class="px-0" id="photos_error"></div>
   </div>
@@ -50,7 +48,8 @@
     </div>
   </div>
   <div class="modal-footer justify-content-between mt-4">
-    <button type="button" class="btn bg-gradient-light" data-bs-dismiss="modal">キャンセル</button>
-    <%= f.submit "保存する", class: "btn bg-gradient-primary" %>
+    <button type="button" class="btn bg-gradient-light mb-0" data-bs-dismiss="modal">キャンセル</button>
+    <%= f.submit "保存する", class: "btn bg-gradient-primary mb-0" %>
   </div>
+  <div id="error_notice"></div>
 <% end %>

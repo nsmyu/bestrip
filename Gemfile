@@ -60,6 +60,7 @@ gem 'dartsass-rails', '~> 0.4.1'
 gem 'dotenv-rails'
 gem 'faker'
 gem 'pry-rails'
+gem 'pry-byebug'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

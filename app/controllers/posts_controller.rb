@@ -14,7 +14,7 @@ class PostsController < ApplicationController
     authenticate_user!
     @current_users_itineraries = current_user.itineraries.pluck(:title, :id)
     @post = Post.new
-    MAX_PHOTOS_COUNT.times { @post.photos.build }
+    @post.photos.build
   end
 
   def create

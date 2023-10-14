@@ -6,5 +6,5 @@ class Post < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: 30 }
   validates :caption, length: { maximum: 1000 }
-  validates :photos, length: { minimum: 1, maximum: 20 }
+  validates :photos, length: { minimum: 1, maximum: 5 }
 end
