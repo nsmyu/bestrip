@@ -3,7 +3,24 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["form", "field", "preview", "photoBox", "submit"]
 
-  selectPhotos(){
+  connect() {
+    const hiddenFields = document.querySelectorAll(`[id^='post_photos_attributes']`)
+
+    if (hiddenFields.length == 0) {
+      this.fieldTargets[0].classList.add("active-field")
+    } else {
+      const nextField = this.fieldTargets[0].parentElement.cloneNode(true)
+      const lastFieldId = Number(this.fieldTargets.slice(-1)[0].id.replace(/photo_field_/g, ''))
+      nextField.setAttribute("for", `photo_field_${lastFieldId + 1}`)
+      nextField.children[1].value = null
+      nextField.children[1].setAttribute("id", `photo_field_${lastFieldId + 1}`)
+      nextField.children[1].classList.add("active-field")
+      nextField.children[1].setAttribute("name", `post[photos_attributes][${lastFieldId + 1}][url]`)
+      this.formTarget.appendChild(nextField)
+    }
+  }
+
+  selectPhotos() {
     const activeField = document.querySelector(".active-field")
     const id = Number(activeField.id.replace(/photo_field_/g, ''))
     const file = activeField.files[0]
@@ -24,7 +41,7 @@ export default class extends Controller {
     this.previewPhoto(file, id)
   }
 
-  previewPhoto(file, id){
+  previewPhoto(file, id) {
     const preview = this.previewTarget
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -51,15 +68,26 @@ export default class extends Controller {
     };
   }
 
-  deletePhoto(event){
+  deletePhoto(event) {
     const deleteTarget = event.currentTarget
     const deleteTargetId = Number(deleteTarget.id.replace(/delete_btn_/g, ''))
     const deleteTargetField = document.querySelector(`#photo_field_${deleteTargetId}`)
+    const deleteTargetHiddenField = document.querySelector(`#post_photos_attributes_${deleteTargetId}_id`)
 
     deleteTarget.parentElement.remove()
     deleteTargetField.parentElement.remove()
+    if (deleteTargetHiddenField) {
+      const destroy = document.createElement("input")
+      destroy.setAttribute("name", `post[photos_attributes][${deleteTargetId}][_destroy]`)
+      destroy.setAttribute("value", true)
+      destroy.setAttribute("class", "d-none")
+      this.formTarget.appendChild(destroy)
+    }
 
     const emptyFields = this.fieldTargets.filter(field => !field.value)
+    if (emptyFields.length - this.photoBoxTargets.length == 1) {
+      return;
+    }
 
     if (emptyFields.length > 0) {
       emptyFields[0].classList.add("active-field")
@@ -79,5 +107,9 @@ export default class extends Controller {
         activeField.classList.remove("active-field")
       }
     }
+  }
+
+  createNextField() {
+
   }
 }

@@ -5,7 +5,6 @@ class PostsController < ApplicationController
   #   authenticate_itinerary_member(@itinerary)
   # }
   # before_action :set_schedule, only: [:show, :edit, :update, :destroy]
-  MAX_PHOTOS_COUNT = 5
 
   def index
   end
@@ -29,9 +28,15 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @current_users_itineraries = current_user.itineraries.pluck(:title, :id)
+    @post = Post.find(params[:id])
   end
 
   def update
+    @post = Post.find(params[:id])
+    if @post.update(post_params)
+      redirect_to :posts, notice: "旅の思い出を更新しました。"
+    end
   end
 
   def destroy
@@ -40,7 +45,7 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :caption, :itinerary_id, [photos_attributes: [:url]])
+    params.require(:post).permit(:title, :caption, :itinerary_id, [photos_attributes: [:url, :id, :_destroy]])
   end
 
   def set_schedule

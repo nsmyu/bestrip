@@ -7,4 +7,8 @@ class Post < ApplicationRecord
   validates :title, presence: true, length: { maximum: 30 }
   validates :caption, length: { maximum: 1000 }
   validates :photos, length: { minimum: 1, maximum: 5 }
+
+  def has_photos?
+    Post.find(self.id).photos
+  end
 end

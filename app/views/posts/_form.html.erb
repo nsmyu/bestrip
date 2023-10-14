@@ -10,25 +10,21 @@
       <%= f.fields_for :photos do |photo| %>
         <label for="photo_field_<%= photo.index %>" class="btn btn-sm btn-outline-primary my-1 mx-0 label-for-photo">
           <i class="material-icons opacity-10 me-2 text-sm" style="vertical-align: -2px;">add_a_photo</i>画像を選択
-          <%= photo.file_field :url, accept: "image/*", id: "photo_field_#{photo.index}" , class: "d-none #{ "active-field" if photo.index.zero? }", data: { photos_target: "field", action: "change->photos#selectPhotos" } %>
+          <%= photo.file_field :url, accept: "image/*", id: "photo_field_#{photo.index}" , class: "d-none", data: { photos_target: "field", action: "change->photos#selectPhotos" } %>
         </label>
       <% end %>
     </div>
-
-
     <div class="row mx-0 px-0" data-photos-target="preview">
-      <%
-=begin%>
- <% post.photos.each do |photo| %>
-        <% if photo.url.present? %>
-          <div class="image-box inline-flex mx-1 mb-5" data-controller="photos" data-photos-target="photo_box">
-            <%= image_tag photo.url %>
-            <a class="link cursor-pointer" data-action="click->images#deleteImage">削除</a>
+      <% if post.has_photos? %>
+        <% post.photos.each_with_index do |photo, i| %>
+          <div class="col-3 p-1 position-relative" data-photos-target="photoBox">
+            <%= image_tag (photo.url.to_s if photo.url), class: "post-photo-preview" %>
+            <a class="position-absolute top-5 end-5 link cursor-pointer" id="delete_btn_<%= i %>" data-action="click->photos#deletePhoto">
+              <i class="material-icons text-white bg-dark rounded-circle">close</i>
+            </a>
           </div>
         <% end %>
       <% end %>
-<%
-=end%>
     </div>
     <div class="px-0" id="photos_error"></div>
   </div>
