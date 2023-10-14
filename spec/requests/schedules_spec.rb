@@ -5,6 +5,7 @@ RSpec.describe "Schedules", type: :request do
   let!(:other_user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
   let(:schedule) { create(:schedule, itinerary: itinerary) }
+  let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
   before do
     sign_in user
@@ -61,36 +62,36 @@ RSpec.describe "Schedules", type: :request do
       it "タイトルが空欄の場合、失敗すること" do
         schedule_params = attributes_for(:schedule, title: "")
         post itinerary_schedules_path(itinerary_id: itinerary.id),
-          params: { schedule: schedule_params }
+          params: { schedule: schedule_params }, headers: turbo_stream
         expect(response.body).to include "タイトルを入力してください"
       end
 
       it "タイトルが51文字以上の場合、失敗すること" do
         schedule_params = attributes_for(:schedule, title: "a" * 51)
         post itinerary_schedules_path(itinerary_id: itinerary.id),
-          params: { schedule: schedule_params }
+          params: { schedule: schedule_params }, headers: turbo_stream
         expect(response.body).to include "タイトルは50文字以内で入力してください"
       end
 
       it "日付が出発日より前の場合、失敗すること" do
         schedule_params = attributes_for(:schedule, schedule_date: "2024-01-31")
         post itinerary_schedules_path(itinerary_id: itinerary.id),
-          params: { schedule: schedule_params }
-        expect(response).to have_http_status 422
+          params: { schedule: schedule_params }, headers: turbo_stream
+        expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
       end
 
       it "日付が帰宅日より後の場合、失敗すること" do
         schedule_params = attributes_for(:schedule, schedule_date: "2024-02-09")
         post itinerary_schedules_path(itinerary_id: itinerary.id),
-          params: { schedule: schedule_params }
-        expect(response).to have_http_status 422
+          params: { schedule: schedule_params }, headers: turbo_stream
+        expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
       end
 
       it "メモが501文字以上の場合、失敗すること" do
         schedule_params = attributes_for(:schedule, note: "a" * 501)
         post itinerary_schedules_path(itinerary_id: itinerary.id),
-          params: { schedule: schedule_params }
-        expect(response).to have_http_status 422
+          params: { schedule: schedule_params }, headers: turbo_stream
+        expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
       end
     end
   end
@@ -219,36 +220,36 @@ RSpec.describe "Schedules", type: :request do
       it "タイトルが空欄の場合、成功すること" do
         schedule_params = attributes_for(:schedule, title: "")
         patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
-          params: { schedule: schedule_params }
+          params: { schedule: schedule_params }, headers: turbo_stream
         expect(response.body).to include "タイトルを入力してください"
       end
 
       it "タイトルが51文字以上の場合、失敗すること" do
         schedule_params = attributes_for(:schedule, title: "a" * 51)
         patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
-          params: { schedule: schedule_params }
+          params: { schedule: schedule_params }, headers: turbo_stream
         expect(response.body).to include "タイトルは50文字以内で入力してください"
       end
 
       it "日付が出発日より前の場合、失敗すること" do
         schedule_params = attributes_for(:schedule, schedule_date: "2024-01-31")
         patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
-          params: { schedule: schedule_params }
-        expect(response).to have_http_status 422
+          params: { schedule: schedule_params }, headers: turbo_stream
+        expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
       end
 
       it "日付が帰宅日より後の場合、失敗すること" do
         schedule_params = attributes_for(:schedule, schedule_date: "2024-02-09")
         patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
-          params: { schedule: schedule_params }
-        expect(response).to have_http_status 422
+          params: { schedule: schedule_params }, headers: turbo_stream
+        expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
       end
 
       it "メモが501文字以上の場合、失敗すること" do
         schedule_params = attributes_for(:schedule, title: "a" * 501)
         patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
-          params: { schedule: schedule_params }
-        expect(response).to have_http_status 422
+          params: { schedule: schedule_params }, headers: turbo_stream
+        expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
       end
     end
   end

@@ -4,6 +4,7 @@ RSpec.describe "Itineraries", type: :request do
   let!(:user) { create(:user) }
   let!(:other_user) { create(:user, bestrip_id: "other_user_id") }
   let!(:itinerary) { create(:itinerary, owner: user) }
+  let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
   before do
     sign_in user
@@ -60,7 +61,8 @@ RSpec.describe "Itineraries", type: :request do
       it "必須項目が空欄の場合、失敗すること" do
         itinerary_params =
           attributes_for(:itinerary, title: "", departure_date: "", return_date: "")
-        post itineraries_path, params: { itinerary: itinerary_params }
+        post itineraries_path, params: { itinerary: itinerary_params }, headers: turbo_stream
+
         expect(response.body).to include "タイトルを入力してください"
         expect(response.body).to include "出発日を入力してください"
         expect(response.body).to include "帰宅日を入力してください"
@@ -68,13 +70,13 @@ RSpec.describe "Itineraries", type: :request do
 
       it "タイトルが31文字以上の場合、失敗すること" do
         itinerary_params = attributes_for(:itinerary, title: "a" * 31)
-        post itineraries_path, params: { itinerary: itinerary_params }
+        post itineraries_path, params: { itinerary: itinerary_params }, headers: turbo_stream
         expect(response.body).to include "タイトルは30文字以内で入力してください"
       end
 
       it "帰宅日が出発日より前の日付の場合、失敗すること" do
         itinerary_params = attributes_for(:itinerary, return_date: "2024-01-31")
-        post itineraries_path, params: { itinerary: itinerary_params }
+        post itineraries_path, params: { itinerary: itinerary_params }, headers: turbo_stream
         expect(response.body).to include "帰宅日は出発日以降で選択してください"
       end
     end
@@ -135,7 +137,8 @@ RSpec.describe "Itineraries", type: :request do
       it "必須項目が空欄の場合、失敗すること" do
         itinerary_params =
           attributes_for(:itinerary, title: "", departure_date: "", return_date: "")
-        patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
+        patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params },
+                                            headers: turbo_stream
         expect(response.body).to include "タイトルを入力してください"
         expect(response.body).to include "出発日を入力してください"
         expect(response.body).to include "帰宅日を入力してください"
@@ -143,13 +146,15 @@ RSpec.describe "Itineraries", type: :request do
 
       it "タイトルが31文字以上の場合、失敗すること" do
         itinerary_params = attributes_for(:itinerary, title: "a" * 31)
-        patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
+        patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params },
+                                            headers: turbo_stream
         expect(response.body).to include "タイトルは30文字以内で入力してください"
       end
 
       it "帰宅日が出発日より前の日付の場合、失敗すること" do
         itinerary_params = attributes_for(:itinerary, return_date: "2024-01-31")
-        patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
+        patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params },
+                                            headers: turbo_stream
         expect(response.body).to include "帰宅日は出発日以降で選択してください"
       end
     end
