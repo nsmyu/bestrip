@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :request, focus: true do
+RSpec.describe "Posts", type: :request do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
   let(:post_with_photo) { create(:post, :with_photo, itinerary: itinerary) }
@@ -115,9 +115,9 @@ RSpec.describe "Posts", type: :request, focus: true do
     end
   end
 
-  describe "PATCH #update", focus: true do
+  describe "PATCH #update" do
     context "有効な値の場合" do
-      it "各項目の変更に成功すること", focus: true do
+      it "各項目の変更に成功すること" do
         other_itinerary = create(:itinerary, owner: user)
         post_params = attributes_for(:post, :with_photo, title: "New Title",
                                                          caption: "New caption.",
