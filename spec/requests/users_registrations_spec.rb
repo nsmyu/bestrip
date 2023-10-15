@@ -88,8 +88,8 @@ RSpec.describe "UsersRegistrations", type: :request do
         user: {
           email: "new_email@example.com",
           name: "New nickname",
-          introduction: "New introduction."
-        }
+          introduction: "New introduction.",
+        },
       }
       patch users_update_without_password_path, params: user_params
       expect(user.reload.email).to eq "new_email@example.com"

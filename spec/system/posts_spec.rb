@@ -202,19 +202,19 @@ RSpec.describe "Posts", type: :system do
         click_on "投稿する"
 
         expect(page).to have_content "旅の思い出を更新しました。"
-          # within(:xpath, "//div[h5[contains(text(), '#{I18n.l post.post_date}')]]") do
-          #   expect(page).to have_content post.title
-          #   expect(page).to have_content post.icon
-          #   expect(page).to have_content I18n.l post.start_at
-          #   expect(page).to have_content I18n.l post.end_at
-          #   expect(page).not_to have_selector "img[id='image_preview'][src*='default_itinerary']"
-          # end
-          # expect(current_path).to eq itinerary_posts_path(itinerary_id: itinerary.id)
+        # within(:xpath, "//div[h5[contains(text(), '#{I18n.l post.post_date}')]]") do
+        #   expect(page).to have_content post.title
+        #   expect(page).to have_content post.icon
+        #   expect(page).to have_content I18n.l post.start_at
+        #   expect(page).to have_content I18n.l post.end_at
+        #   expect(page).not_to have_selector "img[id='image_preview'][src*='default_itinerary']"
+        # end
+        # expect(current_path).to eq itinerary_posts_path(itinerary_id: itinerary.id)
 
-          # find(".post-dropdown-icon", match: :first).click
-          # click_on "情報を見る", match: :first
+        # find(".post-dropdown-icon", match: :first).click
+        # click_on "情報を見る", match: :first
 
-          # expect(page).to have_content post.note
+        # expect(page).to have_content post.note
       end
     end
 

@@ -3,9 +3,11 @@ class Schedule < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: 50 }
   validates :note, length: { maximum: 500 }
-  ICON_VALUES = ["", "restaurant", "local_cafe", "hotel", "castle", "attractions",
-                 "shopping_cart", "landscape", "local_activity", "train", "directions_car",
-                 "directions_bus", "flight", "directions_walk", "directions_bike"]
+  ICON_VALUES = [
+    "", "restaurant", "local_cafe", "hotel", "castle", "attractions",
+    "shopping_cart", "landscape", "local_activity", "train", "directions_car",
+    "directions_bus", "flight", "directions_walk", "directions_bike",
+  ].freeze
   validates :icon, inclusion: { in: ICON_VALUES }
   validate :schedule_date_must_be_between_departure_date_and_return_date
 
