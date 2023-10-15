@@ -62,7 +62,6 @@ RSpec.describe "Itineraries", type: :request do
         itinerary_params =
           attributes_for(:itinerary, title: "", departure_date: "", return_date: "")
         post itineraries_path, params: { itinerary: itinerary_params }, headers: turbo_stream
-
         expect(response.body).to include "タイトルを入力してください"
         expect(response.body).to include "出発日を入力してください"
         expect(response.body).to include "帰宅日を入力してください"
@@ -116,18 +115,13 @@ RSpec.describe "Itineraries", type: :request do
 
   describe "PATCH #update" do
     context "有効な値の場合" do
-      it "旅のタイトルの変更に成功すること" do
-        itinerary_params = attributes_for(:itinerary, title: "New Title")
+      it "各項目の変更に成功すること" do
+        itinerary_params = attributes_for(:itinerary, title: "New Title",
+                                                      departure_date: "2024-04-01",
+                                                      return_date: "2024-04-08")
         patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
         expect(response).to redirect_to itinerary_path(itinerary.id)
         expect(itinerary.reload.title).to eq "New Title"
-      end
-
-      it "出発日、帰宅日の変更に成功すること" do
-        itinerary_params =
-          attributes_for(:itinerary, departure_date: "2024-04-01", return_date: "2024-04-08")
-        patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params }
-        expect(response).to redirect_to itinerary_path(itinerary.id)
         expect(itinerary.reload.departure_date.to_s).to eq "2024-04-01"
         expect(itinerary.reload.return_date.to_s).to eq "2024-04-08"
       end

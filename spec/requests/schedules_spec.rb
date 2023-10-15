@@ -167,51 +167,22 @@ RSpec.describe "Schedules", type: :request do
   describe "PATCH #update" do
     context "有効な値の場合" do
       it "タイトルの変更に成功すること" do
-        schedule_params = attributes_for(:schedule, title: "New Title")
+        schedule_params = attributes_for(:schedule, title: "New Title",
+                                                    schedule_date: "2024-02-03",
+                                                    start_at: "14:00:00",
+                                                    end_at: "16:00:00",
+                                                    place_id: "New_place_id",
+                                                    icon: "shopping_cart",
+                                                    note: "New note")
         patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
           params: { schedule: schedule_params }
         expect(response).to redirect_to itinerary_schedules_path(itinerary_id: itinerary.id)
         expect(schedule.reload.title).to eq "New Title"
-      end
-
-      it "日付の変更に成功すること" do
-        schedule_params = attributes_for(:schedule, schedule_date: "2024-02-03")
-        patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
-          params: { schedule: schedule_params }
-        expect(response).to redirect_to itinerary_schedules_path(itinerary_id: itinerary.id)
         expect(schedule.reload.schedule_date.to_s).to eq "2024-02-03"
-      end
-
-      it "開始・終了時間の変更に成功すること" do
-        schedule_params = attributes_for(:schedule, start_at: "14:00:00", end_at: "16:00:00")
-        patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
-          params: { schedule: schedule_params }
-        expect(response).to redirect_to itinerary_schedules_path(itinerary_id: itinerary.id)
         expect(schedule.reload.start_at.to_s).to include "14:00:00"
         expect(schedule.reload.end_at.to_s).to include "16:00:00"
-      end
-
-      it "place_idの変更に成功すること" do
-        schedule_params = attributes_for(:schedule, place_id: "New_place_id")
-        patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
-          params: { schedule: schedule_params }
-        expect(response).to redirect_to itinerary_schedules_path(itinerary_id: itinerary.id)
         expect(schedule.reload.place_id).to eq "New_place_id"
-      end
-
-      it "アイコンの変更に成功すること" do
-        schedule_params = attributes_for(:schedule, icon: "shopping_cart")
-        patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
-          params: { schedule: schedule_params }
-        expect(response).to redirect_to itinerary_schedules_path(itinerary_id: itinerary.id)
         expect(schedule.reload.icon).to eq "shopping_cart"
-      end
-
-      it "メモの変更に成功すること" do
-        schedule_params = attributes_for(:schedule, note: "New note")
-        patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
-          params: { schedule: schedule_params }
-        expect(response).to redirect_to itinerary_schedules_path(itinerary_id: itinerary.id)
         expect(schedule.reload.note).to eq "New note"
       end
     end

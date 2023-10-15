@@ -83,20 +83,18 @@ RSpec.describe "UsersRegistrations", type: :request do
       sign_in user
     end
 
-    it "メールアドレスを変更できること" do
-      patch users_update_without_password_path, params: { user: { email: "new_email@example.com" } }
+    it "パスワード以外の各項目を変更できること" do
+      user_params = {
+        user: {
+          email: "new_email@example.com",
+          name: "New nickname",
+          introduction: "New introduction."
+        }
+      }
+      patch users_update_without_password_path, params: user_params
       expect(user.reload.email).to eq "new_email@example.com"
-    end
-
-    it "ニックネームを変更できること" do
-      patch users_update_without_password_path, params: { user: { name: "New nickname" } }
       expect(user.reload.name).to eq "New nickname"
-    end
-
-    it "自己紹介を変更できること" do
-      patch users_update_without_password_path,
-        params: { user: { introduction: "I love traveling to different countries." } }
-      expect(user.reload.introduction).to eq "I love traveling to different countries."
+      expect(user.reload.introduction).to eq "New introduction."
     end
   end
 
