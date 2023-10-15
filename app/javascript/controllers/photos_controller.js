@@ -1,115 +1,113 @@
 import { Controller } from "@hotwired/stimulus"
 
+const MAX_PHOTOS_COUNT_PER_POST = 20;
+
 export default class extends Controller {
-  static targets = ["form", "field", "preview", "photoBox", "submit"]
+  static targets = ["form", "field", "preview", "imageBox", "submit"]
 
   connect() {
-    const hiddenFields = document.querySelectorAll(`[id^='post_photos_attributes']`)
+    const registeredPhotosHiddenFields = document.querySelectorAll(`[id^='post_photos_attributes']`);
 
-    if (hiddenFields.length == 0) {
-      this.fieldTargets[0].classList.add("active-field")
+    if (registeredPhotosHiddenFields.length == 0) {
+      this.fieldTargets[0].classList.add("active-field");
+    } else if (registeredPhotosHiddenFields.length == MAX_PHOTOS_COUNT_PER_POST) {
+      this.fieldTargets[0].classList.add("active-field");
+      this.fieldTargets[0].parentElement.classList.add("disabled");
     } else {
-      const nextField = this.fieldTargets[0].parentElement.cloneNode(true)
-      const lastFieldId = Number(this.fieldTargets.slice(-1)[0].id.replace(/photo_field_/g, ''))
-      nextField.setAttribute("for", `photo_field_${lastFieldId + 1}`)
-      nextField.children[1].value = null
-      nextField.children[1].setAttribute("id", `photo_field_${lastFieldId + 1}`)
-      nextField.children[1].classList.add("active-field")
-      nextField.children[1].setAttribute("name", `post[photos_attributes][${lastFieldId + 1}][url]`)
-      this.formTarget.appendChild(nextField)
+      const lastRegisterdPhotoFieldId = Number(this.fieldTargets.slice(-1)[0].id.replace(/photo_field_/g, ''));
+      this.createNextField(lastRegisterdPhotoFieldId);
     }
   }
 
   selectPhotos() {
-    const activeField = document.querySelector(".active-field")
-    const id = Number(activeField.id.replace(/photo_field_/g, ''))
-    const file = activeField.files[0]
+    const activeField = document.querySelector(".active-field");
+    const activeFieldId = Number(activeField.id.replace(/photo_field_/g, ''));
+    const file = activeField.files[0];
 
-    if (this.photoBoxTargets.length < 4) {
-      const nextField = activeField.parentElement.cloneNode(true)
-      nextField.setAttribute("for", `photo_field_${id + 1}`)
-      nextField.children[1].value = null
-      nextField.children[1].setAttribute("id", `photo_field_${id + 1}`)
-      nextField.children[1].classList.add("active-field")
-      nextField.children[1].setAttribute("name", `post[photos_attributes][${id + 1}][url]`)
-      this.formTarget.appendChild(nextField)
-      activeField.classList.remove("active-field")
+    this.previewPhoto(file, activeFieldId);
+
+    if (this.imageBoxTargets.length < (MAX_PHOTOS_COUNT_PER_POST - 1)) {
+      this.createNextField(activeFieldId);
+      activeField.classList.remove("active-field");
     } else {
-      activeField.parentElement.classList.add("disabled")
+      activeField.parentElement.classList.add("disabled");
     }
-
-    this.previewPhoto(file, id)
   }
 
-  previewPhoto(file, id) {
-    const preview = this.previewTarget
+  previewPhoto(file, fieldId) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
+
     reader.onloadend = () => {
-      const img = new Image()
-      const imgBox = document.createElement("div")
-      const deleteBtn = document.createElement("a")
-      const deleteBtnIcon = document.createElement("i")
+      const img = new Image();
+      const imgBox = document.createElement("div");
+      const deleteBtn = document.createElement("a");
+      const deleteBtnIcon = document.createElement("i");
 
-      img.src = reader.result
-      img.setAttribute("class", "post-photo-preview")
-      imgBox.setAttribute("class", "col-3 p-1 position-relative")
-      imgBox.setAttribute("data-photos-target", "photoBox")
-      deleteBtn.setAttribute("class", "position-absolute top-5 end-5 link cursor-pointer")
-      deleteBtn.setAttribute("id", `delete_btn_${id}`)
-      deleteBtn.setAttribute("data-action", "click->photos#deletePhoto")
-      deleteBtnIcon.textContent = "close"
-      deleteBtnIcon.setAttribute("class", "material-icons text-white bg-dark rounded-circle")
+      img.src = reader.result;
+      img.setAttribute("class", "post-photo-preview");
+      imgBox.setAttribute("class", "col-3 p-1 position-relative");
+      imgBox.setAttribute("data-photos-target", "imageBox");
+      deleteBtn.setAttribute("class", "position-absolute top-5 end-5 link cursor-pointer");
+      deleteBtn.setAttribute("id", `delete_btn_${fieldId}`);
+      deleteBtn.setAttribute("data-action", "click->photos#deletePhoto");
+      deleteBtnIcon.setAttribute("class", "material-icons text-white bg-dark rounded-circle");
+      deleteBtnIcon.textContent = "close";
 
-      imgBox.appendChild(img)
-      deleteBtn.appendChild(deleteBtnIcon)
-      imgBox.appendChild(deleteBtn)
-      preview.appendChild(imgBox)
+      imgBox.appendChild(img);
+      deleteBtn.appendChild(deleteBtnIcon);
+      imgBox.appendChild(deleteBtn);
+      this.previewTarget.appendChild(imgBox);
     };
   }
 
   deletePhoto(event) {
-    const deleteTarget = event.currentTarget
-    const deleteTargetId = Number(deleteTarget.id.replace(/delete_btn_/g, ''))
-    const deleteTargetField = document.querySelector(`#photo_field_${deleteTargetId}`)
-    const deleteTargetHiddenField = document.querySelector(`#post_photos_attributes_${deleteTargetId}_id`)
+    const target = event.currentTarget;
+    const targetId = Number(target.id.replace(/delete_btn_/g, ''));
+    const targetPhotoHiddenField = document.querySelector(`#post_photos_attributes_${targetId}_id`);
+    const activeField = document.querySelector(".active-field");
 
-    deleteTarget.parentElement.remove()
-    deleteTargetField.parentElement.remove()
-    if (deleteTargetHiddenField) {
-      const destroy = document.createElement("input")
-      destroy.setAttribute("name", `post[photos_attributes][${deleteTargetId}][_destroy]`)
-      destroy.setAttribute("value", true)
-      destroy.setAttribute("class", "d-none")
-      this.formTarget.appendChild(destroy)
+    target.parentElement.remove();
+    document.querySelector(`#photo_field_${targetId}`).parentElement.remove();
+
+    if (targetPhotoHiddenField) {
+      const destroyField = document.createElement("input");
+
+      destroyField.value = true;
+      destroyField.setAttribute("class", "d-none");
+      destroyField.setAttribute("name", `post[photos_attributes][${targetId}][_destroy]`);
+      this.formTarget.appendChild(destroyField);
     }
 
-    const emptyFields = this.fieldTargets.filter(field => !field.value)
-    if (emptyFields.length - this.photoBoxTargets.length == 1) {
-      return;
-    }
+    const emptyFields = this.fieldTargets.filter(field => !field.value);
 
-    if (emptyFields.length > 0) {
-      emptyFields[0].classList.add("active-field")
-    } else {
-      const lastFieldId = Number(this.fieldTargets.slice(-1)[0].id.replace(/photo_field_/g, ''))
-      const activeField = document.querySelector(".active-field")
-      const nextField = this.fieldTargets[0].parentElement.cloneNode(true)
-      nextField.setAttribute("for", `photo_field_${lastFieldId + 1}`)
-      nextField.children[1].value = null
-      nextField.children[1].setAttribute("id", `photo_field_${lastFieldId + 1}`)
-      nextField.children[1].classList.add("active-field")
-      nextField.children[1].setAttribute("name", `post[photos_attributes][${lastFieldId + 1}][url]`)
-      nextField.children[1].disabled = false
-      nextField.classList.remove("disabled")
-      this.formTarget.appendChild(nextField)
+    if (emptyFields.length > 0){
       if (activeField) {
-        activeField.classList.remove("active-field")
+        document.querySelector(".active-field").parentElement.classList.remove("disabled");
+        return;
+      } else {
+        emptyFields[0].classList.add("active-field");
+      }
+    } else {
+      const lastFieldId = Number(this.fieldTargets.slice(-1)[0].id.replace(/photo_field_/g, ''));
+
+      this.createNextField(lastFieldId);
+
+      if (activeField) {
+        activeField.classList.remove("active-field");
       }
     }
   }
 
-  createNextField() {
+  createNextField(id) {
+    const nextFieldNode = this.fieldTargets[0].parentElement.cloneNode(true);
 
+    nextFieldNode.setAttribute("for", `photo_field_${id + 1}`);
+    nextFieldNode.classList.remove("disabled");
+    nextFieldNode.children[1].value = null;
+    nextFieldNode.children[1].setAttribute("class", "d-none active-field");
+    nextFieldNode.children[1].setAttribute("id", `photo_field_${id + 1}`);
+    nextFieldNode.children[1].setAttribute("name", `post[photos_attributes][${id + 1}][url]`);
+    this.formTarget.appendChild(nextFieldNode);
   }
 }
