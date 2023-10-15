@@ -1,0 +1,11 @@
+<%= turbo_stream.update "bestrip_id" do %>
+  <div class="error-message">
+    <%= @user.errors.full_messages_for(:bestrip_id).first if @user.errors.any? %>
+  </div>
+  <%= button_tag "IDが使用可能か確認", type: :submit, formaction: :validate_bestrip_id, formmethod: :patch, class: "btn bg-gradient-light btn-sm  my-1 fw-bold" %>
+  <div class="text-sm text-dark d-sm-inline">
+    <% if !resource.errors.messages.key?(:bestrip_id) && !resource.bestrip_id.blank? then %>
+      <i class="bi-check2-circle text-primary fw-bold"></i>  このIDはご使用いただけます
+    <% end %>
+  </div>
+<% end %>

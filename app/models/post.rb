@@ -9,7 +9,7 @@ class Post < ApplicationRecord
   validates :photos, length: { minimum: 1, maximum: 5 }
 
   def has_photos?
-    return if !self.id
-    Post.find(self.id).photos
+    return if !id
+    Post.find(id).photos
   end
 end

@@ -221,7 +221,7 @@ RSpec.describe "UsersRegistrations", type: :system do
       end
     end
 
-    describe "BesTrip IDの使用可否チェックボタン" do
+    describe "BesTrip IDの使用可否チェックボタン", js: true do
       it "入力したIDがユニークな場合、使用可能メッセージが表示されること" do
         fill_in "BesTrip ID", with: "user_id"
         click_on "IDが使用可能か確認"

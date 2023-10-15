@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "UsersRegistrations", type: :request do
   let(:user) { create(:user) }
+  let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
   describe "GET #new" do
     it "正常にレスポンスを返すこと" do
@@ -104,19 +105,16 @@ RSpec.describe "UsersRegistrations", type: :request do
       sign_in user
     end
 
-    it "turbo-frameがレンダリングされること" do
-      patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } }
-      expect(response.body).to include '<turbo-frame id="profile_form">'
-    end
-
-    it "IDが一意な場合、使用可能のメッセージを取得すること" do
-      patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } }
+    it "IDが一意である場合、使用可能のメッセージを取得すること" do
+      patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } },
+                                            headers: turbo_stream
       expect(response.body).to include 'このIDはご使用いただけます'
     end
 
     it "IDが一意でない場合、エラーメッセージを取得すること" do
       create(:user, bestrip_id: "user_id")
-      patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } }
+      patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } },
+                                            headers: turbo_stream
       expect(response.body).to include 'このIDは他の人が使用しています'
     end
   end

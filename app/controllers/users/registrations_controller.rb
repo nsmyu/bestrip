@@ -40,7 +40,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def validate_bestrip_id
-    update_without_password_params[:avatar] = @user.avatar if @user.avatar
     @user.assign_attributes(update_without_password_params)
     @user.valid?
   end
@@ -78,6 +77,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def update_without_password_params
     params[:user][:bestrip_id] = nil if params[:user][:bestrip_id] == ""
-    params.require(:user).permit(:name, :bestrip_id, :email, :avatar, :avatar_cache, :introduction)
+    params.require(:user).permit(:name, :bestrip_id, :email, :avatar, :introduction)
   end
 end

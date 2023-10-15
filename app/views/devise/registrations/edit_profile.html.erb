@@ -6,59 +6,56 @@
         <h5>プロフィール編集</h5>
       </div>
       <div class="px-2">
-        <%= turbo_frame_tag "profile_form" do %>
-          <%= form_with model: resource, url: users_update_without_password_path do |f| %>
-            <div class="d-flex mb-3">
-              <div class="">
-                <%= image_tag resource.avatar.url, id: 'image_preview', class: "rounded-circle avatar" %>
-              </div>
-              <div class="ms-4 d-flex">
-                <label type="button" class="btn btn-outline-primary fw-bold my-auto px-2">
-                  <i class="material-icons opacity-10 me-2" style="vertical-align: -4px;">add_a_photo</i>画像を変更
-                  <%= f.file_field :avatar, accept: "image/*", id: "image_input", class: "d-none" %>
-                  <%= f.hidden_field :avatar_cache %>
-                </label>
-              </div>
+        <%= form_with model: resource, url: users_update_without_password_path do |f| %>
+          <div class="d-flex mb-3">
+            <div class="">
+              <%= image_tag resource.avatar.url, id: 'image_preview', class: "rounded-circle avatar" %>
             </div>
-             <div class="d-block mb-4 text-xs text-dark">「保存する」ボタンを押すと画像の変更が保存されます。</div>
-            <div class="input-group input-group-outline row mx-0 mb-4">
-              <%= f.label :name, class: "mx-0 mb-1 px-0 fw-bold" do %>
-                ニックネーム（20文字以内）<span class="required">必須</span>
-              <% end %>
-              <%= f.text_field :name, class: "form-control", autocomplete: "name", placeholder: "ニックネームを入力" %>
-              <div class="<%= "error-message" if resource.errors.messages.key?(:name) %>" >
-                <%= resource.errors.full_messages_for(:name).first if resource.errors.any? %>
-              </div>
+            <div class="ms-4 d-flex">
+              <label type="button" class="btn btn-outline-primary fw-bold my-auto px-2">
+                <i class="material-icons opacity-10 me-2" style="vertical-align: -4px;">add_a_photo</i>画像を変更
+                <%= f.file_field :avatar, accept: "image/*", id: "image_input", class: "d-none" %>
+              </label>
             </div>
-            <div class="input-group input-group-outline row mx-0 mb-4">
-              <%= f.label :bestrip_id, class: "mx-0 mb-1 px-0 fw-bold" do %>
-                BesTrip ID<span class="d-none d-sm-inline">（半角英数字とアンダーバー(_) 5〜20文字）</span>
-                <i class="bi-question-circle-fill text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                  title="旅のプランにメンバーを追加するときに使用するIDです。設定すると、友だちがあなたをID検索できるようになります。"></i>
-                <span class="d-block d-sm-none">（半角英数字とアンダーバー(_) 5〜20文字）</span>
-              <% end %>
-              <%= f.text_field :bestrip_id, class: "form-control", placeholder: "お好みのIDを入力" %>
-              <div class="<%= "error-message" if resource.errors.messages.key?(:bestrip_id) %>" >
-                <%= resource.errors.full_messages_for(:bestrip_id).first if resource.errors.any? %>
-              </div>
-              <div class="px-0">
-                <%= button_tag "IDが使用可能か確認", type: :submit, formaction: :validate_bestrip_id, formmethod: :patch, class: "btn bg-gradient-light btn-sm  my-1 fw-bold" %>
-              </div>
+          </div>
+            <div class="d-block mb-4 text-xs text-dark">「保存する」ボタンを押すと画像の変更が保存されます。</div>
+          <div class="input-group input-group-outline row mx-0 mb-4">
+            <%= f.label :name, class: "mx-0 mb-1 px-0 fw-bold" do %>
+              ニックネーム（20文字以内）<span class="required">必須</span>
+            <% end %>
+            <%= f.text_field :name, class: "form-control", autocomplete: "name", placeholder: "ニックネームを入力" %>
+            <div class="<%= "error-message" if resource.errors.messages.key?(:name) %>" >
+              <%= resource.errors.full_messages_for(:name).first if resource.errors.any? %>
             </div>
-            <div class="input-group input-group-outline row mx-0 mb-4">
-              <%= f.label :introduction, class: "mx-0 mb-1 px-0 fw-bold" do %>
-                自己紹介（500文字以内）
-              <% end %>
-              <%= f.text_area :introduction, id: "text_input", class: "form-control mb-1", rows: "7", placeholder: "500文字以内で入力" %>
-              <div class="d-flex justify-content-between px-0">
-                <div></div>
-                <div id="char_count" class="text-xs"><span>0</span>/500</div>
+          </div>
+          <div class="input-group input-group-outline row mx-0 mb-4">
+            <%= f.label :bestrip_id, class: "mx-0 mb-1 px-0 fw-bold" do %>
+              BesTrip ID<span class="d-none d-sm-inline">（半角英数字とアンダーバー(_) 5〜20文字）</span>
+              <i class="bi-question-circle-fill text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                title="旅のプランにメンバーを追加するときに使用するIDです。設定すると、友だちがあなたをID検索できるようになります。"></i>
+              <span class="d-block d-sm-none">（半角英数字とアンダーバー(_) 5〜20文字）</span>
+            <% end %>
+            <%= f.text_field :bestrip_id, class: "form-control", placeholder: "お好みのIDを入力" %>
+            <div class="px-0" id="bestrip_id">
+              <div class="error-message" >
+                <%= @user.errors.full_messages_for(:bestrip_id).first if @user.errors.any? %>
               </div>
+              <%= button_tag "IDが使用可能か確認", type: :submit, formaction: :validate_bestrip_id, formmethod: :patch, class: "btn bg-gradient-light btn-sm  my-1 fw-bold" %>
             </div>
-            <div class="mt-3 text-center ms-auto">
-              <%= f.submit "保存する", id: "submit_btn", class: "btn bg-gradient-primary mt-4 px-6 btn-lg", data: { turbo: false } %>
+          </div>
+          <div class="input-group input-group-outline row mx-0 mb-4">
+            <%= f.label :introduction, class: "mx-0 mb-1 px-0 fw-bold" do %>
+              自己紹介（500文字以内）
+            <% end %>
+            <%= f.text_area :introduction, id: "text_input", class: "form-control mb-1", rows: "7", placeholder: "500文字以内で入力" %>
+            <div class="d-flex justify-content-between px-0">
+              <div></div>
+              <div id="char_count" class="text-xs"><span>0</span>/500</div>
             </div>
-          <% end %>
+          </div>
+          <div class="mt-3 text-center ms-auto">
+            <%= f.submit "保存する", id: "submit_btn", class: "btn bg-gradient-primary mt-4 px-6 btn-lg", data: { turbo: false } %>
+          </div>
         <% end %>
       </div>
     </div>
