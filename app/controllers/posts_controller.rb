@@ -1,23 +1,17 @@
 class PostsController < ApplicationController
-  # before_action -> {
-  #   authenticate_user!
-  #   set_itinerary
-  #   authenticate_itinerary_member(@itinerary)
-  # }
-  # before_action :set_schedule, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action :set_post, only: [:show, :edit, :update, :destroy]
 
   def index
   end
 
   def new
-    authenticate_user!
     @current_users_itineraries = current_user.itineraries.pluck(:title, :id)
     @post = Post.new
     @post.photos.build
   end
 
   def create
-    @current_users_itineraries = current_user.itineraries.pluck(:title, :id)
     @post = User.find(current_user.id).posts.new(post_params)
     if @post.save
       redirect_to :posts, notice: "旅の思い出を投稿しました。"
@@ -29,17 +23,17 @@ class PostsController < ApplicationController
 
   def edit
     @current_users_itineraries = current_user.itineraries.pluck(:title, :id)
-    @post = Post.find(params[:id])
   end
 
   def update
-    @post = Post.find(params[:id])
     if @post.update(post_params)
       redirect_to :posts, notice: "旅の思い出を更新しました。"
     end
   end
 
   def destroy
+    @post.destroy
+    redirect_to :posts, notice: "投稿を削除しました。"
   end
 
   private
@@ -49,7 +43,7 @@ class PostsController < ApplicationController
       .permit(:title, :caption, :itinerary_id, [photos_attributes: [:url, :id, :_destroy]])
   end
 
-  def set_schedule
-    @schedule = Schedule.find(params[:id])
+  def set_post
+    @post = Post.find(params[:id])
   end
 end

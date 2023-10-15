@@ -59,9 +59,8 @@ class SchedulesController < ApplicationController
   end
 
   def destroy
-    deleted_title = @schedule.title
     @schedule.destroy
-    redirect_to :itinerary_schedules, notice: "#{deleted_title}を削除しました。"
+    redirect_to :itinerary_schedules, notice: "スケジュールを削除しました。"
   end
 
   private

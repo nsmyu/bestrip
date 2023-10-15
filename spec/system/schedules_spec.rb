@@ -372,7 +372,7 @@ RSpec.describe "Schedules", type: :system do
 
         click_on "削除する"
 
-        expect(page).to have_content "#{schedule.title}を削除しました。"
+        expect(page).to have_content "スケジュールを削除しました。"
         expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary.id)
       }.to change(Schedule, :count).by(-1)
     end

@@ -255,7 +255,7 @@ RSpec.describe "Itineraries", type: :system do
 
         click_on "削除する"
 
-        expect(page).to have_content "#{itinerary.title}を削除しました。"
+        expect(page).to have_content "旅のプランを削除しました。"
         expect(current_path).to eq itineraries_path
       }.to change(Itinerary, :count).by(-1)
     end

@@ -130,7 +130,7 @@ RSpec.describe "Schedules", type: :request do
     end
   end
 
-  describe "GET #edit", focus: true do
+  describe "GET #edit" do
     context "有効なリクエストの場合" do
       before do
         get edit_itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
