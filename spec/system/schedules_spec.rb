@@ -329,12 +329,12 @@ RSpec.describe "Schedules", type: :system do
         fill_in "schedule[note]", with: "a" * 500
 
         expect(page).to have_content "500"
-        expect(find("#submit_btn", visible: false)).not_to be_disabled
+        expect(find("#submit_btn")).not_to be_disabled
 
         fill_in "schedule[note]", with: "a" * 501
 
         expect(page).to have_content "501"
-        expect(find("#submit_btn", visible: false)).to be_disabled
+        expect(find("#submit_btn")).to be_disabled
       end
     end
 

@@ -37,7 +37,7 @@ RSpec.describe Schedule, type: :model do
     expect(schedule.errors).to be_of_kind(:note, :too_long)
   end
 
-  it "アイコンが定義した値以外の場合は無効であること", focus: true do
+  it "アイコンが定義した値以外の場合は無効であること" do
     schedule = build(:schedule, icon: "invalid_icon")
     schedule.valid?
     expect(schedule.errors).to be_of_kind(:icon, :inclusion)

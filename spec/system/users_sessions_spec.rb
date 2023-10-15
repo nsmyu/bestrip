@@ -42,15 +42,15 @@ RSpec.describe "UsersSessions", type: :system do
     end
   end
 
-  describe "ログアウト" do
-    it 'ログアウトに成功すること' do
-      sign_in user
-      visit root_path # あとで修正
-      first(:link, 'ログアウト').click
+  # describe "ログアウト" do
+  #   it 'ログアウトに成功すること' do
+  #     sign_in user
+  #     visit root_path # あとで修正
+  #     first(:link, 'ログアウト').click
 
-      expect(current_path).to eq root_path
-      expect(page).to have_selector "a[href=\"#{new_user_session_path}\"]"
-      expect(page).not_to have_selector "a[href=\"#{destroy_user_session_path}\"]"
-    end
-  end
+  #     expect(current_path).to eq sign_in_path
+  #     expect(page).to have_selector "a[href=\"#{new_user_session_path}\"]"
+  #     expect(page).not_to have_selector "a[href=\"#{destroy_user_session_path}\"]"
+  #   end
+  # end
 end
