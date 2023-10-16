@@ -4,7 +4,7 @@ ja:
       default: "%Y/%-m/%-d (%a)"
   time:
     formats:
-      default: "%-H:%M"
+      default: "%H:%M"
   activerecord:
       attributes:
         itinerary:
