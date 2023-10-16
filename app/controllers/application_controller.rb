@@ -16,15 +16,15 @@ class ApplicationController < ActionController::Base
   def sort_schedules_by_date_time(schedules)
     date_sorted_schedules = schedules.order(:schedule_date)
     @date_time_sorted_schedules = date_sorted_schedules
-    .group_by(&:schedule_date)
-    .map do |date, schedules|
-      [
-        date,
-        schedules.partition { |s| s.start_at.nil? }.yield_self do |nils, with_start_at|
-          with_start_at.sort_by { |w| w.start_at.strftime("%H:%M") } + nils
-        end,
-      ]
-    end
+      .group_by(&:schedule_date)
+      .map do |date, schedules|
+        [
+          date,
+          schedules.partition { |s| s.start_at.nil? }.yield_self do |nils, with_start_at|
+            with_start_at.sort_by { |w| w.start_at.strftime("%H:%M") } + nils
+          end,
+        ]
+      end
   end
 
   def get_place_details(place_id)

@@ -22,7 +22,9 @@
       <% else %>
         <div class="border mt-2">
           <div class="d-flex" >
-            <%= image_tag @place_photo_urls ? @place_photo_urls[0] : "default_place_thumbnail.png", class: "modal-small-place-image", id: "place_photo" %>
+            <div>
+              <%= image_tag @place_photo_urls ? @place_photo_urls[0] : "default_place_thumbnail.png", class: "modal-small-place-image", id: "place_photo" %>
+            </div>
             <div class="p-2 position-relative w-100">
               <p class="text-sm text-dark"><%= @place_details[:name] %></p>
               <p class="text-xs text-secondary"><%= @place_details[:address] %></p>

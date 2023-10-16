@@ -37,7 +37,9 @@
       </div>
       <div class="border mt-2" id="place_info_card">
         <div class="d-flex" >
-          <%= image_tag @place_photo_urls ? @place_photo_urls[0] : "default_place_thumbnail.png", class: "modal-small-place-image", id: "place_photo" %>
+          <div>
+            <%= image_tag @place_photo_urls ? @place_photo_urls[0] : "default_place_thumbnail.png", class: "modal-small-place-image", id: "place_photo" %>
+          </div>
           <div class="p-2 pe-4 position-relative w-100">
             <p class="text-sm text-dark" id="place_name"><%= @place_details[:name] if @place_details %></p>
             <p class="text-xs text-secondary" id="place_address"><%= @place_details[:address] if @place_details %></p>
