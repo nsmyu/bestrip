@@ -1,66 +1,23 @@
 <main class="main-content position-relative">
-  <div class="container-fluid py-4 py-sm-5 px-sm-6 min-vh-100">
-    <div class="w-md-80 mx-auto">
+  <div class="container-fluid py-4 py-sm-5 min-vh-100">
+    <div class="mx-auto" style="max-width: 1000px">
       <div class="row">
-        <div class="col-lg-6 col-sm-6">
+        <div class="col-lg-6 col-md-5 mt-3 mt-md-0">
           <%= image_tag @post.photos[0].url.to_s, class: "w-100" %>
         </div>
-        <div class="col-lg-6 px-0 px-sm-3">
+        <div class="col-lg-6 col-md-7 mt-3 mt-md-0 px-1 px-sm-2">
           <div class="mb-3 p-3 bg-white border-radius-lg">
-            <h5 class="mb-2 lh-base fw-bold text-dark"><%= @post.title %></h5>
-            <div class="d-flex pb-3">
+            <h5 class="mb-2"><%= @post.title %></h5>
+            <div class="d-flex pb-3 border-bottom">
               <%= image_tag @post.user.avatar.url, class: "rounded-circle avatar-thumbnail me-2" %>
               <div class="d-table">
                 <p class="text-dark text-sm fw-bold d-table-cell align-middle"><%= @post.user.name %></p>
               </div>
             </div>
-            <div class="pt-3 border-top">
-              <p class="pb-3 fs-15 text-dark"><%= @post.caption %></p>
-              <p class="text-sm"><%= posted_date(@post) %></p>
-            </div>
+            <p class="py-3 fs-15 text-dark"><%= @post.caption %></p>
+            <p class="text-sm"><%= posted_date(@post) %></p>
           </div>
-            <% @date_time_sorted_schedules.each_with_index do |(date, schedules), i| %>
-              <div class="mb-2 bg-white border-radius-lg">
-                <div class="pt-3 px-3 text-dark">
-                  <h6 class=""><%= date ? "#{i + 1}日目" : "その他の予定" %></h6>
-                  <% schedules.each do |schedule| %>
-                    <div class="border-top">
-                      <div class="row px-3 d-flex height-60 align-items-center">
-                        <div class="col-2 p-0 fw-bold">
-                          <div class="lh-1 fs-15">
-                            <% if schedule.start_at || schedule.end_at %>
-                              <%= (l schedule.start_at) if schedule.start_at %><br><span class="text-xs"><%= "- #{(l schedule.end_at)}" if schedule.end_at%></span>
-                            <% else %>
-                              --:--
-                            <% end %>
-                          </div>
-                        </div>
-                        <div class="col-10 ">
-                          <div class="row">
-                            <div class="col-1 px-0">
-                              <% if schedule.icon.present? %>
-                                <i class="material-icons rounded-circle schedule-icon ms-n1" style="vertical-align: -8px;"><%= schedule.icon %></i>
-                              <% end %>
-                            </div>
-                            <div class="col-10 d-flex align-items-center text-ellipsis text-sm ms-n2">
-                              <%= schedule.title %>
-                            </div>
-                            <div class="col-1 ps-2">
-                              <% if schedule.place_id.present? %>
-                                <%= link_to [:new_itinerary_favorite, itinerary_id: schedule.itinerary.id, place_id: schedule.place_id], data: { turbo_frame: "modal" } do %>
-                                  <i class="material-icons rounded-circle link-area p-2" style="vertical-align: -5px;">pin_drop</i>
-                                <% end %>
-                              <% end %>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
-          </div>
+          <%= render 'schedules' %>
         </div>
       </div>
     </div>

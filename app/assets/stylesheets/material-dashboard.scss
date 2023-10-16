@@ -160,6 +160,7 @@ label:has(#reset_place_btn) {
   color: white;
   font-size: 16px;
   opacity: 0.8;
+  border-radius: 50%;
 
   @include media-breakpoint-down(sm) {
     padding: 5px;
