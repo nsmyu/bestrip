@@ -20,6 +20,8 @@ class PostsController < ApplicationController
   end
 
   def show
+    schedules = @post.itinerary.schedules
+    sort_schedules_by_date_time(schedules)
   end
 
   def edit

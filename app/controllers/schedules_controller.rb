@@ -9,17 +9,8 @@ class SchedulesController < ApplicationController
   before_action :set_schedule, only: [:show, :edit, :update, :destroy]
 
   def index
-    unsorted_schedules = Itinerary.find(params[:itinerary_id]).schedules.order(:schedule_date)
-    @sorted_schedules = unsorted_schedules
-      .group_by(&:schedule_date)
-      .map do |date, schedules|
-        [
-          date,
-          schedules.partition { |s| s.start_at.nil? }.yield_self do |nils, with_start_at|
-            with_start_at.sort_by { |w| w.start_at.strftime("%H:%M") } + nils
-          end,
-        ]
-      end
+    schedules = Itinerary.find(params[:itinerary_id]).schedules
+    sort_schedules_by_date_time(schedules)
   end
 
   def new

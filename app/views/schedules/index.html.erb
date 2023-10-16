@@ -1,11 +1,11 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
   <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3 min-vh-100">
-    <% if @sorted_schedules.blank? %>
+    <% if @date_time_sorted_schedules.blank? %>
       <p class="text-center text-dark">スケジュールは登録されていません</p>
     <% else %>
       <div class="w-md-70 mx-auto">
-        <% @sorted_schedules.each do |date, schedules| %>
+        <% @date_time_sorted_schedules.each do |date, schedules| %>
           <div class="card mb-4 pt-3 text-dark">
             <h5 class="d-none d-sm-block px-4"><%= date ? (l date) : "その他の予定" %></h5>
             <h6 class="d-sm-none px-3"><%= date ? (l date) : "その他の予定" %></h6>
