@@ -17,10 +17,10 @@ class ApplicationController < ActionController::Base
     date_sorted_schedules = schedules.order(:schedule_date)
     @date_time_sorted_schedules = date_sorted_schedules
       .group_by(&:schedule_date)
-      .map do |date, schedules|
+      .map do |date, schedule_items|
         [
           date,
-          schedules.partition { |s| s.start_at.nil? }.yield_self do |nils, with_start_at|
+          schedule_items.partition { |s| s.start_at.nil? }.yield_self do |nils, with_start_at|
             with_start_at.sort_by { |w| w.start_at.strftime("%H:%M") } + nils
           end,
         ]
