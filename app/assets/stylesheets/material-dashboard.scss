@@ -241,3 +241,9 @@ label:has(#reset_place_btn) {
 .fs-15 {
   font-size: 15px;
 }
+
+.grid-5-wrapper {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}

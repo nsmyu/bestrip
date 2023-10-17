@@ -1,9 +1,9 @@
 <main class="main-content position-relative">
   <div class="container-fluid py-4 py-sm-5 min-vh-100">
-    <div class="mx-auto" style="max-width: 1000px">
+    <div class="mx-auto max-width-1000">
       <div class="row">
         <div class="col-lg-6 col-md-5 mt-3 mt-md-0">
-          <%= image_tag @post.photos[0].url.to_s, class: "w-100" %>
+          <%= render 'photo_carousel' %>
         </div>
         <div class="col-lg-6 col-md-7 mt-3 mt-md-0 px-1 px-sm-2">
           <div class="mb-3 p-3 bg-white border-radius-lg">
