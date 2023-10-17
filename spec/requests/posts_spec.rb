@@ -1,10 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :request do
+RSpec.describe "Posts", type: :request, focus: true do
   let!(:user) { create(:user) }
-  let!(:itinerary) { create(:itinerary, owner: user) }
+  let!(:itinerary) { create(:itinerary, :with_schedule, owner: user) }
   let(:post_with_photo) { create(:post, :with_photo, itinerary: itinerary) }
-  let(:photo) { build(:photo) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
   before do
@@ -17,21 +16,20 @@ RSpec.describe "Posts", type: :request do
       expect(response).to have_http_status 200
     end
 
-    # it "旅のプランに含まれるスケジュールを全て取得すること" do
-    #   post1 = create(:post, :with_photo,itinerary_id: itinerary.id)
-    #   post2 = create(:post, :with_photo,itinerary_id: itinerary.id)
-    #   get itinerary_posts_path
-    #   expect(response.body).to include post1.title, post2.title
-    # end
+    it "投稿を全て取得すること" do
+      post_with_photo_1 = create(:post, :with_photo, itinerary_id: itinerary.id)
+      post_with_photo_2 = create(:post, :with_photo, itinerary_id: itinerary.id)
+      get posts_path
+      expect(response.body).to include post_with_photo_1.title, post_with_photo_2.title
+    end
 
-    # it "スケジュールのタイトル、日付、開始・終了時間を取得すること" do
-    #   post = create(:post, :with_photo,itinerary_id: itinerary.id)
-    #   get itinerary_posts_path
-    #   expect(response.body).to include post.title
-    #   expect(response.body).to include I18n.l post.post_date
-    #   expect(response.body).to include I18n.l post.start_at
-    #   expect(response.body).to include I18n.l post.end_at
-    # end
+    it "投稿のタイトル、作成者、投稿日を取得すること" do
+      post_with_photo = create(:post, :with_photo, itinerary_id: itinerary.id)
+      get posts_path
+      expect(response.body).to include post_with_photo.title
+      expect(response.body).to include post_with_photo.user.name
+      expect(response.body).to include posted_date(post_with_photo)
+    end
   end
 
   describe "GET #new" do
@@ -84,20 +82,23 @@ RSpec.describe "Posts", type: :request do
     end
   end
 
-  # describe "GET #show" do
-  #   before do
-  #     get post_path(id: post.id)
-  #   end
+  describe "GET #show" do
+    before do
+      get post_path(id: post_with_photo.id)
+    end
 
-  #   it "正常にレスポンスを返すこと" do
-  #     expect(response).to have_http_status 200
-  #   end
+    it "正常にレスポンスを返すこと" do
+      expect(response).to have_http_status 200
+    end
 
-  #   # it "スケジュールの情報を取得すること" do
-  #   #   expect(response.body).to include post.title
-  #   #   expect(response.body).to include post.note
-  #   # end
-  # end
+    it "投稿の各情報を取得すること" do
+      expect(response.body).to include post_with_photo.title
+      expect(response.body).to include post_with_photo.caption
+      expect(response.body).to include post_with_photo.user.name
+      expect(response.body).to include posted_date(post_with_photo)
+      expect(response.body).to include post_with_photo.itinerary.schedules[0].title
+    end
+  end
 
   describe "GET #edit" do
     before do
@@ -108,7 +109,7 @@ RSpec.describe "Posts", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "投稿の内容を取得すること" do
+    it "投稿の各情報を取得すること" do
       expect(response.body).to include post_with_photo.title
       expect(response.body).to include post_with_photo.caption
       expect(response.body).to include post_with_photo.itinerary.title
@@ -123,7 +124,7 @@ RSpec.describe "Posts", type: :request do
                                                          caption: "New caption.",
                                                          itinerary_id: other_itinerary.id)
         patch post_path(id: post_with_photo.id), params: { post: post_params }
-        expect(response).to redirect_to posts_path
+        expect(response).to redirect_to post_path(post_with_photo.id)
         expect(post_with_photo.reload.title).to eq "New Title"
         expect(post_with_photo.reload.caption).to eq "New caption."
         expect(post_with_photo.reload.itinerary_id).to eq other_itinerary.id

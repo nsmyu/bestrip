@@ -8,5 +8,11 @@ FactoryBot.define do
     after(:build) do |itinerary|
       itinerary.members << itinerary.owner
     end
+
+    trait :with_schedule do
+      after(:build) do |itinerary|
+        itinerary.schedules << build(:schedule)
+      end
+    end
   end
 end
