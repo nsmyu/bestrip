@@ -30,7 +30,7 @@ class PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
-      redirect_to :posts, notice: "旅の思い出を更新しました。"
+      redirect_to @post, notice: "旅の思い出を更新しました。"
     end
   end
 

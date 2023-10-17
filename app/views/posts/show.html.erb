@@ -6,18 +6,8 @@
           <%= render 'photo_carousel' %>
         </div>
         <div class="col-lg-6 col-md-7 mt-3 mt-md-0 px-1 px-sm-2">
-          <div class="mb-3 p-3 bg-white border-radius-lg">
-            <h5 class="mb-2"><%= @post.title %></h5>
-            <div class="d-flex pb-3 border-bottom">
-              <%= image_tag @post.user.avatar.url, class: "rounded-circle avatar-thumbnail me-2" %>
-              <div class="d-table">
-                <p class="text-dark text-sm fw-bold d-table-cell align-middle"><%= @post.user.name %></p>
-              </div>
-            </div>
-            <p class="py-3 fs-15 text-dark"><%= @post.caption %></p>
-            <p class="text-sm"><%= posted_date(@post) %></p>
-          </div>
-          <%= render 'schedules' %>
+          <%= render 'text' %>
+          <%= render 'schedule' %>
         </div>
       </div>
     </div>

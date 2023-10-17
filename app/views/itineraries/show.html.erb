@@ -6,10 +6,8 @@
         <div class="d-flex border-bottom justify-content-between">
           <h5>旅のプラン情報</h5>
           <div>
-            <%= turbo_frame_tag "itinerary" do %>
-              <%= link_to :edit_itinerary, data: { turbo_frame: "modal" } do %>
-                <i class="material-icons text-2xl" style="vertical-align: -10px;">edit</i>
-              <% end %>
+            <%= link_to :edit_itinerary, data: { turbo_frame: "modal" } do %>
+              <i class="material-icons text-2xl" style="vertical-align: -10px;">edit</i>
             <% end %>
             <% if current_user == @itinerary.owner %>
               <%= link_to [:itinerary, id: @itinerary.id], data: { turbo_method: :delete, turbo_confirm: 'この旅のプランを削除しますか？この操作は取り消せません。' } do %>
