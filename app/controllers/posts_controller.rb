@@ -15,7 +15,7 @@ class PostsController < ApplicationController
   def create
     @post = User.find(current_user.id).posts.new(post_params)
     if @post.save
-      redirect_to :posts, notice: "旅の思い出を投稿しました。"
+      redirect_to @post, notice: "旅の思い出を投稿しました。"
     end
   end
 

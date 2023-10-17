@@ -4,7 +4,7 @@ module ApplicationHelper
     sorted_members.map { |i| i.name }.join(", ")
   end
 
-  def posted_date(post)
+  def date_posted(post)
     "#{post.created_at.year}.#{post.created_at.month}.#{post.created_at.day}"
   end
 end

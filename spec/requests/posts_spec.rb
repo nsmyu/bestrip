@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :request, focus: true do
+RSpec.describe "Posts", type: :request do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, :with_schedule, owner: user) }
   let(:post_with_photo) { create(:post, :with_photo, itinerary: itinerary) }
@@ -23,12 +23,12 @@ RSpec.describe "Posts", type: :request, focus: true do
       expect(response.body).to include post_with_photo_1.title, post_with_photo_2.title
     end
 
-    it "投稿のタイトル、作成者、投稿日を取得すること" do
+    it "投稿のタイトル、投稿者名、投稿日を取得すること" do
       post_with_photo = create(:post, :with_photo, itinerary_id: itinerary.id)
       get posts_path
       expect(response.body).to include post_with_photo.title
       expect(response.body).to include post_with_photo.user.name
-      expect(response.body).to include posted_date(post_with_photo)
+      expect(response.body).to include date_posted(post_with_photo)
     end
   end
 
@@ -95,7 +95,7 @@ RSpec.describe "Posts", type: :request, focus: true do
       expect(response.body).to include post_with_photo.title
       expect(response.body).to include post_with_photo.caption
       expect(response.body).to include post_with_photo.user.name
-      expect(response.body).to include posted_date(post_with_photo)
+      expect(response.body).to include date_posted(post_with_photo)
       expect(response.body).to include post_with_photo.itinerary.schedules[0].title
     end
   end
