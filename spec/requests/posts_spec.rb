@@ -192,7 +192,6 @@ RSpec.describe "Posts", type: :request do
 
     it "ログインユーザーが投稿の作成者でない場合、失敗すること" do
       other_user = create(:user)
-      post_params = attributes_for(:post, :with_photo, title: "Edited Title")
 
       sign_out user
       sign_in other_user

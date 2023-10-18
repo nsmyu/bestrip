@@ -46,8 +46,11 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post)
-      .permit(:title, :caption, :itinerary_public, :itinerary_id, [photos_attributes: [:url, :id, :_destroy]])
+    params.require(:post).permit(:title,
+                                 :caption,
+                                 :itinerary_public,
+                                 :itinerary_id,
+                                 [photos_attributes: [:url, :id, :_destroy]])
   end
 
   def set_post
