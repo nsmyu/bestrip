@@ -86,7 +86,7 @@ RSpec.describe "Itineraries", type: :system do
 
           expect(page).to have_selector "img[id='image_preview'][src*='default_itinerary']"
 
-          image_path = Rails.root.join('spec/fixtures/test_image.jpg')
+          image_path = Rails.root.join('spec/fixtures/cat.jpg')
           attach_file 'itinerary[image]', image_path, make_visible: true
 
           expect(page).not_to have_selector "img[id='image_preview'][src*='default_itinerary']"
@@ -194,7 +194,7 @@ RSpec.describe "Itineraries", type: :system do
 
         expect(page).to have_selector "img[id='image_preview'][src*='default_itinerary']"
 
-        image_path = Rails.root.join('spec/fixtures/test_image.jpg')
+        image_path = Rails.root.join('spec/fixtures/cat.jpg')
         attach_file 'itinerary[image]', image_path, make_visible: true
 
         expect(page).not_to have_selector "img[id='image_preview'][src*='default_itinerary']"
@@ -205,7 +205,7 @@ RSpec.describe "Itineraries", type: :system do
         expect(page).to have_content "旅のプラン情報を変更しました。"
         expect(page).to have_content "New Title"
         expect(page).to have_content "2024/4/1 (月) 〜 2024/4/8 (月)"
-        expect(page).to have_selector "img[src*='test_image.jpg']"
+        expect(page).to have_selector "img[src*='cat.jpg']"
       end
     end
 
