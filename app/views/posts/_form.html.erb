@@ -1,10 +1,15 @@
 <%= form_with model: post, data: { action: "turbo:submit-end->modal#close", turbo_frame: "_top" } do |f| %>
-  <div class="input-group input-group-outline row mx-0 mb-4">
+  <div class="input-group input-group-outline row mx-0 mb-3">
     <label class="m-0 px-0 fw-bold">思い出を投稿する旅のプラン<span class="required">必須</span></label>
     <label class="select-box px-0">
       <%= f.select :itinerary_id, @current_users_itineraries, { include_blank: "旅のプランを選択" }, class: "form-control cursor-pointer" %>
     </label>
     <div class="px-0" id="itinerary_error"></div>
+  </div>
+  <div class="mb-4">
+    <%= f.label "旅のスケジュールを公開",  class: "m-0 px-0 fw-bold" %>
+    <%= f.check_box :itinerary_public, class: "ms-2 post-checkbox", checked: true, checked_value: true, unchecked_value: false %>
+    <p class="mb-2 text-dark text-xs">チェックを入れると投稿の詳細画面で旅のスケジュールが公開されます。</p>
   </div>
   <div class="mb-4" data-controller="photos" >
     <label class="m-0 px-0 fw-bold d-block">写真（最大20枚）<span class="required">1枚以上必須</span></label>
@@ -37,7 +42,7 @@
     <%= f.text_field :title, class: "form-control", placeholder: "タイトルを入力" %>
     <div class="px-0" id="title_error"></div>
   </div>
-  <div class="input-group input-group-outline row mx-0 mb-4">
+  <div class="input-group input-group-outline row mx-0 mb-3">
     <%= f.label "キャプション（1000文字以内）", class: "m-0 px-0 fw-bold" %>
     <%= f.text_area :caption, id: "text_input", class: "form-control", rows: "7", placeholder: "キャプションを入力" %>
     <div class="d-flex justify-content-between px-0">

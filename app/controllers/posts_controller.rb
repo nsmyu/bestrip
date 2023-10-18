@@ -21,9 +21,11 @@ class PostsController < ApplicationController
   end
 
   def show
-    schedules = @post.itinerary.schedules
-    sort_schedules_by_date_time(schedules)
-    @date_list = (@post.itinerary.departure_date..@post.itinerary.return_date).to_a
+    if @post.itinerary_public?
+      schedules = @post.itinerary.schedules
+      sort_schedules_by_date_time(schedules)
+      @date_list = (@post.itinerary.departure_date..@post.itinerary.return_date).to_a
+    end
   end
 
   def edit
@@ -45,7 +47,7 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post)
-      .permit(:title, :caption, :itinerary_id, [photos_attributes: [:url, :id, :_destroy]])
+      .permit(:title, :caption, :itinerary_public, :itinerary_id, [photos_attributes: [:url, :id, :_destroy]])
   end
 
   def set_post

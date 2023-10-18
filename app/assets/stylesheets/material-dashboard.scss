@@ -246,3 +246,9 @@ label:has(#reset_place_btn) {
   grid-template-columns: repeat(5, 1fr);
   gap: 8px;
 }
+
+.post-checkbox {
+  vertical-align: -1px;
+  transform: scale(1.2);
+  accent-color: $dark;
+}
