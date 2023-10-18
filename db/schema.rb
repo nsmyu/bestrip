@@ -57,7 +57,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_18_075014) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.bigint "itinerary_id", null: false
-    t.boolean "itinerary_public", default: false, null: false
+    t.boolean "itinerary_public", default: true, null: false
     t.index ["itinerary_id"], name: "index_posts_on_itinerary_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
