@@ -35,21 +35,21 @@
           <div class="d-flex justify-content-between mt-3">
             <div>
               <%= image_tag member.avatar.url, id: 'image-preview', class: "rounded-circle avatar-thumbnail me-2" %>
-              <%= member.name %>
+              <p class="text-sm d-inline fw-bold"><%= member.name %></p>
               <% if member == @itinerary.owner %>
-                <i class="material-icons" style="vertical-align: -3.5px;">star</i>
+                <i class="material-icons" style="vertical-align: -4.5px;">star</i>
               <% end %>
             </div>
             <% if current_user == @itinerary.owner && member!= @itinerary.owner %>
               <%= link_to [:itinerary_user, id: @itinerary.id, user_id: member.id], data: { turbo_method: :delete, turbo_confirm: member.name + 'をメンバーから削除しますか？' } do %>
-                <i class="material-icons px-1 fw-normal" style="vertical-align: -10px;">person_remove</i>
+                <i class="material-icons p-2 fw-normal link-area rounded-circle" style="vertical-align: -10px;">person_remove</i>
               <% end %>
             <% end %>
           </div>
         <% end %>
-        <hr class="dark horizontal">
+        <hr class="dark horizontal mb-2">
           <%= link_to :new_itinerary_user, data: { turbo_frame: "modal" } do %>
-            <p class="text-center"><i class="material-icons" style="vertical-align: -4.5px;">person_add</i> メンバーを追加</p>
+            <p class="text-center text-sm link-area py-2 border-radius-lg"><i class="material-icons me-1" style="vertical-align: -4.5px;">person_add</i> メンバーを追加</p>
           <% end %>
       </div>
     </div>
