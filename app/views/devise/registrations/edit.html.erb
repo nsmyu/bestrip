@@ -9,28 +9,28 @@
         <%= form_with model: resource, url: user_registration_path, data: { turbo: false } do |f| %>
           <div class="input-group input-group-outline row mx-0 mb-4">
             <%= f.label :current_password, class: "mx-0 mb-1 px-0 fw-bold" do %>
-              現在のパスワード <span class="required">*</span>
+              現在のパスワード <span class="required">必須</span>
             <% end %>
-            <%= f.password_field :current_password, class: "form-control", autocomplete: "current-password" %>
-            <div class="<%= "error-message" if resource.errors.messages.key?(:current_password) %>" >
+            <%= f.password_field :current_password, class: "form-control", autocomplete: "current-password", placeholder: "現在のパスワードを入力"  %>
+            <div class="error-message">
               <%= resource.errors.full_messages_for(:current_password).first if resource.errors.any? %>
             </div>
           </div>
           <div class="input-group input-group-outline row mx-0 mb-4">
             <%= f.label :password, class: "mx-0 mb-1 px-0 fw-bold" do %>
-              新しいパスワード（半角英数字6文字以上）<span class="required">*</span>
+              新しいパスワード（半角英数字6文字以上）<span class="required">必須</span>
             <% end %>
             <%= f.password_field :password, class: "form-control", autocomplete: "new-password", placeholder: "新しいパスワードを入力" %>
-            <div class="<%= "error-message" if resource.errors.messages.key?(:password) %>" >
+            <div class="error-message">
               <%= resource.errors.full_messages_for(:password).first if resource.errors.any? %>
             </div>
           </div>
           <div class="input-group input-group-outline row mx-0 mb-4">
             <%= f.label :password_confirmation, class: "mx-0 mb-1 px-0 fw-bold" do %>
-              新しいパスワード（確認用）<span class="required">*</span>
+              新しいパスワード（確認用）<span class="required">必須</span>
             <% end %>
             <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password", placeholder: "確認のため再度で入力" %>
-            <div class="<%= "error-message" if resource.errors.messages.key?(:password_confirmation) %>" >
+            <div class="error-message">
               <%= resource.errors.full_messages_for(:password_confirmation).first if resource.errors.any? %>
             </div>
           </div>
