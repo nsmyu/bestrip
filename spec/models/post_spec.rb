@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Post, type: :model do
+RSpec.describe Post, type: :model, focus: true do
   it "タイトル、itinerary_idがあり、写真が1枚以上紐付けられていれば有効であること" do
     expect(build(:post, :with_photo)).to be_valid
   end
@@ -23,18 +23,6 @@ RSpec.describe Post, type: :model do
     expect(post.errors).to be_of_kind(:caption, :too_long)
   end
 
-  it "itinerary_idがなければ無効であること" do
-    post = build(:post, itinerary: nil)
-    post.valid?
-    expect(post.errors).to be_of_kind(:itinerary, :blank)
-  end
-
-  it "user_idがなければ無効であること" do
-    post = build(:post, user: nil)
-    post.valid?
-    expect(post.errors).to be_of_kind(:user, :blank)
-  end
-
   it "写真が1枚も紐付けされていない場合は無効であること" do
     post = build(:post)
     post.valid?
@@ -46,5 +34,17 @@ RSpec.describe Post, type: :model do
     post.photos << build_list(:photo, 20)
     post.valid?
     expect(post.errors).to be_of_kind(:photos, :too_long)
+  end
+
+  it "itinerary_idがなければ無効であること" do
+    post = build(:post, itinerary: nil)
+    post.valid?
+    expect(post.errors).to be_of_kind(:itinerary, :blank)
+  end
+
+  it "user_idがなければ無効であること" do
+    post = build(:post, user: nil)
+    post.valid?
+    expect(post.errors).to be_of_kind(:user, :blank)
   end
 end

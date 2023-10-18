@@ -3,7 +3,7 @@ FactoryBot.define do
     sequence(:title) { |n| "Post_#{n}" }
     caption { "One of the best trips of my life!" }
     itinerary
-    user { itinerary.owner }
+    user { itinerary.owner if itinerary}
 
     trait :with_photo do
       after(:build) do |post|

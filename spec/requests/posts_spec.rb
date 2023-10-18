@@ -17,14 +17,14 @@ RSpec.describe "Posts", type: :request do
     end
 
     it "投稿を全て取得すること" do
-      post_with_photo_1 = create(:post, :with_photo, itinerary_id: itinerary.id)
-      post_with_photo_2 = create(:post, :with_photo, itinerary_id: itinerary.id)
+      post_with_photo_1 = create(:post, :with_photo, itinerary: itinerary)
+      post_with_photo_2 = create(:post, :with_photo, itinerary: itinerary)
       get posts_path
       expect(response.body).to include post_with_photo_1.title, post_with_photo_2.title
     end
 
     it "投稿のタイトル、投稿者名、投稿日を取得すること" do
-      post_with_photo = create(:post, :with_photo, itinerary_id: itinerary.id)
+      post_with_photo = create(:post, :with_photo, itinerary: itinerary)
       get posts_path
       expect(response.body).to include post_with_photo.title
       expect(response.body).to include post_with_photo.user.name
@@ -45,7 +45,7 @@ RSpec.describe "Posts", type: :request do
         photo_params = { photos_attributes: [attributes_for(:photo)] }
         post_params = attributes_for(:post, itinerary_id: itinerary.id).merge(photo_params)
         post posts_path, params: { post: post_params }
-        expect(response).to redirect_to posts_path
+        expect(response).to redirect_to post_path(Post.first.id)
       end
     end
 
@@ -120,13 +120,13 @@ RSpec.describe "Posts", type: :request do
     context "有効な値の場合" do
       it "各項目の変更に成功すること" do
         other_itinerary = create(:itinerary, owner: user)
-        post_params = attributes_for(:post, :with_photo, title: "New Title",
-                                                         caption: "New caption.",
+        post_params = attributes_for(:post, :with_photo, title: "Edited Title",
+                                                         caption: "Edited caption.",
                                                          itinerary_id: other_itinerary.id)
         patch post_path(id: post_with_photo.id), params: { post: post_params }
         expect(response).to redirect_to post_path(post_with_photo.id)
-        expect(post_with_photo.reload.title).to eq "New Title"
-        expect(post_with_photo.reload.caption).to eq "New caption."
+        expect(post_with_photo.reload.title).to eq "Edited Title"
+        expect(post_with_photo.reload.caption).to eq "Edited caption."
         expect(post_with_photo.reload.itinerary_id).to eq other_itinerary.id
       end
     end
@@ -169,10 +169,34 @@ RSpec.describe "Posts", type: :request do
         expect(response.body).to include "写真は1枚以上選択してください"
       end
     end
+
+    context "ログインユーザーが投稿の作成者でない場合" do
+      it "失敗すること" do
+        other_user = create(:user)
+        post_params = attributes_for(:post, :with_photo, title: "Edited Title")
+
+        sign_out user
+        sign_in other_user
+
+        patch post_path(id: post_with_photo.id), params: { post: post_params }
+        expect(response).to redirect_to posts_path
+      end
+    end
   end
 
   describe "DELETE #destroy" do
     it "成功すること" do
+      delete post_path(id: post_with_photo.id)
+      expect(response).to redirect_to posts_path
+    end
+
+    it "ログインユーザーが投稿の作成者でない場合、失敗すること" do
+      other_user = create(:user)
+      post_params = attributes_for(:post, :with_photo, title: "Edited Title")
+
+      sign_out user
+      sign_in other_user
+
       delete post_path(id: post_with_photo.id)
       expect(response).to redirect_to posts_path
     end
