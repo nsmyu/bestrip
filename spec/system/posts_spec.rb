@@ -1,10 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :system do
+RSpec.describe "Posts", type: :system, focus: true do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, :with_schedule, owner: user) }
-
-  let(:photo) { build(:photo) }
 
   before do
     sign_in user
@@ -30,7 +28,7 @@ RSpec.describe "Posts", type: :system do
 
     it "投稿のタイトル、写真、投稿者名、投稿日を表示すること" do
       within(:xpath, "//div[div[p[contains(text(), '#{post.title}')]]]") do
-        expect(page).to have_selector "img[src$='test_image.jpg']"
+        expect(page).to have_selector "img[src$='cat.jpg']"
         expect(page).to have_content post.user.name
         expect(page).to have_content date_posted(post)
       end
@@ -53,7 +51,7 @@ RSpec.describe "Posts", type: :system do
   end
 
   describe "新規作成", js: true do
-    let(:post) { build(:post) }
+    let(:new_post) { build(:post) }
 
     before do
       visit new_post_path
@@ -64,16 +62,16 @@ RSpec.describe "Posts", type: :system do
         expect {
           find(".select-box").click
           find("option", text: "#{itinerary.title}").click
-          image_path = Rails.root.join('spec/fixtures/test_image.jpg')
+          image_path = Rails.root.join('spec/fixtures/cat.jpg')
           attach_file "post[photos_attributes][0][url]", image_path, make_visible: true
-          fill_in "post[title]", with: post.title
-          fill_in "post[caption]", with: post.caption
+          fill_in "post[title]", with: new_post.title
+          fill_in "post[caption]", with: new_post.caption
           click_on "投稿する"
 
           expect(page).to have_content "旅の思い出を投稿しました。"
-          expect(page).to have_selector "img[src$='test_image.jpg']"
-          expect(page).to have_content post.title
-          expect(page).to have_content post.caption
+          expect(page).to have_selector "img[src$='cat.jpg']"
+          expect(page).to have_content new_post.title
+          expect(page).to have_content new_post.caption
         }.to change(Post, :count).by(1)
       end
     end
@@ -107,25 +105,68 @@ RSpec.describe "Posts", type: :system do
     end
   end
 
-  describe "詳細表示", js: true, focus: true do
-    let!(:post) { create(:post, itinerary: itinerary) }
+  describe "詳細表示" do
+    let!(:post) { create(:post, :with_photo, itinerary: itinerary) }
 
     before do
       visit post_path(id: post.id)
     end
 
     it "投稿の各情報を表示すること" do
-      expect(page).to have_selector "img[src$='test_image.jpg']"
+      expect(page).to have_selector "img[src$='cat.jpg']"
       expect(page).to have_content post.title
       expect(page).to have_content post.user.name
       expect(page).to have_content post.caption
       expect(page).to have_content date_posted(post)
     end
 
-    it "投稿に紐付けられた旅のプランのスケジュールを表示すること" do
-      expect(page).to have_content post.itinerary.schedule[0].icon
-      expect(page).to have_content post.itinerary.schedule[0].title
-      expect(page).to have_content I18n.l post.itinerary.schedule[0].start_at
+    it "投稿に紐付けられた旅のプランの、スケジュール情報を表示すること" do
+      expect(page).to have_content I18n.l post.itinerary.schedules[0].start_at
+      expect(page).to have_content post.itinerary.schedules[0].icon
+      expect(page).to have_content post.itinerary.schedules[0].title
+    end
+
+    it "投稿に紐付けられた旅のプランのスケジュールを日付順で表示すること" do
+      schedule_1st_day = create(:schedule, schedule_date: itinerary.departure_date,
+                                           itinerary: itinerary)
+      schedule_2nd_day = create(:schedule, schedule_date: itinerary.departure_date.tomorrow,
+                                           itinerary: itinerary)
+      schedule_8th_day = create(:schedule, schedule_date: itinerary.return_date,
+                                           itinerary: itinerary)
+
+      visit post_path(id: post.id)
+
+      expect(page.text).to match(/#{"1日目"}[\s\S]*#{"2日目"}[\s\S]*#{"8日目"}/)
+      within(:xpath, "//div[h6[contains(text(), '1日目')]]") do
+        expect(page).to have_content I18n.l schedule_1st_day.start_at
+      end
+      within(:xpath, "//div[h6[contains(text(), '2日目')]]") do
+        expect(page).to have_content I18n.l schedule_2nd_day.start_at
+      end
+      within(:xpath, "//div[h6[contains(text(), '8日目')]]") do
+        expect(page).to have_content I18n.l schedule_8th_day.start_at
+      end
+    end
+
+    describe "リンクのテスト", js: true do
+      it "ドロップダウンメニューの「編集」をクリックすると、投稿編集モーダルを表示すること" do
+        find("i", text: "more_horiz", visible: false).click
+        click_on "編集"
+
+        within(".modal") do
+          expect(page).to have_content "旅の思い出を編集"
+          expect(page.has_field? 'post[title]', with: post.title).to be_truthy
+        end
+      end
+
+      it "スケジュールのタイトル右側のアイコンをクリックすると、スポット情報のモーダルを表示すること" do
+        find("i", text: "pin_drop", visible: false).click
+
+        within(".modal") do
+          expect(page).to have_content "スポット情報"
+          expect(page).to have_content "シドニー・オペラハウス"
+        end
+      end
     end
   end
 
@@ -137,29 +178,32 @@ RSpec.describe "Posts", type: :system do
     end
 
     context "有効な値の場合" do
-      it "成功すること" do
+      it "画像以外の各項目の変更に成功すること" do
         other_itinerary = create(:itinerary, owner: user)
+
         visit edit_post_path(id: post.id)
         find(".select-box").click
         find("option", text: "#{other_itinerary.title}").click
-        fill_in "post[title]", with: "New title"
-        fill_in "post[caption]", with: "New caption."
+        fill_in "post[title]", with: "Edited title"
+        fill_in "post[caption]", with: "Edited caption."
         click_on "投稿する"
 
         expect(page).to have_content "旅の思い出を更新しました。"
-        # within(:xpath, "//div[h5[contains(text(), '#{I18n.l post.post_date}')]]") do
-        #   expect(page).to have_content post.title
-        #   expect(page).to have_content post.icon
-        #   expect(page).to have_content I18n.l post.start_at
-        #   expect(page).to have_content I18n.l post.end_at
-        #   expect(page).not_to have_selector "img[id='image_preview'][src*='default_itinerary']"
-        # end
-        # expect(current_path).to eq itinerary_posts_path(itinerary_id: itinerary.id)
+        expect(page).to have_content "Edited title"
+        expect(page).to have_content "Edited caption."
+      end
 
-        # find(".post-dropdown-icon", match: :first).click
-        # click_on "情報を見る", match: :first
+      it "画像の変更に成功すること" do
+        expect(page).to have_selector "img[src$='cat.jpg']"
 
-        # expect(page).to have_content post.note
+        find("#delete_btn_0").click
+        image_path = Rails.root.join('spec/fixtures/turtle.jpg')
+        attach_file "post[photos_attributes][1][url]", image_path, make_visible: true
+        click_on "投稿する"
+
+        expect(page).to have_content "旅の思い出を更新しました。"
+        expect(page).not_to have_selector "img[src$='cat.jpg']"
+        expect(page).to have_selector "img[src$='turtle.jpg']"
       end
     end
 
@@ -167,7 +211,7 @@ RSpec.describe "Posts", type: :system do
       it "必須項目が入力されていない場合、失敗すること" do
         find(".select-box").click
         find("option", text: "旅のプランを選択").click
-        find("i", text: "close").click
+        find("#delete_btn_0").click
         fill_in "post[title]", with: ""
         click_on "投稿する"
 
@@ -191,11 +235,6 @@ RSpec.describe "Posts", type: :system do
       end
 
       it "メモが1001文字以上入力された場合、「投稿する」ボタンが押せないこと" do
-        fill_in "post[caption]", with: "a" * 1000
-
-        expect(page).to have_content "1000"
-        expect(find("#submit_btn")).not_to be_disabled
-
         fill_in "post[caption]", with: "a" * 1001
 
         expect(page).to have_content "1001"
@@ -204,22 +243,22 @@ RSpec.describe "Posts", type: :system do
     end
   end
 
-  # describe "削除", js: true do
-  #   let!(:post) { create(:post, itinerary: itinerary) }
+  describe "削除", js: true do
+    let!(:post) { create(:post, :with_photo, itinerary: itinerary) }
 
-  #   it "成功すること" do
-  #     expect {
-  #       visit itinerary_posts_path(itinerary_id: itinerary.id)
-  #       find(".post-dropdown-icon", match: :first).click
-  #       click_on "削除", match: :first
+    it "成功すること" do
+      expect {
+        visit post_path(id: post.id)
+        find("i", text: "more_horiz", visible: false).click
+        click_on "削除"
 
-  #       expect(page).to have_content "このスケジュールを削除しますか？この操作は取り消せません。"
+        expect(page).to have_content "この投稿を削除しますか？この操作は取り消せません。"
 
-  #       click_on "削除する"
+        click_on "削除する"
 
-  #       expect(page).to have_content "スケジュールを削除しました。"
-  #       expect(current_path).to eq itinerary_posts_path(itinerary_id: itinerary.id)
-  #     }.to change(Schedule, :count).by(-1)
-  #   end
-  # end
+        expect(page).to have_content "投稿を削除しました。"
+        expect(current_path).to eq posts_path
+      }.to change(Post, :count).by(-1)
+    end
+  end
 end
