@@ -17,13 +17,14 @@ RSpec.describe "Posts", type: :system, focus: true do
 
     it "投稿を作成日の降順で表示すること" do
       now = Time.current
-      post_2_days_ago = create(:post, :with_photo, created_at: now.ago(2.days), itinerary: itinerary)
+      post_2_days_ago =
+        create(:post, :with_photo, created_at: now.ago(2.days), itinerary: itinerary)
       post_yesterday = create(:post, :with_photo, created_at: now.yesterday, itinerary: itinerary)
       post_today = create(:post, :with_photo, created_at: now, itinerary: itinerary)
       visit posts_path
 
       expect(page.text)
-        .to match(/#{post_today.title}[\s\S]*#{post_yesterday.title}[\s\S]*#{post_2_days_ago.title}/)
+        .to match /#{post_today.title}[\s\S]*#{post_yesterday.title}[\s\S]*#{post_2_days_ago.title}/
     end
 
     it "投稿のタイトル、写真、投稿者名、投稿日を表示すること" do
@@ -136,7 +137,7 @@ RSpec.describe "Posts", type: :system, focus: true do
 
       visit post_path(id: post.id)
 
-      expect(page.text).to match(/#{"1日目"}[\s\S]*#{"2日目"}[\s\S]*#{"8日目"}/)
+      expect(page.text).to match /#{"1日目"}[\s\S]*#{"2日目"}[\s\S]*#{"8日目"}/
       within(:xpath, "//div[h6[contains(text(), '1日目')]]") do
         expect(page).to have_content I18n.l schedule_1st_day.start_at
       end
@@ -155,7 +156,7 @@ RSpec.describe "Posts", type: :system, focus: true do
 
         within(".modal") do
           expect(page).to have_content "旅の思い出を編集"
-          expect(page.has_field? 'post[title]', with: post.title).to be_truthy
+          expect(page.has_field?('post[title]', with: post.title)).to be_truthy
         end
       end
 
