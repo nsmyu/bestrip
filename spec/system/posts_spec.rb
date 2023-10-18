@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :system, focus: true do
+RSpec.describe "Posts", type: :system do
   let!(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let!(:itinerary) { create(:itinerary, :with_schedule, owner: user) }
@@ -134,13 +134,13 @@ RSpec.describe "Posts", type: :system, focus: true do
       expect(page).not_to have_selector "div[class='dropdown']"
     end
 
-    it "投稿に紐付けられた旅のプランのスケジュール情報を表示すること" do
+    it "紐付けられた旅のプランのスケジュール情報を表示すること" do
       expect(page).to have_content I18n.l post.itinerary.schedules[0].start_at
       expect(page).to have_content post.itinerary.schedules[0].icon
       expect(page).to have_content post.itinerary.schedules[0].title
     end
 
-    it "投稿に紐付けられた旅のプランのスケジュールを日付順で表示すること" do
+    it "紐付けられた旅のプランのスケジュールを日付順で表示すること" do
       schedule_1st_day = create(:schedule,
         schedule_date: itinerary.departure_date,
         itinerary: itinerary)
@@ -163,6 +163,13 @@ RSpec.describe "Posts", type: :system, focus: true do
       within(:xpath, "//div[h6[contains(text(), '8日目')]]") do
         expect(page).to have_content I18n.l schedule_8th_day.start_at
       end
+    end
+
+    it "紐付けられた旅のプランが非公開に設定されている場合は、スケジュールを表示しないこと" do
+      post.update(itinerary_public: false)
+      visit post_path(id: post.id)
+
+      expect(page).not_to have_content post.itinerary.schedules[0].title
     end
 
     describe "リンクのテスト", js: true do

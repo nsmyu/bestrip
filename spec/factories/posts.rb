@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :post do
     sequence(:title) { |n| "Post_#{n}" }
     caption { "One of the best trips of my life!" }
+    itinerary_public { "true" }
     itinerary
     user { itinerary.owner if itinerary}
 
