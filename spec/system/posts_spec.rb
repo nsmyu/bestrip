@@ -1,7 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :system do
+RSpec.describe "Posts", type: :system, focus: true do
   let!(:user) { create(:user) }
+  let(:other_user) { create(:user) }
   let!(:itinerary) { create(:itinerary, :with_schedule, owner: user) }
 
   before do
@@ -121,19 +122,34 @@ RSpec.describe "Posts", type: :system do
       expect(page).to have_content date_posted(post)
     end
 
-    it "投稿に紐付けられた旅のプランの、スケジュール情報を表示すること" do
+    it "ログインユーザーが投稿の作成者である場合は、ドロップダウンメニューを表示すること" do
+      expect(page).to have_selector "div[class='dropdown']"
+    end
+
+    it "ログインユーザーが投稿の作成者でない場合は、ドロップダウンメニューを表示しないこと" do
+      sign_out user
+      sign_in other_user
+      visit post_path(id: post.id)
+
+      expect(page).not_to have_selector "div[class='dropdown']"
+    end
+
+    it "投稿に紐付けられた旅のプランのスケジュール情報を表示すること" do
       expect(page).to have_content I18n.l post.itinerary.schedules[0].start_at
       expect(page).to have_content post.itinerary.schedules[0].icon
       expect(page).to have_content post.itinerary.schedules[0].title
     end
 
     it "投稿に紐付けられた旅のプランのスケジュールを日付順で表示すること" do
-      schedule_1st_day = create(:schedule, schedule_date: itinerary.departure_date,
-                                           itinerary: itinerary)
-      schedule_2nd_day = create(:schedule, schedule_date: itinerary.departure_date.tomorrow,
-                                           itinerary: itinerary)
-      schedule_8th_day = create(:schedule, schedule_date: itinerary.return_date,
-                                           itinerary: itinerary)
+      schedule_1st_day = create(:schedule,
+        schedule_date: itinerary.departure_date,
+        itinerary: itinerary)
+      schedule_2nd_day = create(:schedule,
+        schedule_date: itinerary.departure_date.tomorrow,
+        itinerary: itinerary)
+      schedule_8th_day = create(:schedule,
+        schedule_date: itinerary.return_date,
+        itinerary: itinerary)
 
       visit post_path(id: post.id)
 
@@ -159,6 +175,8 @@ RSpec.describe "Posts", type: :system do
           expect(page.has_field?('post[title]', with: post.title)).to be_truthy
         end
       end
+
+      # ドロップダウンメニュー「削除」のリンクについては、後述の削除処理でテストを行う
 
       it "スケジュールのタイトル右側のアイコンをクリックすると、スポット情報のモーダルを表示すること" do
         find("i", text: "pin_drop", visible: false).click

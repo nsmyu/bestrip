@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Post, type: :model, focus: true do
+RSpec.describe Post, type: :model do
   it "タイトル、itinerary_idがあり、写真が1枚以上紐付けられていれば有効であること" do
     expect(build(:post, :with_photo)).to be_valid
   end
