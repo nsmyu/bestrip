@@ -1,12 +1,13 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
   <div class="container-fluid py-4 py-sm-5 px-3 px-sm-6 min-vh-100">
+    <div class="max-width-850 mx-auto">
     <div class="row">
       <% if @itineraries.blank? %>
         <p class="text-center text-dark">旅のプランは登録されていません</p>
       <% else %>
         <% @itineraries.each do |itinerary| %>
-          <div class="col-6 my-4 mb-sm-5 px-1 px-sm-3">
+          <div class="col-6 my-4 mb-sm-5 px-1 px-sm-3 ">
             <%= link_to itinerary_schedules_path(itinerary.id), data: { turbo: false } do %>
               <div class="card link-area">
                 <div class="card-header position-relative mt-n4 mx-1 mx-sm-3 p-0 z-index-2 bg-transparent">
@@ -15,16 +16,16 @@
                 <div class="card-body p-2 p-sm-4">
                   <h5 class="mb-1 d-none d-sm-block text-ellipsis"><%= itinerary.title %></h5>
                   <p class="mb-1 d-sm-none text-center text-ellipsis fw-bold text-xs pt-2"><%= itinerary.title %></p>
-                  <p class="mb-1 d-none d-sm-block"><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
+                  <p class="mb-1 d-none d-sm-block text-sm"><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
                   <p class="mb-1 d-block d-sm-none text-xxs text-center"><%= l itinerary.departure_date %> - <%= l itinerary.return_date %></p>
-                  <hr class="dark horizontal d-none d-sm-block">
-                  <p class="d-none d-sm-block"><i class="material-icons pe-2" style="vertical-align: -4.5px;">group</i><%= member_names(itinerary) %></p>
+                  <p class="d-none d-sm-block mt-2 text-ellipsis"><i class="material-icons pe-2" style="vertical-align: -4.5px;">group</i><%= member_names(itinerary) %></p>
                 </div>
               </div>
             <% end %>
           </div>
         <% end %>
       <% end %>
+    </div>
     </div>
   </div>
   <div class="fixed-plugin">
