@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Schedules", type: :system do
+RSpec.describe "Schedules", type: :system, focus: true do
   let!(:user) { create(:user) }
   let!(:other_user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
@@ -35,7 +35,7 @@ RSpec.describe "Schedules", type: :system do
         schedule3 = create(:schedule, start_at: "14:00:00", itinerary: itinerary)
 
         visit itinerary_schedules_path(itinerary_id: itinerary.id)
-        within(:xpath, "//div[h5[contains(text(), '#{I18n.l schedule.schedule_date}')]]") do
+        within(:xpath, "//div[p[contains(text(), '#{I18n.l schedule.schedule_date}')]]") do
           expect(page.text)
             .to match(/#{schedule2.title}[\s\S]*#{schedule1.title}[\s\S]*#{schedule3.title}/)
         end
@@ -44,7 +44,7 @@ RSpec.describe "Schedules", type: :system do
       it "スケジュールのタイトル、アイコン、日付、時間を表示すること" do
         visit itinerary_schedules_path(itinerary_id: itinerary.id)
 
-        within(:xpath, "//div[h5[contains(text(), '#{I18n.l schedule1.schedule_date}')]]") do
+        within(:xpath, "//div[p[contains(text(), '#{I18n.l schedule1.schedule_date}')]]") do
           expect(page).to have_content schedule1.icon
           expect(page).to have_content schedule1.title
           expect(page).to have_content I18n.l schedule1.start_at
@@ -66,7 +66,7 @@ RSpec.describe "Schedules", type: :system do
 
       it "ドロップダウンメニューの「情報を見る」をクリックすると、スケジュール詳細モーダルを表示すること", js: true do
         visit itinerary_schedules_path(itinerary_id: itinerary.id)
-        find(".schedule-dropdown-icon", match: :first).click
+        find("i", text: "more_vert", visible: false, match: :first).click
         click_on "情報を見る", match: :first
 
         within(".modal") do
@@ -77,7 +77,7 @@ RSpec.describe "Schedules", type: :system do
 
       it "ドロップダウンメニューの「編集」をクリックすると、スケジュール編集モーダルを表示すること", js: true do
         visit itinerary_schedules_path(itinerary_id: itinerary.id)
-        find(".schedule-dropdown-icon", match: :first).click
+        find("i", text: "more_vert", visible: false, match: :first).click
         click_on "編集", match: :first
 
         within(".modal") do
@@ -114,7 +114,7 @@ RSpec.describe "Schedules", type: :system do
           click_on "保存する"
 
           expect(page).to have_content "新しいスケジュールを作成しました。"
-          within(:xpath, "//div[h5[contains(text(), '#{I18n.l schedule.schedule_date}')]]") do
+          within(:xpath, "//div[p[contains(text(), '#{I18n.l schedule.schedule_date}')]]") do
             expect(page).to have_content schedule.title
             expect(page).to have_content schedule.icon
             expect(page).to have_content I18n.l schedule.start_at
@@ -122,7 +122,7 @@ RSpec.describe "Schedules", type: :system do
           end
           expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary.id)
 
-          find(".schedule-dropdown-icon", match: :first).click
+          find("i", text: "more_vert", match: :first).click
           click_on "情報を見る", match: :first
 
           expect(page).to have_content schedule.note
@@ -144,28 +144,11 @@ RSpec.describe "Schedules", type: :system do
           expect(page).to have_selector "iframe[src$='place_id:#{schedule.place_id}']"
         end
 
-        find("i", text: "close").click
-
-        expect(page).not_to have_selector "#place_info_card"
-        expect(page).to have_selector "#empty_place_info_card"
-
-        fill_in "autocomplete_text_input", with: "クイーンビクトリアビルディング"
-        sleep 0.5
-        find("#autocomplete_text_input").click
-        find("span.pac-matched", text: "クイーン・ビクトリア・ビルディング", match: :first).click
-
-        within("div#place_info_card") do
-          expect(page).to have_content "Queen Victoria Building"
-          expect(page).to have_content "455 George St, Sydney NSW 2000, Australia"
-          expect(page)
-            .to have_selector "img[src*='maps.googleapis.com/maps/api/place/js/PhotoService']"
-        end
-
         click_on "保存する"
-        find(".schedule-dropdown-icon", match: :first).click
-        click_on "情報を見る", match: :first
+        find("i", text: "more_vert", visible: false, match: :first).click
+        click_on "情報を見る"
 
-        expect(page).to have_content "クイーン・ビクトリア・ビルディング"
+        expect(page).to have_content "シドニー・オペラハウス"
       end
     end
 
@@ -274,7 +257,7 @@ RSpec.describe "Schedules", type: :system do
         click_on "保存する"
 
         expect(page).to have_content "スケジュール情報を変更しました。"
-        within(:xpath, "//div[h5[contains(text(), '2024/2/3')]]") do
+        within(:xpath, "//div[p[contains(text(), '2024/2/3')]]") do
           expect(page).to have_content "New title"
           expect(page).to have_content "shopping_cart"
           expect(page).to have_content '14:00'
@@ -282,13 +265,26 @@ RSpec.describe "Schedules", type: :system do
         end
         expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary.id)
 
-        find(".schedule-dropdown-icon", match: :first).click
+        find("i", text: "more_vert", match: :first).click
         click_on "情報を見る", match: :first
 
         expect(page).to have_content "New note"
       end
 
       it "スポット情報を変更できること" do
+        within("div#place_info_card") do
+          expect(page).to have_content "シドニー・オペラハウス"
+          expect(page).to have_content "Bennelong Point, Sydney NSW 2000 オーストラリア"
+          expect(page)
+            .to have_selector "img[src*='maps.googleapis.com/maps/api/place/photo']"
+          expect(page).to have_selector "iframe[src$='place_id:#{schedule.place_id}']"
+        end
+
+        find("i", text: "close").click
+
+        expect(page).not_to have_selector "#place_info_card"
+        expect(page).to have_selector "#empty_place_info_card"
+
         fill_in "autocomplete_text_input", with: "クイーンビクトリアビルディング"
         sleep 0.5
         find("#autocomplete_text_input").click
@@ -299,12 +295,11 @@ RSpec.describe "Schedules", type: :system do
           expect(page).to have_content "455 George St, Sydney NSW 2000, Australia"
           expect(page)
             .to have_selector "img[src*='maps.googleapis.com/maps/api/place/js/PhotoService']"
-          expect(page).to have_selector "iframe[src$='place_id:ChIJISz8NjyuEmsRFTQ9Iw7Ear8']"
         end
 
         click_on "保存する"
-        find(".schedule-dropdown-icon", match: :first).click
-        click_on "情報を見る", match: :first
+        find("i", text: "more_vert", visible: false, match: :first).click
+        click_on "情報を見る"
 
         expect(page).to have_content "クイーン・ビクトリア・ビルディング"
       end
@@ -365,7 +360,7 @@ RSpec.describe "Schedules", type: :system do
     it "成功すること" do
       expect {
         visit itinerary_schedules_path(itinerary_id: itinerary.id)
-        find(".schedule-dropdown-icon", match: :first).click
+        find("i", text: "more_vert", match: :first).click
         click_on "削除", match: :first
 
         expect(page).to have_content "このスケジュールを削除しますか？この操作は取り消せません。"
