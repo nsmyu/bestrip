@@ -27,4 +27,5 @@ Rails.application.routes.draw do
   end
 
   resources :posts
+  resources :favorites, only: [:index, :new, :create, :show, :destroy]
 end
