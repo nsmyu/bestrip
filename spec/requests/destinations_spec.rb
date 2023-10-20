@@ -39,12 +39,14 @@ RSpec.describe "Destinations", type: :request do
   describe "GET #new" do
     context "行きたい場所リストに登録可能な場合" do
       it "正常にレスポンスを返すこと", vcr: "google_api_response" do
-        get new_itinerary_destination_path(itinerary_id: itinerary.id, place_id: destination.place_id)
+        get new_itinerary_destination_path(itinerary_id: itinerary.id,
+                                           place_id: destination.place_id)
         expect(response).to have_http_status 200
       end
 
       it "スポット情報をGoogle APIから取得すること", vcr: "google_api_response" do
-        get new_itinerary_destination_path(itinerary_id: itinerary.id, place_id: destination.place_id)
+        get new_itinerary_destination_path(itinerary_id: itinerary.id,
+                                           place_id: destination.place_id)
         expect(response.body).to include "シドニー・オペラハウス"
         expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
       end
@@ -53,14 +55,16 @@ RSpec.describe "Destinations", type: :request do
     context "行きたい場所リストに登録不可能な場合" do
       it "既に登録済みの場合、メッセージを取得すること" do
         destination
-        get new_itinerary_destination_path(itinerary_id: itinerary.id, place_id: destination.place_id)
+        get new_itinerary_destination_path(itinerary_id: itinerary.id,
+                                           place_id: destination.place_id)
         expect(response.body).to include "行きたい場所リストに追加済み"
       end
 
       it "上限の300件まで登録されている場合、メッセージを取得すること" do
         create_list(:destination, 300, itinerary: itinerary)
         new_destination = build(:destination, :opera_house)
-        get new_itinerary_destination_path(itinerary_id: itinerary.id, place_id: new_destination.place_id)
+        get new_itinerary_destination_path(itinerary_id: itinerary.id,
+                                           place_id: new_destination.place_id)
         expect(response.body).to include "ひとつの旅のプランにつき、行きたい場所リストへの登録は300件までです。"
       end
     end

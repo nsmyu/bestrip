@@ -20,7 +20,7 @@ class ItineraryUsersController < ApplicationController
   def create
     user = User.find(params[:user_id])
     if @itinerary.members << user
-    redirect_to @itinerary, notice: "メンバーを追加しました。"
+      redirect_to @itinerary, notice: "メンバーを追加しました。"
     end
   end
 

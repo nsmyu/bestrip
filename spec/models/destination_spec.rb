@@ -13,7 +13,8 @@ RSpec.describe Destination, type: :model do
 
   it "同じ旅のプランでplace_idが重複している場合は無効であること" do
     destination = create(:destination)
-    other_destination = build(:destination, place_id: destination.place_id, itinerary: destination.itinerary)
+    other_destination =
+      build(:destination, place_id: destination.place_id, itinerary: destination.itinerary)
     other_destination.valid?
     expect(other_destination.errors).to be_of_kind(:place_id, :taken)
   end

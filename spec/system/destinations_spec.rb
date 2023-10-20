@@ -54,7 +54,8 @@ RSpec.describe "Destinations", type: :system do
 
     context "行きたい場所リストに登録可能な場合" do
       it "成功すること" do
-        visit new_itinerary_destination_path(itinerary_id: itinerary.id, place_id: destination.place_id)
+        visit new_itinerary_destination_path(itinerary_id: itinerary.id,
+                                             place_id: destination.place_id)
         expect {
           expect(page).to have_selector "img[src*='maps.googleapis.com/maps/api/place/photo']"
           expect(page).to have_content "シドニー・オペラハウス"
@@ -73,13 +74,15 @@ RSpec.describe "Destinations", type: :system do
     context "行きたい場所リストに登録不可能な場合" do
       it "既に登録済みの場合、メッセージを取得することと" do
         destination.save
-        visit new_itinerary_destination_path(itinerary_id: itinerary.id, place_id: destination.place_id)
+        visit new_itinerary_destination_path(itinerary_id: itinerary.id,
+                                             place_id: destination.place_id)
         expect(page).to have_content "行きたい場所リストに追加済み"
       end
 
       it "上限の300件まで登録されている場合、メッセージを取得すること" do
         create_list(:destination, 300, itinerary_id: itinerary.id)
-        visit new_itinerary_destination_path(itinerary_id: itinerary.id, place_id: destination.place_id)
+        visit new_itinerary_destination_path(itinerary_id: itinerary.id,
+                                             place_id: destination.place_id)
         expect(page).to have_content "ひとつの旅のプランにつき、行きたい場所リストへの登録は300件までです。"
       end
     end
