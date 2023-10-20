@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Itineraries", type: :system do
+RSpec.describe "Itineraries", type: :system, focus: true do
   let!(:user) { create(:user) }
   let!(:other_user) { create(:user, bestrip_id: "other_user_id") }
 
@@ -167,28 +167,41 @@ RSpec.describe "Itineraries", type: :system do
       expect(page).to have_content other_user.name
     end
 
-    it "鉛筆アイコンをクリックすると、プラン編集モーダルを表示すること", js: true do
-      find("i", text: "edit").click
+    it "ログインユーザーが投稿の作成者である場合は、ドロップダウンメニューを表示すること" do
+      expect(page).to have_selector "div[class='dropdown']"
+    end
+
+    it "ログインユーザーが投稿の作成者でない場合は、ドロップダウンメニューを表示しないこと" do
+      sign_out user
+      sign_in other_user
+      visit itinerary_path(itinerary.id)
+
+      expect(page).not_to have_selector "div[class='dropdown']"
+    end
+
+    it "ドロップダウンメニューの「編集」をクリックすると、投稿編集モーダルを表示すること", js: true do
+      find("i", text: "more_horiz", visible: false).click
+      click_on "編集"
 
       within(".modal") do
         expect(page).to have_content "旅のプラン情報編集"
-        expect(page).to have_xpath "//input[@value='#{itinerary.title}']"
+        expect(page.has_field?('itinerary[title]', with: itinerary.title)).to be_truthy
       end
     end
+
+    # ドロップダウンメニュー「削除」のリンクについては、後述の削除処理でテストを行う
   end
 
   describe "編集", js: true do
-    let!(:itinerary1) { create(:itinerary, owner: user) }
-    let!(:itinerary2) { create(:itinerary, owner: user) }
+    let!(:itinerary) { create(:itinerary, owner: user) }
 
     before do
-      visit itinerary_path(itinerary1.id)
-      find("i", text: "edit").click
+      visit edit_itinerary_path(itinerary.id)
     end
 
     context "有効な値の場合" do
       it "成功すること" do
-        fill_in "itinerary[title]", with: "New Title"
+        fill_in "itinerary[title]", with: "Edited Title"
         page.execute_script "departure_date.value = '2024-04-01'"
         page.execute_script "return_date.value = '2024-04-08'"
 
@@ -201,11 +214,11 @@ RSpec.describe "Itineraries", type: :system do
 
         click_on "保存する"
 
-        expect(current_path).to eq itinerary_path(itinerary1.id)
         expect(page).to have_content "旅のプラン情報を変更しました。"
-        expect(page).to have_content "New Title"
+        expect(page).to have_content "Edited Title"
         expect(page).to have_content "2024/4/1 (月) 〜 2024/4/8 (月)"
         expect(page).to have_selector "img[src*='cat.jpg']"
+        expect(current_path).to eq itinerary_path(itinerary.id)
       end
     end
 
@@ -249,7 +262,8 @@ RSpec.describe "Itineraries", type: :system do
     it "成功すること" do
       expect {
         visit itinerary_path(itinerary.id)
-        find("i", text: "delete").click
+        find("i", text: "more_horiz", visible: false).click
+        click_on "削除"
 
         expect(page).to have_content "この旅のプランを削除しますか？この操作は取り消せません。"
 

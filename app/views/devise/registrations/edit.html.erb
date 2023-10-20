@@ -29,7 +29,7 @@
             <%= f.label :password_confirmation, class: "mx-0 mb-1 px-0 fw-bold" do %>
               新しいパスワード（確認用）<span class="required">必須</span>
             <% end %>
-            <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password", placeholder: "確認のため再度で入力" %>
+            <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password", placeholder: "確認のため再度入力" %>
             <div class="error-message">
               <%= resource.errors.full_messages_for(:password_confirmation).first if resource.errors.any? %>
             </div>

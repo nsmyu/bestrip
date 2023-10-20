@@ -5,26 +5,26 @@
       <div class="card-body text-dark">
         <div class="d-flex border-bottom justify-content-between">
           <h5>旅のプラン情報</h5>
-          <div class="dropdown">
-            <label for="itinerary_dropdown" class="mb-0 cursor-pointer">
-              <i class="material-icons mt-n1 me-n1 p-2 text-secondary link-area rounded-circle" >more_horiz</i>
-            </label>
-            <button class="d-none" id="itinerary_dropdown" data-bs-toggle="dropdown"></button>
-            <ul class="border dropdown-menu dropdown-menu-end mt-2"></li>
-              <li class="align-items-center">
-                <%= link_to :edit_itinerary, class: "dropdown-item", data: { turbo_frame: "modal" } do %>
-                  <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">edit</span>編集
-                <% end %>
-              </li>
-              <li>
-                <% if current_user == @itinerary.owner %>
+          <% if current_user == @itinerary.owner %>
+            <div class="dropdown">
+              <label for="itinerary_dropdown" class="mb-0 cursor-pointer">
+                <i class="material-icons mt-n1 me-n1 p-2 text-secondary link-area rounded-circle" >more_horiz</i>
+              </label>
+              <button class="d-none" id="itinerary_dropdown" data-bs-toggle="dropdown"></button>
+              <ul class="border dropdown-menu dropdown-menu-end mt-2"></li>
+                <li class="align-items-center">
+                  <%= link_to :edit_itinerary, class: "dropdown-item", data: { turbo_frame: "modal" } do %>
+                    <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">edit</span>編集
+                  <% end %>
+                </li>
+                <li>
                   <%= link_to [:itinerary, id: @itinerary.id], class: "dropdown-item text-danger", data: { turbo_method: :delete, turbo_confirm: 'この旅のプランを削除しますか？この操作は取り消せません。' } do %>
                     <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">delete</span>削除
                   <% end %>
-                <% end %>
-              </li>
-            </ul>
-          </div>
+                </li>
+              </ul>
+            </div>
+          <% end %>
         </div>
         <%= image_tag @itinerary.image.url, class: "border-radius-lg shadow-dark w-100 my-3" %>
         <p class="my-2"><span class="fw-bold text-xs">タイトル</span><br><%= @itinerary.title %></p>
