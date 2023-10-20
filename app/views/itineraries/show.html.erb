@@ -1,19 +1,29 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
   <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3 min-vh-100">
-    <div class="card z-index-2 w-md-60 mx-auto mb-4">
+    <div class="card z-index-2 max-width-550 mx-auto mb-4">
       <div class="card-body text-dark">
         <div class="d-flex border-bottom justify-content-between">
           <h5>旅のプラン情報</h5>
-          <div>
-            <%= link_to :edit_itinerary, data: { turbo_frame: "modal" } do %>
-              <i class="material-icons text-2xl" style="vertical-align: -10px;">edit</i>
-            <% end %>
-            <% if current_user == @itinerary.owner %>
-              <%= link_to [:itinerary, id: @itinerary.id], data: { turbo_method: :delete, turbo_confirm: 'この旅のプランを削除しますか？この操作は取り消せません。' } do %>
-                <i class="material-icons text-2xl px-1 fw-normal" style="vertical-align: -10px;">delete</i>
-              <% end %>
-            <% end %>
+          <div class="dropdown">
+            <label for="itinerary_dropdown" class="mb-0 cursor-pointer">
+              <i class="material-icons mt-n1 me-n1 p-2 text-secondary link-area rounded-circle" >more_horiz</i>
+            </label>
+            <button class="d-none" id="itinerary_dropdown" data-bs-toggle="dropdown"></button>
+            <ul class="border dropdown-menu dropdown-menu-end mt-2"></li>
+              <li class="align-items-center">
+                <%= link_to :edit_itinerary, class: "dropdown-item", data: { turbo_frame: "modal" } do %>
+                  <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">edit</span>編集
+                <% end %>
+              </li>
+              <li>
+                <% if current_user == @itinerary.owner %>
+                  <%= link_to [:itinerary, id: @itinerary.id], class: "dropdown-item text-danger", data: { turbo_method: :delete, turbo_confirm: 'この旅のプランを削除しますか？この操作は取り消せません。' } do %>
+                    <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">delete</span>削除
+                  <% end %>
+                <% end %>
+              </li>
+            </ul>
           </div>
         </div>
         <%= image_tag @itinerary.image.url, class: "border-radius-lg shadow-dark w-100 my-3" %>
@@ -26,7 +36,7 @@
         </p>
       </div>
     </div>
-    <div class="card z-index-2 w-md-60 mx-auto">
+    <div class="card z-index-2 max-width-550 mx-auto">
       <div class="card-body text-dark">
         <div class="border-bottom">
           <h5>旅のメンバー</h5>
