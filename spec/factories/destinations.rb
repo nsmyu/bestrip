@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :favorite do
+  factory :destination do
     sequence(:place_id) { |n| "place_id_#{n}" }
     itinerary
 

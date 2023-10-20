@@ -15,8 +15,8 @@ class SchedulesController < ApplicationController
 
   def new
     @schedule = @itinerary.schedules.new
-    if params[:favorite_id]
-      @place_id = Favorite.find(params[:favorite_id]).place_id
+    if params[:destination_id]
+      @place_id = Destination.find(params[:destination_id]).place_id
       get_place_details(@place_id)
       @schedule.title = @place_details[:name]
     end

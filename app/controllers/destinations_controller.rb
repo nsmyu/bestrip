@@ -1,4 +1,4 @@
-class FavoritesController < ApplicationController
+class DestinationsController < ApplicationController
   include GooglePlacesApi
 
   before_action -> {
@@ -8,17 +8,17 @@ class FavoritesController < ApplicationController
   }
 
   def index
-    return if @itinerary.favorites.blank?
+    return if @itinerary.destinations.blank?
     @place_details_list = []
-    @itinerary.favorites.each do |favorite|
-      query_params = GooglePlacesApi::Request.new(favorite.place_id)
+    @itinerary.destinations.each do |destination|
+      query_params = GooglePlacesApi::Request.new(destination.place_id)
       result = query_params.request
 
       case result
       when Hash
         if result[:error_message].blank?
           place_details = GooglePlacesApi::Request.attributes_for(result)
-          place_details[:favorite_id] = favorite.id
+          place_details[:destination_id] = destination.id
           if place_details[:photos]
             set_photo_urls(place_details[:photos])
             place_details[:photo_url] = @place_photo_urls[0]
@@ -39,30 +39,30 @@ class FavoritesController < ApplicationController
   end
 
   def new
-    @favorite = @itinerary.favorites.new
+    @destination = @itinerary.destinations.new
     @place_id = params[:place_id]
     get_place_details(@place_id)
   end
 
   def create
-    @favorite = @itinerary.favorites.new(favorite_params)
-    @place_id = @favorite.place_id
-    @favorite.save
+    @destination = @itinerary.destinations.new(destination_params)
+    @place_id = @destination.place_id
+    @destination.save
   end
 
   def show
-    favorite = Favorite.find(params[:id])
-    get_place_details(favorite.place_id)
+    destination = Destination.find(params[:id])
+    get_place_details(destination.place_id)
   end
 
   def destroy
-    Favorite.find(params[:id]).destroy
-    redirect_to :itinerary_favorites, notice: "行きたい場所リストから削除しました。"
+    Destination.find(params[:id]).destroy
+    redirect_to :itinerary_destinations, notice: "行きたい場所リストから削除しました。"
   end
 
   private
 
-  def favorite_params
-    params.require(:favorite).permit(:place_id)
+  def destination_params
+    params.require(:destination).permit(:place_id)
   end
 end
