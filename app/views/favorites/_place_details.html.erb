@@ -28,13 +28,17 @@
 <% if place_details[:url] %>
   <div class="row my-1 py-2 link-area">
     <i class="col-1 material-icons pe-1 text-primary">open_in_new</i>
-    <%= link_to "Google Mapで見る", place_details[:url], class: "col-11 text-sm text-dark", target: :_blank %>
+    <%= link_to place_details[:url], class: "col-11 text-sm text-dark", target: :_blank do %>
+      <p class="text-sm">Google Mapで見る</p>
+    <% end %>
   </div>
 <% end %>
 <% if place_details[:website] %>
   <div class="row my-1 py-2 link-area">
     <i class="col-1 material-icons pe-1 text-primary">public</i>
-    <%= link_to "公式サイト", place_details[:website], class: "col-11 text-sm text-dark", target: :_blank %>
+    <%= link_to place_details[:website], class: "col-11 text-sm text-dark", target: :_blank do %>
+      <p class="text-sm">公式サイト</p>
+    <% end %>
   </div>
 <% end %>
 

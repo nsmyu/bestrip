@@ -148,12 +148,17 @@ label:has(#reset_place_btn) {
   }
 }
 
-.schedule-dropdown-icon,.hover-primary {
-  &:hover {
-    color: $primary !important;
-  }
+.hover-primary:hover {
+  color: $primary !important;
 }
 
+.schedule-item {
+  height:70px;
+
+  @include media-breakpoint-down(sm) {
+    height:60px;
+  }
+}
 .schedule-icon {
   padding: 6px;
   color: white;

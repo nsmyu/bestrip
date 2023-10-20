@@ -20,8 +20,8 @@
                   <i class="material-icons schedule-icon ms-md-n2 ms-md-n1 ms-1" style="vertical-align: -7px;"><%= schedule.icon %></i>
                 <% end %>
               </div>
-              <div class="col-sm-10 col-9 d-flex align-items-center text-ellipsis text-sm ms-n2">
-                <%= schedule.title %>
+              <div class="col-sm-10 col-9 d-flex ms-n2 pe-0 align-items-center">
+                <p class="text-ellipsis text-sm"><%= schedule.title %></p>
               </div>
               <div class="col-1 ps-2">
                 <% if schedule.place_id.present? %>
