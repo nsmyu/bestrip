@@ -9,7 +9,7 @@
         <% @itineraries.each do |itinerary| %>
           <div class="col-6 my-4 mb-sm-5 px-1 px-sm-3 ">
             <%= link_to itinerary_schedules_path(itinerary.id), data: { turbo: false } do %>
-              <div class="card link-area">
+              <div class="card cursor-pointer">
                 <div class="card-header position-relative mt-n4 mx-1 mx-sm-3 p-0 z-index-2 bg-transparent">
                   <%= image_tag itinerary.image.url, class: "border-radius-lg shadow-dark w-100" %>
                 </div>

@@ -42,7 +42,7 @@ class DestinationsController < ApplicationController
     set_itineraries_titles
     @itinerary = current_user.itineraries[0]
     @destination = Destination.new
-    @place_id = Favorite.find(params[:favorite_id]).place_id
+    @place_id = params[:place_id]
   end
 
   def create
@@ -67,3 +67,4 @@ class DestinationsController < ApplicationController
   def destination_params
     params.require(:destination).permit(:place_id)
   end
+end
