@@ -25,7 +25,7 @@
               </div>
               <div class="col-1 ps-2">
                 <% if schedule.place_id.present? %>
-                  <%= link_to [:new_itinerary_destination, itinerary_id: schedule.itinerary.id, place_id: schedule.place_id], data: { turbo_frame: "modal" } do %>
+                  <%= link_to [:new_favorite, place_id: schedule.place_id], data: { turbo_frame: "modal" } do %>
                     <i class="material-icons rounded-circle link-area p-2" style="vertical-align: -5px;">pin_drop</i>
                   <% end %>
                 <% end %>

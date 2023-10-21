@@ -67,4 +67,3 @@ class DestinationsController < ApplicationController
   def destination_params
     params.require(:destination).permit(:place_id)
   end
-end

@@ -1,0 +1,6 @@
+<%= turbo_stream.update "favorite" do %>
+  <%= form_with model: @favorite do |f| %>
+    <%= f.hidden_field :place_id, value: @place_id %>
+    <%= f.submit "お気に入りに追加する", class: "btn bg-gradient-primary d-block mt-3 w-100" %>
+  <% end %>
+<% end %>

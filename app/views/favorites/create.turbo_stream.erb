@@ -1,0 +1,3 @@
+<%= turbo_stream.update "favorite" do %>
+  <%= link_to "お気に入りに追加済み", [:favorite, id: @favorite.id], data: { turbo_method: :delete }, class: "btn btn-outline-primary d-block mt-3 w-100" %>
+<% end %>

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "SearchPlaces", type: :system, focus: true do
+RSpec.describe "SearchPlaces", type: :system do
   let!(:user) { create(:user) }
 
   describe "スポット検索", js: true do
