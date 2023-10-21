@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Favorite, type: :model, focus: true do
+RSpec.describe Favorite, type: :model do
   it "place_id、user_idがあれば有効であること" do
     expect(build(:favorite)).to be_valid
   end

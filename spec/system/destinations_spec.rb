@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe "Destinations", type: :system do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
+  let!(:favorite) { create(:favorite, :opera_house, user: user) }
 
   before do
     sign_in user
@@ -50,40 +51,44 @@ RSpec.describe "Destinations", type: :system do
   end
 
   describe "新規作成", js: true do
-    let(:destination) { build(:destination, :opera_house, itinerary: itinerary) }
-
-    context "行きたい場所リストに登録可能な場合" do
+    context "有効な値の場合" do
       it "成功すること" do
-        visit new_itinerary_destination_path(itinerary_id: itinerary.id,
-                                             place_id: destination.place_id)
+        visit destinations_new_itineraries_path(favorite_id: favorite.id)
         expect {
-          expect(page).to have_selector "img[src*='maps.googleapis.com/maps/api/place/photo']"
-          expect(page).to have_content "シドニー・オペラハウス"
-          expect(page).to have_content "Bennelong Point, Sydney NSW 2000 オーストラリア"
-          expect(page).to have_content "(02) 9250 7111"
-          expect(page).to have_selector "a", text: "Google Mapで見る"
-          expect(page).to have_selector "a", text: "公式サイト"
+          find("#destination_itinerary_id").click
+          find("option", text: "#{itinerary.title}").click
+          click_on "行きたい場所リストに追加"
 
-          click_on "行きたい場所リストに追加する"
-
-          expect(page).to have_content "行きたい場所リストに追加済み"
+          expect(page).to have_content "行きたい場所リストに追加しました"
         }.to change(Destination, :count).by(1)
       end
     end
 
-    context "行きたい場所リストに登録不可能な場合" do
-      it "既に登録済みの場合、メッセージを取得することと" do
-        destination.save
-        visit new_itinerary_destination_path(itinerary_id: itinerary.id,
-                                             place_id: destination.place_id)
-        expect(page).to have_content "行きたい場所リストに追加済み"
+    context "無効な値の場合" do
+      it "同じ旅のプランでplace_idが重複している場合、失敗すること" do
+        destination = create(:destination, :opera_house, itinerary: itinerary)
+        visit destinations_new_itineraries_path(favorite_id: favorite.id)
+
+        expect {
+          find("#destination_itinerary_id").click
+          find("option", text: "#{itinerary.title}").click
+          click_on "行きたい場所リストに追加"
+
+          expect(page).to have_content "この旅のプランには既に追加されています"
+        }.not_to change(Destination, :count)
       end
 
-      it "上限の300件まで登録されている場合、メッセージを取得すること" do
+      it "上限の300件まで登録されている場合、失敗すること" do
         create_list(:destination, 300, itinerary_id: itinerary.id)
-        visit new_itinerary_destination_path(itinerary_id: itinerary.id,
-                                             place_id: destination.place_id)
-        expect(page).to have_content "ひとつの旅のプランにつき、行きたい場所リストへの登録は300件までです。"
+        visit destinations_new_itineraries_path(favorite_id: favorite.id)
+
+        expect {
+          find("#destination_itinerary_id").click
+          find("option", text: "#{itinerary.title}").click
+          click_on "行きたい場所リストに追加"
+
+          expect(page).to have_content "このプランの行きたい場所リストは上限の300件まで登録されているため、追加できません"
+        }.not_to change(Destination, :count)
       end
     end
   end

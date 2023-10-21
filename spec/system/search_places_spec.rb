@@ -1,13 +1,12 @@
 require "rails_helper"
 
-RSpec.describe "SearchPlaces", type: :system do
+RSpec.describe "SearchPlaces", type: :system, focus: true do
   let!(:user) { create(:user) }
-  let!(:itinerary) { create(:itinerary, owner: user) }
 
   describe "スポット検索", js: true do
     it "検索結果を地図上に表示、クリックするとスポット情報をモーダルで表示すること" do
       sign_in user
-      visit search_places_itinerary_path(id: itinerary.id)
+      visit search_places_path
       fill_in "searchbox_text_input", with: "シドニー オペラハウス"
       sleep 0.5
       find("#searchbox_text_input").click
