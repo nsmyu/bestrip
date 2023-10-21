@@ -219,7 +219,7 @@ label:has(#reset_place_btn) {
   }
 }
 
-.post-photo-preview {
+.post-photo-preview, .square-image {
   object-fit: cover;
   width: 100%;
   aspect-ratio: 1/1;

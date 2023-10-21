@@ -10,7 +10,7 @@ class DestinationsController < ApplicationController
   def index
     return if @itinerary.destinations.blank?
     @place_details_list = []
-    @itinerary.destinations.each do |destination|
+    @itinerary.destinations.order(created_at: :desc).each do |destination|
       query_params = GooglePlacesApi::Request.new(destination.place_id)
       result = query_params.request
 
@@ -19,6 +19,7 @@ class DestinationsController < ApplicationController
         if result[:error_message].blank?
           place_details = GooglePlacesApi::Request.attributes_for(result)
           place_details[:destination_id] = destination.id
+
           if place_details[:photos]
             set_photo_urls(place_details[:photos])
             place_details[:photo_url] = @place_photo_urls[0]
@@ -42,7 +43,7 @@ class DestinationsController < ApplicationController
     set_itineraries_titles
     @itinerary = current_user.itineraries[0]
     @destination = Destination.new
-    @place_id = params[:place_id]
+    @place_id = Favorite.find(params[:favorite_id]).place_id
   end
 
   def create

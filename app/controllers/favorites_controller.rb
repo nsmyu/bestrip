@@ -6,7 +6,7 @@ class FavoritesController < ApplicationController
   def index
     return if current_user.favorites.blank?
     @place_details_list = []
-    current_user.favorites.each do |favorite|
+    current_user.favorites.order(created_at: :desc).each do |favorite|
       query_params = GooglePlacesApi::Request.new(favorite.place_id)
       result = query_params.request
 
@@ -14,7 +14,7 @@ class FavoritesController < ApplicationController
       when Hash
         if result[:error_message].blank?
           place_details = GooglePlacesApi::Request.attributes_for(result)
-          place_details.merge! ({ place_id: favorite.place_id, favorite_id: favorite.id })
+          place_details[:favorite_id] = favorite.id
 
           if place_details[:photos]
             set_photo_urls(place_details[:photos])
@@ -61,7 +61,9 @@ class FavoritesController < ApplicationController
     @favorite = current_user.favorites.new
     @place_id = Favorite.find(params[:id]).place_id
     Favorite.find(params[:id]).destroy
-    # redirect_to :favorites, notice: "行きたい場所リストから削除しました。"
+    if request.referer&.include? "/favorites"
+      redirect_to :favorites, notice: "行きたい場所リストから削除しました。"
+    end
   end
 
   private

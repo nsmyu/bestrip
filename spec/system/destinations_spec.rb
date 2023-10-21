@@ -19,7 +19,7 @@ RSpec.describe "Destinations", type: :system do
     end
 
     context "行きたい場所リストに登録がある場合" do
-      it "行きたい場所リストを全て表示すること" do
+      it "登録されたスポットを全て表示すること" do
         create(:destination, :opera_house, itinerary: itinerary)
         create(:destination, :queen_victoria_building, itinerary: itinerary)
         visit itinerary_destinations_path(itinerary_id: itinerary.id)

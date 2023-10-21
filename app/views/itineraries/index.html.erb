@@ -14,11 +14,11 @@
                   <%= image_tag itinerary.image.url, class: "border-radius-lg shadow-dark w-100" %>
                 </div>
                 <div class="card-body p-2 p-sm-4">
-                  <h5 class="mb-1 d-none d-sm-block text-ellipsis"><%= itinerary.title %></h5>
+                  <h5 class="mb-0 d-none d-sm-block text-ellipsis"><%= itinerary.title %></h5>
                   <p class="mb-1 d-sm-none text-center text-ellipsis fw-bold text-xs pt-2"><%= itinerary.title %></p>
-                  <p class="mb-1 d-none d-sm-block text-sm"><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
-                  <p class="mb-1 d-block d-sm-none text-xxs text-center"><%= l itinerary.departure_date %> - <%= l itinerary.return_date %></p>
-                  <p class="d-none d-sm-block mt-2 text-ellipsis"><i class="material-icons pe-2" style="vertical-align: -4.5px;">group</i><%= member_names(itinerary) %></p>
+                  <p class="mb-1 d-none d-sm-block text-dark text-sm"><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
+                  <p class="mb-1 d-block d-sm-none text-dark text-xxs text-center"><%= l itinerary.departure_date %> - <%= l itinerary.return_date %></p>
+                  <p class="d-none d-sm-block mt-2 text-dark text-ellipsis"><i class="material-icons pe-2" style="vertical-align: -4.5px;">group</i><%= member_names(itinerary) %></p>
                 </div>
               </div>
             <% end %>
