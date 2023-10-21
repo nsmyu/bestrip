@@ -1,8 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "Destinations", type: :request do
+RSpec.describe "Destinations", type: :request, focus: true do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
+  let!(:favorite) { create(:favorite, user: user) }
   let(:destination) { create(:destination, :opera_house, itinerary: itinerary) }
 
   before do
@@ -37,46 +38,40 @@ RSpec.describe "Destinations", type: :request do
   end
 
   describe "GET #new" do
-    context "行きたい場所リストに登録可能な場合" do
-      it "正常にレスポンスを返すこと", vcr: "google_api_response" do
-        get new_itinerary_destination_path(itinerary_id: itinerary.id,
-                                           place_id: destination.place_id)
-        expect(response).to have_http_status 200
-      end
-
-      it "スポット情報をGoogle APIから取得すること", vcr: "google_api_response" do
-        get new_itinerary_destination_path(itinerary_id: itinerary.id,
-                                           place_id: destination.place_id)
-        expect(response.body).to include "シドニー・オペラハウス"
-        expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
-      end
-    end
-
-    context "行きたい場所リストに登録不可能な場合" do
-      it "既に登録済みの場合、メッセージを取得すること" do
-        destination
-        get new_itinerary_destination_path(itinerary_id: itinerary.id,
-                                           place_id: destination.place_id)
-        expect(response.body).to include "行きたい場所リストに追加済み"
-      end
-
-      it "上限の300件まで登録されている場合、メッセージを取得すること" do
-        create_list(:destination, 300, itinerary: itinerary)
-        new_destination = build(:destination, :opera_house)
-        get new_itinerary_destination_path(itinerary_id: itinerary.id,
-                                           place_id: new_destination.place_id)
-        expect(response.body).to include "ひとつの旅のプランにつき、行きたい場所リストへの登録は300件までです。"
-      end
+    it "正常にレスポンスを返すこと" do
+      get destinations_new_itineraries_path(favorite_id: favorite.id)
+      expect(response).to have_http_status 200
     end
   end
 
   describe "POST #create" do
-    it "成功すること" do
-      destination_params = attributes_for(:destination)
-      post itinerary_destinations_path(itinerary_id: itinerary.id),
-        params: { destination: destination_params }
-      expect(response.body).to include '<turbo-frame id="destination">'
-      expect(response.body).to include '行きたい場所リストに追加済み'
+    context "有効な値の場合" do
+      it "成功すること" do
+        destination_params = attributes_for(:destination)
+        post itinerary_destinations_path(itinerary_id: itinerary.id),
+          params: { destination: destination_params }
+        expect(response.body).to include '行きたい場所リストに追加しました'
+      end
+    end
+
+    context "無効な値の場合" do
+      it "同じ旅のプランでplace_idが重複している場合、エラーメッセージを取得すること" do
+        destination
+        destination_params = attributes_for(:destination, place_id: destination.place_id)
+        post itinerary_destinations_path(itinerary_id: destination.itinerary.id),
+          params: { destination: destination_params }
+        expect(response.body).to include "この旅のプランには既に追加されています"
+      end
+
+      it "上限の300件まで登録されている場合、エラーメッセージを取得すること" do
+        create_list(:destination, 300, itinerary: itinerary)
+        new_destination = build(:destination, :opera_house)
+        destination_params = attributes_for(:destination)
+        post itinerary_destinations_path(itinerary_id: itinerary.id),
+          params: { destination: destination_params }
+        expect(response.body)
+          .to include "このプランの行きたい場所リストは上限の300件まで登録されているため、追加できません"
+      end
     end
   end
 
