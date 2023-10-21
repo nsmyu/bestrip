@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Favorites", type: :system, focus: true do
+RSpec.describe "Favorites", type: :system do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
 
@@ -126,6 +126,7 @@ RSpec.describe "Favorites", type: :system, focus: true do
           click_on "お気に入りに追加済み"
 
           expect(page).to have_content "お気に入りに追加"
+          expect(current_path).to eq new_favorite_path
         }.to change(Favorite, :count).by(-1)
       end
     end

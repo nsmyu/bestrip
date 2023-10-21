@@ -7,7 +7,7 @@ RSpec.describe "SearchPlaces", type: :request do
   describe "GET #index" do
     it "正常にレスポンスを返すこと" do
       sign_in user
-      get search_places_itinerary_path(id: itinerary.id)
+      get search_places_path
       expect(response).to have_http_status 200
     end
   end

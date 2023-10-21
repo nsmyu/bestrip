@@ -65,7 +65,6 @@ RSpec.describe "Destinations", type: :request do
 
       it "上限の300件まで登録されている場合、エラーメッセージを取得すること" do
         create_list(:destination, 300, itinerary: itinerary)
-        new_destination = build(:destination, :opera_house)
         destination_params = attributes_for(:destination)
         post itinerary_destinations_path(itinerary_id: itinerary.id),
           params: { destination: destination_params }

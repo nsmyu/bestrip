@@ -66,7 +66,7 @@ RSpec.describe "Destinations", type: :system do
 
     context "無効な値の場合" do
       it "同じ旅のプランでplace_idが重複している場合、失敗すること" do
-        destination = create(:destination, :opera_house, itinerary: itinerary)
+        create(:destination, :opera_house, itinerary: itinerary)
         visit destinations_new_itineraries_path(favorite_id: favorite.id)
 
         expect {
