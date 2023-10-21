@@ -39,3 +39,11 @@ ja:
               photos:
                 format: "%{message}"
                 too_short: 写真は1枚以上選択してください
+          destination:
+            attributes:
+              place_id:
+                format: "%{message}"
+                taken: この旅のプランには既に追加されています
+              itinerary_id:
+                format: "%{message}"
+                destinations_per_itinerary_cannot_be_more_than_three_hundreds: このプランの行きたい場所リストは上限の300件まで登録されているため、追加できません

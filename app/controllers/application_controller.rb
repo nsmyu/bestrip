@@ -13,6 +13,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def set_itineraries_titles
+    @itineraries_titles = current_user
+      .itineraries
+      .order(departure_date: :desc)
+      .pluck(:title, :id)
+  end
+
   def sort_schedules_by_date_time(schedules)
     date_sorted_schedules = schedules.order(:schedule_date)
     @date_time_sorted_schedules = date_sorted_schedules

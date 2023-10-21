@@ -1,5 +1,5 @@
 <%= render "layouts/modal", title: "旅の思い出を投稿" do %>
-  <% if @current_users_itineraries.blank? %>
+  <% if @itineraries_titles.blank? %>
     <p>思い出を投稿できる旅のプランがありません</p>
   <% else %>
     <%= render "form", post: @post %>

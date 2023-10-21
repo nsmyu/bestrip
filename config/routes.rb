@@ -22,7 +22,8 @@ Rails.application.routes.draw do
     end
 
     resources :schedules
-    resources :destinations, only: [:index, :new, :create, :show, :destroy]
+    resources :destinations, only: [:index, :create, :show, :destroy]
+    get "destinations/new", on: :collection
   end
 
   resources :posts

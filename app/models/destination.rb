@@ -6,7 +6,7 @@ class Destination < ApplicationRecord
 
   def destinations_per_itinerary_cannot_be_more_than_three_hundreds
     if itinerary && itinerary.destinations.count >= 300
-      errors.add(:itinerary_id, "ひとつの旅のプランにつき、行きたい場所リストへの登録は300件までです")
+      errors.add(:itinerary_id, "このプランの行きたい場所リストは上限の300件まで登録されているため、追加できません")
     end
   end
 end

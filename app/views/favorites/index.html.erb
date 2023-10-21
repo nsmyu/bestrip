@@ -2,7 +2,7 @@
 <main class="main-content position-relative">
   <div class="container-fluid py-sm-5 px-sm-6 py-4 px-3 min-vh-100">
     <div class="row">
-      <% if @itinerary.destinations.blank? %>
+      <% if current_user.favorites.blank? %>
         <p class="text-center text-dark">行きたい場所は登録されていません</p>
       <% else %>
         <% @place_details_list.each do |place| %>
@@ -21,12 +21,12 @@
                     <%= place[:rating] %>
                   </p>
                   <div class="d-flex justify-content-between">
-                    <%= link_to "スポット情報を見る", [:itinerary_destination, id: place[:destination_id]], data: { turbo_frame: "modal" }, class: "btn btn-sm btn-outline-primary mb-0 me-2 w-100" %>
-                    <%= link_to [:itinerary_destination, id: place[:destination_id]], data: { turbo_method: :delete, turbo_confirm: 'このスポットを行きたい場所リストから削除しますか？' }, class: "text-secondary" do %>
+                    <%= link_to "スポット情報を見る", [:favorite, id: place[:favorite_id]], data: { turbo_frame: "modal" }, class: "btn btn-sm btn-outline-primary mb-0 me-2 w-100" %>
+                    <%= link_to [:favorite, id: place[:favorite_id]], data: { turbo_method: :delete, turbo_confirm: 'このスポットをお気に入りから削除しますか？' }, class: "text-secondary" do %>
                       <i class="material-symbols-outlined" style="vertical-align: -11px;">delete</i>
                     <% end %>
                   </div>
-                  <%= link_to "スケジュール作成", new_itinerary_schedule_path(destination_id: place[:destination_id]), data: { turbo_frame: "modal" }, class: "btn btn-sm btn-primary mt-2 mb-0 w-100" %>
+                  <%= link_to "旅のプランに追加", destinations_new_itineraries_path(favorite_id: place[:favorite_id]), data: { turbo_frame: "modal" }, class: "btn btn-sm btn-primary mt-2 mb-0 w-100" %>
                 <% end %>
               </div>
             </div>

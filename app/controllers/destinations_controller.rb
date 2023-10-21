@@ -1,11 +1,11 @@
 class DestinationsController < ApplicationController
   include GooglePlacesApi
 
+  before_action :authenticate_user!
   before_action -> {
-    authenticate_user!
     set_itinerary
     authenticate_itinerary_member(@itinerary)
-  }
+  }, except: :new
 
   def index
     return if @itinerary.destinations.blank?
@@ -39,14 +39,16 @@ class DestinationsController < ApplicationController
   end
 
   def new
-    @destination = @itinerary.destinations.new
-    @place_id = params[:place_id]
-    get_place_details(@place_id)
+    set_itineraries_titles
+    @itinerary = current_user.itineraries[0]
+    @destination = Destination.new
+    @place_id = Favorite.find(params[:favorite_id]).place_id
   end
 
   def create
+    set_itineraries_titles
+    @itinerary = Itinerary.find(params[:itinerary_id])
     @destination = @itinerary.destinations.new(destination_params)
-    @place_id = @destination.place_id
     @destination.save
   end
 

@@ -8,7 +8,7 @@ class PostsController < ApplicationController
   end
 
   def new
-    @current_users_itineraries = current_user.itineraries.pluck(:title, :id)
+    set_itineraries_titles
     @post = Post.new
     @post.photos.build
   end
@@ -29,7 +29,7 @@ class PostsController < ApplicationController
   end
 
   def edit
-    @current_users_itineraries = current_user.itineraries.pluck(:title, :id)
+    set_itineraries_titles
   end
 
   def update

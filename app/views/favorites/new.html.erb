@@ -8,7 +8,7 @@
         <%= f.hidden_field :place_id, value: @place_id %>
         <% if favorites_include?(@place_id) %>
           <button class="btn btn-outline-primary d-block mt-3 w-100" disabled>お気に入りに追加済み</button>
-        <% elsif current_user.favorites.count >= 3 %>
+        <% elsif current_user.favorites.count >= 300 %>
           <%= f.submit "お気に入りに追加する", class: "btn bg-gradient-primary d-block mt-3 mb-1 w-100", disabled: true %>
           <p class="text-dark text-xs">※お気に入り登録上限の300件まで登録されています。</p>
         <% else %>
