@@ -1,0 +1,17 @@
+<div class="ms-2" id="favorite">
+  <%= form_with model: @favorite do |f| %>
+    <%= f.hidden_field :place_id, value: @place_id %>
+    <% if favorites_include?(@place_id) %>
+      <%= link_to [:favorite, id: @favorite.id], data: { turbo_method: :delete } do %>
+        <i class="material-icons fs-3 cursor-pointer text-favorite">favorite</i>
+      <% end %>
+    <% elsif current_user.favorites.count >= 5 %>
+      <i class="material-symbols-outlined text-secondary fs-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="お気に入り登録数が上限に達しています">heart_plus</i>
+    <% else %>
+      <label class="mb-0">
+        <i class="material-symbols-outlined text-secondary fs-3 cursor-pointer">heart_plus</i>
+        <%= f.submit class: "d-none" %>
+      </label>
+    <% end %>
+  <% end %>
+</div>

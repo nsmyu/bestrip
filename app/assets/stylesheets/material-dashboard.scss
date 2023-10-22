@@ -99,13 +99,12 @@ input:-webkit-autofill {
 }
 
 .tooltip-inner {
-  background-color: $warning;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
 }
 
-.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
-  border-bottom-color: $warning;
+.tooltip {
+  z-index: 100000;
 }
 
 .link-area:hover {
@@ -256,4 +255,8 @@ label:has(#reset_place_btn) {
   vertical-align: -1px;
   transform: scale(1.2);
   accent-color: $dark;
+}
+
+.text-favorite {
+  color: #FA507D;
 }

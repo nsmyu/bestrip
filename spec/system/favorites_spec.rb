@@ -55,27 +55,28 @@ RSpec.describe "Favorites", type: :system do
       it "成功すること" do
         expect {
           visit new_favorite_path(place_id: favorite.place_id)
-          click_on "お気に入りに追加"
+          find("i", text: "heart_plus").click
 
-          expect(page).to have_content "お気に入りに追加済み"
+          expect(page).to have_selector "i", text: "favorite"
         }.to change(Favorite, :count).by(1)
       end
     end
 
     context "無効な値の場合" do
-      it "既にお気に入りに登録されている場合、「お気に入りに追加済み」ボタンが表示されること" do
+      it "既にお気に入りに登録されている場合、追加済みのアイコンが表示されること" do
         favorite.save
         visit new_favorite_path(place_id: favorite.place_id)
 
-        expect(page).to have_content "お気に入りに追加済み"
+        expect(page).to have_selector "i", text: "favorite"
       end
 
-      it "上限の300件まで登録されている場合、メッセージが表示され、ボタンが無効化されていること" do
+      it "上限の300件まで登録されている場合、登録ボタンを表示せず、ツールチップを表示すること" do
         create_list(:favorite, 300, user: user)
         visit new_favorite_path(place_id: favorite.place_id)
 
-        expect(page).to have_content "※お気に入り登録上限の300件まで登録されています。"
-        expect(page).to have_xpath "//input[@value='お気に入りに追加'][@disabled='disabled']"
+        expect(page).not_to have_xpath "//input[@value='登録する']"
+        find("i", text: "heart_plus").hover
+        expect(page).to have_content "お気に入り登録数が上限に達しています"
       end
     end
   end
@@ -123,10 +124,10 @@ RSpec.describe "Favorites", type: :system do
       it "成功すること（ボタンが切り替わること）" do
         expect {
           visit new_favorite_path(place_id: favorite.place_id)
-          click_on "お気に入りに追加済み"
+          find("i", text: "favorite").click
 
-          expect(page).to have_content "お気に入りに追加"
           expect(current_path).to eq new_favorite_path
+          expect(page).to have_selector "i", text: "heart_plus"
         }.to change(Favorite, :count).by(-1)
       end
     end

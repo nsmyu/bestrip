@@ -61,7 +61,8 @@ class FavoritesController < ApplicationController
     @favorite = current_user.favorites.new
     @place_id = Favorite.find(params[:id]).place_id
     Favorite.find(params[:id]).destroy
-    if request.referer&.include? "/favorites"
+
+    if request.referer&.end_with? "/favorites"
       redirect_to :favorites, notice: "行きたい場所リストから削除しました。"
     end
   end

@@ -53,6 +53,7 @@ function initializeTooltips() {
   })
 }
 document.addEventListener('turbo:load', initializeTooltips);
+document.addEventListener('turbo:frame-load', initializeTooltips);
 document.addEventListener('DOMContentLoaded', initializeTooltips);
 
 // when input is focused add focused class for style

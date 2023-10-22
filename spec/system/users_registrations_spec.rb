@@ -170,13 +170,13 @@ RSpec.describe "UsersRegistrations", type: :system do
       visit users_edit_profile_path
     end
 
-    context "有効な値の場合", js: true do
+    context "有効な値の場合", js: true, focus: true do
       it "成功すること" do
         expect(page).to have_content "プロフィール編集"
         expect(page).to have_xpath "//input[@value='#{user.name}']"
         expect(page).to have_selector "img[src*='default_avatar']"
 
-        find(".bi-question-circle-fill").hover
+        find("i", text: "help_outline").hover
         expect(page).to have_content "旅のプランにメンバーを追加するときに使用するIDです。設定すると、友だちがあなたをID検索できるようになります。"
 
         image_path = Rails.root.join('spec/fixtures/cat.jpg')

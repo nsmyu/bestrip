@@ -3,18 +3,5 @@
     <p class="text-sm text-danger"><span class="material-symbols-outlined fs-6 pe-1" style="vertical-align: -2.8px;">error</span><%= @error %></p>
   <% else %>
     <%= render "place_details", place_details: @place_details %>
-    <div id="favorite">
-      <%= form_with model: @favorite do |f| %>
-        <%= f.hidden_field :place_id, value: @place_id %>
-        <% if favorites_include?(@place_id) %>
-          <%= link_to "お気に入りに追加済み", [:favorite, id: @favorite.id], data: { turbo_method: :delete }, class: "btn btn-outline-primary d-block mt-3 w-100" %>
-        <% elsif current_user.favorites.count >= 5 %>
-          <%= f.submit "お気に入りに追加", class: "btn bg-gradient-primary d-block mt-3 mb-1 w-100", disabled: true %>
-          <p class="text-dark text-xs">※お気に入り登録上限の300件まで登録されています。</p>
-        <% else %>
-          <%= f.submit "お気に入りに追加", class: "btn bg-gradient-primary d-block mt-3 w-100" %>
-        <% end %>
-      <% end %>
-    </div>
   <% end %>
 <% end %>
