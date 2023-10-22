@@ -33,7 +33,7 @@ jobs:
           port: 22
           script: |
             cd /var/www/bestrip
-            git pull origin develop/03-schedule
+            git pull origin develop/06-favorite
             ~/.rbenv/shims/bundle install
             ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production
             ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production
