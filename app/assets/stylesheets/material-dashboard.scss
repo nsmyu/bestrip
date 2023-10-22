@@ -224,6 +224,13 @@ label:has(#reset_place_btn) {
   aspect-ratio: 1/1;
 }
 
+.circle-image {
+  object-fit: cover;
+  width: 100%;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+}
+
 .select-box {
   display: inline-flex;
   align-items: center;
