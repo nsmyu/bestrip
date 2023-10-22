@@ -8,15 +8,14 @@ RSpec.describe "Favorites", type: :system, focus: true do
   end
 
   describe "一覧表示" do
-    context "行きたい場所リストに登録がない場合" do
+    context "「行きたい場所」に登録がない場合" do
       it "メッセージを表示すること" do
         visit favorites_path
-
-        expect(page).to have_content "行きたい場所は登録されていません"
+        expect(page).to have_content "お気に入りスポットはありません"
       end
     end
 
-    context "行きたい場所リストに登録がある場合" do
+    context "「行きたい場所」に登録がある場合" do
       it "登録されているスポットを全て表示すること" do
         create(:favorite, :opera_house, user: user)
         create(:favorite, :queen_victoria_building, user: user)
@@ -115,7 +114,7 @@ RSpec.describe "Favorites", type: :system, focus: true do
 
           click_on "削除する"
 
-          expect(page).to have_content "行きたい場所リストから削除しました。"
+          expect(page).to have_content "行きたい場所から削除しました。"
           expect(current_path).to eq favorites_path
         }.to change(Favorite, :count).by(-1)
       end

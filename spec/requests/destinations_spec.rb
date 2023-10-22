@@ -16,7 +16,7 @@ RSpec.describe "Destinations", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "行きたい場所リストを全て取得すること", vcr: "google_api_response" do
+    it "行きたい場所を全て取得すること", vcr: "google_api_response" do
       destination
       create(:destination, :queen_victoria_building, itinerary: itinerary)
       get itinerary_destinations_path(itinerary_id: itinerary.id)
@@ -50,7 +50,7 @@ RSpec.describe "Destinations", type: :request do
         destination_params = attributes_for(:destination)
         post itinerary_destinations_path(itinerary_id: itinerary.id),
           params: { destination: destination_params }
-        expect(response.body).to include '行きたい場所リストに追加しました'
+        expect(response.body).to include '行きたい場所に追加しました'
       end
     end
 
@@ -69,7 +69,7 @@ RSpec.describe "Destinations", type: :request do
         post itinerary_destinations_path(itinerary_id: itinerary.id),
           params: { destination: destination_params }
         expect(response.body)
-          .to include "このプランの行きたい場所リストは上限の300件まで登録されているため、追加できません"
+          .to include "このプランの行きたい場所は上限の300件まで登録されているため、追加できません"
       end
     end
   end

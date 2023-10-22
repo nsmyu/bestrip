@@ -3,7 +3,7 @@
   <div class="container-fluid py-sm-5 py-4 px-1 min-vh-100">
     <div class="row max-width-850 mx-auto">
       <% if current_user.favorites.blank? %>
-        <p class="text-center text-dark">行きたい場所は登録されていません</p>
+        <p class="text-center text-dark">お気に入りスポットはありません</p>
       <% else %>
         <% @place_details_list.each do |place| %>
           <div class="col-sm-6 mb-3 mx-auto mx-sm-0 px-0 max-width-400 cursor-pointer">

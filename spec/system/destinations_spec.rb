@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Destinations", type: :system do
+RSpec.describe "Destinations", type: :system, focus: true do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
   let!(:favorite) { create(:favorite, :opera_house, user: user) }
@@ -10,7 +10,7 @@ RSpec.describe "Destinations", type: :system do
   end
 
   describe "一覧表示" do
-    context "行きたい場所リストに登録がない場合" do
+    context "「行きたい場所」に登録がない場合" do
       it "メッセージを表示すること" do
         visit itinerary_destinations_path(itinerary_id: itinerary.id)
 
@@ -18,7 +18,7 @@ RSpec.describe "Destinations", type: :system do
       end
     end
 
-    context "行きたい場所リストに登録がある場合" do
+    context "「行きたい場所」に登録がある場合" do
       it "登録されたスポットを全て表示すること" do
         create(:destination, :opera_house, itinerary: itinerary)
         create(:destination, :queen_victoria_building, itinerary: itinerary)
@@ -38,7 +38,7 @@ RSpec.describe "Destinations", type: :system do
       it "「スケジュール作成」をクリックすると、スポット情報を含むスケジュール作成モーダルを表示すること" do
         create(:destination, :opera_house, itinerary: itinerary)
         visit itinerary_destinations_path(itinerary_id: itinerary.id)
-        within(:xpath, "//div[p[contains(text(), 'シドニー・オペラハウス')]]") do
+        within(:xpath, "//div[div[p[contains(text(), 'シドニー・オペラハウス')]]]") do
           click_on "スケジュール作成"
         end
 
@@ -57,9 +57,9 @@ RSpec.describe "Destinations", type: :system do
         expect {
           find("#destination_itinerary_id").click
           find("option", text: "#{itinerary.title}").click
-          click_on "行きたい場所リストに追加"
+          click_on "行きたい場所に追加"
 
-          expect(page).to have_content "行きたい場所リストに追加しました"
+          expect(page).to have_content "行きたい場所に追加しました"
         }.to change(Destination, :count).by(1)
       end
     end
@@ -72,7 +72,7 @@ RSpec.describe "Destinations", type: :system do
         expect {
           find("#destination_itinerary_id").click
           find("option", text: "#{itinerary.title}").click
-          click_on "行きたい場所リストに追加"
+          click_on "行きたい場所に追加"
 
           expect(page).to have_content "この旅のプランには既に追加されています"
         }.not_to change(Destination, :count)
@@ -85,9 +85,9 @@ RSpec.describe "Destinations", type: :system do
         expect {
           find("#destination_itinerary_id").click
           find("option", text: "#{itinerary.title}").click
-          click_on "行きたい場所リストに追加"
+          click_on "行きたい場所に追加"
 
-          expect(page).to have_content "このプランの行きたい場所リストは上限の300件まで登録されているため、追加できません"
+          expect(page).to have_content "このプランの行きたい場所は上限の300件まで登録されているため、追加できません"
         }.not_to change(Destination, :count)
       end
     end
@@ -98,8 +98,8 @@ RSpec.describe "Destinations", type: :system do
 
     it "スポット情報を表示すること" do
       visit itinerary_destinations_path(itinerary_id: itinerary.id)
-      within(:xpath, "//div[p[contains(text(), 'シドニー・オペラハウス')]]") do
-        click_on "スポット情報を見る"
+      within(:xpath, "//div[div[p[contains(text(), 'シドニー・オペラハウス')]]]") do
+        click_on "スポット詳細"
       end
 
       expect(page).to have_selector "img[src*='maps.googleapis.com/maps/api/place/photo']"
@@ -117,15 +117,15 @@ RSpec.describe "Destinations", type: :system do
     it "成功すること" do
       expect {
         visit itinerary_destinations_path(itinerary_id: itinerary.id)
-        within(:xpath, "//div[p[contains(text(), 'シドニー・オペラハウス')]]") do
-          find("i", text: "delete").click
+        within(:xpath, "//div[div[p[contains(text(), 'シドニー・オペラハウス')]]]") do
+          find("i", text: "close").click
         end
 
-        expect(page).to have_content "このスポットを行きたい場所リストから削除しますか？"
+        expect(page).to have_content "このスポットを行きたい場所から削除しますか？"
 
         click_on "削除する"
 
-        expect(page).to have_content "行きたい場所リストから削除しました。"
+        expect(page).to have_content "行きたい場所から削除しました。"
         expect(current_path).to eq itinerary_destinations_path(itinerary_id: itinerary.id)
       }.to change(Destination, :count).by(-1)
     end

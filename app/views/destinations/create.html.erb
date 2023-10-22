@@ -10,9 +10,9 @@
       <% if @destination.errors.any? %>
         <p class="text-center text-sm text-dark"><%= @destination.errors.full_messages_for(:place_id).first %></p>
         <p class="text-center text-sm text-dark"><%= @destination.errors.full_messages_for(:itinerary_id).first %></p>
-        <%= f.submit "行きたい場所リストに追加", class: "btn bg-gradient-primary d-block mt-3 mx-auto", data: { destination_target: "submit" } %>
+        <%= f.submit "行きたい場所に追加", class: "btn bg-gradient-primary d-block mt-3 mx-auto", data: { destination_target: "submit" } %>
       <% elsif destinations_include?(@itinerary, @destination.place_id) %>
-        <p class="text-center text-sm text-dark">行きたい場所リストに追加しました</p>
+        <p class="text-center text-sm text-dark">行きたい場所に追加しました</p>
         <%= link_to [:itinerary, id: @itinerary.id], data: { turbo_frame: "_top" } do %>
           <p class="py-1 text-center text-sm text-primary fw-bold">旅のプランを確認<i class="material-icons fs-4" style="vertical-align: -6.5px;">navigate_next</i></p>
         <% end %>
