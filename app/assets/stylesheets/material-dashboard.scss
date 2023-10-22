@@ -267,3 +267,10 @@ label:has(#reset_place_btn) {
 .text-favorite {
   color: #FA507D;
 }
+
+.current-page {
+  span, i{
+    color: $primary !important;
+    font-weight: bold;
+  }
+}

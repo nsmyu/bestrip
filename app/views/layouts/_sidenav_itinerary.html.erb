@@ -2,7 +2,7 @@
   <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <%= link_to [:itinerary, id: @itinerary.id], class:"nav-link text-dark" do %>
+        <%= link_to [:itinerary, id: @itinerary.id], class:"nav-link sidenav-link text-dark" do %>
           <div class="row">
             <div class="col-3 d-flex ps-1 pe-0 align-items-center">
               <%= image_tag @itinerary.image.url, class: "circle-image" %>
@@ -16,19 +16,19 @@
       </li>
       <hr class="horizontal dark my-1">
       <li class="nav-item">
-        <%= link_to [:itinerary_schedules, itinerary_id: @itinerary.id], class:"nav-link text-dark" do %>
+        <%= link_to [:itinerary_schedules, itinerary_id: @itinerary.id], class:"nav-link sidenav-link" do %>
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons text-dark">schedule</i>
           </div>
-          <span class="ms-1">スケジュール</span>
+          <span class="ms-1 text-dark">スケジュール</span>
         <% end %>
       </li>
       <li class="nav-item">
-        <%= link_to [:itinerary_destinations, itinerary_id: @itinerary.id], class:"nav-link text-dark" do %>
+        <%= link_to [:itinerary_destinations, itinerary_id: @itinerary.id], class:"nav-link sidenav-link" do %>
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons text-dark">outlined_flag</i>
           </div>
-          <span class="ms-1">行きたい場所</span>
+          <span class="ms-1 text-dark">行きたい場所</span>
         <% end %>
       </li>
       <li class="nav-item mt-3">
