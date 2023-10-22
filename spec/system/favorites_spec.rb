@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Favorites", type: :system do
+RSpec.describe "Favorites", type: :system, focus: true do
   let!(:user) { create(:user) }
 
   before do
@@ -33,9 +33,11 @@ RSpec.describe "Favorites", type: :system do
         expect(page).to have_content "スポット情報を取得できませんでした"
       end
 
-      it "「プランに追加」をクリックすると、旅のプランに選択して追加するためのモーダルを表示すること", js: true do
+      it "「プランに追加」をクリックすると、旅のプランに追加するためのモーダルを表示すること", js: true do
         create(:favorite, :opera_house, user: user)
+        create(:itinerary, owner: user)
         visit favorites_path
+
         within(:xpath, "//div[div[p[contains(text(), 'シドニー・オペラハウス')]]]") do
           click_on "プランに追加"
         end
