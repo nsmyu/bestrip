@@ -2,7 +2,6 @@ require "rails_helper"
 
 RSpec.describe "Favorites", type: :system do
   let!(:user) { create(:user) }
-  let!(:itinerary) { create(:itinerary, owner: user) }
 
   before do
     sign_in user
@@ -52,7 +51,7 @@ RSpec.describe "Favorites", type: :system do
     let(:favorite) { build(:favorite, :opera_house, user: user) }
 
     context "有効な値の場合" do
-      it "成功すること" do
+      it "成功すること（ボタンのアイコンが切り替わること）" do
         expect {
           visit new_favorite_path(place_id: favorite.place_id)
           find("i", text: "heart_plus").click
@@ -63,7 +62,7 @@ RSpec.describe "Favorites", type: :system do
     end
 
     context "無効な値の場合" do
-      it "既にお気に入りに登録されている場合、追加済みのアイコンが表示されること" do
+      it "既にお気に入りに登録されている場合、登録済みアイコンが表示されること" do
         favorite.save
         visit new_favorite_path(place_id: favorite.place_id)
 
@@ -121,7 +120,7 @@ RSpec.describe "Favorites", type: :system do
     end
 
     context "お気に入り追加画面から削除する場合" do
-      it "成功すること（ボタンが切り替わること）" do
+      it "成功すること（ボタンのアイコンが切り替わること）" do
         expect {
           visit new_favorite_path(place_id: favorite.place_id)
           find("i", text: "favorite").click

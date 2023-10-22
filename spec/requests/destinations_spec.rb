@@ -23,7 +23,7 @@ RSpec.describe "Destinations", type: :request do
       expect(response.body).to include "シドニー・オペラハウス", "クイーン・ビクトリア・ビルディング"
     end
 
-    it "他の旅のプランのスケジュールを取得しないこと", vcr: "google_api_response" do
+    it "他の旅のプランの行きたい場所を取得しないこと", vcr: "google_api_response" do
       other_itinerary = create(:itinerary, owner: user)
       create(:destination, :opera_house, itinerary: other_itinerary)
       get itinerary_schedules_path(itinerary_id: itinerary.id)
