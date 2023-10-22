@@ -1,12 +1,12 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
   <div class="container-fluid py-4 px-1 min-vh-100">
-    <div class="row max-width-850 mx-auto">
+    <div class="row max-width-800 mx-auto">
       <% if current_user.favorites.blank? %>
-        <p class="text-center text-dark">お気に入りスポットはありません</p>
+        <p class="p-4 text-center text-sm text-dark">お気に入りスポットはありません</p>
       <% else %>
         <% @place_details_list.each do |place| %>
-          <div class="col-sm-6 mb-3 mx-auto mx-sm-0 px-0 max-width-400 cursor-pointer">
+          <div class="col-sm-6 mb-3 mx-auto mx-sm-0 px-0 max-width-400">
             <div class="card p-3 mx-sm-2 position-relative">
               <div class="row">
                 <div class="col-4 ps-3 pe-0">

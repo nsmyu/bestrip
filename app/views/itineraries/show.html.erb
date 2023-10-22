@@ -1,7 +1,7 @@
 <%= render 'layouts/sidenav_itinerary' %>
 <main class="main-content position-relative">
   <div class="container-fluid py-4 px-sm-6 px-3 min-vh-100">
-    <div class="card z-index-2 max-width-550 mx-auto mb-4">
+    <div class="card z-index-2 max-width-500 mx-auto mb-3">
       <div class="card-body text-dark">
         <div class="d-flex border-bottom justify-content-between">
           <h5>旅のプラン情報</h5>
@@ -27,8 +27,8 @@
           <% end %>
         </div>
         <%= image_tag @itinerary.image.url, class: "border-radius-lg shadow-dark w-100 my-3" %>
-        <p class="my-2"><span class="fw-bold text-xs">タイトル</span><br><%= @itinerary.title %></p>
-        <p class="my-2"><span class="fw-bold text-xs">旅行期間</span><br><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
+        <p class="mb-2 lh-base"><span class="fw-bold text-xs">タイトル</span><br><%= @itinerary.title %></p>
+        <p class="mb-2 lh-base"><span class="fw-bold text-xs">旅行期間</span><br><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
         <p>
           <span class="fw-bold text-xs d-inline-block mb-2">旅のプラン作成者</span><br>
           <%= image_tag @itinerary.owner.avatar.url, id: 'image-preview', class: "rounded-circle avatar-thumbnail me-2" %>
@@ -36,7 +36,7 @@
         </p>
       </div>
     </div>
-    <div class="card z-index-2 max-width-550 mx-auto">
+    <div class="card z-index-2 max-width-500 mx-auto">
       <div class="card-body text-dark">
         <div class="border-bottom">
           <h5>旅のメンバー</h5>

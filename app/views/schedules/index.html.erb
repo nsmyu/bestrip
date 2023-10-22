@@ -2,12 +2,12 @@
 <main class="main-content position-relative">
   <div class="container-fluid py-4 px-sm-6 px-1 min-vh-100">
     <% if @date_time_sorted_schedules.blank? %>
-      <p class="text-center text-dark">スケジュールは登録されていません</p>
+      <p class="p-4 text-center text-sm text-dark">スケジュールは登録されていません</p>
     <% else %>
-      <div class="row max-width-700 w-md-80 w-ms-90 mx-auto">
+      <div class="row max-width-600 w-md-80 w-ms-90 mx-auto">
         <% @date_time_sorted_schedules.each do |date, schedules| %>
           <div class="card mb-3 pt-3 px-3 text-dark">
-            <p class="d-none d-sm-block mb-2 text-lg fw-bold"><%= date ? (l date) : "その他の予定" %></p>
+            <p class="d-none d-sm-block mb-2 fw-bold"><%= date ? (l date) : "その他の予定" %></p>
             <h6 class="d-sm-none"><%= date ? (l date) : "その他の予定" %></h6>
             <% schedules.each_with_index do |schedule, i| %>
               <div class="border-top">
@@ -15,8 +15,8 @@
                   <div class="col-1 col-sm-2 px-0 text-center">
                     <div class="lh-1 ms-md-n3">
                       <% if schedule.start_at || schedule.end_at %>
-                        <p class="d-none d-sm-block fw-bold lh-1"><%= (l schedule.start_at) if schedule.start_at %><br><span class="text-sm"><%= "- #{(l schedule.end_at)}" if schedule.end_at%></span></p>
-                        <p class="d-sm-none d-inline-block fw-bold text-sm lh-1"><%= (l schedule.start_at) if schedule.start_at %><br><span class="text-xs"><%= "-#{(l schedule.end_at)}" if schedule.end_at%></span></p>
+
+                        <p class="d-inline-block fw-bold text-sm lh-1"><%= (l schedule.start_at) if schedule.start_at %><br><span class="text-xs"><%= "-#{(l schedule.end_at)}" if schedule.end_at%></span></p>
                       <% else %>
                         <p class="d-none d-sm-block fw-bold lh-1">--:--</p>
                         <p class="d-sm-none d-inline-block fw-bold text-sm lh-1">--:--</p>
@@ -31,7 +31,7 @@
                         <% end %>
                       </div>
                       <div class="col-10 d-flex pe-0 align-items-center">
-                        <p class="d-none d-sm-block ms-n3 text-ellipsis"><%= schedule.title %></p>
+                        <p class="d-none d-sm-block text-sm ms-n3 text-ellipsis"><%= schedule.title %></p>
                         <p class="d-sm-none ms-3 text-sm text-ellipsis"><%= schedule.title %></p>
                       </div>
                       <div class="col-1 px-0">

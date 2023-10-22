@@ -152,7 +152,7 @@ label:has(#reset_place_btn) {
 }
 
 .schedule-item {
-  height:70px;
+  height:60px;
 
   @include media-breakpoint-down(sm) {
     height:60px;
@@ -260,10 +260,10 @@ label:has(#reset_place_btn) {
 }
 
 .current-page {
-  span, i{
+  p, span, i{
     color: $primary !important;
   }
-  span {
+  p, span {
     font-weight: bold;
   }
 }
