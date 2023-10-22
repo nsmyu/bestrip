@@ -49,18 +49,20 @@ function initSearchBox() {
         new google.maps.InfoWindow({
           content:
             `<div id="content" class="infowindow-content">
-            <div id="siteNotice">
-            </div>
-            <div id="bodyContent">
-            <img src=${photo_url} class="infowindow_place_photo border-radius-lg w-100">
-            <div class="my-2">
-            <p id="firstHeading" class="text-sm text-dark fw-bold lh-sm">${places[i].name}</p>
-            <p class="text-xs text-dark fw-bold pt-1">
-            クチコミ評価<i class="material-icons rating-icon ps-1">star</i>${places[i].rating}
-            </p>
-            </div>
-            <a href="/favorites/new?place_id=${places[i].place_id}" class="btn btn-sm btn-outline-primary mb-0 w-100" data-turbo-frame="modal">スポット情報を見る</a>
-            </div>
+              <div class="row mx-0 p-1" id="bodyContent">
+                <div class="col-5 ps-0">
+                  <img src=${photo_url} class="square-image">
+                </div>
+                <div class="col-7 px-0">
+                  <p id="firstHeading" class="text-sm text-dark fw-bold lh-sm">${places[i].name}</p>
+                  <p class="mb-2 text-xxs text-dark">
+                    クチコミ評価<i class="material-icons rating-icon ps-1">star</i>${places[i].rating}
+                  </p>
+                  <a href="/favorites/new?place_id=${places[i].place_id}" class="text-primary text-xs fw-bold" data-turbo-frame="modal">
+                    スポット詳細<i class="material-icons fs-4" style="vertical-align: -7px;">navigate_next</i>
+                  </a>
+                </div>
+              </div>
             </div>`
         })
 
@@ -84,3 +86,4 @@ function initSearchBox() {
 }
 
 document.addEventListener('DOMContentLoaded', initSearchBox);
+document.addEventListener('turbo:load', initSearchBox);
