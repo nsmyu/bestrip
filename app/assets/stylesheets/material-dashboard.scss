@@ -271,6 +271,8 @@ label:has(#reset_place_btn) {
 .current-page {
   span, i{
     color: $primary !important;
+  }
+  span {
     font-weight: bold;
   }
 }

@@ -2,41 +2,40 @@
   <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <%= link_to [:itinerary, id: @itinerary.id], class:"nav-link text-dark" do %>
+        <%= link_to :users_edit_profile, class:"nav-link sidenav-link text-dark" do %>
           <div class="row">
             <div class="col-3 d-flex ps-1 pe-0 align-items-center">
-              <%= image_tag @itinerary.image.url, class: "circle-image" %>
+              <%= image_tag current_user.avatar.url, class: "circle-image" %>
             </div>
             <div class="col-9 ">
-              <p class="text-sm fw-bold text-ellipsis"><%= @itinerary.title %></p>
-              <p class="text-xxs lh-base"><%= l @itinerary.departure_date %> 〜 <br><%= l @itinerary.return_date %></p>
+              <p class="text-sm fw-bold text-ellipsis"><%= current_user.name %></p>
             </div>
           </div>
         <% end %>
       </li>
       <hr class="horizontal dark my-1">
       <li class="nav-item">
-        <%= link_to [:itinerary_schedules, itinerary_id: @itinerary.id], class:"nav-link text-dark" do %>
+        <%= link_to :itineraries, class:"nav-link sidenav-link" do %>
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons text-dark">schedule</i>
+            <i class="material-icons text-dark">library_books</i>
           </div>
-          <span class="ms-1">スケジュール</span>
+          <span class="ms-1 text-dark">旅のプラン一覧</span>
         <% end %>
       </li>
       <li class="nav-item">
-        <%= link_to [:itinerary_destinations, itinerary_id: @itinerary.id], class:"nav-link text-dark" do %>
+        <%= link_to :favorites, class:"nav-link sidenav-link" do %>
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons text-dark">outlined_flag</i>
+            <i class="material-icons text-dark">location_on</i>
           </div>
-          <span class="ms-1">行きたい場所</span>
+          <span class="ms-1 text-dark">お気に入り</span>
         <% end %>
       </li>
-      <li class="nav-item mt-3">
-        <%= link_to :itineraries, class:"nav-link text-secondary" do %>
+      <li class="nav-item">
+        <%= link_to :search_places, class:"nav-link sidenav-link" do %>
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons text-secondary">arrow_back</i>
+            <i class="material-icons text-dark">search</i>
           </div>
-          <span class="ms-1 text-xs">一覧に戻る</span>
+          <span class="ms-1 text-dark">スポット検索</span>
         <% end %>
       </li>
     </ul>
