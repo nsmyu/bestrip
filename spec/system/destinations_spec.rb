@@ -87,7 +87,7 @@ RSpec.describe "Destinations", type: :system do
           find("option", text: "#{itinerary.title}").click
           click_on "行きたい場所に追加"
 
-          expect(page).to have_content "このプランの行きたい場所は上限の300件まで登録されているため、追加できません"
+          expect(page).to have_content "このプランのスポットリストは登録数が上限に達しています"
         }.not_to change(Destination, :count)
       end
     end

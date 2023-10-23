@@ -45,14 +45,6 @@ class PostsController < ApplicationController
 
   private
 
-  def post_params
-    params.require(:post).permit(:title,
-                                 :caption,
-                                 :itinerary_public,
-                                 :itinerary_id,
-                                 [photos_attributes: [:url, :id, :_destroy]])
-  end
-
   def set_post
     @post = Post.find(params[:id])
   end
@@ -61,5 +53,20 @@ class PostsController < ApplicationController
     if current_user != @post.user
       redirect_to :posts
     end
+  end
+
+  def post_params
+    params.require(:post).permit(:title,
+                                 :caption,
+                                 :itinerary_public,
+                                 :itinerary_id,
+                                 [photos_attributes: [:url, :id, :_destroy]])
+  end
+
+  def set_itineraries_titles
+    @itineraries_titles = current_user
+      .itineraries
+      .order(departure_date: :desc)
+      .pluck(:title, :id)
   end
 end

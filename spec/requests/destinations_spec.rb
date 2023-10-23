@@ -69,7 +69,7 @@ RSpec.describe "Destinations", type: :request do
         post itinerary_destinations_path(itinerary_id: itinerary.id),
           params: { destination: destination_params }
         expect(response.body)
-          .to include "このプランの行きたい場所は上限の300件まで登録されているため、追加できません"
+          .to include "このプランのスポットリストは登録数が上限に達しています"
       end
     end
   end
