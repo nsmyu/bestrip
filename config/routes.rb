@@ -29,5 +29,5 @@ Rails.application.routes.draw do
 
   resources :posts
   resources :favorites, only: [:index, :new, :create, :show, :destroy]
-  get 'search_places', to: 'places#search_places'
+  get 'find_places', to: 'places#find_places'
 end

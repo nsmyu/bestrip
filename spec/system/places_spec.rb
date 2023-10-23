@@ -6,7 +6,7 @@ RSpec.describe "Places", type: :system do
   describe "スポット検索", js: true do
     it "検索結果を地図上に表示、クリックするとスポット情報をモーダルで表示すること" do
       sign_in user
-      visit search_places_path
+      visit find_places_path
       fill_in "searchbox_text_input", with: "シドニー オペラハウス"
       sleep 0.5
       find("#searchbox_text_input").click

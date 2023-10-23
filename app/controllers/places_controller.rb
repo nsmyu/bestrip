@@ -1,7 +1,7 @@
 class PlacesController < ApplicationController
   before_action :authenticate_user!
 
-  def search_places
+  def find_places
   end
 
   def find_destinations
