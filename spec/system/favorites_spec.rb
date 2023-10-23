@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Favorites", type: :system, focus: true do
+RSpec.describe "Favorites", type: :system do
   let!(:user) { create(:user) }
 
   before do

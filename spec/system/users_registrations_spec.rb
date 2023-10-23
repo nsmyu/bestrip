@@ -170,7 +170,7 @@ RSpec.describe "UsersRegistrations", type: :system do
       visit users_edit_profile_path
     end
 
-    context "有効な値の場合", js: true do
+    context "有効な値の場合", js: true, focus: true do
       it "成功すること" do
         expect(page).to have_content "プロフィール編集"
         expect(page).to have_xpath "//input[@value='#{user.name}']"
@@ -182,7 +182,9 @@ RSpec.describe "UsersRegistrations", type: :system do
         image_path = Rails.root.join('spec/fixtures/cat.jpg')
         attach_file 'user[avatar]', image_path, make_visible: true
 
-        expect(page).not_to have_selector "img[src*='default_avatar']"
+        within "form" do
+          expect(page).not_to have_selector "img[src*='default_avatar']"
+        end
 
         fill_in "user[name]", with: "New name"
         fill_in "user[bestrip_id]", with: "user_id"

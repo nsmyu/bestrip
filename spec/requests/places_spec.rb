@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "SearchPlaces", type: :request do
+RSpec.describe "Places", type: :request do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
 
