@@ -4,7 +4,7 @@
     <% if @date_time_sorted_schedules.blank? %>
       <p class="p-4 text-center text-sm text-dark">スケジュールは登録されていません</p>
     <% else %>
-      <div class="row max-width-600 w-md-80 w-ms-90 mx-auto">
+      <div class="row max-width-700 w-md-80 w-ms-90 mx-auto">
         <% @date_time_sorted_schedules.each do |date, schedules| %>
           <div class="card mb-3 pt-3 px-3 text-dark">
             <p class="d-none d-sm-block mb-2 fw-bold"><%= date ? (l date) : "その他の予定" %></p>

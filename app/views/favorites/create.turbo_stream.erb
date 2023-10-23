@@ -1,5 +1,5 @@
 <%= turbo_stream.update "favorite" do %>
   <%= link_to [:favorite, id: @favorite.id], data: { turbo_method: :delete } do %>
-    <i class="material-icons pe-1 fs-4 text-favorite cursor-pointer">favorite</i>
+    <i class="material-icons fs-3 text-favorite cursor-pointer">favorite</i>
   <% end %>
 <% end %>
