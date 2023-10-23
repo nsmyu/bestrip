@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     member do
       resources :itinerary_users, only: [:new, :create, :destroy]
       get 'search_user', to: 'itinerary_users#search_user'
+      get 'find_destinations', to: 'places#find_destinations'
     end
 
     resources :schedules
@@ -28,5 +29,5 @@ Rails.application.routes.draw do
 
   resources :posts
   resources :favorites, only: [:index, :new, :create, :show, :destroy]
-  get 'search_places', to: 'search_places#search_places'
+  get 'search_places', to: 'places#search_places'
 end

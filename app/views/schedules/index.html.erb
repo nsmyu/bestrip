@@ -15,11 +15,9 @@
                   <div class="col-1 col-sm-2 px-0 text-center">
                     <div class="lh-1 ms-md-n3">
                       <% if schedule.start_at || schedule.end_at %>
-
                         <p class="d-inline-block fw-bold text-sm lh-1"><%= (l schedule.start_at) if schedule.start_at %><br><span class="text-xs"><%= "-#{(l schedule.end_at)}" if schedule.end_at%></span></p>
                       <% else %>
-                        <p class="d-none d-sm-block fw-bold lh-1">--:--</p>
-                        <p class="d-sm-none d-inline-block fw-bold text-sm lh-1">--:--</p>
+                        <p class="fw-bold text-sm lh-1">--:--</p>
                       <% end %>
                     </div>
                   </div>
@@ -31,14 +29,12 @@
                         <% end %>
                       </div>
                       <div class="col-10 d-flex pe-0 align-items-center">
-                        <p class="d-none d-sm-block text-sm ms-n3 text-ellipsis"><%= schedule.title %></p>
-                        <p class="d-sm-none ms-3 text-sm text-ellipsis"><%= schedule.title %></p>
+                        <p class="ms-3 ms-sm-n3 text-sm text-ellipsis"><%= schedule.title %></p>
                       </div>
                       <div class="col-1 px-0">
                         <div class="dropdown">
                           <label for="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>" class="cursor-pointer m-0">
-                            <i class="material-icons d-none d-sm-block p-2 text-secondary link-area rounded-circle">more_vert</i>
-                            <i class="material-icons d-sm-none ms-lg-0 p-2 text-secondary link-area rounded-circle">more_vert</i>
+                            <i class="material-icons p-2 text-secondary link-area rounded-circle">more_vert</i>
                           </label>
                           <button class="d-none" id="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>" data-bs-toggle="dropdown" aria-expanded="false"></button>
                           <ul class="border dropdown-menu dropdown-menu-end mt-4" aria-labelledby="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>"></li>
