@@ -37,9 +37,9 @@ RSpec.describe "Destinations", type: :request do
     end
   end
 
-  describe "GET #new" do
+  describe "GET #select_itinerary" do
     it "正常にレスポンスを返すこと" do
-      get destinations_new_itineraries_path(favorite_id: favorite.id)
+      get destinations_select_itinerary_itineraries_path(favorite_id: favorite.id)
       expect(response).to have_http_status 200
     end
   end

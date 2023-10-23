@@ -23,8 +23,8 @@ Rails.application.routes.draw do
     end
 
     resources :schedules
-    resources :destinations, only: [:index, :create, :show, :destroy]
-    get "destinations/new", on: :collection
+    resources :destinations, only: [:index, :new, :create, :show, :destroy]
+    get "destinations/select_itinerary", on: :collection
   end
 
   resources :posts

@@ -7,6 +7,7 @@ function initSearchBox() {
   });
   const input = document.getElementById("searchbox_text_input");
   const searchBox = new google.maps.places.SearchBox(input);
+  const itineraryId = document.querySelector("#itinerary_id")
 
   map.addListener("bounds_changed", () => {
     searchBox.setBounds(map.getBounds());
@@ -45,7 +46,29 @@ function initSearchBox() {
         photo_url = "/assets/default_place.png"
       }
 
-      infowindow[i] =
+      if (itineraryId) {
+        infowindow[i] =
+          new google.maps.InfoWindow({
+            content:
+              `<div id="content" class="infowindow-content">
+                <div class="row mx-0 p-1" id="bodyContent">
+                  <div class="col-5 ps-0">
+                    <img src=${photo_url} class="square-image">
+                  </div>
+                  <div class="col-7 px-0">
+                    <p id="firstHeading" class="text-sm text-dark fw-bold lh-sm">${places[i].name}</p>
+                    <p class="mb-2 text-xxs text-dark">
+                      クチコミ評価<i class="material-icons rating-icon ps-1">star</i>${places[i].rating}
+                    </p>
+                    <a href="/itineraries/${itineraryId.value}/destinations/new?place_id=${places[i].place_id}" class="text-primary text-xs fw-bold" data-turbo-frame="modal">
+                      スポット詳細<i class="material-icons fs-4" style="vertical-align: -7px;">navigate_next</i>
+                    </a>
+                  </div>
+                </div>
+              </div>`
+          })
+      } else {
+        infowindow[i] =
         new google.maps.InfoWindow({
           content:
             `<div id="content" class="infowindow-content">
@@ -65,8 +88,9 @@ function initSearchBox() {
               </div>
             </div>`
         })
+      }
 
-        "mouseover click".split(' ').forEach((eventType) => {
+      "mouseover click".split(' ').forEach((eventType) => {
         markers[i].addListener(eventType, () => {
           for (const j in markers) {
             infowindow[j].close(map, markers[j]);

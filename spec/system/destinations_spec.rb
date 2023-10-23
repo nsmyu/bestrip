@@ -53,7 +53,7 @@ RSpec.describe "Destinations", type: :system do
   describe "新規作成", js: true do
     context "有効な値の場合" do
       it "成功すること" do
-        visit destinations_new_itineraries_path(favorite_id: favorite.id)
+        visit destinations_select_itinerary_itineraries(favorite_id: favorite.id)
         expect {
           find("#destination_itinerary_id").click
           find("option", text: "#{itinerary.title}").click
@@ -67,7 +67,7 @@ RSpec.describe "Destinations", type: :system do
     context "無効な値の場合" do
       it "同じ旅のプランでplace_idが重複している場合、失敗すること" do
         create(:destination, :opera_house, itinerary: itinerary)
-        visit destinations_new_itineraries_path(favorite_id: favorite.id)
+        visit destinations_select_itinerary_itineraries(favorite_id: favorite.id)
 
         expect {
           find("#destination_itinerary_id").click
@@ -80,7 +80,7 @@ RSpec.describe "Destinations", type: :system do
 
       it "上限の300件まで登録されている場合、失敗すること" do
         create_list(:destination, 300, itinerary_id: itinerary.id)
-        visit destinations_new_itineraries_path(favorite_id: favorite.id)
+        visit destinations_select_itinerary_itineraries(favorite_id: favorite.id)
 
         expect {
           find("#destination_itinerary_id").click

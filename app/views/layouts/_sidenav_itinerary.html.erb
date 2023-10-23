@@ -28,7 +28,15 @@
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons text-dark">outlined_flag</i>
           </div>
-          <span class="ms-1 text-dark">行きたい場所</span>
+          <span class="ms-1 text-dark">スポットリスト</span>
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to [:find_destinations_itinerary, id: @itinerary.id], class:"nav-link sidenav-link" do %>
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons text-dark">search</i>
+          </div>
+          <span class="ms-1 text-dark">スポットを探す</span>
         <% end %>
       </li>
       <li class="nav-item mt-3">

@@ -5,7 +5,7 @@ class DestinationsController < ApplicationController
   before_action -> {
     set_itinerary
     authenticate_itinerary_member(@itinerary)
-  }, except: :new
+  }
 
   def index
     return if @itinerary.destinations.blank?
@@ -40,6 +40,18 @@ class DestinationsController < ApplicationController
   end
 
   def new
+    @destination = @itinerary.destinations.new
+    @place_id = params[:place_id]
+    get_place_details(@place_id)
+
+    if Favorite.where(user_id: current_user.id).find_by(place_id: @place_id)
+      @favorite = Favorite.where(user_id: current_user.id).find_by(place_id: @place_id)
+    else
+      @favorite = current_user.favorites.new
+    end
+  end
+
+  def select_itinerary
     set_itineraries_titles
     @itinerary = current_user.itineraries[0]
     @destination = Destination.new
@@ -48,9 +60,12 @@ class DestinationsController < ApplicationController
 
   def create
     set_itineraries_titles
-    @itinerary = Itinerary.find(params[:itinerary_id])
     @destination = @itinerary.destinations.new(destination_params)
     @destination.save
+
+    if request.referer&.end_with? "/find_destinations"
+      redirect_to find_destinations_itinerary_url(@itinerary), notice: "スポットリストに追加しました。"
+    end
   end
 
   def show

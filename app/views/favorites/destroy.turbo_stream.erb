@@ -2,7 +2,7 @@
   <%= form_with model: @favorite do |f| %>
     <%= f.hidden_field :place_id, value: @place_id %>
     <label class="mb-0">
-      <i class="material-symbols-outlined text-secondary fs-3 cursor-pointer">heart_plus</i>
+      <i class="material-symbols-outlined pe-1 fs-4 text-secondary cursor-pointer">heart_plus</i>
       <%= f.submit class: "d-none" %>
     </label>
   <% end %>
