@@ -63,7 +63,7 @@ class FavoritesController < ApplicationController
     Favorite.find(params[:id]).destroy
 
     if request.referer&.end_with? "/favorites"
-      redirect_to :favorites, notice: "行きたい場所から削除しました。"
+      redirect_to :favorites, notice: "お気に入りから削除しました。"
     end
   end
 

@@ -3,7 +3,7 @@
   <div class="container-fluid py-4 px-1 min-vh-100">
     <div class="row max-width-800 mx-auto">
       <% if @itinerary.destinations.blank? %>
-        <p class="p-4 text-center text-sm text-dark">行きたい場所は登録されていません</p>
+        <p class="p-4 text-center text-sm text-dark">登録されているスポットはありません</p>
       <% else %>
         <% @place_details_list.each do |place| %>
           <div class="col-sm-6 mb-3 mx-auto mx-sm-0 px-0 max-width-400">
@@ -20,7 +20,7 @@
                       <p class="pe-4 text-sm text-dark fw-bold lh-sm"><%= place[:name] %></p>
                       <p class="mb-3 text-xs text-dark pt-1">クチコミ評価<i class="material-icons rating-icon ps-1">star</i><%= place[:rating] %></p>
                     </div>
-                    <%= link_to [:itinerary_destination, id: place[:destination_id]], data: { turbo_method: :delete, turbo_confirm: 'このスポットを行きたい場所から削除しますか？', turbo_frame: "_top" },
+                    <%= link_to [:itinerary_destination, id: place[:destination_id]], data: { turbo_method: :delete, turbo_confirm: 'このプランのスポットリストから削除しますか？', turbo_frame: "_top" },
                       class: "position-absolute top-8 end-2 text-secondary" do %>
                       <i class="material-icons rounded-circle p-1 link-area">close</i>
                     <% end %>

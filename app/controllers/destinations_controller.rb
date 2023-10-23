@@ -75,7 +75,7 @@ class DestinationsController < ApplicationController
 
   def destroy
     Destination.find(params[:id]).destroy
-    redirect_to :itinerary_destinations, notice: "行きたい場所から削除しました。"
+    redirect_to :itinerary_destinations, notice: "スポットリストから削除しました。"
   end
 
   private

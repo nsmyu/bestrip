@@ -16,14 +16,14 @@ RSpec.describe "Destinations", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "行きたい場所を全て取得すること", vcr: "google_api_response" do
+    it "登録されているスポットの情報全て取得すること", vcr: "google_api_response" do
       destination
       create(:destination, :queen_victoria_building, itinerary: itinerary)
       get itinerary_destinations_path(itinerary_id: itinerary.id)
       expect(response.body).to include "シドニー・オペラハウス", "クイーン・ビクトリア・ビルディング"
     end
 
-    it "他の旅のプランの行きたい場所を取得しないこと", vcr: "google_api_response" do
+    it "他の旅のプランのスポットリストの情報を取得しないこと", vcr: "google_api_response" do
       other_itinerary = create(:itinerary, owner: user)
       create(:destination, :opera_house, itinerary: other_itinerary)
       get itinerary_schedules_path(itinerary_id: itinerary.id)
@@ -50,7 +50,7 @@ RSpec.describe "Destinations", type: :request do
         destination_params = attributes_for(:destination)
         post itinerary_destinations_path(itinerary_id: itinerary.id),
           params: { destination: destination_params }
-        expect(response.body).to include '行きたい場所に追加しました'
+        expect(response.body).to include '選択したプランのスポットリストに追加しました'
       end
     end
 
