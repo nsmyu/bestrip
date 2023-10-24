@@ -1,7 +1,8 @@
 
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
-  <div class="container-fluid py-4 px-1 min-vh-100">
+  <h5 class="page-heading">お気に入り</h5>
+  <div class="container-fluid px-0 py-4 min-vh-100">
     <div class="mx-auto max-width-800">
       <% if current_user.favorites.blank? %>
         <p class="p-4 text-center text-sm text-dark">お気に入りスポットはありません</p>

@@ -1,20 +1,6 @@
-<footer class="container-fluid py-3 mt-4">
-  <div class="footer py-2">
-    <div class="container-fluid">
-      <div class="row align-items-center justify-content-lg-between">
-        <div class="col-lg-6">
-          <ul class="nav nav-footer justify-content-center justify-content-lg-start">
-            <li class="nav-item">
-              <%= link_to "お問い合わせ", root_path, class: "nav-link px-3 text-muted" %>
-            </li>
-          </ul>
-        </div>
-        <div class="col-lg-6 mb-lg-0 mb-4 py-1">
-          <div class="copyright text-center text-sm text-muted pe-3 text-lg-end">
-            © <%= Date.current.year %> Yuko Nishimura
-          </div>
-        </div>
-      </div>
-    </div>
+<footer class="footer pt-5 pb-4 px-6">
+  <div class="text-center">
+    <%= link_to "お問い合わせ", root_path, class: "nav-link " %>
+    <p class="nav-link text-secondary">© <%= Date.current.year %> Yuko Nishimura </p>
   </div>
 </footer>

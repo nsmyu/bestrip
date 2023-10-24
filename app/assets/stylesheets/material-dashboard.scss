@@ -31,8 +31,15 @@
 
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css");
 
-body {
-  background-color: rgb(232, 231, 230, .4)
+main {
+  background-color: #f7f6f5;
+  border-left: 1px solid $gray-200;
+}
+
+footer {
+  background-color: #f7f6f5;
+
+
 }
 
 p {
@@ -45,6 +52,13 @@ label {
 
 input:-webkit-autofill {
   transition: background-color 10000s ease-in-out 0s !important;
+}
+
+.page-heading {
+  margin: 0px;
+  padding: 28px 0px 20px;
+  background-color: white;
+  text-align: center;
 }
 
 .error-message {
@@ -318,4 +332,8 @@ label:has(#reset_place_btn) {
     color: white;
     background-color: $primary !important;
   }
+}
+
+.min-width-360 {
+  min-width: 360px;
 }

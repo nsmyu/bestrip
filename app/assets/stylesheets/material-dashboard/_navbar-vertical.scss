@@ -212,6 +212,11 @@
       margin-left: $navbar-vertical-open-width + 1.5;
     }
 
+    &.fixed-start ~ .footer {
+      margin-left: $navbar-vertical-open-width + 1.5;
+      border-left: 1px solid $gray-200;
+    }
+
     &.fixed-end + .main-content {
       margin-right: $navbar-vertical-open-width + 1.5;
     }
@@ -330,8 +335,6 @@ body:not(.dark-version) {
 
 .navbar-vertical {
   &.bg-white {
-    box-shadow: $card-box-shadow;
-
     .navbar-nav {
       .nav-link {
         &.active {
