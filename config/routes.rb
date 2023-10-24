@@ -23,8 +23,9 @@ Rails.application.routes.draw do
     end
 
     resources :schedules
+    get 'destinations/index_lazy', to: 'destinations#index_lazy'
+    get 'destinations/select_itinerary', on: :collection
     resources :destinations, only: [:index, :new, :create, :show, :destroy]
-    get "destinations/select_itinerary", on: :collection
   end
 
   resources :posts

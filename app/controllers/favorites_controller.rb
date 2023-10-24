@@ -39,7 +39,6 @@ class FavoritesController < ApplicationController
         flash.now[:notice] = "スポット情報を取得できませんでした（#{result})"
       end
     end
-    logger.debug { @place_details_list.count }
   end
 
   def new

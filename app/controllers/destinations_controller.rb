@@ -9,8 +9,14 @@ class DestinationsController < ApplicationController
 
   def index
     return if @itinerary.destinations.blank?
+  end
+
+  def index_lazy
+    destinations = @itinerary.destinations.order(created_at: :desc)
+    @paginatable_destinations = Kaminari.paginate_array(destinations).page(params[:page]).per(10)
     @place_details_list = []
-    @itinerary.destinations.order(created_at: :desc).each do |destination|
+
+    @paginatable_destinations.each do |destination|
       query_params = GooglePlacesApi::Request.new(destination.place_id)
       result = query_params.request
 
