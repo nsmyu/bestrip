@@ -1,10 +1,8 @@
 <%= render 'layouts/sidenav' %>
 <main class="main-content position-relative">
-  <div class="container-fluid py-4 px-sm-6 px-3 min-vh-100">
-    <div class="card max-width-550 mx-auto p-4">
-      <div class="border-bottom mb-4">
-        <h5>メールアドレス変更</h5>
-      </div>
+  <h5 class="page-heading">パスワード変更</h5>
+  <div class="container-fluid py-3 py-sm-4 px-0 min-vh-80">
+    <div class="card mx-auto p-4 max-width-550">
       <div class="px-2">
         <p class="text-sm mb-4 text-dark">新しいメールアドレスを入力してください。</p>
         <%= form_with model: resource, url: users_update_without_password_path, data: { turbo: false } do |f| %>
