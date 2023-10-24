@@ -27,6 +27,14 @@ class ApplicationController < ActionController::Base
       end
   end
 
+  def set_favorite(place_id)
+    if Favorite.where(user_id: current_user.id).find_by(place_id: @place_id)
+      @favorite = Favorite.where(user_id: current_user.id).find_by(place_id: @place_id)
+    else
+      @favorite = current_user.favorites.new
+    end
+  end
+
   def get_place_details(place_id)
     query_params = GooglePlacesApi::Request.new(place_id)
     result = query_params.request

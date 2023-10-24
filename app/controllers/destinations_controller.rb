@@ -49,12 +49,7 @@ class DestinationsController < ApplicationController
     @destination = @itinerary.destinations.new
     @place_id = params[:place_id]
     get_place_details(@place_id)
-
-    if Favorite.where(user_id: current_user.id).find_by(place_id: @place_id)
-      @favorite = Favorite.where(user_id: current_user.id).find_by(place_id: @place_id)
-    else
-      @favorite = current_user.favorites.new
-    end
+    set_favorite(@place_id)
   end
 
   def select_itinerary
