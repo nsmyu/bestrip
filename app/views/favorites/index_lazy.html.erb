@@ -14,7 +14,7 @@
             <% else %>
               <%= link_to [:favorite, id: place[:favorite_id]], data: { turbo_frame: "modal" } do %>
                 <div class="h-75">
-                  <p class="pe-3 text-sm text-dark fw-bold lh-sm"><%= place[:name] %></p>
+                  <p class="pe-3 text-dark fw-bold lh-sm"><%= place[:name] %></p>
                   <p class="text-xs text-dark pt-1">クチコミ評価<i class="material-icons rating-icon ps-1">star</i><%= place[:rating] %></p>
                 </div>
               <% end %>
