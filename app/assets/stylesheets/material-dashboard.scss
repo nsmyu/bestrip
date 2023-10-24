@@ -302,3 +302,20 @@ label:has(#reset_place_btn) {
     color: #B7BFC6;
   }
 }
+
+.pagination {
+  margin: 20px auto;
+  padding: 8px 12px;
+  width: fit-content;
+
+  .page-link {
+    border: none;
+    background-color: transparent;
+    font-size: 15px;
+  }
+
+  .active a {
+    color: white;
+    background-color: $primary !important;
+  }
+}

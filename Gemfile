@@ -56,6 +56,8 @@ gem "devise-i18n"
 
 gem 'carrierwave'
 gem 'mini_magick'
+gem 'kaminari'
+gem 'bootstrap5-kaminari-views'
 gem 'dartsass-rails', '~> 0.4.1'
 gem 'dotenv-rails'
 gem 'faker'

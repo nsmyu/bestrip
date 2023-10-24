@@ -5,6 +5,11 @@ ja:
   time:
     formats:
       default: "%H:%M"
+  views:
+    pagination:
+      previous: <i class="fas fa-angle-left text-lg"></i>
+      next: <i class="fas fa-angle-right text-lg"></i>
+      truncate: "..."
   activerecord:
       attributes:
         itinerary:

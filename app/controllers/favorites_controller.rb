@@ -5,8 +5,14 @@ class FavoritesController < ApplicationController
 
   def index
     return if current_user.favorites.blank?
+  end
+
+  def index_lazy
+    @favorites = current_user.favorites.order(created_at: :desc)
+    @paginatable_favorites = Kaminari.paginate_array(@favorites).page(params[:page]).per(10)
     @place_details_list = []
-    current_user.favorites.order(created_at: :desc).each do |favorite|
+
+    @paginatable_favorites.each do |favorite|
       query_params = GooglePlacesApi::Request.new(favorite.place_id)
       result = query_params.request
 
@@ -33,6 +39,7 @@ class FavoritesController < ApplicationController
         flash.now[:notice] = "スポット情報を取得できませんでした（#{result})"
       end
     end
+    logger.debug { @place_details_list.count }
   end
 
   def new

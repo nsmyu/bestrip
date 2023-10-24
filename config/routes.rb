@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   end
 
   resources :posts
+  get 'favorites/index_lazy', to: 'favorites#index_lazy'
   resources :favorites, only: [:index, :new, :create, :show, :destroy]
   get 'find_places', to: 'places#find_places'
 end
