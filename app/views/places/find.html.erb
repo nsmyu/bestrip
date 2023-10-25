@@ -1,0 +1,7 @@
+<% if @placeable.instance_of? User %>
+  <%= render 'layouts/sidenav' %>
+  <%= render partial: 'search', locals: { message: "スポットの名称やキーワードで検索できます。気になるスポットを見つけたらお気に入り登録しておきましょう。" } %>
+<% elsif @placeable.instance_of? Itinerary %>
+  <%= render 'layouts/sidenav_itinerary' %>
+  <%= render partial: 'search', locals: { message: "スポットの名称やキーワードで検索できます。行きたい場所を見つけたら旅のスポットリストに追加しましょう。" } %>
+<% end %>

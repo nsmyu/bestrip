@@ -1,8 +1,16 @@
 <%= render "layouts/modal", title: "スポット情報" do %>
   <% if @error %>
-    <p class="text-sm text-danger"><span class="material-symbols-outlined fs-6 pe-1" style="vertical-align: -2.8px;">error</span><%= @error %></p>
+    <p class="text-sm text-danger">
+      <span class="material-symbols-outlined fs-6 pe-1" style="vertical-align: -2.8px;">error</span>
+      <%= @error %>
+    </p>
   <% else %>
-    <%= render 'shared/place_photo_carousel' %>
-    <%= render "shared/place_details", place_details: @place_details %>
+    <%= render 'photo_carousel' %>
+    <%= render "details", place_details: @place_details %>
+    <%= render 'itinerary_place_form' if @placeable.instance_of?(Itinerary) %>
   <% end %>
 <% end %>
+
+
+
+

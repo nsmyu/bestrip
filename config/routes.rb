@@ -16,23 +16,30 @@ Rails.application.routes.draw do
   end
 
   resources :users do
-    get 'places/index_lazy', to: 'places#index_lazy'
-    resources :places
-
+    scope module: :users do
+      get 'places/index_lazy', to: 'places#index_lazy'
+      get 'places/find', to: 'places#find'
+      resources :places, only: %i[index new create show destroy]
+    end
   end
 
   resources :itineraries do
     member do
       resources :itinerary_users, only: [:new, :create, :destroy]
       get 'search_user', to: 'itinerary_users#search_user'
-      get 'find_destinations', to: 'places#find_destinations'
+    end
+
+    scope module: :itineraries do
+      get 'places/index_lazy', to: 'places#index_lazy'
+      get 'places/select_itinerary', to: 'places#select_itinerary', on: :collection
+      get 'places/find', to: 'places#find'
+      resources :places, only: %i[index new create show destroy]
     end
 
     resources :schedules
     get 'destinations/index_lazy', to: 'destinations#index_lazy'
     get 'destinations/select_itinerary', on: :collection
     resources :destinations, only: [:index, :new, :create, :show, :destroy]
-    resources :places
   end
 
   resources :posts

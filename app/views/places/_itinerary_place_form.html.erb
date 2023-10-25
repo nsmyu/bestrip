@@ -1,0 +1,15 @@
+<div id="itinerary_place">
+  <%= form_with model: [@placeable, @place], data: { action: "turbo:submit-end->modal#close", turbo_frame: "_top" } do |f| %>
+    <%= f.hidden_field :place_id, value: @place_id %>
+    <% if places_include?(@placeable, @place_id) %>
+      <%= link_to [:itinerary_place, itinerary_id: @placeable.id, id: @place.id], data: { turbo_method: :delete } do %>
+        <%= f.submit "作成中のプランに追加済み", class: "btn btn-outline-primary mt-3 w-100", disabled: true %>
+      <% end %>
+    <% elsif @placeable.places.count >= 300 %>
+      <%= f.submit "作成中のプランに追加", class: "btn bg-gradient-primary mt-3 mb-0 w-100", disabled: true %>
+      <p class="d-inline-block mx-auto mt-1 text-xs text-dark">スポットリスト登録数が上限に達しています。</p>
+    <% else %>
+      <%= f.submit "作成中のプランに追加", class: "btn bg-gradient-primary mt-3 w-100" %>
+    <% end %>
+  <% end %>
+</div>

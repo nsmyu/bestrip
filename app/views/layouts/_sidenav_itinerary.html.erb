@@ -24,7 +24,7 @@
         <% end %>
       </li>
       <li class="nav-item">
-        <%= link_to [:itinerary_destinations, itinerary_id: @itinerary.id], class:"nav-link sidenav-link" do %>
+        <%= link_to [:itinerary_places, itinerary_id: @itinerary.id], class:"nav-link sidenav-link" do %>
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons text-dark">outlined_flag</i>
           </div>
@@ -32,7 +32,7 @@
         <% end %>
       </li>
       <li class="nav-item">
-        <%= link_to [:find_destinations_itinerary, id: @itinerary.id], class:"nav-link sidenav-link" do %>
+        <%= link_to [:itinerary_places_find, itinerary_id: @itinerary.id], class:"nav-link sidenav-link" do %>
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons text-dark">search</i>
           </div>

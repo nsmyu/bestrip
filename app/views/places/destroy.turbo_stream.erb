@@ -7,3 +7,9 @@
     </label>
   <% end %>
 <% end %>
+<%= turbo_stream.update "itinerary_place" do %>
+  <%= form_with model: [@placeable, @place] do |f| %>
+    <%= f.hidden_field :place_id, value: @place_id %>
+    <%= f.submit "作成中のプランに追加", class: "btn bg-gradient-primary mt-3 w-100" %>
+  <% end %>
+<% end %>
