@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_20_114832) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_25_043841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +57,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_20_114832) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_photos_on_post_id"
+  end
+
+  create_table "places", force: :cascade do |t|
+    t.string "place_id", null: false
+    t.string "placable_type", null: false
+    t.bigint "placable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["placable_type", "placable_id"], name: "index_places_on_placable"
+    t.index ["place_id", "placable_type", "placable_id"], name: "index_places_on_place_id_and_placable_type_and_placable_id", unique: true
   end
 
   create_table "posts", force: :cascade do |t|

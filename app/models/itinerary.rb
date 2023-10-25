@@ -4,6 +4,7 @@ class Itinerary < ApplicationRecord
   belongs_to :owner, class_name: 'User', foreign_key: :user_id
   has_many   :schedules, dependent: :destroy
   has_many   :destinations, dependent: :destroy
+  has_many   :places, as: :placable, dependent: :destroy
   has_many   :posts, dependent: :destroy
 
   validates :title, presence: true, length: { maximum: 30 }
