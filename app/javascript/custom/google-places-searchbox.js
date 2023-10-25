@@ -7,6 +7,7 @@ function initSearchBox() {
   });
   const input = document.getElementById("searchbox_text_input");
   const searchBox = new google.maps.places.SearchBox(input);
+  const userId = document.querySelector("#user_id")
   const itineraryId = document.querySelector("#itinerary_id")
 
   map.addListener("bounds_changed", () => {
@@ -81,7 +82,7 @@ function initSearchBox() {
                   <p class="mb-2 text-xxs text-dark">
                     クチコミ評価<i class="material-icons rating-icon ps-1">star</i>${places[i].rating}
                   </p>
-                  <a href="/favorites/new?place_id=${places[i].place_id}" class="text-primary text-xs fw-bold" data-turbo-frame="modal">
+                  <a href="/users/${userId.value}/places/new?place_id=${places[i].place_id}" class="text-primary text-xs fw-bold" data-turbo-frame="modal">
                     スポット詳細<i class="material-icons fs-4" style="vertical-align: -7px;">navigate_next</i>
                   </a>
                 </div>

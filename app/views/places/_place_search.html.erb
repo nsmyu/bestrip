@@ -7,6 +7,7 @@
           <div class="col">
             <div class="search-form">
               <input type="search" id="searchbox_text_input" placeholder="スカイツリー、東京駅 カフェ" autocomplete="false">
+              <input type="hidden" id="user_id" value="<%= current_user.id %>">
               <% if @itinerary %>
                 <input type="hidden" id="itinerary_id" value="<%= @itinerary.id %>">
               <% end %>

@@ -16,7 +16,9 @@ Rails.application.routes.draw do
   end
 
   resources :users do
+    get 'places/index_lazy', to: 'places#index_lazy'
     resources :places
+
   end
 
   resources :itineraries do
