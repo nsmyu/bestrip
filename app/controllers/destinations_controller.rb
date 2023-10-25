@@ -1,5 +1,5 @@
 class DestinationsController < ApplicationController
-  include GooglePlacesApi
+  include GooglePlacesApiRequestable
 
   before_action :authenticate_user!
   before_action -> {
@@ -17,13 +17,13 @@ class DestinationsController < ApplicationController
     @place_details_list = []
 
     @paginatable_destinations.each do |destination|
-      query_params = GooglePlacesApi::Request.new(destination.place_id)
+      query_params = GooglePlacesApiRequestable::Request.new(destination.place_id)
       result = query_params.request
 
       case result
       when Hash
         if result[:error_message].blank?
-          place_details = GooglePlacesApi::Request.attributes_for(result)
+          place_details = attributes_for(result)
           place_details[:destination_id] = destination.id
 
           if place_details[:photos]

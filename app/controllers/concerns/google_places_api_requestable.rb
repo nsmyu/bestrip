@@ -1,4 +1,4 @@
-module GooglePlacesApi
+module GooglePlacesApiRequestable
   extend ActiveSupport::Concern
 
   class Request
@@ -26,19 +26,6 @@ module GooglePlacesApi
       else
         "HTTP ERROR: code=#{response.code} message=#{response.message}"
       end
-    end
-
-    def self.attributes_for(data)
-      {
-        name: data[:result][:name],
-        address: data[:result][:formatted_address],
-        photos: data[:result][:photos],
-        rating: data[:result][:rating],
-        opening_hours: data[:result][:opening_hours],
-        phone_number: data[:result][:formatted_phone_number],
-        url: data[:result][:url],
-        website: data[:result][:website],
-      }
     end
   end
 end

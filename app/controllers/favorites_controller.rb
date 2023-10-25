@@ -1,5 +1,5 @@
 class FavoritesController < ApplicationController
-  include GooglePlacesApi
+  include GooglePlacesApiRequestable
 
   before_action :authenticate_user!
 
@@ -13,13 +13,13 @@ class FavoritesController < ApplicationController
     @place_details_list = []
 
     @paginatable_favorites.each do |favorite|
-      query_params = GooglePlacesApi::Request.new(favorite.place_id)
+      query_params = GooglePlacesApiRequestable::Request.new(favorite.place_id)
       result = query_params.request
 
       case result
       when Hash
         if result[:error_message].blank?
-          place_details = GooglePlacesApi::Request.attributes_for(result)
+          place_details = attributes_for(result)
           place_details[:favorite_id] = favorite.id
 
           if place_details[:photos]

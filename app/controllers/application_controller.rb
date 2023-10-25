@@ -36,20 +36,33 @@ class ApplicationController < ActionController::Base
   end
 
   def get_place_details(place_id)
-    query_params = GooglePlacesApi::Request.new(place_id)
-    result = query_params.request
+    query_params = GooglePlacesApiRequestable::Request.new(place_id)
+    response = query_params.request
 
-    case result
+    case response
     when Hash
-      if result[:error_message].blank?
-        @place_details = GooglePlacesApi::Request.attributes_for(result)
+      if response[:error_message].blank?
+        @place_details = attributes_for(response)
         set_photo_urls(@place_details[:photos]) if @place_details[:photos]
       else
-        @error = "スポット情報を取得できませんでした（#{result[:error_message]})"
+        @error = "スポット情報を取得できませんでした（#{response[:error_message]})"
       end
     else
-      @error = "スポット情報を取得できませんでした（#{result})"
+      @error = "スポット情報を取得できませんでした（#{response[:error_message]})"
     end
+  end
+
+  def attributes_for(data)
+    {
+      name: data[:result][:name],
+      address: data[:result][:formatted_address],
+      photos: data[:result][:photos],
+      rating: data[:result][:rating],
+      opening_hours: data[:result][:opening_hours],
+      phone_number: data[:result][:formatted_phone_number],
+      url: data[:result][:url],
+      website: data[:result][:website],
+    }
   end
 
   def set_photo_urls(place_photos)
