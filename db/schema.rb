@@ -61,12 +61,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_25_043841) do
 
   create_table "places", force: :cascade do |t|
     t.string "place_id", null: false
-    t.string "placable_type", null: false
-    t.bigint "placable_id", null: false
+    t.string "placeable_type", null: false
+    t.bigint "placeable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["placable_type", "placable_id"], name: "index_places_on_placable"
-    t.index ["place_id", "placable_type", "placable_id"], name: "index_places_on_place_id_and_placable_type_and_placable_id", unique: true
+    t.index ["place_id", "placeable_type", "placeable_id"], name: "index_places_on_place_id_and_placeable_type_and_placeable_id", unique: true
+    t.index ["placeable_type", "placeable_id"], name: "index_places_on_placeable"
   end
 
   create_table "posts", force: :cascade do |t|

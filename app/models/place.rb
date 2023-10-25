@@ -1,5 +1,5 @@
 class Place < ApplicationRecord
-  belongs_to :placable, polymorphic: true
+  belongs_to :placeable, polymorphic: true
 
-  validates :place_id, presence: true, uniqueness: { scope: [:placable_type, :placable_id] }
+  validates :place_id, presence: true, uniqueness: { scope: [:placeable_type, :placeable_id] }
 end

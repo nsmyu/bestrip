@@ -15,6 +15,10 @@ Rails.application.routes.draw do
     patch 'users/validate_bestrip_id', to: 'users/registrations#validate_bestrip_id'
   end
 
+  resources :users do
+    resources :places
+  end
+
   resources :itineraries do
     member do
       resources :itinerary_users, only: [:new, :create, :destroy]
@@ -26,6 +30,7 @@ Rails.application.routes.draw do
     get 'destinations/index_lazy', to: 'destinations#index_lazy'
     get 'destinations/select_itinerary', on: :collection
     resources :destinations, only: [:index, :new, :create, :show, :destroy]
+    resources :places
   end
 
   resources :posts
