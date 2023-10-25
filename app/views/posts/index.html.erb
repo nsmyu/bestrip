@@ -27,8 +27,14 @@
   </div>
   <div class="fixed-plugin">
     <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2 btn bg-gradient-primary">
-      <%= link_to :new_post, data: { turbo_frame: "modal" } do %>
-        <p class="py-1 text-white fw-bold"><i class="material-icons" style="vertical-align: -3.5px;">add_circle</i> 旅の思い出を投稿</p>
+      <% if current_user %>
+        <%= link_to :new_post, data: { turbo_frame: "modal" } do %>
+          <p class="py-1 text-white fw-bold"><i class="material-icons" style="vertical-align: -3.5px;">add_circle</i> 旅の思い出を投稿</p>
+        <% end %>
+      <% else %>
+        <%= link_to :new_user_session do %>
+          <p class="py-1 text-white fw-bold"><i class="material-icons" style="vertical-align: -3.5px;">add_circle</i> 旅の思い出を投稿</p>
+        <% end %>
       <% end %>
     </div>
   </div>
