@@ -1,6 +1,6 @@
 <%= render "layouts/modal", title: "旅の思い出を投稿" do %>
-  <% if @itineraries_titles.blank? %>
-    <p>思い出を投稿できる旅のプランがありません</p>
+  <% if @itineraries.blank? %>
+    <p class="py-3 text-dark text-sm">思い出を投稿できる旅のプランがありません</p>
   <% else %>
     <%= render "form", post: @post %>
   <% end %>

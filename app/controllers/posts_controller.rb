@@ -8,7 +8,7 @@ class PostsController < ApplicationController
   end
 
   def new
-    set_itineraries_titles
+    @itineraries = current_user.itineraries
     @post = Post.new
     @post.photos.build
   end
@@ -29,7 +29,7 @@ class PostsController < ApplicationController
   end
 
   def edit
-    set_itineraries_titles
+    @itineraries = current_user.itineraries
   end
 
   def update
@@ -61,12 +61,5 @@ class PostsController < ApplicationController
                                  :itinerary_public,
                                  :itinerary_id,
                                  [photos_attributes: [:url, :id, :_destroy]])
-  end
-
-  def set_itineraries_titles
-    @itineraries_titles = current_user
-      .itineraries
-      .order(departure_date: :desc)
-      .pluck(:title, :id)
   end
 end
