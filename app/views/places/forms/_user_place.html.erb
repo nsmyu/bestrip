@@ -1,8 +1,8 @@
 <div class="col-1 mt-n1 ms-n2 ps-0" id="user_place">
-  <%= form_with model: [@placeable, @place] do |f| %>
+  <%= form_with url: users_places_path, model: [@placeable, @place] do |f| %>
     <%= f.hidden_field :place_id, value: @place_id %>
     <% if places_include?(@placeable, @place_id) %>
-      <%= link_to [:user_place, user_id: @placeable.id, id: @place.id], data: { turbo_method: :delete } do %>
+      <%= link_to [:users_place, id: @place.id], data: { turbo_method: :delete } do %>
         <i class="material-icons fs-3 text-favorite cursor-pointer">favorite</i>
       <% end %>
     <% elsif @placeable.places.count >= 300 %>

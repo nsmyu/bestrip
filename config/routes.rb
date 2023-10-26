@@ -15,17 +15,15 @@ Rails.application.routes.draw do
     patch 'users/validate_bestrip_id', to: 'users/registrations#validate_bestrip_id'
   end
 
-  resources :users do
-    scope module: :users do
-      get 'places/index_lazy', to: 'places#index_lazy'
-      get 'places/find', to: 'places#find'
-      resources :places, only: %i(index new create show destroy)
-    end
+  namespace :users do
+    get 'places/index_lazy', to: 'places#index_lazy'
+    get 'places/find', to: 'places#find'
+    resources :places, only: %i(index new create show destroy)
   end
 
   resources :itineraries do
     member do
-      resources :itinerary_users, only: [:new, :create, :destroy]
+      resources :itinerary_users, only: %i(new create destroy)
       get 'search_user', to: 'itinerary_users#search_user'
     end
 
@@ -38,13 +36,7 @@ Rails.application.routes.draw do
     end
 
     resources :schedules
-    get 'destinations/index_lazy', to: 'destinations#index_lazy'
-    get 'destinations/select_itinerary', on: :collection
-    resources :destinations, only: [:index, :new, :create, :show, :destroy]
   end
 
   resources :posts
-  get 'favorites/index_lazy', to: 'favorites#index_lazy'
-  resources :favorites, only: [:index, :new, :create, :show, :destroy]
-  get 'find_places', to: 'places#find_places'
 end

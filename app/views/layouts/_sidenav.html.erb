@@ -23,15 +23,15 @@
         <% end %>
       </li>
       <li class="nav-item">
-        <%= link_to [:user_places, user_id: current_user.id], class:"nav-link sidenav-link" do %>
+        <%= link_to :users_places, class:"nav-link sidenav-link" do %>
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons text-dark">favorite_border</i>
           </div>
-          <span class="ms-1 text-dark">お気に入り</span>
+          <span class="ms-1 text-dark">お気に入りスポット</span>
         <% end %>
       </li>
       <li class="nav-item">
-        <%= link_to [:user_places_find, user_id: current_user.id], class:"nav-link sidenav-link" do %>
+        <%= link_to :users_places_find, class:"nav-link sidenav-link" do %>
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons text-dark">search</i>
           </div>

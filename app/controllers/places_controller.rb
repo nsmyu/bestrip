@@ -21,6 +21,7 @@ class PlacesController < ApplicationController
         if result[:error_message].blank?
           place_details = attributes_for(result)
           place_details[:place_id] = place.place_id
+          place_details[:primary_key] = place.id
 
           if place_details[:photos]
             set_photo_urls(place_details[:photos])

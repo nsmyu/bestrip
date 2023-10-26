@@ -9,13 +9,13 @@ class Users::PlacesController < PlacesController
   def destroy
     super
     if request.referer&.end_with? "/places"
-      redirect_to :user_places, notice: "お気に入りから削除しました。"
+      redirect_to :users_places, notice: "お気に入りから削除しました。"
     end
   end
 
   private
 
   def set_placeable
-    @placeable = User.find(params[:user_id])
+    @placeable = current_user
   end
 end
