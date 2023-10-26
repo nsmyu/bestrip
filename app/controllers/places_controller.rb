@@ -49,7 +49,10 @@ class PlacesController < ApplicationController
     get_place_details(@place_id)
 
     @place =
-      Place.where(placeable_type: @placeable.class.to_s).where(placeable_id: @placeable.id).find_by(place_id: @place_id) ||
+      Place
+        .where(placeable_type: @placeable.class.to_s)
+        .where(placeable_id: @placeable.id)
+        .find_by(place_id: @place_id) ||
       @placeable.places.new
   end
 

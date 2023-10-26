@@ -4,8 +4,8 @@ class Itineraries::PlacesController < PlacesController
     authenticate_itinerary_member(@placeable)
   }, except: :select_itinerary
 
-  #　下記二つのアクションは、「お気に入り（:user_places)」から旅のプランを選択し、
-  # 選択した旅の「スポットリスト（:itinerary_places）」に追加する際に使用
+  # 　下記二つのアクションは、「お気に入り（:user_places)」から旅のプランを選択し、
+  # 選択した旅のプランの「スポットリスト（:itinerary_places）」に追加する際に使用
   def select_itinerary
     @itineraries = current_user.itineraries.order(departure_date: :desc)
     @itinerary = @itineraries[0]

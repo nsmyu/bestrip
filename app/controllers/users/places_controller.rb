@@ -1,5 +1,5 @@
 class Users::PlacesController < PlacesController
-  before_action :set_placeable,  except: %i[show]
+  before_action :set_placeable, except: :show
 
   def create
     super

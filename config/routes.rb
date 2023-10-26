@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     scope module: :users do
       get 'places/index_lazy', to: 'places#index_lazy'
       get 'places/find', to: 'places#find'
-      resources :places, only: %i[index new create show destroy]
+      resources :places, only: %i(index new create show destroy)
     end
   end
 
@@ -34,7 +34,7 @@ Rails.application.routes.draw do
       get 'places/select_itinerary', to: 'places#select_itinerary', on: :collection
       post 'places/from_user_to_itinerary', to: 'places#from_user_to_itinerary'
       get 'places/find', to: 'places#find'
-      resources :places, only: %i[index new create show destroy]
+      resources :places, only: %i(index new create show destroy)
     end
 
     resources :schedules
