@@ -7,7 +7,7 @@
   <% else %>
     <%= render 'photo_carousel' %>
     <%= render "details", place_details: @place_details %>
-    <%= render 'itinerary_place_form' if @placeable.instance_of?(Itinerary) %>
+    <%= render 'places/forms/itinerary_place' if @placeable.instance_of?(Itinerary) %>
   <% end %>
 <% end %>
 
