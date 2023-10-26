@@ -47,10 +47,10 @@ export default class extends Controller {
       img.src = reader.result;
       img.setAttribute("class", "post-photo-preview");
       imgBox.setAttribute("class", "col-3 p-1 position-relative");
-      imgBox.setAttribute("data-photos-target", "imageBox");
+      imgBox.setAttribute("data-post-photos-target", "imageBox");
       deleteBtn.setAttribute("class", "position-absolute top-5 end-5 link cursor-pointer");
       deleteBtn.setAttribute("id", `delete_btn_${fieldId}`);
-      deleteBtn.setAttribute("data-action", "click->photos#deletePhoto");
+      deleteBtn.setAttribute("data-action", "click->post-photos#deletePhoto");
       deleteBtnIcon.setAttribute("class", "material-icons text-white bg-dark rounded-circle");
       deleteBtnIcon.textContent = "close";
 
