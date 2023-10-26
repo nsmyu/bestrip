@@ -48,11 +48,9 @@ class PlacesController < ApplicationController
     @place_id = params[:place_id]
     get_place_details(@place_id)
 
-    if Place.where(placeable_type: @placeable.class.to_s).where(placeable_id: @placeable.id).find_by(place_id: @place_id)
-      @place = Place.where(placeable_type: @placeable.class.to_s).where(placeable_id: @placeable.id).find_by(place_id: @place_id)
-    else
-      @place = @placeable.places.new
-    end
+    @place =
+      Place.where(placeable_type: @placeable.class.to_s).where(placeable_id: @placeable.id).find_by(place_id: @place_id) ||
+      @placeable.places.new
   end
 
   def create

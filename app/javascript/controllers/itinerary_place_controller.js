@@ -6,7 +6,7 @@ export default class extends Controller {
   setItinerary() {
     const selectedItineraryId = this.selectTarget.value;
 
-    this.formTarget.action = `/itineraries/${selectedItineraryId}/destinations`;
+    this.formTarget.action = `/itineraries/${selectedItineraryId}/places/from_user_to_itinerary`;
 
     if (selectedItineraryId != 0) {
       this.submitTarget.disabled = false;

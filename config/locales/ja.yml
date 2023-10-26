@@ -44,10 +44,10 @@ ja:
               photos:
                 format: "%{message}"
                 too_short: 写真は1枚以上選択してください
-          destination:
+          place:
             attributes:
               place_id:
                 format: "%{message}"
                 taken: このプランには既に追加されています
-              itinerary_id:
+              placeable_id:
                 format: "%{message}"

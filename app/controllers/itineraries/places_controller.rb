@@ -4,20 +4,19 @@ class Itineraries::PlacesController < PlacesController
     authenticate_itinerary_member(@placeable)
   }, except: :select_itinerary
 
+  #　下記二つのアクションは、「お気に入り（:user_places)」から旅のプランを選択し、
+  # 選択した旅の「スポットリスト（:itinerary_places）」に追加する際に使用
   def select_itinerary
     @itineraries = current_user.itineraries.order(departure_date: :desc)
     @itinerary = @itineraries[0]
     @place = Place.new
-    @place_id = Place.find(params[:temp_id]).place_id
+    @place_id = params[:place_id]
   end
 
-  def create
-    super
+  def from_user_to_itinerary
     @itineraries = current_user.itineraries.order(departure_date: :desc)
-
-    if request.referer&.end_with? "/find_destinations"
-      redirect_to find_destinations_itinerary_url(@itinerary), notice: "スポットリストに追加しました。"
-    end
+    @place = @placeable.places.new(place_params)
+    @place.save
   end
 
   private
