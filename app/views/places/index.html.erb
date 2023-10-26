@@ -1,14 +1,14 @@
 
-<%= render @placeable.instance_of?(User) ? 'layouts/sidenav' : 'layouts/sidenav_itinerary' %>
+<%= render @placeable.user? ? 'layouts/sidenav' : 'layouts/sidenav_itinerary' %>
 <main class="main-content position-relative">
-  <h5 class="page-heading"><%= @placeable.instance_of?(User) ? "お気に入り" : "スポットリスト" %></h5>
+  <h5 class="page-heading"><%= @placeable.user? ? "お気に入り" : "スポットリスト" %></h5>
   <div class="container-fluid py-4 px-0 min-vh-100">
     <div class="mx-auto max-width-850">
       <% if @placeable.places.blank? %>
         <p class="p-4 text-center text-sm text-dark">登録されているスポットはありません</p>
-      <% elsif @placeable.instance_of? User %>
+      <% elsif @placeable.user? %>
         <%= turbo_frame_tag "places", class: "row mx-0", src: user_places_index_lazy_path(user_id: @placeable.id), loading: :lazy %>
-      <% elsif @placeable.instance_of? Itinerary %>
+      <% else %>
         <%= turbo_frame_tag "places", class: "row mx-0", src: itinerary_places_index_lazy_path(itinerary_id: @placeable.id), loading: :lazy %>
       <% end %>
     </div>

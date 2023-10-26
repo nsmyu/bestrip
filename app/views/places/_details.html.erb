@@ -1,7 +1,7 @@
 <div class="mt-3 pb-2 border-bottom">
   <div class="row">
     <p class="col-11 pe-4 fs-5 text-dark fw-bold lh-sm"><%= place_details[:name] %></p>
-    <% if @placeable && @placeable.instance_of?(User) %>
+    <% if @placeable && @placeable.user? %>
       <%= render 'places/forms/user_place' %>
     <% end %>
   </div>

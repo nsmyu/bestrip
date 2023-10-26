@@ -1,9 +1,10 @@
 class User < ApplicationRecord
+  include Placeable
+
   has_many :itinerary_users
   has_many :itineraries, through: :itinerary_users
   has_many :owned_itineraries, class_name: "Itinerary", dependent: :destroy
   has_many :favorites, dependent: :destroy
-  has_many :places, as: :placeable, dependent: :destroy
   has_many :posts, dependent: :destroy
 
   devise :database_authenticatable, :registerable,

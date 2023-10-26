@@ -1,10 +1,11 @@
 class Itinerary < ApplicationRecord
+  include Placeable
+
   has_many   :itinerary_users, dependent: :destroy
   has_many   :members, through: :itinerary_users, source: :user
   belongs_to :owner, class_name: 'User', foreign_key: :user_id
   has_many   :schedules, dependent: :destroy
   has_many   :destinations, dependent: :destroy
-  has_many   :places, as: :placeable, dependent: :destroy
   has_many   :posts, dependent: :destroy
 
   validates :title, presence: true, length: { maximum: 30 }

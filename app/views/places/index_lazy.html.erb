@@ -22,11 +22,11 @@
                 class: "position-absolute top-4 end-1 text-secondary" do %>
                 <i class="material-icons rounded-circle p-1 link-area">close</i>
               <% end %>
-              <% if @placeable.instance_of? User %>
+              <% if @placeable.user? %>
                 <%= link_to places_select_itinerary_itineraries_path(place_id: place[:place_id]), data: { turbo_frame: "modal" }, class: "d-block mt-1 text-primary text-sm fw-bold" do %>
                   <i class="material-icons pe-1" style="vertical-align: -4.5px;">post_add</i>旅のプランに追加
                 <% end %>
-              <% elsif @placeable.instance_of? Itinerary %>
+              <% else %>
                 <%= link_to new_itinerary_schedule_path(place_id: place[:place_id]), data: { turbo_frame: "modal" }, class: "d-block mt-1 text-primary text-sm fw-bold" do %>
                   <i class="material-icons pe-1" style="vertical-align: -4.5px;">more_time</i>スケジュール作成
                 <% end %>
