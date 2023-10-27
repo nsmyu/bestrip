@@ -8,36 +8,34 @@ class PlacesController < ApplicationController
   end
 
   def index_lazy
-    places = @placeable.places.order(created_at: :desc)
-    @paginatable_places = Kaminari.paginate_array(places).page(params[:page]).per(10)
-    @place_details_list = []
+    @place_index_items = @placeable.places.order(created_at: :desc).page(params[:page]).per(10)
 
-    @paginatable_places.each do |place|
-      query_params = GooglePlacesApiRequestable::Request.new(place.place_id)
-      result = query_params.request
+    @place_index_items.each do |place_index_item|
+      query_params = GooglePlacesApiRequestable::Request.new(place_index_item.place_id)
+      response = query_params.request
 
-      case result
+      case response
       when Hash
-        if result[:error_message].blank?
-          place_details = attributes_for(result)
-          place_details[:place_id] = place.place_id
-          place_details[:primary_key] = place.id
+        if response[:error_message].blank?
+          place_details = attributes_for(response)
 
           if place_details[:photos]
             set_photo_urls(place_details[:photos])
-            place_details[:photo_url] = @place_photo_urls[0]
+            place_index_item.photo_url = @place_photo_urls[0]
           else
-            place_details[:photo_url] = "default_place.png"
+            place_index_item.photo_url = "default_place.png"
           end
-          @place_details_list << place_details
+
+          place_details.delete(:photos)
+          place_details.each do |attr, value|
+            place_index_item.send("#{attr}=", value)
+          end
         else
-          @place_details_list << {
-            error: "スポット情報を取得できませんでした（#{result[:error_message]})",
-            photo_url: "default_place.png",
-          }
+          place_index_item.photo_url = "default_place.png"
+          place_index_item.error = "スポット情報を取得できませんでした（#{response[:error_message]})"
         end
       else
-        flash.now[:notice] = "スポット情報を取得できませんでした（#{result})"
+        flash.now[:notice] = "スポット情報を取得できませんでした（#{response})"
       end
     end
   end
@@ -60,6 +58,7 @@ class PlacesController < ApplicationController
   def create
     @place = @placeable.places.new(place_params)
     @place.save
+    @place_id = @place.place_id
   end
 
   def show
@@ -70,7 +69,8 @@ class PlacesController < ApplicationController
   def destroy
     @place_id = Place.find(params[:id]).place_id
     @place = @placeable.places.new
-    Place.find(params[:id]).destroy
+    @place_index_item = Place.find(params[:id])
+    @place_index_item.destroy
   end
 
   private
