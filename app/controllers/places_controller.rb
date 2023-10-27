@@ -72,8 +72,13 @@ class PlacesController < ApplicationController
     @place_index_item = Place.find(params[:id])
     @place_index_item.destroy
 
-    if request.referer&.end_with?("/places") && @placeable.places.count.zero?
-      redirect_to @placeable.user? ? :users_places : [:itinerary_places, itinerary_id: @placeable.id]
+    if request.referer&.end_with?("/places")
+      flash.now[:notice] = "スポットを削除しました。"
+
+      if @placeable.places.count.zero?
+        redirect_to @placeable.user? ? :users_places : [:itinerary_places, itinerary_id: @placeable.id]
+        flash[:notice] = "スポットを削除しました。"
+      end
     end
   end
 
