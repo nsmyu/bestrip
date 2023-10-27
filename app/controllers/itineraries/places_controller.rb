@@ -2,7 +2,7 @@ class Itineraries::PlacesController < PlacesController
   before_action -> {
     set_placeable
     authenticate_itinerary_member(@placeable)
-  }, except: :select_itinerary
+  }, except: %i(show select_itinerary)
 
   # 　下記二つのアクションは、「お気に入り（:users_places)」から旅のプランを選択し、
   # 選択した旅のプランの「スポットリスト（:itinerary_places）」に追加する際に使用

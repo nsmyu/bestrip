@@ -1,28 +1,26 @@
 <%= turbo_frame_tag place_index_item do %>
-  <div class="card mb-3 mx-auto p-3 position-relative max-width-600">
+  <div class="card mb-3 mx-auto p-2 position-relative max-width-600">
     <div class="row">
-      <div class="col-4 col-sm-3 ps-3 pe-1">
+      <div class="col-3 ps-3 pe-0 pe-sm-3">
         <%= link_to @placeable.user? ? [:users_place, id: place_index_item.id] : [:itinerary_place, itinerary_id: @placeable.id, id: place_index_item.id], data: { turbo_frame: "modal" } do %>
-          <%= image_tag place_index_item.photo_url, class: "square-image w-90" %>
+          <%= image_tag place_index_item.photo_url, class: "square-image p-sm-1 w-100" %>
         <% end %>
       </div>
-      <div class="col-8 col-sm-9 py-1 ps-0">
+      <div class="col-9 py-sm-2 ps-sm-0">
         <% if place_index_item.error %>
           <p class="pe-3 error-message"><%= place_index_item.error %></p>
         <% else %>
           <%= link_to @placeable.user? ? [:users_place, id: place_index_item.id] : [:itinerary_place, itinerary_id: @placeable.id, id: place_index_item.id], data: { turbo_frame: "modal" } do %>
-            <div class="h-75">
-              <p class="pe-3 text-dark fw-bold lh-sm"><%= place_index_item.name %></p>
-              <p class="text-xs text-dark pt-1">クチコミ評価<i class="material-icons rating-icon ps-1">star</i><%= place_index_item.rating %></p>
-            </div>
+            <p class="pe-4 text-dark fw-bold lh-1"><%= place_index_item.name %></p>
+            <p class="text-xxs text-dark fw-bold pt-1">クチコミ評価<i class="material-icons rating-icon ps-1">star</i><%= place_index_item.rating %></p>
           <% end %>
           <% if @placeable.user? %>
-            <%= link_to places_select_itinerary_itineraries_path(place_id: place_index_item.place_id), data: { turbo_frame: "modal" }, class: "d-block mt-1 text-primary text-sm fw-bold" do %>
-              <i class="material-icons pe-1" style="vertical-align: -4.5px;">post_add</i>旅のプランに追加
+            <%= link_to places_select_itinerary_itineraries_path(place_id: place_index_item.place_id), data: { turbo_frame: "modal" }, class: "d-block mt-3 text-primary text-sm fw-bold" do %>
+              <i class="material-icons pe-1 fs-6" style="vertical-align: -2.5px;">post_add</i>旅のプランに追加
             <% end %>
           <% else %>
-            <%= link_to new_itinerary_schedule_path(place_id: place_index_item.place_id), data: { turbo_frame: "modal" }, class: "d-block mt-1 text-primary text-sm fw-bold" do %>
-              <i class="material-icons pe-1" style="vertical-align: -4.5px;">more_time</i>スケジュール作成
+            <%= link_to new_itinerary_schedule_path(place_id: place_index_item.place_id), data: { turbo_frame: "modal" }, class: "d-block mt-3 text-primary text-sm fw-bold" do %>
+              <i class="material-icons pe-1 fs-6" style="vertical-align: -2.5px;">more_time</i>スケジュールに追加
             <% end %>
           <% end %>
         <% end %>

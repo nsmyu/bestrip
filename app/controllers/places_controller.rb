@@ -71,6 +71,10 @@ class PlacesController < ApplicationController
     @place = @placeable.places.new
     @place_index_item = Place.find(params[:id])
     @place_index_item.destroy
+
+    if request.referer&.end_with?("/places") && @placeable.places.count.zero?
+      redirect_to @placeable.user? ? :users_places : [:itinerary_places, itinerary_id: @placeable.id]
+    end
   end
 
   private

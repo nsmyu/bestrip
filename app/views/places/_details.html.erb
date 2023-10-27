@@ -1,14 +1,14 @@
-<div class="mt-3">
+<div class="my-3">
   <p class="fs-5 text-dark fw-bold lh-sm"><%= place_details[:name] %></p>
   <% if place_details[:rating] %>
     <p class="text-xs text-dark fw-bold pt-1">クチコミ評価<i class="material-icons rating-icon ps-1">star</i><%= place_details[:rating] %></p>
   <% end %>
+  <% if @placeable && @placeable.user? %>
+    <%= render 'places/forms/user_place' %>
+  <% elsif @placeable %>
+    <%= render 'places/forms/itinerary_place' %>
+  <% end %>
 </div>
-<% if @placeable && @placeable.user? %>
-  <%= render 'places/forms/user_place' %>
-<% elsif @placeable %>
-  <%= render 'places/forms/itinerary_place' %>
-<% end %>
 <div class="row py-2">
   <i class="col-1 material-icons pe-1 text-secondary">location_on</i>
   <p class="col-11 text-sm text-dark"><%= place_details[:address] %></p>

@@ -2,7 +2,7 @@
   <%= turbo_stream.update "user_place" do %>
     <%= form_with url: users_places_path, model: [@placeable, @place] do |f| %>
       <%= f.hidden_field :place_id, value: @place_id %>
-      <%= button_tag type: "submit", class: "btn btn-outline-favorite mt-3 w-100" do %>
+      <%= button_tag type: "submit", class: "btn btn-outline-favorite mt-3 mb-0 w-100" do %>
         <i class="material-icons pe-1" style="vertical-align: -4.6px;">favorite_border</i>お気に入りに追加
       <% end %>
     <% end %>
@@ -11,7 +11,7 @@
   <%= turbo_stream.update "itinerary_place" do %>
     <%= form_with model: [@placeable, @place] do |f| %>
       <%= f.hidden_field :place_id, value: @place_id %>
-      <%= button_tag type: "submit", class: "btn btn-outline-primary mt-3 w-100" do %>
+      <%= button_tag type: "submit", class: "btn btn-outline-primary mt-3 mb-0 w-100" do %>
         <i class="material-icons pe-1" style="vertical-align: -4.6px;">outlined_flag</i>作成中のプランに追加
       <% end %>
     <% end %>

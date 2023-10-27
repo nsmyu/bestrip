@@ -1,7 +1,7 @@
 <% if @placeable.user? %>
   <%= turbo_stream.update "user_place" do %>
     <%= link_to [:users_place, id: @place.id], data: { turbo_method: :delete } do %>
-      <button class="btn btn-outline-favorite mt-3 w-100">
+      <button class="btn btn-outline-favorite mt-3 mb-0 w-100">
         <i class="material-icons pe-1" style="vertical-align: -4.6px;">favorite</i>お気に入りに追加済み
       </button>
     <% end %>
@@ -9,7 +9,7 @@
 <% else %>
   <%= turbo_stream.update "itinerary_place" do %>
     <%= link_to [:itinerary_place, itinerary_id: @placeable.id, id: @place.id], data: { turbo_method: :delete } do %>
-      <button class="btn btn-outline-primary mt-3 w-100">
+      <button class="btn btn-outline-primary mt-3 mb-0 w-100">
         <i class="material-icons pe-1" style="vertical-align: -4.8px;">flag</i>作成中のプランに追加済み
       </button>
     <% end %>

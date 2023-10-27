@@ -3,19 +3,20 @@
     <%= f.hidden_field :place_id, value: @place_id %>
     <% if places_include?(@placeable, @place_id) %>
       <%= link_to [:users_place, id: @place.id], data: { turbo_method: :delete } do %>
-        <button class="btn btn-outline-favorite mt-3 w-100">
+        <button class="btn btn-outline-favorite mt-3 mb-0 w-100">
           <i class="material-icons pe-1" style="vertical-align: -4.6px;">favorite</i>お気に入りに追加済み
         </button>
       <% end %>
-    <% elsif @placeable.places.count >= 300 %>
+    <% elsif @placeable.places.count >= 1 %>
       <button class="btn btn-outline-favorite mt-3 mb-0 w-100" disabled>
         <i class="material-icons pe-1" style="vertical-align: -4.6px;">favorite_border</i>お気に入りに追加
       </button>
       <p class="mt-1 mb-3 text-xxs text-dark">※お気に入り登録数が上限に達しています。</p>
     <% else %>
-      <%= button_tag type: "submit", class: "btn btn-outline-favorite mt-3 w-100" do %>
+      <%= button_tag type: "submit", class: "btn btn-outline-favorite mt-3 mb-0 w-100" do %>
         <i class="material-icons pe-1" style="vertical-align: -4.6px;">favorite_border</i>お気に入りに追加
       <% end %>
     <% end %>
   <% end %>
 </div>
+
