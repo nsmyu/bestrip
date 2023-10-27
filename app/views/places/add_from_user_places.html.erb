@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "itinerary_place" do %>
-  <%= form_with url: itinerary_places_from_user_to_itinerary_path(itinerary_id: @itinerary.id), model: [@placeable, @place],
+  <%= form_with url: itinerary_places_add_from_user_places_path(itinerary_id: @itinerary.id), model: [@placeable, @place],
     data: { controller: "itinerary-place", itinerary_place_target: "form" } do |f| %>
     <div class="input-group input-group-outline mx-0">
       <label class="m-0 px-0 fw-bold">スポットを追加する旅のプラン</label>

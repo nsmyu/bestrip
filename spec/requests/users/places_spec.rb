@@ -15,7 +15,7 @@ RSpec.describe "Users::Places", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "登録されているスポットの情報を全て取得すること", vcr: "google_api_response" do
+    it "登録されているスポット全ての情報を取得すること", vcr: "google_api_response" do
       user_place.save
       create(:user_place, :queen_victoria_building, placeable: user)
       get users_places_index_lazy_path
@@ -56,7 +56,7 @@ RSpec.describe "Users::Places", type: :request do
     it "成功すること" do
       user_place_params = attributes_for(:user_place)
       post users_places_path, params: { place: user_place_params }, headers: turbo_stream
-      expect(response.body).to include "お気に入りに追加"
+      expect(response.body).to include "お気に入りに追加済み"
     end
   end
 

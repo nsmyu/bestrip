@@ -20,7 +20,7 @@ class Itineraries::PlacesController < PlacesController
     @place_id = params[:place_id]
   end
 
-  def from_user_to_itinerary
+  def add_from_user_places
     @itineraries = current_user.itineraries.order(departure_date: :desc)
     @place = @placeable.places.new(place_params)
     @place.save

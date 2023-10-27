@@ -34,8 +34,8 @@ Rails.application.routes.draw do
     end
 
     scope module: :itineraries do
-      get  'places/select_itinerary',       to: 'places#select_itinerary', on: :collection
-      post 'places/from_user_to_itinerary', to: 'places#from_user_to_itinerary'
+      get  'places/select_itinerary',     to: 'places#select_itinerary', on: :collection
+      post 'places/add_from_user_places', to: 'places#add_from_user_places'
       concerns :placeable
     end
   end
