@@ -7,7 +7,6 @@
   <% else %>
     <%= render 'photo_carousel' %>
     <%= render "details", place_details: @place_details %>
-    <%= render 'places/forms/itinerary_place' if !@placeable.user? %>
   <% end %>
 <% end %>
 

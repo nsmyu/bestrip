@@ -1,15 +1,21 @@
 <div id="itinerary_place">
-  <%= form_with model: [@placeable, @place], data: { action: "turbo:submit-end->modal#close", turbo_frame: "_top" } do |f| %>
+  <%= form_with model: [@placeable, @place] do |f| %>
     <%= f.hidden_field :place_id, value: @place_id %>
     <% if places_include?(@placeable, @place_id) %>
       <%= link_to [:itinerary_place, itinerary_id: @placeable.id, id: @place.id], data: { turbo_method: :delete } do %>
-        <%= f.submit "作成中のプランに追加済み", class: "btn btn-outline-primary mt-3 w-100", disabled: true %>
+        <button class="btn btn-outline-primary mt-3 w-100">
+          <i class="material-icons pe-1" style="vertical-align: -4.8px;">flag</i>作成中のプランに追加済み
+        </button>
       <% end %>
     <% elsif @placeable.places.count >= 300 %>
-      <%= f.submit "作成中のプランに追加", class: "btn bg-gradient-primary mt-3 mb-0 w-100", disabled: true %>
-      <p class="d-inline-block mx-auto mt-1 text-xs text-dark">スポットリスト登録数が上限に達しています。</p>
+      <button class="btn btn-outline-primary mt-3 mb-0 w-100" disabled>
+        <i class="material-icons pe-1" style="vertical-align: -4.6px;">outlined_flag</i>作成中のプランに追加
+      </button>
+      <p class="mt-1 mb-3 text-xxs text-dark">※このプランのスポット登録数が上限に達しています。</p>
     <% else %>
-      <%= f.submit "作成中のプランに追加", class: "btn bg-gradient-primary mt-3 w-100" %>
+      <%= button_tag type: "submit", class: "btn btn-outline-primary mt-3 w-100" do %>
+        <i class="material-icons pe-1" style="vertical-align: -4.6px;">outlined_flag</i>作成中のプランに追加
+      <% end %>
     <% end %>
   <% end %>
 </div>

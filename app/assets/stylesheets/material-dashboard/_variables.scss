@@ -63,6 +63,7 @@ $light:         $gray-200 !default;
 $dark:          $h-color !default;
 $dark-blue:     #1A237E !default;
 $accent:        #EC4646 !default;
+$favorite:      #FA507D !default;
 
 
 // scss-docs-start theme-colors-map
@@ -78,6 +79,7 @@ $theme-colors: (
   "white":      $white,
   "dark-blue":  $dark-blue,
   "accent":     $accent,
+  "favorite":   $favorite,
 ) !default;
 // scss-docs-end theme-colors-map
 
@@ -814,6 +816,7 @@ $btn-success-font-color:      $white !default;
 $btn-warning-font-color:      $white !default;
 $btn-dark-font-color:         $white !default;
 $btn-light-font-color:        #3A416F !default;
+$btn-favorite-font-color:        #FA507D !default;
 
 $btn-font-colors: () !default;
 
@@ -826,7 +829,8 @@ $btn-font-colors: map-merge(
     "success":       $btn-success-font-color,
     "warning":       $btn-warning-font-color,
     "dark":          $btn-dark-font-color,
-    "light":         $btn-light-font-color
+    "light":         $btn-light-font-color,
+    "favorite":      $btn-favorite-font-color
   ),
   $btn-font-colors
 );
