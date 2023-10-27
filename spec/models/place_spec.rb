@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Place, type: :model, focus: true do
+RSpec.describe Place, type: :model do
   it "place_idがあり、placeableに関連付けられていれば有効であること" do
     expect(build(:user_place)).to be_valid
   end
@@ -28,7 +28,9 @@ RSpec.describe Place, type: :model, focus: true do
 
   it "ひとつのplaceableにつき、301個以上の関連付けは無効であること" do
     user = create(:user)
-    expect { create_list(:user_place, 301, placeable: user) }
-      .to raise_error(ActiveRecord::RecordInvalid)
+    create_list(:user_place, 300, placeable: user)
+    user_place = build(:user_place, placeable: user)
+    user_place.valid?
+    expect(user_place.errors).to be_of_kind(:placeable_id, "スポットの登録数が上限に達しています")
   end
 end
