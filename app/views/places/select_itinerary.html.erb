@@ -2,7 +2,7 @@
   <%= turbo_frame_tag "itinerary_place" do %>
     <%= form_with url: itinerary_places_add_from_user_places_path(itinerary_id: @itinerary.id), model: [@placeable, @place],
       data: { controller: "itinerary-place", itinerary_place_target: "form" } do |f| %>
-      <div class="input-group input-group-outline mx-0 mb-4">
+      <div class="row input-group input-group-outline mx-0 mb-4">
         <label class="m-0 mb-1 px-0 fw-bold">スポットを追加する旅のプラン</label>
         <label class="select-box px-0">
           <%= select_tag "itineraries", options_from_collection_for_select(@itineraries, :id, :title), include_blank: "旅のプランを選択",

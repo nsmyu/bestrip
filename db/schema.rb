@@ -14,24 +14,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_25_043841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "destinations", force: :cascade do |t|
-    t.string "place_id", null: false
-    t.bigint "itinerary_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["itinerary_id"], name: "index_destinations_on_itinerary_id"
-    t.index ["place_id", "itinerary_id"], name: "index_destinations_on_place_id_and_itinerary_id", unique: true
-  end
-
-  create_table "favorites", force: :cascade do |t|
-    t.string "place_id", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["place_id", "user_id"], name: "index_favorites_on_place_id_and_user_id", unique: true
-    t.index ["user_id"], name: "index_favorites_on_user_id"
-  end
-
   create_table "itineraries", force: :cascade do |t|
     t.string "title", null: false
     t.string "image"
@@ -113,8 +95,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_25_043841) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "destinations", "itineraries"
-  add_foreign_key "favorites", "users"
   add_foreign_key "itinerary_users", "itineraries"
   add_foreign_key "itinerary_users", "users"
   add_foreign_key "photos", "posts"
