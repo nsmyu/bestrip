@@ -1,8 +1,8 @@
 <% if @place_photo_urls %>
-  <div id="photo_carousel" class="carousel slide">
+  <div id="place_photo_carousel" class="carousel slide">
     <div class="carousel-indicators">
       <% @place_photo_urls.each_with_index do |url, i| %>
-        <button type="button" data-bs-target="#photo_carousel" data-bs-slide-to="<%= i %>" class="<%= "active" if i.zero? %>"></button>
+        <button type="button" data-bs-target="#place_photo_carousel" data-bs-slide-to="<%= i %>" class="<%= "active" if i.zero? %>"></button>
       <% end %>
     </div>
     <div class="carousel-inner">
@@ -10,10 +10,10 @@
         <%= image_tag url, class: "carousel-item modal-image #{ "active" if i.zero? }" %>
       <% end %>
     </div>
-    <button type="button" class="carousel-control-prev" data-bs-target="#photo_carousel" data-bs-slide="prev">
+    <button type="button" class="carousel-control-prev" data-bs-target="#place_photo_carousel" data-bs-slide="prev">
       <span class="carousel-control-prev-icon"></span>
     </button>
-    <button type="button" class="carousel-control-next" data-bs-target="#photo_carousel" data-bs-slide="next">
+    <button type="button" class="carousel-control-next" data-bs-target="#place_photo_carousel" data-bs-slide="next">
       <span class="carousel-control-next-icon"></span>
     </button>
   </div>
