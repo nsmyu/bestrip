@@ -7,7 +7,7 @@ RSpec.describe "Users::Places", type: :system do
     sign_in user
   end
 
-  describe "お気に入り一覧表示" do
+  describe "一覧表示" do
     let(:user_place) { build(:user_place, :opera_house, placeable: user) }
 
     context "お気に入りに登録がない場合" do
@@ -99,7 +99,7 @@ RSpec.describe "Users::Places", type: :system do
     end
   end
 
-  describe "削除", js: true do
+  describe "お気に入りから削除", js: true do
     let!(:user_place) { create(:user_place, :opera_house, placeable: user) }
 
     context "スポット検索画面のモーダルから削除する場合" do

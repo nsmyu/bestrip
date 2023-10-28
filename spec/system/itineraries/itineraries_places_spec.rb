@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Itineraries::Places", type: :system do
+RSpec.describe "Itineraries::Places", type: :system, focus: true do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
 
@@ -8,7 +8,7 @@ RSpec.describe "Itineraries::Places", type: :system do
     sign_in user
   end
 
-  describe "スポットリスト一覧表示" do
+  describe "一覧表示" do
     let(:itinerary_place) { build(:itinerary_place, :opera_house, placeable: itinerary) }
 
     context "スポットリストに登録がない場合" do
@@ -68,7 +68,7 @@ RSpec.describe "Itineraries::Places", type: :system do
     end
   end
 
-  describe "お気に入り登録", js: true do
+  describe "スポットリスト登録", js: true do
     let(:itinerary_place) { build(:itinerary_place, :opera_house, placeable: itinerary) }
 
     context "追加登録可能な状態の場合" do
@@ -99,7 +99,74 @@ RSpec.describe "Itineraries::Places", type: :system do
     end
   end
 
-  describe "削除", js: true do
+  describe "お気に入り一覧からスポットリストへ登録", js: true do
+    let!(:user_place) { create(:user_place, :opera_house, placeable: user) }
+
+    context "追加登録可能な状態の場合" do
+      it "成功すること（追加登録後、スポットリストへのリンクを表示すること）" do
+        expect {
+          visit users_places_path
+          within(:xpath, "//div[a[p[contains(text(), 'シドニー・オペラハウス')]]]") do
+            click_on "旅のプランに追加"
+          end
+
+          within(".modal", match: :first) do
+            find(".select-box").click
+            find("option", text: itinerary.title).click
+            click_on "選択した旅のプランに追加"
+
+            expect(page).to have_content "選択したプランのスポットリストに追加しました"
+
+            click_on "スポットリストを確認"
+          end
+
+          expect(page).to have_content itinerary.title
+          expect(page).to have_content "シドニー・オペラハウス"
+          expect(current_path).to eq itinerary_places_path(itinerary_id: itinerary.id)
+        }.to change(itinerary.places, :count).by(1)
+      end
+    end
+
+    context "追加登録不可能な状態の場合" do
+      it "既にスポットリストに登録されている場合、失敗すること" do
+        create(:itinerary_place, place_id: user_place.place_id, placeable: itinerary)
+        expect {
+          visit users_places_path
+          within(:xpath, "//div[a[p[contains(text(), 'シドニー・オペラハウス')]]]") do
+            click_on "旅のプランに追加"
+          end
+
+          within(".modal", match: :first) do
+            find(".select-box").click
+            find("option", text: itinerary.title).click
+            click_on "選択した旅のプランに追加"
+
+            expect(page).to have_content "このプランには既に追加されています"
+          end
+        }.not_to change(itinerary.places, :count)
+      end
+
+      it "選択したプランのスポットリストに上限の300件まで登録済みの場合、失敗すること" do
+        create_list(:itinerary_place, 300, placeable: itinerary)
+        expect {
+          visit users_places_path
+          within(:xpath, "//div[a[p[contains(text(), 'シドニー・オペラハウス')]]]") do
+            click_on "旅のプランに追加"
+          end
+
+          within(".modal", match: :first) do
+            find(".select-box").click
+            find("option", text: itinerary.title).click
+            click_on "選択した旅のプランに追加"
+
+            expect(page).to have_content "スポットの登録数が上限に達しています"
+          end
+        }.not_to change(itinerary.places, :count)
+      end
+    end
+  end
+
+  describe "スポットリストから削除", js: true do
     let!(:itinerary_place) { create(:itinerary_place, :opera_house, placeable: itinerary) }
 
     context "スポット検索画面のモーダルから削除する場合" do
