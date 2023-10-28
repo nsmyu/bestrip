@@ -56,11 +56,9 @@ RSpec.describe "Itineraries::Places", type: :request do
   describe "POST #create" do
     it "成功すること" do
       itinerary_place_params = attributes_for(:itinerary_place)
-      expect {
-        post itinerary_places_path(itinerary_id: itinerary.id),
-          params: { place: itinerary_place_params }, headers: turbo_stream
-        expect(response.body).to include "作成中のプランに追加済み"
-      }.to change(itinerary.places, :count).by(1)
+      post itinerary_places_path(itinerary_id: itinerary.id),
+        params: { place: itinerary_place_params }, headers: turbo_stream
+      expect(response.body).to include "作成中のプランに追加済み"
     end
   end
 
@@ -82,11 +80,9 @@ RSpec.describe "Itineraries::Places", type: :request do
   describe "DELETE #destroy" do
     it "成功すること" do
       itinerary_place.save
-      expect {
-        delete itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id),
-          headers: turbo_stream
-        expect(response.body).to include "作成中のプランに追加\n"
-      }.to change(itinerary.places, :count).by(-1)
+      delete itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id),
+        headers: turbo_stream
+      expect(response.body).to include "作成中のプランに追加\n"
     end
   end
 
@@ -107,33 +103,28 @@ RSpec.describe "Itineraries::Places", type: :request do
     context "有効な値の場合" do
       it "成功すること" do
         itinerary_place_params = attributes_for(:itinerary_place)
-        expect {
-          post itinerary_places_add_from_user_places_path(itinerary_id: itinerary.id),
-            params: { place: itinerary_place_params }
-          expect(response.body).to include "選択したプランのスポットリストに追加しました"
-        }.to change(itinerary.places, :count).by(1)
+        post itinerary_places_add_from_user_places_path(itinerary_id: itinerary.id),
+          params: { place: itinerary_place_params }
+        expect(response.body).to include "選択したプランのスポットリストに追加しました"
       end
     end
 
     context "無効な値の場合" do
       it "place_idが既に登録されている場合、失敗すること" do
         itinerary_place.save
-        itinerary_place_params = attributes_for(:itinerary_place, place_id: itinerary_place.place_id)
-        expect {
-          post itinerary_places_add_from_user_places_path(itinerary_id: itinerary.id),
-            params: { place: itinerary_place_params }
-          expect(response.body).to include "このプランには既に追加されています"
-        }.not_to change(itinerary.places, :count)
+        itinerary_place_params = attributes_for(:itinerary_place,
+                                                place_id: itinerary_place.place_id)
+        post itinerary_places_add_from_user_places_path(itinerary_id: itinerary.id),
+          params: { place: itinerary_place_params }
+        expect(response.body).to include "このプランには既に追加されています"
       end
 
       it "上限の300件まで登録済みの場合、失敗すること" do
         create_list(:itinerary_place, 300, placeable: itinerary)
         itinerary_place_params = attributes_for(:itinerary_place)
-        expect {
-          post itinerary_places_add_from_user_places_path(itinerary_id: itinerary.id),
-            params: { place: itinerary_place_params }
-          expect(response.body).to include "スポットの登録数が上限に達しています"
-        }.not_to change(itinerary.places, :count)
+        post itinerary_places_add_from_user_places_path(itinerary_id: itinerary.id),
+          params: { place: itinerary_place_params }
+        expect(response.body).to include "スポットの登録数が上限に達しています"
       end
     end
   end

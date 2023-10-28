@@ -88,7 +88,8 @@ RSpec.describe "Itineraries::Places", type: :system do
     context "追加登録可能な状態の場合" do
       it "成功すること" do
         expect {
-          visit new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
+          visit new_itinerary_place_path(itinerary_id: itinerary.id,
+                                         place_id: itinerary_place.place_id)
           find(".bg-gradient-primary", text: "作成中のプランに追加").click
 
           expect(page).to have_content "作成中のプランに追加済み"
@@ -99,14 +100,16 @@ RSpec.describe "Itineraries::Places", type: :system do
     context "追加登録不可能な状態の場合" do
       it "既に登録されている場合、追加済みボタンが表示されること" do
         itinerary_place.save
-        visit new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
+        visit new_itinerary_place_path(itinerary_id: itinerary.id,
+                                       place_id: itinerary_place.place_id)
 
         expect(page).to have_content "作成中のプランに追加済み"
       end
 
       it "上限の300件まで登録済みの場合、その旨メッセージを表示すること" do
         create_list(:itinerary_place, 300, placeable: itinerary)
-        visit new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
+        visit new_itinerary_place_path(itinerary_id: itinerary.id,
+                                       place_id: itinerary_place.place_id)
 
         expect(page).to have_content "このプランのスポット登録数が上限に達しています。"
       end
@@ -186,7 +189,8 @@ RSpec.describe "Itineraries::Places", type: :system do
     context "スポット検索画面のモーダルから削除する場合" do
       it "成功すること" do
         expect {
-          visit new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
+          visit new_itinerary_place_path(itinerary_id: itinerary.id,
+                                         place_id: itinerary_place.place_id)
           click_on "作成中のプランに追加済み", match: :first
 
           expect(page).to have_selector ".bg-gradient-primary", text: "作成中のプランに追加"

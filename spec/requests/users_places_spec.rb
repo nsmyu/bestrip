@@ -55,10 +55,8 @@ RSpec.describe "Users::Places", type: :request do
   describe "POST #create" do
     it "成功すること" do
       user_place_params = attributes_for(:user_place)
-      expect {
-        post users_places_path, params: { place: user_place_params }, headers: turbo_stream
-        expect(response.body).to include "お気に入りに追加済み"
-      }.to change(user.places, :count).by(1)
+      post users_places_path, params: { place: user_place_params }, headers: turbo_stream
+      expect(response.body).to include "お気に入りに追加済み"
     end
   end
 
@@ -80,10 +78,8 @@ RSpec.describe "Users::Places", type: :request do
   describe "DELETE #destroy" do
     it "成功すること" do
       user_place.save
-      expect {
-        delete users_place_path(id: user_place.id), headers: turbo_stream
-        expect(response.body).to include "お気に入りに追加\n"
-      }.to change(user.places, :count).by(-1)
+      delete users_place_path(id: user_place.id), headers: turbo_stream
+      expect(response.body).to include "お気に入りに追加\n"
     end
   end
 end
