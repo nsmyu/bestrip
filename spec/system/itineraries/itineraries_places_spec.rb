@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Itineraries::Places", type: :system, focus: true do
+RSpec.describe "Itineraries::Places", type: :system do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
 
@@ -9,7 +9,7 @@ RSpec.describe "Itineraries::Places", type: :system, focus: true do
   end
 
   describe "一覧表示" do
-    let(:itinerary_place) { build(:itinerary_place, :opera_house, placeable: itinerary) }
+    let(:itinerary_place) { create(:itinerary_place, :opera_house, placeable: itinerary) }
 
     context "スポットリストに登録がない場合" do
       it "その旨メッセージを表示すること" do
@@ -20,7 +20,7 @@ RSpec.describe "Itineraries::Places", type: :system, focus: true do
 
     context "スポットリストに登録がある場合", js: true do
       it "登録されているスポット全ての情報を表示すること" do
-        itinerary_place.save
+        itinerary_place
         create(:itinerary_place, :queen_victoria_building, placeable: itinerary)
         visit itinerary_places_path(itinerary_id: itinerary.id)
 
@@ -36,7 +36,7 @@ RSpec.describe "Itineraries::Places", type: :system, focus: true do
       end
 
       it "スポットの名称をクリックすると、スポット情報のモーダルを表示すること" do
-        itinerary_place.save
+        itinerary_place
         visit itinerary_places_path(itinerary_id: itinerary.id)
         click_on "シドニー・オペラハウス"
 
@@ -46,10 +46,24 @@ RSpec.describe "Itineraries::Places", type: :system, focus: true do
           expect(page).to have_content "Bennelong Point, Sydney NSW 2000 オーストラリア"
         end
       end
+
+      it "「スケジュールに追加」をクリックすると、スポット情報の入ったスケジュール作成モーダルを表示すること" do
+        itinerary_place
+        visit itinerary_places_path(itinerary_id: itinerary.id)
+        within(:xpath, "//div[a[p[contains(text(), 'シドニー・オペラハウス')]]]") do
+          click_on "スケジュールに追加"
+        end
+
+        within(".modal", match: :first) do
+          expect(page).to have_content "スケジュール作成"
+          expect(page).to have_content "シドニー・オペラハウス"
+          expect(page).to have_content "Bennelong Point, Sydney NSW 2000 オーストラリア"
+        end
+      end
     end
   end
 
-  describe "スポット検索", js: true do
+  describe "スポット検索", js: true, focus: true do
     it "検索結果を地図上に表示、情報ウィンドウのリンクをクリックするとスポット情報をモーダルで表示すること" do
       visit itinerary_places_find_path(itinerary_id: itinerary.id)
       fill_in "searchbox_text_input", with: "シドニー オペラハウス"
