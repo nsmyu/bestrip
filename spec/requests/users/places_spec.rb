@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Users::Places", type: :request do
+RSpec.describe "Users::Places", type: :request, focus: true do
   let!(:user) { create(:user) }
   let(:user_place) { build(:user_place, :opera_house, placeable: user) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
@@ -44,7 +44,7 @@ RSpec.describe "Users::Places", type: :request do
         expect(response.body).to include "お気に入りに追加済み"
       end
 
-      it "上限の300件まで登録されている場合、その旨メッセージを取得すること" do
+      it "上限の300件まで登録済みの場合、その旨メッセージを取得すること" do
         create_list(:user_place, 300, placeable: user)
         get new_users_place_path(place_id: user_place.place_id)
         expect(response.body).to include "お気に入り登録数が上限に達しています"
@@ -55,8 +55,10 @@ RSpec.describe "Users::Places", type: :request do
   describe "POST #create" do
     it "成功すること" do
       user_place_params = attributes_for(:user_place)
-      post users_places_path, params: { place: user_place_params }, headers: turbo_stream
-      expect(response.body).to include "お気に入りに追加済み"
+      expect {
+        post users_places_path, params: { place: user_place_params }, headers: turbo_stream
+        expect(response.body).to include "お気に入りに追加済み"
+      }.to change(user.places, :count).by(1)
     end
   end
 
@@ -78,8 +80,10 @@ RSpec.describe "Users::Places", type: :request do
   describe "DELETE #destroy" do
     it "成功すること" do
       user_place.save
-      delete users_place_path(id: user_place.id), headers: turbo_stream
-      expect(response.body).to include "お気に入りに追加\n"
+      expect {
+        delete users_place_path(id: user_place.id), headers: turbo_stream
+        expect(response.body).to include "お気に入りに追加\n"
+      }.to change(user.places, :count).by(-1)
     end
   end
 end

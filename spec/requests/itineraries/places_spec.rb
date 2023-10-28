@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Itineraries::Places", type: :request, focus: true do
+RSpec.describe "Itineraries::Places", type: :request do
   let!(:user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
   let(:itinerary_place) { build(:itinerary_place, :opera_house, placeable: itinerary) }
