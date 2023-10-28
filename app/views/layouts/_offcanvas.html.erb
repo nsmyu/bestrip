@@ -1,12 +1,15 @@
-<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-  <div class="offcanvas-header">
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="閉じる"></button>
-  </div>
-  <div class="offcanvas-body">
-    <% if itinerary_page? %>
-      <%= render 'layouts/sidenav_links_itinerary' %>
-    <% else %>
-      <%= render 'layouts/sidenav_links' %>
-    <% end %>
+<div class="offcanvas offcanvas-start"  tabindex="-1" id="offcanvasExample">
+  <div class="navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl position-relative">
+    <label class="position-absolute top-6 end-2 cursor-pointer">
+      <i class="material-icons text-secondary">close</i>
+      <button type="button" class="d-none" data-bs-dismiss="offcanvas" aria-label="閉じる"></button>
+    </label>
+    <div class="mt-4 ms-2">
+      <% if itinerary_page? %>
+        <%= render 'layouts/sidenav_links_itinerary' %>
+      <% else %>
+        <%= render 'layouts/sidenav_links' %>
+      <% end %>
+    </div>
   </div>
 </div>

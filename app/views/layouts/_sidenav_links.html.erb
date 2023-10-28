@@ -1,12 +1,12 @@
 <ul class="navbar-nav">
   <li class="nav-item">
-    <%= link_to :users_edit_profile, class:"nav-link sidenav-link text-dark" do %>
+    <%= link_to :users_edit_profile, class:"d-block nav-link sidenav-link text-dark pe-0" do %>
       <div class="row">
-        <div class="col-3 d-flex ps-1 pe-0 align-items-center">
+        <div class="col-3 d-flex ps-2 pe-1">
           <%= image_tag current_user.avatar.url, class: "circle-image" %>
         </div>
-        <div class="col-9 ">
-          <p class="text-sm fw-bold text-ellipsis"><%= current_user.name %></p>
+        <div class="col-9 ps-2 d-flex align-items-center">
+          <p class="fs-15 fw-bold text-ellipsis"><%= current_user.name %></p>
         </div>
       </div>
     <% end %>
