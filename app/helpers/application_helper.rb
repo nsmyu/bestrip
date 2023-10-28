@@ -7,4 +7,8 @@ module ApplicationHelper
   def date_posted(post)
     "#{post.created_at.year}.#{post.created_at.month}.#{post.created_at.day}"
   end
+
+  def itinerary_page?
+    request.fullpath.include?('itineraries') && !request.fullpath.end_with?('itineraries')
+  end
 end

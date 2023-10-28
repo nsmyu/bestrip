@@ -1,5 +1,13 @@
 <header class="navbar navbar-expand-lg navbar-light bg-white py-2">
   <div class="container">
+    <button type="button" class="btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-expanded="false" aria-controls="offcanvasExample">
+      <span class="navbar-toggler-icon mt-2">
+        <span class="navbar-toggler-bar bar1"></span>
+        <span class="navbar-toggler-bar bar2"></span>
+        <span class="navbar-toggler-bar bar3"></span>
+      </span>
+    </button>
+
     <%= link_to image_tag("bestrip_logo.png", width: "100", alt: "besrtip_logo"), root_url, class: "navbar-brand" %>
     <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon mt-2">
@@ -12,10 +20,10 @@
       <ul class="navbar-nav navbar-nav-hover ms-auto">
         <% if user_signed_in? %>
           <li class="nav-item mx-2">
-            <%= link_to "BesTripの楽しみ方", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
+            <%= link_to "みんなの思い出", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
           </li>
           <li class="nav-item mx-2">
-            <%= link_to "旅の計画一覧", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
+            <%= link_to "旅を計画する", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
           </li>
           <li class="nav-item dropdown dropdown-hover mx-2">
             <%= link_to "#", data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center", id: "dropdownMenuAccount", "data-bs-toggle": "dropdown", "aria-expanded": "false" do %>
@@ -68,9 +76,6 @@
             <%= link_to "新規登録", :new_user_registration, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
           </li>
         <% end %>
-        <li class="nav-item my-auto ms-3 ms-lg-4">
-          <%= link_to "旅の計画", :new_user_registration, data: { turbo: false }, class: "btn btn-sm bg-gradient-primary mb-0 me-1 mt-2 mt-md-0" %>
-        </li>
       </ul>
     </div>
   </div>

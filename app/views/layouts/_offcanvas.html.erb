@@ -1,0 +1,12 @@
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="閉じる"></button>
+  </div>
+  <div class="offcanvas-body">
+    <% if itinerary_page? %>
+      <%= render 'layouts/sidenav_links_itinerary' %>
+    <% else %>
+      <%= render 'layouts/sidenav_links' %>
+    <% end %>
+  </div>
+</div>
