@@ -1,42 +1,43 @@
 require 'rails_helper'
 
-RSpec.describe "Users::Places", type: :system do
+RSpec.describe "Itineraries::Places", type: :system do
   let!(:user) { create(:user) }
+  let!(:itinerary) { create(:itinerary, owner: user) }
 
   before do
     sign_in user
   end
 
-  describe "お気に入り一覧表示" do
-    let(:user_place) { build(:user_place, :opera_house, placeable: user) }
+  describe "スポットリスト一覧表示" do
+    let(:itinerary_place) { build(:itinerary_place, :opera_house, placeable: itinerary) }
 
-    context "お気に入りに登録がない場合" do
+    context "スポットリストに登録がない場合" do
       it "その旨メッセージを表示すること" do
-        visit users_places_path
+        visit itinerary_places_path(itinerary_id: itinerary.id)
         expect(page).to have_content "登録されているスポットはありません"
       end
     end
 
-    context "お気に入りに登録がある場合", js: true do
+    context "スポットリストに登録がある場合", js: true do
       it "登録されているスポット全ての情報を表示すること" do
-        user_place.save
-        create(:user_place, :queen_victoria_building, placeable: user)
-        visit users_places_path
+        itinerary_place.save
+        create(:itinerary_place, :queen_victoria_building, placeable: itinerary)
+        visit itinerary_places_path(itinerary_id: itinerary.id)
 
         expect(page).to have_content "シドニー・オペラハウス"
         expect(page).to have_content "クイーン・ビクトリア・ビルディング"
       end
 
       it "place_idが無効な（変更されている）場合、エラーメッセージを表示すること" do
-        create(:user_place, place_id: "invalid_place_id", placeable: user)
-        visit users_places_path
+        create(:itinerary_place, place_id: "invalid_place_id", placeable: itinerary)
+        visit itinerary_places_path(itinerary_id: itinerary.id)
 
         expect(page).to have_content "スポット情報を取得できませんでした"
       end
 
       it "スポットの名称をクリックすると、スポット情報のモーダルを表示すること" do
-        user_place.save
-        visit users_places_path
+        itinerary_place.save
+        visit itinerary_places_path(itinerary_id: itinerary.id)
         click_on "シドニー・オペラハウス"
 
         within(".modal", match: :first) do
@@ -50,7 +51,7 @@ RSpec.describe "Users::Places", type: :system do
 
   describe "スポット検索", js: true do
     it "検索結果を地図上に表示、情報ウィンドウのリンクをクリックするとスポット情報をモーダルで表示すること" do
-      visit users_places_find_path
+      visit itinerary_places_find_path(itinerary_id: itinerary.id)
       fill_in "searchbox_text_input", with: "シドニー オペラハウス"
       sleep 0.5
       find("#searchbox_text_input").click
@@ -62,62 +63,60 @@ RSpec.describe "Users::Places", type: :system do
       within ".modal" do
         expect(page).to have_content "シドニー・オペラハウス"
         expect(page).to have_content "Bennelong Point, Sydney NSW 2000 オーストラリア"
-        expect(page).to have_content "お気に入りに追加"
+        expect(page).to have_content "作成中のプランに追加"
       end
     end
   end
 
   describe "お気に入り登録", js: true do
-    let(:user_place) { build(:user_place, :opera_house, placeable: user) }
+    let(:itinerary_place) { build(:itinerary_place, :opera_house, placeable: itinerary) }
 
     context "追加登録可能な状態の場合" do
       it "成功すること" do
         expect {
-          visit new_users_place_path(place_id: user_place.place_id)
-          expect(page).to have_selector "i", text: "favorite_border"
-          click_on "お気に入りに追加"
+          visit new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
+          find(".bg-gradient-primary", text: "作成中のプランに追加").click
 
-          expect(page).to have_content "お気に入りに追加済み"
-        }.to change(user.places, :count).by(1)
+          expect(page).to have_content "作成中のプランに追加済み"
+        }.to change(itinerary.places, :count).by(1)
       end
     end
 
     context "追加登録不可能な状態の場合" do
       it "既に登録されている場合、追加済みボタンが表示されること" do
-        user_place.save
-        visit new_users_place_path(place_id: user_place.place_id)
+        itinerary_place.save
+        visit new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
 
-        expect(page).to have_content "お気に入りに追加済み"
+        expect(page).to have_content "作成中のプランに追加済み"
       end
 
       it "上限の300件まで登録済みの場合、その旨メッセージを表示すること" do
-        create_list(:user_place, 300, placeable: user)
-        visit new_users_place_path(place_id: user_place.place_id)
+        create_list(:itinerary_place, 300, placeable: itinerary)
+        visit new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
 
-        expect(page).to have_content "お気に入り登録数が上限に達しています"
+        expect(page).to have_content "このプランのスポット登録数が上限に達しています。"
       end
     end
   end
 
   describe "削除", js: true do
-    let!(:user_place) { create(:user_place, :opera_house, placeable: user) }
+    let!(:itinerary_place) { create(:itinerary_place, :opera_house, placeable: itinerary) }
 
     context "スポット検索画面のモーダルから削除する場合" do
       it "成功すること" do
         expect {
-          visit new_users_place_path(place_id: user_place.place_id)
-          click_on "お気に入りに追加済み", match: :first
+          visit new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
+          click_on "作成中のプランに追加済み", match: :first
 
-          expect(page).to have_selector "i", text: "favorite_border"
-          expect(page).to have_content "お気に入りに追加"
-        }.to change(user.places, :count).by(-1)
+          expect(page).to have_selector ".bg-gradient-primary", text: "作成中のプランに追加"
+        }.to change(itinerary.places, :count).by(-1)
       end
     end
 
-    context "お気に入り一覧画面から削除する場合" do
+    context "スポットリスト一覧画面から削除する場合" do
       it "成功すること" do
         expect {
-          visit users_places_path
+          visit itinerary_places_path(itinerary_id: itinerary.id)
           within(:xpath, "//div[a[p[contains(text(), 'シドニー・オペラハウス')]]]") do
             find("i", text: "close").click
           end
@@ -128,8 +127,8 @@ RSpec.describe "Users::Places", type: :system do
 
           expect(page).to have_content "スポットを削除しました。"
           expect(page).not_to have_content "シドニー・オペラハウス"
-          expect(current_path).to eq users_places_path
-        }.to change(user.places, :count).by(-1)
+          expect(current_path).to eq itinerary_places_path(itinerary_id: itinerary.id)
+        }.to change(itinerary.places, :count).by(-1)
       end
     end
   end
