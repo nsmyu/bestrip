@@ -18,7 +18,7 @@ RSpec.describe "ItineraryUsers", type: :system do
     it "成功すること" do
       expect {
         fill_in "bestrip_id", with: other_user.bestrip_id
-        find("i", text: "search").click
+        all("i", text: "search")[1].click
 
         expect(page).to have_content other_user.name
 
@@ -31,14 +31,14 @@ RSpec.describe "ItineraryUsers", type: :system do
 
     it "検索したユーザーが存在しない場合、メッセージが表示されること" do
       fill_in "bestrip_id", with: "no_user_id"
-      find("i", text: "search").click
+      all("i", text: "search")[1].click
       expect(page).to have_content "ユーザーが見つかりませんでした"
     end
 
     it "検索したユーザーが既にメンバーに含まれている場合、メッセージが表示されること" do
       itinerary.members << other_user
       fill_in "bestrip_id", with: other_user.bestrip_id
-      find("i", text: "search").click
+      all("i", text: "search")[1].click
       expect(page).to have_content "すでにメンバーに追加されています"
     end
   end

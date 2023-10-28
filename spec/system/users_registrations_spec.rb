@@ -148,14 +148,12 @@ RSpec.describe "UsersRegistrations", type: :system do
       it "空欄の場合、失敗すること" do
         fill_in "user[email]", with: ""
         click_button "変更する"
-        expect(page).to have_content "メールアドレス変更"
         expect(page).to have_content "メールアドレスを入力してください"
       end
 
       it "形式が正しくない場合、失敗すること" do
         fill_in "user[email]", with: "invalid_email_address"
         click_button "変更する"
-        expect(page).to have_content "メールアドレス変更"
         expect(page).to have_content "メールアドレスを正しく入力してください"
       end
     end

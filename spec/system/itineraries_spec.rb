@@ -37,8 +37,7 @@ RSpec.describe "Itineraries", type: :system do
         itinerary1.members << other_user
         visit itineraries_path
 
-        within(:xpath, "//a[@href='/itineraries/#{itinerary1.id}/schedules']") do
-          expect(page).to have_content itinerary1.title
+        within(:xpath, "//div[p[contains(text(), '#{itinerary1.title}')]]") do
           expect(page).to have_content I18n.l itinerary1.departure_date
           expect(page).to have_content I18n.l itinerary1.return_date
           expect(page).to have_content user.name
@@ -52,11 +51,11 @@ RSpec.describe "Itineraries", type: :system do
         expect(page).not_to have_content other_users_itinerary.title
       end
 
-      it "旅のプランのカードをクリックすると、スケジュール一覧ページへ遷移すること" do
+      it "旅のプランのカードをクリックすると、旅のプラン情報ページへ遷移すること", focus: true do
         visit itineraries_path
         click_on itinerary1.title
 
-        expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary1.id)
+        expect(current_path).to eq itinerary_path(id: itinerary1.id)
       end
 
       it "「旅のプランを作成」をクリックすると、プラン作成モーダルを表示すること", js: true do
