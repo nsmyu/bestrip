@@ -3,7 +3,8 @@ class ItinerariesController < ApplicationController
   before_action -> {
     set_itinerary
     authenticate_itinerary_member(@itinerary)
-  }, except: [:index, :new, :create]
+  }, only: %i(show edit update destroy)
+
 
   def index
     @itineraries = current_user.itineraries.order(departure_date: :desc)

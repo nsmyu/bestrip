@@ -6,7 +6,7 @@ class SchedulesController < ApplicationController
     set_itinerary
     authenticate_itinerary_member(@itinerary)
   }
-  before_action :set_schedule, only: [:show, :edit, :update, :destroy]
+  before_action :set_schedule, only: %i(show edit update destroy)
 
   def index
     schedules = Itinerary.find(params[:itinerary_id]).schedules
