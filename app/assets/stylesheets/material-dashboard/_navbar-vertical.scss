@@ -199,7 +199,7 @@
   .navbar-heading {
     display: block;
   }
-  @include media-breakpoint-up(xl) {
+  @include media-breakpoint-up(lg) {
     &:hover {
       max-width: $navbar-vertical-open-width;
     }
@@ -305,7 +305,7 @@ body:not(.dark-version) {
   }
 }
 // Media fixes for iPhone 5 like resolutions
-@include media-breakpoint-down(xl) {
+@include media-breakpoint-down(lg) {
   .g-sidenav-show {
     &.rtl {
       .sidenav {

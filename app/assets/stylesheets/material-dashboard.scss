@@ -48,6 +48,10 @@ label {
   color: $dark;
 }
 
+li {
+  list-style: none;
+}
+
 input:-webkit-autofill {
   transition: background-color 10000s ease-in-out 0s !important;
 }

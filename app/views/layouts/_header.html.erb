@@ -1,69 +1,33 @@
 <header class="navbar navbar-expand-lg navbar-light bg-white py-2">
-  <div class="container">
-    <button type="button" class="btn d-xl-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-expanded="false" aria-controls="offcanvasExample">
-      <span class="navbar-toggler-icon mt-2">
-        <span class="navbar-toggler-bar bar1"></span>
-        <span class="navbar-toggler-bar bar2"></span>
-        <span class="navbar-toggler-bar bar3"></span>
-      </span>
-    </button>
+  <div class="container px-1">
+    <% if user_signed_in? %>
+      <button class="navbar-toggler shadow-none d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-expanded="false" aria-controls="offcanvasExample">
+        <span class="navbar-toggler-icon mt-2">
+          <span class="navbar-toggler-bar bar1"></span>
+          <span class="navbar-toggler-bar bar2"></span>
+          <span class="navbar-toggler-bar bar3"></span>
+        </span>
+      </button>
+    <% end %>
     <%= link_to image_tag("bestrip_logo.png", width: "100", alt: "besrtip_logo"), root_url, class: "navbar-brand" %>
-    <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon mt-2">
-        <span class="navbar-toggler-bar bar1"></span>
-        <span class="navbar-toggler-bar bar2"></span>
-        <span class="navbar-toggler-bar bar3"></span>
-      </span>
-    </button>
+    <div class="dropdown">
+      <a class="navbar-toggler shadow-none ms-2 dropdown-toggle text-secondary" type="button" data-bs-toggle="dropdown">
+        <i class="material-symbols-outlined text-secondary fs-3" style="vertical-align: -5.5px;">account_circle</i>
+      </a>
+      <%= render 'layouts/header_dropdown' %>
+    </div>
     <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5" id="navigation">
       <ul class="navbar-nav navbar-nav-hover ms-auto">
-        <% if user_signed_in? %>
-          <li class="nav-item mx-2">
-            <%= link_to "みんなの思い出", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
-          </li>
-          <li class="nav-item mx-2">
-            <%= link_to "旅を計画する", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
-          </li>
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <%= link_to "#", data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center", id: "dropdownMenuAccount", "data-bs-toggle": "dropdown", "aria-expanded": "false" do %>
-              アカウント
-              <%= image_tag 'down_arrow_dark.svg', alt: "down-arrow", class: "arrow ms-auto ms-md-2" %>
-            <% end %>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-animation dropdown-md dropdown-md-responsive mt-0 mt-lg-3 p-3 border-radius-lg" aria-labelledby="dropdownMenuAccount">
-              <div class="d-none d-lg-block">
-                <ul class="list-group">
-                  <li class="nav-item list-group-item border-0 p-0">
-                    <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
-                      <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">プロフィール編集</h6>
-                    <% end %>
-                  </li>
-                  <li class="nav-item list-group-item border-0 p-0">
-                    <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
-                      <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">アカウント情報</h6>
-                    <% end %>
-                  </li>
-                  <li class="nav-item list-group-item border-0 p-0">
-                    <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
-                      <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">ログアウト</h6>
-                    <% end %>
-                  </li>
-                </ul>
-              </div>
-              <div class="row d-lg-none">
-                <div class="col-md-12 g-0">
-                  <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
-                    <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">プロフィール編集</h6>
-                  <% end %>
-                  <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
-                    <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">アカウント情報</h6>
-                  <% end %>
-                  <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
-                    <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">ログアウト</h6>
-                  <% end %>
-                </div>
-              </div>
-            </ul>
-          </li>
+      <% if user_signed_in? %>
+        <li class="nav-item mx-2">
+          <%= link_to "みんなの思い出", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
+        </li>
+        <li class="nav-item mx-2 dropdown">
+          <a class="dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown">
+            マイページ
+          </a>
+          <%= render 'layouts/header_dropdown' %>
+        </li>
         <% else %>
           <li class="nav-item dropdown dropdown-hover mx-2">
             <%= link_to "BesTripの楽しみ方", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>

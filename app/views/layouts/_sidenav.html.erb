@@ -1,9 +1,12 @@
-<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl fixed-start mt-4 ms-3 py-2 bg-white z-index-3" id="sidenav-main">
-  <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
-    <% if itinerary_page? %>
-      <%= render 'layouts/sidenav_links_itinerary' %>
-    <% else %>
-      <%= render 'layouts/sidenav_links' %>
-    <% end %>
-  </div>
-</aside>
+
+<% if user_signed_in? %>
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl fixed-start mt-4 ms-3 py-2 bg-white z-index-3" id="sidenav-main">
+    <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+      <% if itinerary_page? %>
+        <%= render 'layouts/sidenav_links_itinerary' %>
+      <% else %>
+        <%= render 'layouts/sidenav_links' %>
+      <% end %>
+    </div>
+  </aside>
+<% end %>

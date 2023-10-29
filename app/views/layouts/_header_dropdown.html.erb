@@ -1,0 +1,35 @@
+<ul class="dropdown-menu dropdown-menu-end px-3 py-2 border-radius-lg border">
+  <% if user_signed_in? %>
+    <li class="border-0 p-0">
+      <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-2 border-radius-md link-area" do %>
+        <p class="dropdown-header text-dark d-flex justify-content-cente align-items-center p-0">マイページ</p>
+      <% end %>
+    </li>
+    <li class="border-0 p-0">
+      <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-2 border-radius-md link-area" do %>
+        <p class="dropdown-header text-dark d-flex justify-content-cente align-items-center p-0">プロフィール編集</p>
+      <% end %>
+    </li>
+    <li class="border-0 p-0">
+      <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-2 border-radius-md link-area" do %>
+        <p class="dropdown-header text-dark d-flex justify-content-cente align-items-center p-0">アカウント情報</p>
+      <% end %>
+    </li>
+    <li class="border-0 p-0">
+      <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-2 border-radius-md link-area" do %>
+        <p class="dropdown-header text-dark d-flex justify-content-cente align-items-center p-0">ログアウト</p>
+      <% end %>
+    </li>
+  <% else %>
+    <li class="border-0 p-0">
+      <%= link_to :new_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-2 border-radius-md link-area" do %>
+        <p class="dropdown-header text-dark d-flex justify-content-cente align-items-center p-0">ログイン</p>
+      <% end %>
+    </li>
+    <li class="border-0 p-0">
+      <%= link_to :new_user_registration, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-2 border-radius-md link-area" do %>
+        <p class="dropdown-header text-dark d-flex justify-content-cente align-items-center p-0">アカウント登録</p>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
