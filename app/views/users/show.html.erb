@@ -1,0 +1,40 @@
+<main class="main-content position-relative">
+  <div class="container-fluid py-4 px-sm-4 min-vh-100">
+    <div class="mt-n4 mx-n4 mb-4 py-4 px-4 px-sm-5 bg-white">
+      <div class="mx-auto max-width-700">
+        <div class="row mb-3 p-1 d-flex align-items-center">
+          <div class="col-3 col-sm-2 pe-1">
+            <%= image_tag @user.avatar.url, class: "rounded-circle w-100" %>
+          </div>
+          <div class="col-8 col-sm-9 ps-sm-4 text-dark">
+            <p class="fs-5 fw-bold lh-1"><%= @user.name %></p>
+            <p class="text-sm text-secondary">@<%= @user.bestrip_id %>
+            <p class="pt-2 text-sm">投稿<%= @user.posts.count %>件&emsp;&ensp;旅のプラン<%= @user.itineraries.count %>件</p>
+          </div>
+          <% if @user == current_user %>
+            <div class="col-1 mt-1 mt-sm-2 mb-auto ms-n4 ms-sm-n1">
+              <div class="dropdown">
+                <a class="cursor-pointer" data-bs-toggle="dropdown">
+                  <i class="material-icons p-2 text-secondary link-area rounded-circle">more_horiz</i>
+                </a>
+                <ul class="border dropdown-menu dropdown-menu-end mt-4 me-n3 me-sm-0"></li>
+                  <li>
+                    <%= link_to :users_edit_profile, class: "dropdown-item" do %>
+                      <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">article</span>プロフィール編集
+                    <% end %>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <p class="px-1 text-sm text-dark"><%= @user.introduction %></p>
+      </div>
+    </div>
+    <div class="mx-auto max-width-900">
+      <div class="row">
+        <%= render partial: "posts/post", collection: @posts %>
+      </div>
+    </div>
+  </div>
+</main>

@@ -17,6 +17,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super
   end
 
+  def edit_email
+  end
+
+  def edit_profile
+  end
+
+  def validate_bestrip_id
+    @user.assign_attributes(update_without_password_params)
+    @user.valid?
+  end
+
   def update
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     resource_updated = update_resource(resource, account_update_params)
@@ -31,17 +42,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       set_minimum_password_length
       respond_with resource
     end
-  end
-
-  def edit_email
-  end
-
-  def edit_profile
-  end
-
-  def validate_bestrip_id
-    @user.assign_attributes(update_without_password_params)
-    @user.valid?
   end
 
   def update_without_password

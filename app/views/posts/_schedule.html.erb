@@ -15,18 +15,18 @@
           </div>
           <div class="col-md-10 col-11">
             <div class="row">
-              <div class="col-sm-1 col-2 px-sm-0 px-3">
+              <div class="col-sm-1 col-2 px-sm-0 px-3 d-flex align-items-center">
                 <% if schedule.icon.present? %>
-                  <i class="material-icons schedule-icon ms-md-n2 ms-md-n1 ms-1 my-3" ><%= schedule.icon %></i>
+                  <i class="material-icons schedule-icon ms-md-n2 ms-md-n1 ms-1" ><%= schedule.icon %></i>
                 <% end %>
               </div>
-              <div class="col-sm-10 col-9 d-flex ms-n2 pe-0 align-items-center">
+              <div class="col-sm-10 col-9 ms-n2 pe-0 d-flex align-items-center">
                 <p class="text-ellipsis text-sm"><%= schedule.title %></p>
               </div>
-              <div class="col-1 ps-2">
+              <div class="col-1 ps-2 d-flex align-items-center">
                 <% if schedule.place_id.present? %>
                   <%= link_to [:new_users_place, place_id: schedule.place_id], data: { turbo_frame: "modal" } do %>
-                    <i class="material-icons rounded-circle link-area p-2" style="vertical-align: -5px;">pin_drop</i>
+                    <i class="material-icons rounded-circle link-area p-2">pin_drop</i>
                   <% end %>
                 <% end %>
               </div>

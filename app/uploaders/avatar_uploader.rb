@@ -11,7 +11,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
     'default_avatar.png'
   end
 
-  process resize_to_fill: [100, 100, "Center"]
+  process resize_to_fill: [200, 200, "Center"]
   #
   # def scale(width, height)
   #   # do something

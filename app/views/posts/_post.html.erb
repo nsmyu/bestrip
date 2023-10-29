@@ -1,0 +1,22 @@
+<%= turbo_frame_tag post, class:"col-12 col-sm-6 col-md-4 my-2 my-sm-3 mx-auto mx-sm-0 px-0 px-sm-3 max-width-400" do %>
+  <div class="m-lg-1 bg-white">
+    <% if request.fullpath.end_with?('/') %>
+    <div class="pt-2 px-2">
+      <div class="d-flex">
+        <%= image_tag post.user.avatar.url, class: "rounded-circle avatar-thumbnail p-1 me-1" %>
+        <div class="d-table">
+          <%= link_to post.user.name, user_path(id: post.user.id), class: "text-dark fs-15 d-table-cell align-middle hover-opacity", data: { turbo: false } %>
+        </div>
+      </div>
+    </div>
+    <% end %>
+    <%= link_to post_path(id: post.id), class:"hover-opacity", data: { turbo: false } do %>
+      <%= image_tag post.photos[0].url.to_s, class: "pt-2 px-2 w-100" %>
+      <div class="p-2">
+        <p class="p-1 fs-15 fw-bold text-dark text-ellipsis lh-sm"><%= post.title %><br>
+          <span class="text-xs fw-normal text-secondary lh-base"><%= date_posted(post) %></span>
+        </p>
+      </div>
+    <% end %>
+  </div>
+<% end %>
