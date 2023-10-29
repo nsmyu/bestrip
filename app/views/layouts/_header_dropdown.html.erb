@@ -1,4 +1,4 @@
-<ul class="dropdown-menu dropdown-menu-end px-3 py-2 border-radius-lg border">
+<ul class="dropdown-menu dropdown-menu-end px-3 py-2 border-radius-lg border header-dropdown">
   <% if user_signed_in? %>
     <li class="border-0 p-0">
       <%= link_to :destroy_user_session, data: { turbo_method: :delete }, class: "dropdown-item py-2 ps-2 border-radius-md link-area" do %>

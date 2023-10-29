@@ -102,6 +102,13 @@ input:-webkit-autofill {
   height: 40px;
 }
 
+.header-avatar {
+  margin: -6px 8px -6px 0;
+  height: 34px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
+
 .modal-image, .favorite-image {
   object-fit: cover;
   aspect-ratio: 5/3;
@@ -332,6 +339,6 @@ label:has(#reset_place_btn) {
   }
 }
 
-.min-width-360 {
-  min-width: 360px;
+.header-dropdown {
+  margin-top: 38px !important;
 }

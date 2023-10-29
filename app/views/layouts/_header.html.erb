@@ -16,27 +16,25 @@
       </a>
       <%= render 'layouts/header_dropdown' %>
     </div>
-    <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5" id="navigation">
-      <ul class="navbar-nav navbar-nav-hover ms-auto">
-      <% if user_signed_in? %>
-        <li class="nav-item mx-2">
-          <%= link_to "みんなの思い出", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
-        </li>
-        <li class="nav-item mx-2 dropdown">
-          <a class="dropdown-toggle nav-link" type="button" data-bs-toggle="dropdown">
-            マイページ
-          </a>
-          <%= render 'layouts/header_dropdown' %>
-        </li>
+    <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5">
+      <ul class="navbar-nav ms-auto">
+        <% if user_signed_in? %>
+          <li class="nav-item mx-2">
+            <%= link_to "みんなの思い出", :root, data: { turbo: false }, class: "nav-link ps-2" %>
+          </li>
+          <li class="nav-item dropdown dropdown-hover mx-2">
+            <a class="nav-link d-flex" type="button" data-bs-toggle="dropdown">
+              <%= image_tag current_user.avatar.url, class: "header-avatar" %>
+              マイページ
+            </a>
+            <%= render 'layouts/header_dropdown' %>
+          </li>
         <% else %>
           <li class="nav-item dropdown dropdown-hover mx-2">
-            <%= link_to "BesTripの楽しみ方", :root, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
+            <%= link_to "新規登録", :new_user_registration, data: { turbo: false }, class: "nav-link ps-2" %>
           </li>
           <li class="nav-item dropdown dropdown-hover mx-2">
-            <%= link_to "ログイン", :new_user_session, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
-          </li>
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <%= link_to "新規登録", :new_user_registration, data: { turbo: false }, class: "nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" %>
+            <%= link_to "ログイン", :new_user_session, data: { turbo: false }, class: "nav-link ps-2" %>
           </li>
         <% end %>
       </ul>
