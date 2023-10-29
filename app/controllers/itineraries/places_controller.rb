@@ -1,4 +1,5 @@
 class Itineraries::PlacesController < PlacesController
+  before_action :authenticate_user!
   before_action -> {
     set_placeable
     authenticate_itinerary_member(@placeable)

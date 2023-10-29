@@ -1,8 +1,6 @@
 class PlacesController < ApplicationController
   include GooglePlacesApiRequestable
 
-  before_action :authenticate_user!
-
   def index
     return if @placeable.places.blank?
   end
@@ -47,12 +45,15 @@ class PlacesController < ApplicationController
     @place_id = params[:place_id]
     get_place_details(@place_id)
 
-    @place =
-      Place
-        .where(placeable_type: @placeable.class.to_s)
-        .where(placeable_id: @placeable.id)
-        .find_by(place_id: @place_id) ||
-      @placeable.places.new
+    if @placeable
+      authenticate_user!
+      @place =
+        Place
+          .where(placeable_type: @placeable.class.to_s)
+          .where(placeable_id: @placeable.id)
+          .find_by(place_id: @place_id) ||
+        @placeable.places.new
+    end
   end
 
   def create

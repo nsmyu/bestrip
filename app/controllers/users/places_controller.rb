@@ -1,4 +1,5 @@
 class Users::PlacesController < PlacesController
+  before_action :authenticate_user!, except: :new
   before_action :set_placeable, except: :show
 
   def destroy

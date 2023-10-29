@@ -3,20 +3,23 @@
     <div class="mx-auto max-width-1000">
       <div class="row">
         <% @posts.each do |post| %>
-          <div class="col-lg-4 col-sm-6 my-3 px-1 px-sm-3">
+          <div class="col-12 col-sm-6 col-md-4 my-2 my-sm-3 mx-auto mx-sm-0 px-0 px-sm-3 max-width-400">
             <%= link_to post_path(id: post.id), data: { turbo: false } do %>
-              <div class="bg-white border-radius-lg overflow-hidden shadow-sm">
-                <%= image_tag post.photos[0].url.to_s, class: "w-100" %>
-                <div class="p-3">
-                  <p class="fw-bold lh-base text-dark mb-2"><%= post.title %></p>
-                  <div class="d-flex">
+              <div class="m-lg-1 bg-white">
+                <div class="p-2">
+                  <div class="d-flex p-1">
                     <%= image_tag post.user.avatar.url, class: "rounded-circle avatar-thumbnail me-2" %>
                     <div class="d-table">
-                      <p class="lh-1 text-dark text-sm fw-bold d-table-cell align-middle"><%= post.user.name %><br>
-                        <span class="text-xs fw-normal text-secondary"><%= date_posted(post) %></span>
+                      <p class="text-dark fs-15 fw-bold d-table-cell align-middle"><%= post.user.name %>
                       </p>
                     </div>
                   </div>
+                </div>
+                <%= image_tag post.photos[0].url.to_s, class: "w-100" %>
+                <div class="p-2">
+                  <p class="p-1 fs-15 fw-bold text-dark text-ellipsis lh-sm"><%= post.title %><br>
+                    <span class="text-xs fw-normal text-secondary lh-base"><%= date_posted(post) %></span>
+                  </p>
                 </div>
               </div>
             <% end %>

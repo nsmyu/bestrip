@@ -1,23 +1,23 @@
 <% @date_time_sorted_schedules.each_with_index do |(date, schedules), i| %>
-  <div class="mb-2 pt-3 px-3 bg-white border-radius-lg text-dark">
+  <div class="mb-2 pt-3 px-3 bg-white text-dark">
     <h6><%= date ? "#{@date_list.index(date) + 1}日目" : "その他の予定" %></h6>
     <% schedules.each do |schedule| %>
       <div class="border-top">
         <div class="row px-3 d-flex height-60 align-items-center">
           <div class="col-md-2 col-1 p-0 fw-bold lh-1">
             <% if schedule.start_at || schedule.end_at %>
-              <p class="fs-15 fw-bold d-none d-sm-block"><%= (l schedule.start_at) if schedule.start_at %></p>
-              <p class="text-sm fw-bold d-sm-none lh-1"><%= (l schedule.start_at) if schedule.start_at %></p>
+              <p class="d-none d-sm-block fs-15 fw-bold lh-1"><%= (l schedule.start_at) if schedule.start_at %></p>
+              <p class="d-sm-none text-sm fw-bold lh-1"><%= (l schedule.start_at) if schedule.start_at %></p>
               <span class="text-xs"><%= "-#{(l schedule.end_at)}" if schedule.end_at%></span>
             <% else %>
-              --:--
+              <p class="fs-15 fw-bold">--:--</p>
             <% end %>
           </div>
           <div class="col-md-10 col-11">
             <div class="row">
               <div class="col-sm-1 col-2 px-sm-0 px-3">
                 <% if schedule.icon.present? %>
-                  <i class="material-icons schedule-icon ms-md-n2 ms-md-n1 ms-1" style="vertical-align: -7px;"><%= schedule.icon %></i>
+                  <i class="material-icons schedule-icon ms-md-n2 ms-md-n1 ms-1 my-3" ><%= schedule.icon %></i>
                 <% end %>
               </div>
               <div class="col-sm-10 col-9 d-flex ms-n2 pe-0 align-items-center">
