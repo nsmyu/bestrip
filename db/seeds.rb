@@ -118,3 +118,20 @@ Itinerary.create!(
     },
   ]
 )
+
+Itinerary.find(1).members << User.find(6)
+Itinerary.find(2).members << User.find(7)
+Itinerary.find(3).members << User.find(3)
+Itinerary.find(4).members << User.find(9)
+Itinerary.find(4).members << User.find(10)
+Itinerary.find(6).members << User.find(10)
+Itinerary.find(8).members << User.find(4)
+Itinerary.find(9).members << User.find(8)
+Itinerary.find(10).members << User.find(1)
+Itinerary.find(10).members << User.find(5)
+Itinerary.find(12).members << User.find(5)
+Itinerary.find(12).members << User.find(7)
+Itinerary.find(13).members << User.find(8)
+Itinerary.find(14).members << User.find(6)
+Itinerary.find(15).members << User.find(3)
+
