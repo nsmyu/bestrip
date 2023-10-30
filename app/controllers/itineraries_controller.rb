@@ -18,7 +18,6 @@ class ItinerariesController < ApplicationController
     @user = User.find(current_user.id)
     @itinerary = @user.owned_itineraries.new(itinerary_params)
     if @itinerary.save
-      @itinerary.members << @user
       redirect_to @itinerary, notice: "新しい旅のプランを作成しました。"
     end
   end

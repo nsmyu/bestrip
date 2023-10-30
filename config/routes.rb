@@ -14,8 +14,6 @@ Rails.application.routes.draw do
     patch 'users/validate_bestrip_id', to: 'users/registrations#validate_bestrip_id'
   end
 
-  resources :users, only: :show
-
   concern :placeable do
     get 'places/index_lazy', to: 'places#index_lazy'
     get 'places/find',       to: 'places#find'
@@ -25,6 +23,7 @@ Rails.application.routes.draw do
   namespace :users do
     concerns :placeable
   end
+  resources :users, only: :show
 
   resources :itineraries do
     resources :schedules
