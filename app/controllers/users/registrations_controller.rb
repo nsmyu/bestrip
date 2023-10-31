@@ -1,9 +1,7 @@
-# frozen_string_literal: true
-
 class Users::RegistrationsController < Devise::RegistrationsController
-  before_action :configure_sign_up_params, only: [:create]
-  # before_action :configure_account_update_params, only: [:update]
-  before_action :set_current_user, except: [:new, :create, :edit, :update]
+  before_action :configure_sign_up_params, only: :create
+  before_action :set_user,
+    only: %i(edit_email edit_profile validate_bestrip_id update_without_password)
 
   def new
     super
@@ -57,11 +55,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  def destroy
-    super
-  end
-
-  protected
+  private
 
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
@@ -71,7 +65,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super(resource)
   end
 
-  def set_current_user
+  def set_user
     @user = User.find(current_user.id)
   end
 
