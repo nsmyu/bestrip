@@ -11,4 +11,8 @@ module ApplicationHelper
   def itinerary_page?
     request.fullpath.include?('itineraries') && !request.fullpath.end_with?('itineraries')
   end
+
+  def user_page?
+    request.fullpath.include?('users/edit')
+  end
 end

@@ -4,6 +4,8 @@
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
       <% if itinerary_page? %>
         <%= render 'layouts/sidenav_links_itinerary' %>
+      <% elsif user_page? %>
+        <%= render 'layouts/sidenav_links_user' %>
       <% else %>
         <%= render 'layouts/sidenav_links' %>
       <% end %>

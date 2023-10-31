@@ -103,7 +103,8 @@ input:-webkit-autofill {
 }
 
 .header-avatar {
-  margin: -6px 8px -6px 0;
+  margin: -6px 6px -6px 0;
+  padding: 2px;
   height: 34px;
   aspect-ratio: 1/1;
   border-radius: 50%;
@@ -132,7 +133,7 @@ input:-webkit-autofill {
 
 .link-area:hover {
   color: $dark;
-  background-color: rgb(81, 194, 213, .1);
+  background-color: $gray-200;
 }
 
 .input-bg-gray {

@@ -19,15 +19,20 @@
     <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5">
       <ul class="navbar-nav ms-auto">
         <% if user_signed_in? %>
-          <li class="nav-item mx-2">
-            <%= link_to "みんなの思い出", :root, data: { turbo: false }, class: "nav-link ps-2" %>
-          </li>
-          <li class="nav-item dropdown dropdown-hover mx-2">
+          <li class="nav-item dropdown dropdown-hover mx-2 max-width-200 border-radius-md link-area cursor-pointer">
             <a class="nav-link d-flex" type="button" data-bs-toggle="dropdown">
               <%= image_tag current_user.avatar.url, class: "header-avatar" %>
-              マイページ
+              <p class="text-sm fw-normal text-ellipsis"><%= current_user.name %></p>
             </a>
             <%= render 'layouts/header_dropdown' %>
+          </li>
+          <li class="nav-item mx-2">
+            <%= link_to :root, data: { turbo: false, "bs-toggle": "tooltip", "bs-placement": "bottom" }, title: "みんなの投稿", class: "nav-link pb-0 border-radius-md link-area" do %>
+              <i class="material-symbols-outlined">photo_library</i>
+            <% end %>
+          </li>
+          <li class="nav-item mx-2">
+            <%= link_to "旅の計画", :itineraries, data: { turbo: false }, class: "btn btn-sm btn-outline-primary mb-0 py-2" %>
           </li>
         <% else %>
           <li class="nav-item mx-2">
