@@ -557,6 +557,8 @@ function getEventTarget(e) {
 
 window.onload = addInputFunction()
 document.addEventListener('turbo:frame-load', addInputFunction)
+document.addEventListener('turbo:load', addInputFunction)
+
 function addInputFunction() {
   // Material Design Input function
   var inputs = document.querySelectorAll('.form-control');

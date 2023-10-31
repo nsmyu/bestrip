@@ -279,13 +279,9 @@ label:has(#reset_place_btn) {
   accent-color: $dark;
 }
 
-.current-page {
-  p, span, i{
-    color: $primary !important;
-  }
-  p, span {
-    font-weight: bold;
-  }
+.current-page, .current-page i, .current-page span {
+  color: $primary !important;
+  font-weight: 600 !important;
 }
 
 .search-form {

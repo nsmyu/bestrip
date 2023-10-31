@@ -14,35 +14,35 @@
   </li>
   <hr class="horizontal dark my-1">
   <li class="nav-item">
-    <%= link_to [:itinerary_schedules, itinerary_id: @itinerary.id], class:"nav-link sidenav-link" do %>
-      <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-        <i class="material-icons text-dark">schedule</i>
+    <%= link_to [:itinerary_schedules, itinerary_id: @itinerary.id], class:"nav-link sidenav-link text-dark" do %>
+      <div class="text-center me-2 d-flex align-items-center justify-content-center">
+        <i class="material-icons">schedule</i>
       </div>
-      <span class="ms-1 text-dark">スケジュール</span>
+      <span class="ms-1">スケジュール</span>
     <% end %>
   </li>
   <li class="nav-item">
-    <%= link_to [:itinerary_places, itinerary_id: @itinerary.id], class:"nav-link sidenav-link" do %>
-      <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-        <i class="material-icons text-dark">outlined_flag</i>
+    <%= link_to [:itinerary_places, itinerary_id: @itinerary.id], class:"nav-link sidenav-link text-dark" do %>
+      <div class="text-center me-2 d-flex align-items-center justify-content-center">
+        <i class="material-icons">outlined_flag</i>
       </div>
-      <span class="ms-1 text-dark">スポットリスト</span>
+      <span class="ms-1">スポットリスト</span>
     <% end %>
   </li>
   <li class="nav-item">
-    <%= link_to [:itinerary_places_find, itinerary_id: @itinerary.id], class:"nav-link sidenav-link" do %>
-      <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-        <i class="material-icons text-dark">search</i>
+    <%= link_to [:itinerary_places_find, itinerary_id: @itinerary.id], class:"nav-link sidenav-link text-dark" do %>
+      <div class="text-center me-2 d-flex align-items-center justify-content-center">
+        <i class="material-icons">search</i>
       </div>
-      <span class="ms-1 text-dark">スポットを探す</span>
+      <span class="ms-1">スポットを探す</span>
     <% end %>
   </li>
-  <li class="nav-item mt-3">
-    <%= link_to :itineraries, class:"nav-link text-secondary" do %>
-      <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-        <i class="material-icons text-secondary">arrow_back</i>
+  <li class="nav-item mt-4">
+    <%= link_to :itineraries, class:"nav-link py-2 text-secondary" do %>
+      <div class="text-center me-2 d-flex align-items-center justify-content-center">
+        <i class="material-icons">arrow_back</i>
       </div>
-      <span class="ms-1 text-xs">一覧に戻る</span>
+      <span class="ms-1 pt-1">一覧に戻る</span>
     <% end %>
   </li>
 </ul>

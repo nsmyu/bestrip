@@ -32,8 +32,13 @@
       </div>
     </div>
     <div class="mx-auto max-width-900">
+      <p class="text-center fs-15 fw-bold text-dark">投稿</p>
       <div class="row">
-        <%= render partial: "posts/post", collection: @posts %>
+        <% if @posts.present? %>
+          <%= render partial: "posts/post", collection: @posts %>
+        <% else %>
+          <p class="my-4 text-center text-sm">投稿はまだありません</p>
+        <% end %>
       </div>
     </div>
   </div>

@@ -4,7 +4,7 @@
   <div class="container-fluid py-3 py-sm-4 px-0 min-vh-80">
     <div class="card mx-auto p-4 max-width-550">
       <div class="px-2">
-        <p class="text-sm mb-4 text-dark">新しいメールアドレスを入力してください。</p>
+        <p class="text-sm mt-1 mb-3 text-dark">新しいメールアドレスを入力してください。</p>
         <%= form_with model: resource, url: users_update_without_password_path, data: { turbo: false } do |f| %>
           <div class="input-group input-group-outline row mx-0 mb-4">
             <%= f.label :email, class: "mx-0 mb-1 px-0 fw-bold" %>

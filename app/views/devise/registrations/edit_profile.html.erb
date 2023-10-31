@@ -5,10 +5,8 @@
     <div class="card mx-auto p-4 max-width-550">
       <div class="px-2">
         <%= form_with model: resource, url: users_update_without_password_path do |f| %>
-          <div class="d-flex mb-3">
-            <div class="">
-              <%= image_tag resource.avatar.url, id: 'image_preview', class: "rounded-circle avatar" %>
-            </div>
+          <div class="d-flex mt-2 mb-3">
+            <%= image_tag resource.avatar.url, id: 'image_preview', class: "rounded-circle avatar" %>
             <div class="ms-4 d-flex">
               <label type="button" class="btn btn-outline-primary fw-bold my-auto px-2">
                 <i class="material-icons opacity-10 me-2" style="vertical-align: -4px;">add_a_photo</i>画像を変更

@@ -3,18 +3,31 @@
     <p class="mx-3 px-3 py-2 text-dark fw-bold fs-15">個人設定</p>
   </li>
   <li class="nav-item">
-    <%= link_to :users_edit_profile, class:"nav-link sidenav-link" do %>
-      <span class="text-dark">プロフィール編集</span>
+    <%= link_to "プロフィール編集", :users_edit_profile, class:"nav-link sidenav-link text-dark" %>
+  </li>
+  <li class="nav-item">
+    <%= link_to "メールアドレス変更", :users_edit_email, class:"nav-link sidenav-link text-dark" %>
+  </li>
+  <li class="nav-item">
+    <%= link_to "パスワード変更", :edit_user_registration, class:"nav-link sidenav-link text-dark" %>
+  </li>
+  <li class="nav-item">
+    <%= link_to "ログアウト", :destroy_user_session, class: "nav-link sidenav-link text-dark" %>
+  </li>
+  <li class="nav-item mt-4">
+    <%= link_to :destroy_user_session, class:"nav-link mb-0 py-2 text-secondary" do %>
+      <div class="text-center me-2 d-flex align-items-center justify-content-center">
+        <i class="material-icons">home</i>
+      </div>
+      <span class="ms-1 pt-1">ホームへ</span>
     <% end %>
   </li>
   <li class="nav-item">
-    <%= link_to :users_edit_email, class:"nav-link sidenav-link" do %>
-      <span class="text-dark">メールアドレス変更</span>
-    <% end %>
-  </li>
-  <li class="nav-item">
-    <%= link_to :edit_user_registration, class:"nav-link sidenav-link" do %>
-      <span class="text-dark">パスワード変更</span>
+    <%= link_to :destroy_user_session, class:"nav-link py-2 text-secondary" do %>
+      <div class="text-center me-2 d-flex align-items-center justify-content-center">
+        <i class="material-icons">logout</i>
+      </div>
+      <span class="ms-1 pt-1">ログアウト</span>
     <% end %>
   </li>
 </ul>

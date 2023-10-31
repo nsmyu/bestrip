@@ -1,7 +1,7 @@
 class Itinerary < ApplicationRecord
   include Placeable
 
-  after_commit :add_owner_to_members
+  after_commit :add_owner_to_members, on: :create
 
   has_many   :itinerary_users, dependent: :destroy
   has_many   :members, through: :itinerary_users, source: :user
