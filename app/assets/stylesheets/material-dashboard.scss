@@ -103,7 +103,7 @@ input:-webkit-autofill {
 }
 
 .header-avatar {
-  margin: -6px 6px -6px 0;
+  margin: -6px 4px -6px 0;
   padding: 2px;
   height: 34px;
   aspect-ratio: 1/1;
@@ -338,4 +338,19 @@ label:has(#reset_place_btn) {
 
 .header-dropdown {
   margin-top: 38px !important;
+}
+
+.flash {
+  position: fixed;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%)
+             translateY(-50%);
+  color: #183B72;
+  background-color: #CFE1FE;
+  border: 1px solid #B7D4FF;
+
+  span {
+    color: #183B72;
+  }
 }

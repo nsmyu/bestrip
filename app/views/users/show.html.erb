@@ -8,7 +8,9 @@
           </div>
           <div class="col-8 col-sm-9 ps-sm-4 text-dark">
             <p class="fs-5 fw-bold lh-1"><%= @user.name %></p>
-            <p class="text-sm text-secondary">@<%= @user.bestrip_id %>
+              <% if @user.bestrip_id %>
+            <p class="text-sm text-secondary">@<%= @user.bestrip_id %></p>
+            <% end %>
             <p class="pt-2 text-sm">投稿<%= @user.posts.count %>件&emsp;&ensp;旅のプラン<%= @user.itineraries.count %>件</p>
           </div>
           <% if @user == current_user %>

@@ -20,7 +20,7 @@
       <ul class="navbar-nav ms-auto">
         <% if user_signed_in? %>
           <li class="nav-item mx-2">
-            <%= link_to "旅を計画する", :itineraries, class: "btn btn-sm bg-gradient-primary mb-0 py-2", data: { turbo: false } %>
+            <%= link_to "旅を計画する", :itineraries, class: "btn btn-sm bg-gradient-primary mb-0 py-2 text-sm", data: { turbo: false } %>
           </li>
           <li class="nav-item mx-2">
             <%= link_to "みんなの投稿", :root, class: "nav-link border-radius-md link-area", data: { turbo: false} %>
@@ -28,7 +28,7 @@
           <li class="nav-item dropdown dropdown-hover mx-2 max-width-200 border-radius-md link-area cursor-pointer">
             <a class="nav-link d-flex pe-3" type="button" data-bs-toggle="dropdown">
               <%= image_tag current_user.avatar.url, class: "header-avatar" %>
-              <p class="text-sm fw-normal text-ellipsis"><%= current_user.name %></p>
+              <p class="text-sm fw-normal text-ellipsis" style="padding-top: 1px"><%= current_user.name %></p>
             </a>
             <%= render 'layouts/header_dropdown' %>
           </li>
@@ -37,7 +37,7 @@
             <%= link_to "新規登録", :new_user_registration, class: "nav-link ps-2", data: { turbo: false } %>
           </li>
           <li class="nav-item mx-2">
-            <%= link_to "ログイン", :new_user_session, class: "btn btn-sm bg-gradient-primary mb-0 py-2", data: { turbo: false } %>
+            <%= link_to "ログイン", :new_user_session, class: "btn btn-sm bg-gradient-primary mb-0 py-2 text-sm", data: { turbo: false } %>
           </li>
         <% end %>
       </ul>
