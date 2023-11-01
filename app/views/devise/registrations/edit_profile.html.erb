@@ -8,8 +8,9 @@
           <div class="d-flex mt-2 mb-3">
             <%= image_tag resource.avatar.url, id: 'image_preview', class: "rounded-circle avatar" %>
             <div class="ms-4 d-flex">
-              <label type="button" class="btn btn-outline-primary fw-bold my-auto px-2">
-                <i class="material-icons opacity-10 me-2" style="vertical-align: -4px;">add_a_photo</i>画像を変更
+              <label type="button" class="btn btn-outline-primary fw-bold my-auto px-3 d-flex align-items-center">
+                <i class="material-icons opacity-10 me-2">add_a_photo</i>
+                <span>画像を変更</span>
                 <%= f.file_field :avatar, accept: "image/*", id: "image_input", class: "d-none" %>
               </label>
             </div>

@@ -4,7 +4,15 @@
   <div class="container-fluid py-4 px-0 min-vh-100">
     <div class="mx-auto max-width-850">
       <% if @placeable.places.blank? %>
-        <p class="p-4 text-center text-sm text-dark">登録されているスポットはありません</p>
+        <p class="pt-3 pb-1 text-center text-sm text-dark">登録されているスポットはありません</p>
+        <div class="text-center">
+          <%= link_to @placeable.user? ? :users_places_find : [:itinerary_places_find, itinerary_id: @itinerary.id], class:"d-inline-block hover-opacity" do %>
+            <div class="d-flex align-items-center text-primary">
+              <span class="text-sm fw-bold">スポットを探して追加する</span>
+              <i class="material-icons">navigate_next</i>
+            </div>
+          <% end %>
+        </div>
       <% elsif @placeable.user? %>
         <%= turbo_frame_tag "places", src: users_places_index_lazy_path, loading: :lazy %>
       <% else %>

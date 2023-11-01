@@ -24,9 +24,9 @@
                   </div>
                   <div class="col-11 col-sm-10">
                     <div class="row">
-                      <div class="col-1">
+                      <div class="col-1 d-flex align-items-center">
                         <% if schedule.icon.present? %>
-                          <i class="material-icons d-inline-block ms-sm-n3 ms-2 rounded-circle schedule-icon" style="vertical-align: -7px;"><%= schedule.icon %></i>
+                          <i class="material-icons d-inline-block ms-sm-n3 ms-2 rounded-circle schedule-icon"><%= schedule.icon %></i>
                         <% end %>
                       </div>
                       <div class="col-10 d-flex pe-0 align-items-center">
@@ -40,18 +40,21 @@
                           <button class="d-none" id="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>" data-bs-toggle="dropdown" aria-expanded="false"></button>
                           <ul class="border dropdown-menu dropdown-menu-end mt-4" aria-labelledby="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>"></li>
                             <li>
-                              <%= link_to [:itinerary_schedule, id: schedule.id], class: "dropdown-item", data: { turbo_frame: "modal" } do %>
-                                <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">article</span>情報を見る
-                              <% end %>
-                            </li>
-                            <li class="align-items-center">
-                              <%= link_to [:edit_itinerary_schedule, itinerary_id: schedule.itinerary.id, id: schedule.id], class: "dropdown-item", data: { turbo_frame: "modal" } do %>
-                                <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">edit</span>編集
+                              <%= link_to [:itinerary_schedule, id: schedule.id], class: "dropdown-item d-flex align-items-center", data: { turbo_frame: "modal" } do %>
+                                <i class="material-symbols-outlined pe-1 fs-6">article</i>
+                                <p class="text-sm">スケジュール内容</p>
                               <% end %>
                             </li>
                             <li>
-                              <%= link_to [:itinerary_schedule, itinerary_id: schedule.itinerary.id, id: schedule.id], class: "dropdown-item text-danger", data: { turbo_method: :delete, turbo_confirm: 'このスケジュールを削除しますか？この操作は取り消せません。' } do %>
-                                <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">delete</span>削除
+                              <%= link_to [:edit_itinerary_schedule, itinerary_id: schedule.itinerary.id, id: schedule.id], class: "dropdown-item d-flex align-items-center", data: { turbo_frame: "modal" } do %>
+                                <i class="material-symbols-outlined pe-1 fs-6">edit</i>
+                                <p class="text-sm">編集</p>
+                              <% end %>
+                            </li>
+                            <li>
+                              <%= link_to [:itinerary_schedule, itinerary_id: schedule.itinerary.id, id: schedule.id], class: "dropdown-item d-flex align-items-center text-danger", data: { turbo_method: :delete, turbo_confirm: 'このスケジュールを削除しますか？' } do %>
+                                <i class="material-symbols-outlined pe-1 fs-6">delete</i>
+                                <p class="text-sm">削除</p>
                               <% end %>
                             </li>
                           </ul>
@@ -69,8 +72,9 @@
   </div>
   <div class="fixed-plugin">
     <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2 btn bg-gradient-primary">
-      <%= link_to :new_itinerary_schedule, data: { turbo_frame: "modal" } do %>
-        <p class="py-1 text-white text-sm fw-bold"><i class="material-icons me-1" style="vertical-align: -4px;">add_circle</i> スケジュール作成</p>
+      <%= link_to :new_itinerary_schedule, class: "d-flex align-items-center text-white", data: { turbo_frame: "modal" } do %>
+        <i class="material-symbols-outlined my-1 ms-0 me-1 fs-3">add_circle</i>
+        <p class="py-1 text-sm fw-bold">スケジュール作成</p>
       <% end %>
     </div>
   </div>

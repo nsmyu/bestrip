@@ -12,7 +12,7 @@
     <%= link_to "パスワード変更", :edit_user_registration, class:"nav-link sidenav-link text-dark" %>
   </li>
   <li class="nav-item mt-4">
-    <%= link_to :destroy_user_session, class:"nav-link mb-0 py-2 text-secondary" do %>
+    <%= link_to :root, class:"nav-link mb-0 py-2 text-secondary" do %>
       <div class="text-center me-2 d-flex align-items-center justify-content-center">
         <i class="material-icons">home</i>
       </div>
@@ -20,7 +20,7 @@
     <% end %>
   </li>
   <li class="nav-item">
-    <%= link_to :destroy_user_session, class:"nav-link py-2 text-secondary" do %>
+    <%= link_to :destroy_user_session, class:"nav-link py-2 text-secondary", data: { turbo_method: :delete } do %>
       <div class="text-center me-2 d-flex align-items-center justify-content-center">
         <i class="material-icons">logout</i>
       </div>

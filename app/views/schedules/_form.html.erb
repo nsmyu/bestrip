@@ -30,10 +30,16 @@
       <input class='form-control border-0 input-bg-gray' id="autocomplete_text_input" type="search" size="50" placeholder="観光名所、ホテル、レストランで検索" autocomplete="false">
     </div>
     <% if @error %>
-      <p class="mt-2 text-sm text-danger"><span class="material-symbols-outlined fs-6 pe-1" style="vertical-align: -2.8px;">error</span><%= @error %></p>
+      <div class="d-flex align-items-start mt-2 text-danger">
+        <i class="material-symbols-outlined me-1 fs-5">error</i>
+        <p class="text-sm"><%= @error %></p>
+      </div>
     <% else %>
-      <div class="border mt-2" id="empty_place_info_card">
-        <p class="mb-0 text-sm text-center text-secondary py-4"><i class="material-icons pe-1" style="vertical-align: -4.5px;">add_location_alt</i>検索からスポット情報を追加</p>
+      <div class="mt-2 border" id="empty_place_info_card">
+        <div class="d-flex align-items-center justify-content-center mx-auto py-4">
+          <i class="material-icons me-1">add_location_alt</i>
+          <p class="text-sm text-secondary">検索からスポット情報を追加</p>
+        </div>
       </div>
       <div class="border mt-2" id="place_info_card">
         <div class="d-flex" >

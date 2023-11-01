@@ -39,7 +39,10 @@
   <div class="mb-4">
     <%= f.label :image, class: "m-0 fw-bold" %><br>
     <label type="button" class="btn btn-sm btn-outline-primary my-1 mx-0">
-      <i class="material-icons opacity-10 me-2 text-sm" style="vertical-align: -2px;">add_a_photo</i>画像を変更
+      <div class="d-flex align-items-center text-primary">
+        <i class="material-icons me-2 text-sm">add_a_photo</i>
+        <span>画像を変更</span>
+      </div>
       <%= f.file_field :image, accept: "image/*", id: "image_input", class: "d-none" %>
     </label>
     <div class="p-1">

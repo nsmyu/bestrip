@@ -1,10 +1,10 @@
 function changeNavLinkColor() {
-  const url = location.href;
+  const path = location.pathname;
   const links = document.querySelectorAll(".sidenav-link");
 
   if (links) {
     links.forEach((link) => {
-      if (link.href == url) {
+      if (link.pathname == path) {
         link.classList.add("current-page");
       }
     });

@@ -15,12 +15,14 @@
             <p class="text-xxs text-dark fw-bold pt-1">クチコミ評価<i class="material-icons rating-icon ps-1">star</i><%= place_index_item.rating %></p>
           <% end %>
           <% if @placeable.user? %>
-            <%= link_to places_select_itinerary_itineraries_path(place_id: place_index_item.place_id), data: { turbo_frame: "modal" }, class: "d-block mt-3 text-primary text-sm fw-bold" do %>
-              <i class="material-icons pe-1 fs-6" style="vertical-align: -2.5px;">post_add</i>旅のプランに追加
+            <%= link_to places_select_itinerary_itineraries_path(place_id: place_index_item.place_id), class:"d-flex align-items-center mt-3 text-primary", data: { turbo_frame: "modal" } do %>
+              <i class="material-symbols-outlined me-1">add_notes</i>
+              <p class="text-sm fw-bold ">旅のプランに追加</p>
             <% end %>
           <% else %>
-            <%= link_to new_itinerary_schedule_path(place_id: place_index_item.place_id), data: { turbo_frame: "modal" }, class: "d-block mt-3 text-primary text-sm fw-bold" do %>
-              <i class="material-icons pe-1 fs-6" style="vertical-align: -2.5px;">more_time</i>スケジュールに追加
+            <%= link_to new_itinerary_schedule_path(place_id: place_index_item.place_id), class:"d-flex align-items-center mt-3 text-primary", data: { turbo_frame: "modal" } do %>
+              <i class="material-symbols-outlined me-1">more_time</i>
+              <p class="text-sm fw-bold ">スケジュールに追加</p>
             <% end %>
           <% end %>
         <% end %>

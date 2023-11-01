@@ -350,6 +350,9 @@ label:has(#reset_place_btn) {
   background-color: #CFE1FE;
   border: 1px solid #B7D4FF;
 
+  @include media-breakpoint-down(sm) {
+    width: 80%;
+  }
   span {
     color: #183B72;
   }

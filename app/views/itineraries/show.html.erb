@@ -14,14 +14,16 @@
               </label>
               <button class="d-none" id="itinerary_dropdown" data-bs-toggle="dropdown"></button>
               <ul class="border dropdown-menu dropdown-menu-end mt-2"></li>
-                <li class="align-items-center">
-                  <%= link_to :edit_itinerary, class: "dropdown-item", data: { turbo_frame: "modal" } do %>
-                    <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">edit</span>編集
+                <li>
+                  <%= link_to :edit_itinerary, class: "dropdown-item d-flex align-items-center", data: { turbo_frame: "modal" } do %>
+                    <i class="material-symbols-outlined pe-1 fs-6">edit</i>
+                    <p class="text-sm">編集</p>
                   <% end %>
                 </li>
                 <li>
-                  <%= link_to [:itinerary, id: @itinerary.id], class: "dropdown-item text-danger", data: { turbo_method: :delete, turbo_confirm: 'この旅のプランを削除しますか？この操作は取り消せません。' } do %>
-                    <span class="material-symbols-outlined pe-1 fs-6" style="vertical-align: -3.5px;">delete</span>削除
+                  <%= link_to [:itinerary, id: @itinerary.id], class: "dropdown-item d-flex align-items-center text-danger", data: { turbo_method: :delete, turbo_confirm: 'この旅のプランを削除しますか？この操作は取り消せません。' } do %>
+                    <i class="material-symbols-outlined pe-1 fs-6">delete</i>
+                    <p class="text-sm">削除</p>
                   <% end %>
                 </li>
               </ul>
@@ -38,28 +40,24 @@
     </div>
     <div class="card mb-3 mx-auto max-width-550">
       <div class="card-body text-dark">
-        <div class="border-bottom">
-          <h6>旅のメンバー</h6>
-        </div>
+        <h6 class="border-bottom pb-2">旅のメンバー</h6>
         <% @itinerary_members.each do |member| %>
-          <div class="d-flex justify-content-between mt-3">
-            <div>
+          <div class="d-flex justify-content-between mt-3 align-items-center">
+            <%= link_to [:user, id: member.id], class:"hover-opacity" do %>
               <%= image_tag member.avatar.url, id: 'image-preview', class: "rounded-circle avatar-thumbnail me-2" %>
-              <p class="text-sm d-inline"><%= member.name %></p>
-              <% if member == @itinerary.owner %>
-                <i class="material-icons" style="vertical-align: -4.5px;">star</i>
-              <% end %>
-            </div>
+              <p class="d-inline text-sm text-dark"><%= member.name %></p>
+            <% end %>
             <% if current_user == @itinerary.owner && member!= @itinerary.owner %>
               <%= link_to [:itinerary_user, id: @itinerary.id, user_id: member.id], data: { turbo_method: :delete, turbo_confirm: member.name + 'をメンバーから削除しますか？' } do %>
-                <i class="material-icons p-2 fw-normal text-dark link-area rounded-circle" style="vertical-align: -10px;">person_remove</i>
+                <i class="material-icons p-2 fw-normal text-dark link-area rounded-circle">person_remove</i>
               <% end %>
             <% end %>
           </div>
         <% end %>
         <hr class="dark horizontal mb-2">
-        <%= link_to :new_itinerary_user, data: { turbo_frame: "modal" } do %>
-          <p class="py-2 text-center text-sm border-radius-lg link-area"><i class="material-icons me-1" style="vertical-align: -4.5px;">person_add</i> メンバーを追加</p>
+        <%= link_to :new_itinerary_user, class: "py-2 px-4 border-radius-lg link-area d-flex align-items-center justify-content-center", data: { turbo_frame: "modal" } do %>
+          <i class="material-icons me-2 fs-5">person_add</i>
+          <p class="text-sm">メンバーを追加</p>
         <% end %>
       </div>
     </div>

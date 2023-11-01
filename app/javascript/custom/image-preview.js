@@ -15,4 +15,5 @@ function previewImage() {
 }
 
 document.addEventListener('DOMContentLoaded', previewImage);
+document.addEventListener('turbo:load', previewImage);
 document.addEventListener('turbo:frame-load', previewImage);

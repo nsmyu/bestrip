@@ -16,7 +16,10 @@
     <div data-post-photos-target="form">
       <%= f.fields_for :photos do |photo| %>
         <label for="photo_field_<%= photo.index %>" class="btn btn-sm btn-outline-primary my-1 mx-0 label-for-photo">
-          <i class="material-icons opacity-10 me-2 text-sm" style="vertical-align: -2px;">add_a_photo</i>画像を選択
+          <div class="d-flex align-items-center">
+            <i class="material-icons me-2 text-sm">add_a_photo</i>
+            <span>画像を選択</span>
+          </div>
           <%= photo.file_field :url, accept: "image/*", id: "photo_field_#{photo.index}" , class: "d-none", data: { post_photos_target: "field", action: "change->post-photos#selectPhotos" } %>
         </label>
       <% end %>
@@ -37,7 +40,7 @@
   </div>
   <div class="input-group input-group-outline row mx-0 mb-4">
     <%= f.label :title, class: "m-0 px-0 fw-bold" do %>
-      タイトル（30文字以内）<span class="required">必須</span>
+      投稿のタイトル（30文字以内）<span class="required">必須</span>
     <% end %>
     <%= f.text_field :title, class: "form-control", placeholder: "タイトルを入力" %>
     <div class="px-0" id="title_error"></div>

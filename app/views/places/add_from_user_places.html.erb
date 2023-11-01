@@ -15,9 +15,12 @@
       <%= f.submit "選択した旅のプランに追加", class: "btn bg-gradient-primary d-block mt-4 mx-auto", data: { itinerary_place_target: "submit" } %>
     <% elsif places_include?(@placeable, @place.place_id) %>
       <p class="mt-4 text-center text-sm text-dark">選択したプランのスポットリストに追加しました</p>
-      <%= link_to [:itinerary_places, id: @placeable.id], data: { turbo_frame: "_top" } do %>
-        <p class="mb-2 py-1 text-center text-sm text-primary fw-bold">スポットリストを確認<i class="material-icons fs-4" style="vertical-align: -6.5px;">navigate_next</i></p>
-      <% end %>
+      <div class="d-flex justify-content-center">
+        <%= link_to [:itinerary_places, id: @placeable.id], class:"d-flex align-items-center mb-2 text-primary hover-opacity", data: { turbo_frame: "_top" } do %>
+          <span class="text-sm fw-bold">プランを確認</span>
+          <i class="material-icons fs-4">navigate_next</i>
+        <% end %>
+      </div>
     <% end %>
   <% end %>
 <% end %>

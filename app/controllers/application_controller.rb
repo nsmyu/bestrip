@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
         @error = "スポット情報を取得できませんでした（#{response[:error_message]})"
       end
     else
-      @error = "スポット情報を取得できませんでした（#{response[:error_message]})"
+      @error = "スポット情報を取得できませんでした（#{response})"
     end
   end
 

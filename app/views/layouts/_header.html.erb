@@ -11,8 +11,8 @@
     <% end %>
     <%= link_to image_tag("bestrip_logo.png", width: "100", alt: "besrtip_logo"), root_url, class: "navbar-brand" %>
     <div class="dropdown">
-      <a class="navbar-toggler shadow-none ms-2 dropdown-toggle text-secondary" type="button" data-bs-toggle="dropdown">
-        <i class="material-symbols-outlined text-secondary fs-3" style="vertical-align: -5.5px;">account_circle</i>
+      <a class="navbar-toggler dropdown-toggle d-flex d-lg-none align-items-center text-secondary" type="button" data-bs-toggle="dropdown">
+        <i class="material-symbols-outlined text-secondary fs-3">account_circle</i>
       </a>
       <%= render 'layouts/header_dropdown' %>
     </div>
