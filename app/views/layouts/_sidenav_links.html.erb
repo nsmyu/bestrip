@@ -11,6 +11,14 @@
     <% end %>
   </li>
   <li class="nav-item">
+    <%= link_to :new_itinerary, class:"nav-link sidenav-link text-dark", data: { turbo_frame: "modal" } do %>
+      <div class="text-center me-2 d-flex align-items-center justify-content-center">
+        <i class="material-icons">add_circle_outline</i>
+      </div>
+      <span class="ms-1">新しいプランを作成</span>
+    <% end %>
+  </li>
+  <li class="nav-item">
     <%= link_to :users_places, class:"nav-link sidenav-link text-dark" do %>
       <div class="text-center me-2 d-flex align-items-center justify-content-center">
         <i class="material-icons">favorite_border</i>

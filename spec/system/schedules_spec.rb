@@ -86,9 +86,9 @@ RSpec.describe "Schedules", type: :system do
         end
       end
 
-      it "「スケジュール作成」をクリックすると、スケジュール作成モーダルを表示すること", js: true do
+      it "「スケジュールを追加」をクリックすると、スケジュール作成モーダルを表示すること", js: true do
         visit itinerary_schedules_path(itinerary_id: itinerary.id)
-        click_on "スケジュール作成"
+        click_on "スケジュールを追加"
 
         within(".modal") do
           expect(page).to have_content "スケジュール作成"

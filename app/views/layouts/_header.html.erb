@@ -19,8 +19,8 @@
     <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5">
       <ul class="navbar-nav ms-auto">
         <% if user_signed_in? %>
-          <li class="nav-item mx-2">
-            <%= link_to "旅を計画する", :itineraries, class: "btn btn-sm bg-gradient-primary mb-0 py-2 fs-px-13", data: { turbo: false } %>
+          <li class="nav-item mx-2 d-flex align-items-center">
+            <%= link_to "旅を計画する", :itineraries, class: "btn btn-sm bg-gradient-primary mb-0 fs-px-13", data: { turbo: false } %>
           </li>
           <li class="nav-item mx-2">
             <%= link_to "みんなの投稿", :root, class: "nav-link border-radius-md link-area fs-px-13", data: { turbo: false} %>
@@ -34,10 +34,10 @@
           </li>
         <% else %>
           <li class="nav-item mx-2">
-            <%= link_to "新規登録", :new_user_registration, class: "nav-link ps-2 fs-px-13", data: { turbo: false } %>
+            <%= link_to "アカウント登録", :new_user_registration, class: "nav-link ps-2 fs-px-13", data: { turbo: false } %>
           </li>
-          <li class="nav-item mx-2">
-            <%= link_to "ログイン", :new_user_session, class: "btn btn-sm bg-gradient-primary mb-0 py-2 fs-px-13", data: { turbo: false } %>
+          <li class="nav-item mx-2 d-flex align-items-center">
+            <%= link_to "ログイン", :new_user_session, class: "btn btn-sm bg-gradient-primary mb-0 fs-px-13", data: { turbo: false } %>
           </li>
         <% end %>
       </ul>
