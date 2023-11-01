@@ -28,16 +28,18 @@
           <div class="input-group input-group-outline row mx-0 mb-4">
             <%= f.label :bestrip_id, class: "mx-0 mb-1 px-0 fw-bold" do %>
               BesTrip ID<span class="d-none d-sm-inline">（半角英数字とアンダーバー(_) 5〜20文字）</span>
-              <i class="material-icons text-primary " style="vertical-align: -5px;" data-bs-toggle="tooltip" data-bs-placement="bottom"
+              <i class="material-symbols-outlined text-warning fs-5" style="vertical-align: -5px;" data-bs-toggle="tooltip" data-bs-placement="bottom"
                 title="旅のプランにメンバーを追加するときに使用するIDです。設定すると、友だちがあなたをID検索できるようになります。">help</i>
               <span class="d-block d-sm-none">（半角英数字とアンダーバー(_) 5〜20文字）</span>
             <% end %>
             <%= f.text_field :bestrip_id, class: "form-control", placeholder: "お好みのIDを入力" %>
             <div class="px-0" id="bestrip_id">
-              <div class="error-message" >
-                <%= @user.errors.full_messages_for(:bestrip_id).first if @user.errors.any? %>
+              <div class="d-sm-flex align-items-center">
+                <%= button_tag "IDが使用可能か確認", type: :submit, formaction: :validate_bestrip_id, formmethod: :patch, class: "btn bg-light btn-sm my-1 text-dark fw-bold" %>
+                <div class="error-message" >
+                  <%= @user.errors.full_messages_for(:bestrip_id).first if @user.errors.any? %>
+                </div>
               </div>
-              <%= button_tag "IDが使用可能か確認", type: :submit, formaction: :validate_bestrip_id, formmethod: :patch, class: "btn bg-gradient-light btn-sm  my-1 fw-bold" %>
             </div>
           </div>
           <div class="input-group input-group-outline row mx-0 mb-4">

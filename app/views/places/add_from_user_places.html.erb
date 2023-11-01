@@ -14,7 +14,7 @@
       <p class="error-message"><%= @place.errors.full_messages_for(:placeable_id).first %></p>
       <%= f.submit "選択した旅のプランに追加", class: "btn bg-gradient-primary d-block mt-4 mx-auto", data: { itinerary_place_target: "submit" } %>
     <% elsif places_include?(@placeable, @place.place_id) %>
-      <p class="mt-4 text-center text-sm text-dark">選択したプランのスポットリストに追加しました</p>
+      <p class="mt-4 text-center text-sm text-dark">選択したプランの行きたい場所リストに追加しました</p>
       <div class="d-flex justify-content-center">
         <%= link_to [:itinerary_places, id: @placeable.id], class:"d-flex align-items-center mb-2 text-primary hover-opacity", data: { turbo_frame: "_top" } do %>
           <span class="text-sm fw-bold">プランを確認</span>

@@ -6,7 +6,7 @@
           <%= image_tag @itinerary.image.url, class: "circle-image" %>
         </div>
         <div class="col-9">
-          <p class="fs-15 fw-bold text-ellipsis"><%= @itinerary.title %></p>
+          <p class="fs-px-15 fw-bold text-ellipsis"><%= @itinerary.title %></p>
           <p class="text-xxs fw-bold lh-base"><%= l @itinerary.departure_date %> 〜 <br><%= l @itinerary.return_date %></p>
         </div>
       </div>
@@ -26,7 +26,7 @@
       <div class="text-center me-2 d-flex align-items-center justify-content-center">
         <i class="material-icons">outlined_flag</i>
       </div>
-      <span class="ms-1">スポットリスト</span>
+      <span class="ms-1">行きたい場所リスト</span>
     <% end %>
   </li>
   <li class="nav-item">
@@ -39,10 +39,10 @@
   </li>
   <li class="nav-item mt-4">
     <%= link_to :itineraries, class:"nav-link py-2 text-secondary" do %>
-      <div class="text-center me-2 d-flex align-items-center justify-content-center">
+      <div class="text-center d-flex align-items-center justify-content-center">
         <i class="material-icons">arrow_back</i>
       </div>
-      <span class="ms-1 pt-1">一覧に戻る</span>
+      <span class="ms-1 pt-1">プラン一覧へ戻る</span>
     <% end %>
   </li>
 </ul>

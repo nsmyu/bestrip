@@ -5,7 +5,7 @@
       <div class="d-flex">
         <%= image_tag post.user.avatar.url, class: "rounded-circle avatar-thumbnail p-1 me-1" %>
         <div class="d-table">
-          <%= link_to post.user.name, user_path(id: post.user.id), class: "text-dark fs-15 d-table-cell align-middle hover-opacity", data: { turbo: false } %>
+          <%= link_to post.user.name, user_path(id: post.user.id), class: "text-dark fs-px-15 d-table-cell align-middle hover-opacity", data: { turbo: false } %>
         </div>
       </div>
     </div>
@@ -13,7 +13,7 @@
     <%= link_to post_path(id: post.id), class:"hover-opacity", data: { turbo: false } do %>
       <%= image_tag post.photos[0].url.to_s, class: "pt-2 px-2 w-100" %>
       <div class="p-2">
-        <p class="p-1 fs-15 fw-bold text-dark text-ellipsis lh-sm"><%= post.title %><br>
+        <p class="p-1 fs-px-15 fw-bold text-dark text-ellipsis lh-sm"><%= post.title %><br>
           <span class="text-xs fw-normal text-secondary lh-base"><%= date_posted(post) %></span>
         </p>
       </div>

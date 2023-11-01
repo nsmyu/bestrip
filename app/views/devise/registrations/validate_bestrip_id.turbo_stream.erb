@@ -1,11 +1,14 @@
 <%= turbo_stream.update "bestrip_id" do %>
-  <div class="error-message">
-    <%= @user.errors.full_messages_for(:bestrip_id).first if @user.errors.any? %>
-  </div>
-  <%= button_tag "IDが使用可能か確認", type: :submit, formaction: :validate_bestrip_id, formmethod: :patch, class: "btn bg-gradient-light btn-sm  my-1 fw-bold" %>
-  <div class="text-sm text-dark d-sm-inline">
-    <% if !resource.errors.messages.key?(:bestrip_id) && !resource.bestrip_id.blank? then %>
-      <i class="bi-check2-circle text-primary fw-bold"></i>  このIDはご使用いただけます
-    <% end %>
+  <div class="d-sm-flex align-items-center">
+    <%= button_tag "IDが使用可能か確認", type: :submit, formaction: :validate_bestrip_id, formmethod: :patch, class: "btn bg-light btn-sm my-1 me-2 text-dark fw-bold" %>
+    <div class="fs-px-13 text-dark d-flex align-items-center">
+      <% if !resource.errors.messages.key?(:bestrip_id) && !resource.bestrip_id.blank? then %>
+        <i class="material-symbols-outlined text-primary fs-5">task_alt</i>
+        <span>このIDは使用できます</span>
+      <% end %>
+    </div>
+    <div class="error-message">
+      <%= @user.errors.full_messages_for(:bestrip_id).first if @user.errors.any? %>
+    </div>
   </div>
 <% end %>

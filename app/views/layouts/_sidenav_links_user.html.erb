@@ -1,6 +1,6 @@
 <ul class="navbar-nav">
   <li class="nav-item">
-    <p class="mx-3 px-3 py-2 text-dark fw-bold fs-15">個人設定</p>
+    <p class="mx-3 px-3 py-2 text-dark fw-bold">個人設定</p>
   </li>
   <li class="nav-item">
     <%= link_to "プロフィール編集", :users_edit_profile, class:"nav-link sidenav-link text-dark" %>
@@ -12,11 +12,19 @@
     <%= link_to "パスワード変更", :edit_user_registration, class:"nav-link sidenav-link text-dark" %>
   </li>
   <li class="nav-item mt-4">
+    <%= link_to :itineraries, class:"nav-link mb-0 py-2 text-secondary" do %>
+      <div class="text-center me-2 d-flex align-items-center justify-content-center">
+        <i class="material-icons">library_books</i>
+      </div>
+      <span class="ms-1 pt-1">旅の計画</span>
+    <% end %>
+  </li>
+  <li class="nav-item">
     <%= link_to :root, class:"nav-link mb-0 py-2 text-secondary" do %>
       <div class="text-center me-2 d-flex align-items-center justify-content-center">
         <i class="material-icons">home</i>
       </div>
-      <span class="ms-1 pt-1">ホームへ</span>
+      <span class="ms-1 pt-1">ホーム</span>
     <% end %>
   </li>
   <li class="nav-item">

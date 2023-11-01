@@ -105,7 +105,7 @@ RSpec.describe "Itineraries::Places", type: :request do
         itinerary_place_params = attributes_for(:itinerary_place)
         post itinerary_places_add_from_user_places_path(itinerary_id: itinerary.id),
           params: { place: itinerary_place_params }
-        expect(response.body).to include "選択したプランのスポットリストに追加しました"
+        expect(response.body).to include "選択したプランの行きたい場所リストに追加しました"
       end
     end
 

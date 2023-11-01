@@ -11,14 +11,14 @@ RSpec.describe "Itineraries::Places", type: :system do
   describe "一覧表示" do
     let(:itinerary_place) { create(:itinerary_place, :opera_house, placeable: itinerary) }
 
-    context "スポットリストに登録がない場合" do
+    context "行きたい場所リストに登録がない場合" do
       it "その旨メッセージを表示すること" do
         visit itinerary_places_path(itinerary_id: itinerary.id)
         expect(page).to have_content "登録されているスポットはありません"
       end
     end
 
-    context "スポットリストに登録がある場合", js: true do
+    context "行きたい場所リストに登録がある場合", js: true do
       it "登録されているスポット全ての情報を表示すること" do
         itinerary_place
         create(:itinerary_place, :queen_victoria_building, placeable: itinerary)
@@ -82,7 +82,7 @@ RSpec.describe "Itineraries::Places", type: :system do
     end
   end
 
-  describe "スポットリスト登録", js: true do
+  describe "行きたい場所リスト登録", js: true do
     let(:itinerary_place) { build(:itinerary_place, :opera_house, placeable: itinerary) }
 
     context "追加登録可能な状態の場合" do
@@ -116,11 +116,11 @@ RSpec.describe "Itineraries::Places", type: :system do
     end
   end
 
-  describe "お気に入り一覧からスポットリストへ登録", js: true do
+  describe "お気に入り一覧から行きたい場所リストへ登録", js: true do
     let!(:user_place) { create(:user_place, :opera_house, placeable: user) }
 
     context "追加登録可能な状態の場合" do
-      it "成功すること（追加登録後、スポットリストへのリンクを表示すること）" do
+      it "成功すること（追加登録後、行きたい場所リストへのリンクを表示すること）" do
         expect {
           visit users_places_path
           within(:xpath, "//div[a[p[contains(text(), 'シドニー・オペラハウス')]]]") do
@@ -132,9 +132,9 @@ RSpec.describe "Itineraries::Places", type: :system do
             find("option", text: itinerary.title).click
             click_on "選択した旅のプランに追加"
 
-            expect(page).to have_content "選択したプランのスポットリストに追加しました"
+            expect(page).to have_content "選択したプランの行きたい場所リストに追加しました"
 
-            click_on "スポットリストを確認"
+            click_on "行きたい場所リストを確認"
           end
 
           expect(page).to have_content itinerary.title
@@ -145,7 +145,7 @@ RSpec.describe "Itineraries::Places", type: :system do
     end
 
     context "追加登録不可能な状態の場合" do
-      it "既にスポットリストに登録されている場合、失敗すること" do
+      it "既に行きたい場所リストに登録されている場合、失敗すること" do
         create(:itinerary_place, place_id: user_place.place_id, placeable: itinerary)
         expect {
           visit users_places_path
@@ -163,7 +163,7 @@ RSpec.describe "Itineraries::Places", type: :system do
         }.not_to change(itinerary.places, :count)
       end
 
-      it "選択したプランのスポットリストに上限の300件まで登録済みの場合、失敗すること" do
+      it "選択したプランの行きたい場所リストに上限の300件まで登録済みの場合、失敗すること" do
         create_list(:itinerary_place, 300, placeable: itinerary)
         expect {
           visit users_places_path
@@ -183,7 +183,7 @@ RSpec.describe "Itineraries::Places", type: :system do
     end
   end
 
-  describe "スポットリストから削除", js: true do
+  describe "行きたい場所リストから削除", js: true do
     let!(:itinerary_place) { create(:itinerary_place, :opera_house, placeable: itinerary) }
 
     context "スポット検索画面のモーダルから削除する場合" do
@@ -198,7 +198,7 @@ RSpec.describe "Itineraries::Places", type: :system do
       end
     end
 
-    context "スポットリスト一覧画面から削除する場合" do
+    context "行きたい場所リスト一覧画面から削除する場合" do
       it "成功すること" do
         expect {
           visit itinerary_places_path(itinerary_id: itinerary.id)
