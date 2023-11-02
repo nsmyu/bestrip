@@ -6,7 +6,7 @@ module GooglePlacesApiRequestable
       @query = URI.encode_www_form({
         place_id: place_id,
         fields:
-          "name,formatted_address,rating,opening_hours,url,website#{ ",photos" if with_photos }",
+          "name,formatted_address,rating,opening_hours,url,website#{",photos" if with_photos}",
         key: ENV['GOOGLE_API_KEY'],
         language: "ja",
         region: "JP",
