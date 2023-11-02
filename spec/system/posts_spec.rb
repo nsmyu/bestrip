@@ -29,9 +29,10 @@ RSpec.describe "Posts", type: :system do
     end
 
     it "投稿のタイトル、写真、投稿者名、投稿日を表示すること" do
-      within(:xpath, "//div[div[p[contains(text(), '#{post.title}')]]]") do
-        expect(page).to have_selector "img[src$='cat.jpg']"
+      within("turbo-frame#post_#{post.id}") do
         expect(page).to have_content post.user.name
+        expect(page).to have_selector "img[src$='cat.jpg']"
+        expect(page).to have_content post.title
         expect(page).to have_content date_posted(post)
       end
     end
@@ -123,7 +124,7 @@ RSpec.describe "Posts", type: :system do
     end
 
     it "ログインユーザーが投稿の作成者である場合は、ドロップダウンメニューを表示すること" do
-      expect(page).to have_selector "div[class='dropdown']"
+      expect(page).to have_selector "button[id='post_dropdown']"
     end
 
     it "ログインユーザーが投稿の作成者でない場合は、ドロップダウンメニューを表示しないこと" do
@@ -131,7 +132,7 @@ RSpec.describe "Posts", type: :system do
       sign_in other_user
       visit post_path(id: post.id)
 
-      expect(page).not_to have_selector "div[class='dropdown']"
+      expect(page).not_to have_selector "button[id='post_dropdown']"
     end
 
     it "紐付けられた旅のプランのスケジュール情報を表示すること" do

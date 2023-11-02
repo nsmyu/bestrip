@@ -1,18 +1,18 @@
-<%= render "layouts/modal", title: "スケジュール内容" do %>
-  <div class="mb-4">
-    <div class="row mb-1 mx-0 text-dark">
-      <p class="col-11 d-inline ps-0 text-lg fw-bold"><%= @schedule.title %></p>
-      <% if @schedule.icon.present? %>
-        <div class="col-1 ps-0 ps-sm-2">
-          <i class="material-icons d-inline-block rounded-circle schedule-icon"><%= @schedule.icon %></i>
-        </div>
-      <% end %>
+<%= render "layouts/modal", title: "スケジュール詳細" do %>
+  <div class="row mb-4">
+    <div class="col-11 mb-1 mx-0 text-dark">
+      <p class="d-inline ps-0 fw-bold lh-base"><%= @schedule.title %></p>
+      <div class="d-flex align-items-center mb-3 text-dark ">
+        <p class="text-sm"><%= @schedule.schedule_date ? (l @schedule.schedule_date) : "日付未定" %>&ensp;</p>
+        <i class="material-symbols-outlined fs-6 fw-light">schedule</i>
+        <p class="text-sm"><%= @schedule.start_at ? (l @schedule.start_at) : "未定" %> - <%= @schedule.end_at ? (l @schedule.end_at) : "未定" %></p>
+      </div>
     </div>
-    <div class="d-flex align-items-center pb-3 text-dark ">
-      <p class="text-sm"><%= @schedule.schedule_date ? (l @schedule.schedule_date) : "日付未定" %>&ensp;</p>
-      <i class="material-symbols-outlined fs-6 fw-light">schedule</i>
-      <p class="text-sm"><%= @schedule.start_at ? (l @schedule.start_at) : "未定" %> - <%= @schedule.end_at ? (l @schedule.end_at) : "未定" %></p>
-    </div>
+    <% if @schedule.icon.present? %>
+      <div class="col-1 ps-0 d-flex align-items-start">
+        <i class="material-icons rounded-circle schedule-icon"><%= @schedule.icon %></i>
+      </div>
+    <% end %>
   </div>
   <div class="mb-4">
     <p class="text-sm fw-bold text-dark" >スポット情報</p>

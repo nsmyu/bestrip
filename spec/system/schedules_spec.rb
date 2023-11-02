@@ -64,10 +64,10 @@ RSpec.describe "Schedules", type: :system do
     describe "リンクのテスト" do
       let!(:schedule) { create(:schedule, itinerary: itinerary) }
 
-      it "ドロップダウンメニューの「情報を見る」をクリックすると、スケジュール詳細モーダルを表示すること", js: true do
+      it "ドロップダウンメニューの「スケジュール詳細」をクリックすると、スケジュール詳細モーダルを表示すること", js: true do
         visit itinerary_schedules_path(itinerary_id: itinerary.id)
         find("i", text: "more_vert", visible: false, match: :first).click
-        click_on "情報を見る", match: :first
+        click_on "スケジュール詳細", match: :first
 
         within(".modal") do
           expect(page).to have_content "スケジュール詳細"
@@ -123,7 +123,7 @@ RSpec.describe "Schedules", type: :system do
           expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary.id)
 
           find("i", text: "more_vert", match: :first).click
-          click_on "情報を見る", match: :first
+          click_on "スケジュール詳細", match: :first
 
           expect(page).to have_content schedule.note
         }.to change(Schedule, :count).by(1)
@@ -146,7 +146,7 @@ RSpec.describe "Schedules", type: :system do
 
         click_on "保存する"
         find("i", text: "more_vert", visible: false, match: :first).click
-        click_on "情報を見る"
+        click_on "スケジュール詳細"
 
         expect(page).to have_content "シドニー・オペラハウス"
       end
@@ -266,7 +266,7 @@ RSpec.describe "Schedules", type: :system do
         expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary.id)
 
         find("i", text: "more_vert", match: :first).click
-        click_on "情報を見る", match: :first
+        click_on "スケジュール詳細", match: :first
 
         expect(page).to have_content "New note"
       end
@@ -299,7 +299,7 @@ RSpec.describe "Schedules", type: :system do
 
         click_on "保存する"
         find("i", text: "more_vert", visible: false, match: :first).click
-        click_on "情報を見る"
+        click_on "スケジュール詳細"
 
         expect(page).to have_content "クイーン・ビクトリア・ビルディング"
       end
@@ -363,7 +363,7 @@ RSpec.describe "Schedules", type: :system do
         find("i", text: "more_vert", match: :first).click
         click_on "削除", match: :first
 
-        expect(page).to have_content "このスケジュールを削除しますか？この操作は取り消せません。"
+        expect(page).to have_content "このスケジュールを削除しますか？"
 
         click_on "削除する"
 

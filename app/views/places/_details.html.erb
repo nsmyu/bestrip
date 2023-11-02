@@ -10,12 +10,12 @@
   <% end %>
 </div>
 <div class="row py-2">
-  <i class="col-1 material-icons pe-1 text-secondary">location_on</i>
+  <i class="col-1 material-icons pe-1 text-primary">location_on</i>
   <p class="col-11 text-sm text-dark"><%= place_details[:address] %></p>
 </div>
 <% if place_details[:opening_hours] %>
   <div class="row my-1 py-2">
-    <i class="col-1 material-icons pe-1 text-secondary">schedule</i>
+    <i class="col-1 material-icons pe-1 text-primary">schedule</i>
     <div class="col-11">
       <% place_details[:opening_hours][:weekday_text].each do |opening_hour| %>
         <p class="text-sm text-dark"><%= opening_hour %></p>
@@ -25,7 +25,7 @@
 <% end %>
 <% if place_details[:url] %>
   <div class="row my-1 py-2 link-area border-radius-lg">
-    <i class="col-1 material-icons pe-1 text-secondary">open_in_new</i>
+    <i class="col-1 material-icons pe-1 text-primary">open_in_new</i>
     <%= link_to place_details[:url], class: "col-11 text-sm text-dark", target: :_blank do %>
       <p class="text-sm">Google Mapで見る</p>
     <% end %>
@@ -33,7 +33,7 @@
 <% end %>
 <% if place_details[:website] %>
   <div class="row my-1 py-2 link-area border-radius-lg">
-    <i class="col-1 material-icons pe-1 text-secondary">public</i>
+    <i class="col-1 material-icons pe-1 text-primary">public</i>
     <%= link_to place_details[:website], class: "col-11 text-sm text-dark", target: :_blank do %>
       <p class="text-sm">公式サイト</p>
     <% end %>

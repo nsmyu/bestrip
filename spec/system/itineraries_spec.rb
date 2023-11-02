@@ -57,15 +57,6 @@ RSpec.describe "Itineraries", type: :system do
 
         expect(current_path).to eq itinerary_path(id: itinerary1.id)
       end
-
-      it "「新しいプランを作成」をクリックすると、プラン作成モーダルを表示すること", js: true do
-        visit itineraries_path
-        click_on "新しいプランを作成"
-
-        within(".modal") do
-          expect(page).to have_content "旅のプラン新規作成"
-        end
-      end
     end
   end
 
@@ -73,7 +64,8 @@ RSpec.describe "Itineraries", type: :system do
     let(:itinerary) { build(:itinerary, owner: user) }
 
     before do
-      visit new_itinerary_path
+      visit itineraries_path
+      find("p", text: "新しいプランを作成").click
     end
 
     context "有効な値の場合" do
@@ -166,16 +158,16 @@ RSpec.describe "Itineraries", type: :system do
       expect(page).to have_content other_user.name
     end
 
-    it "ログインユーザーが投稿の作成者である場合は、ドロップダウンメニューを表示すること" do
-      expect(page).to have_selector "div[class='dropdown']"
+    it "ログインユーザーがプラン作成者の場合は、ドロップダウンメニューを表示すること" do
+      expect(page).to have_selector "button[id='itinerary_dropdown']"
     end
 
-    it "ログインユーザーが投稿の作成者でない場合は、ドロップダウンメニューを表示しないこと" do
+    it "ログインユーザーがプラン作成者でない場合は、ドロップダウンメニューを表示しないこと" do
       sign_out user
       sign_in other_user
       visit itinerary_path(itinerary.id)
 
-      expect(page).not_to have_selector "div[class='dropdown']"
+      expect(page).not_to have_selector "button[id='itinerary_dropdown']"
     end
 
     it "ドロップダウンメニューの「編集」をクリックすると、投稿編集モーダルを表示すること", js: true do
