@@ -179,7 +179,7 @@ RSpec.describe "Posts", type: :system do
         click_on "編集"
 
         within(".modal") do
-          expect(page).to have_content "旅の思い出を編集"
+          expect(page).to have_content "投稿の編集"
           expect(page.has_field?('post[title]', with: post.title)).to be_truthy
         end
       end

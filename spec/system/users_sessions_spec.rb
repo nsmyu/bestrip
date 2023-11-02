@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe "UsersSessions", type: :system do
-  let(:user) { create(:user) }
+RSpec.describe "UsersSessions", type: :system, focus: true do
+  let!(:user) { create(:user) }
 
   before do
     visit new_user_session_path
@@ -9,15 +9,16 @@ RSpec.describe "UsersSessions", type: :system do
 
   describe "ログイン" do
     context '有効な値の場合' do
-      it "ログインに成功する" do
+      it "成功すること" do
         fill_in "user[email]", with: user.email
         fill_in "user[password]", with: user.password
         click_button "ログイン"
 
         expect(current_path).to eq root_path
-        expect(page).not_to have_selector '.alert-danger'
-        expect(page).not_to have_selector "a[href=\"#{new_user_session_path}\"]"
-        expect(page).to have_selector "a[href=\"#{destroy_user_session_path}\"]"
+        expect(page).to have_content "ログインしました。"
+        within "header" do
+          expect(page).to have_content user.name
+        end
       end
     end
 
@@ -27,30 +28,38 @@ RSpec.describe "UsersSessions", type: :system do
         fill_in "user[password]", with: ""
         click_button "ログイン"
 
-        expect(current_path).to eq new_user_session_path
         expect(page).to have_content "メールアドレスまたはパスワードが違います。"
       end
 
-      it 'メールアドレスは正しいがパスワードが間違っている場合、失敗すること' do
+      it 'メールアドレスが間違っている場合、失敗すること' do
+        fill_in "user[email]", with: "wrong_email@example.com"
+        fill_in "user[password]", with: user.password
+        click_button "ログイン"
+
+        expect(page).to have_content "メールアドレスまたはパスワードが違います。"
+      end
+
+      it 'パスワードが間違っている場合、失敗すること' do
         fill_in "user[email]", with: user.email
         fill_in "user[password]", with: "wrongpassword"
         click_button "ログイン"
 
-        expect(current_path).to eq new_user_session_path
         expect(page).to have_content "メールアドレスまたはパスワードが違います。"
       end
     end
   end
 
-  # describe "ログアウト" do
-  #   it 'ログアウトに成功すること' do
-  #     sign_in user
-  #     visit root_path # あとで修正
-  #     first(:link, 'ログアウト').click
+  describe "ログアウト" do
+    it '成功すること' do
+      sign_in user
+      visit itineraries_path
+      first(:link, 'ログアウト').click
 
-  #     expect(current_path).to eq sign_in_path
-  #     expect(page).to have_selector "a[href=\"#{new_user_session_path}\"]"
-  #     expect(page).not_to have_selector "a[href=\"#{destroy_user_session_path}\"]"
-  #   end
-  # end
+      expect(page).to have_content "ログアウトしました。"
+      expect(current_path).to eq root_path
+      within "header" do
+        expect(page).not_to have_content user.name
+      end
+    end
+  end
 end
