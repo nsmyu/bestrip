@@ -2,11 +2,11 @@ module GooglePlacesApiRequestable
   extend ActiveSupport::Concern
 
   class Request
-    def initialize(place_id)
+    def initialize(place_id, with_photos)
       @query = URI.encode_www_form({
         place_id: place_id,
         fields:
-          "name,formatted_address,photos,rating,opening_hours,formatted_phone_number,url,website",
+          "name,formatted_address,rating,opening_hours,url,website#{ ",photos" if with_photos }",
         key: ENV['GOOGLE_API_KEY'],
         language: "ja",
         region: "JP",

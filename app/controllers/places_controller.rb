@@ -9,7 +9,8 @@ class PlacesController < ApplicationController
     @place_index_items = @placeable.places.order(created_at: :desc).page(params[:page]).per(10)
 
     @place_index_items.each do |place_index_item|
-      query_params = GooglePlacesApiRequestable::Request.new(place_index_item.place_id)
+      query_params = GooglePlacesApiRequestable::Request.new(place_index_item.place_id, with_photos: false)
+      logger.debug { query_params.inspect }
       response = query_params.request
 
       case response
@@ -17,19 +18,11 @@ class PlacesController < ApplicationController
         if response[:error_message].blank?
           place_details = attributes_for(response)
 
-          if place_details[:photos]
-            set_photo_urls(place_details[:photos])
-            place_index_item.photo_url = @place_photo_urls[0]
-          else
-            place_index_item.photo_url = "default_place.png"
-          end
-
           place_details.delete(:photos)
           place_details.each do |attr, value|
             place_index_item.send("#{attr}=", value)
           end
         else
-          place_index_item.photo_url = "default_place.png"
           place_index_item.error = "スポット情報を取得できませんでした（#{response[:error_message]})"
         end
       else

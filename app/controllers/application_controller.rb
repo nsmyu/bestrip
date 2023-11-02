@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_place_details(place_id)
-    query_params = GooglePlacesApiRequestable::Request.new(place_id)
+    query_params = GooglePlacesApiRequestable::Request.new(place_id, with_photos: true)
     response = query_params.request
 
     case response
@@ -51,7 +51,6 @@ class ApplicationController < ActionController::Base
       photos: data[:result][:photos],
       rating: data[:result][:rating],
       opening_hours: data[:result][:opening_hours],
-      phone_number: data[:result][:formatted_phone_number],
       url: data[:result][:url],
       website: data[:result][:website],
     }

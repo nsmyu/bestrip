@@ -23,12 +23,6 @@
     </div>
   </div>
 <% end %>
-<% if place_details[:phone_number] %>
-  <div class="row my-3">
-    <i class="col-1 material-icons pe-1 text-secondary">call</i>
-    <p class="col-11 text-sm text-dark"><%= place_details[:phone_number] %></p>
-  </div>
-<% end %>
 <% if place_details[:url] %>
   <div class="row my-1 py-2 link-area border-radius-lg">
     <i class="col-1 material-icons pe-1 text-secondary">open_in_new</i>

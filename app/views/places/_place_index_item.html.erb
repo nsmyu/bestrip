@@ -1,38 +1,33 @@
 <%= turbo_frame_tag place_index_item do %>
-  <div class="card mb-3 mx-auto p-2 position-relative max-width-600">
-    <div class="row">
-      <div class="col-3 ps-3 pe-0 pe-sm-3">
-        <%= link_to @placeable.user? ? [:users_place, id: place_index_item.id] : [:itinerary_place, itinerary_id: @placeable.id, id: place_index_item.id], data: { turbo_frame: "modal" } do %>
-          <%= image_tag place_index_item.photo_url, class: "square-image p-sm-1 w-100" %>
+  <div class="card mb-3 mx-auto py-2 px-3 position-relative max-width-600">
+    <% if place_index_item.error %>
+      <p class="pe-3 error-message"><%= place_index_item.error %></p>
+    <% else %>
+      <%= link_to @placeable.user? ? [:users_place, id: place_index_item.id] : [:itinerary_place, itinerary_id: @placeable.id, id: place_index_item.id], class:"hover-opacity",  data: { turbo_frame: "modal" } do %>
+        <p class="pt-1 pe-4 text-dark fw-bold lh-base"><%= place_index_item.name %></p>
+        <div class="d-flex align-items-center text-dark fw-bold">
+          <p class="text-xxs fw-bold">クチコミ評価</p>
+          <span class="text-xxs"><i class="material-icons rating-icon ps-1">star</i><%= place_index_item.rating %></span>
+        </div>
+        <p class="mt-1 text-xs text-dark"><%= place_index_item.address %></p>
+      <% end %>
+      <% if @placeable.user? %>
+        <%= link_to places_select_itinerary_itineraries_path(place_id: place_index_item.place_id), class:"d-flex align-items-center mt-3 text-primary", data: { turbo_frame: "modal" } do %>
+          <i class="material-symbols-outlined me-1 fs-5" style="padding-bottom: 2px;">add_notes</i>
+          <p class="text-sm fw-bold">旅のプランに追加</p>
         <% end %>
-      </div>
-      <div class="col-9 py-sm-2 ps-sm-0">
-        <% if place_index_item.error %>
-          <p class="pe-3 error-message"><%= place_index_item.error %></p>
-        <% else %>
-          <%= link_to @placeable.user? ? [:users_place, id: place_index_item.id] : [:itinerary_place, itinerary_id: @placeable.id, id: place_index_item.id], data: { turbo_frame: "modal" } do %>
-            <p class="pe-4 text-dark fw-bold lh-1"><%= place_index_item.name %></p>
-            <p class="text-xxs text-dark fw-bold pt-1">クチコミ評価<i class="material-icons rating-icon ps-1">star</i><%= place_index_item.rating %></p>
-          <% end %>
-          <% if @placeable.user? %>
-            <%= link_to places_select_itinerary_itineraries_path(place_id: place_index_item.place_id), class:"d-flex align-items-center mt-3 text-primary", data: { turbo_frame: "modal" } do %>
-              <i class="material-symbols-outlined me-1">add_notes</i>
-              <p class="text-sm fw-bold ">旅のプランに追加</p>
-            <% end %>
-          <% else %>
-            <%= link_to new_itinerary_schedule_path(place_id: place_index_item.place_id), class:"d-flex align-items-center mt-3 text-primary", data: { turbo_frame: "modal" } do %>
-              <i class="material-symbols-outlined me-1">more_time</i>
-              <p class="text-sm fw-bold ">スケジュールに追加</p>
-            <% end %>
-          <% end %>
+      <% else %>
+        <%= link_to new_itinerary_schedule_path(place_id: place_index_item.place_id), class:"d-flex align-items-center mt-3 text-primary", data: { turbo_frame: "modal" } do %>
+          <i class="material-symbols-outlined me-1 fs-5" style="padding-bottom: 2px;">more_time</i>
+          <p class="text-sm fw-bold">スケジュールに追加</p>
         <% end %>
-        <%= link_to @placeable.user? ? [:users_place, id: place_index_item.id] : [:itinerary_place, itinerary_id: @placeable.id, id: place_index_item.id],
-          data: { turbo_method: :delete, turbo_confirm: 'このスポットを削除しますか？', turbo_frame: "_top" },
-          class: "position-absolute top-4 end-1 text-secondary" do %>
-          <i class="material-icons rounded-circle p-1 link-area">close</i>
-        <% end %>
-      </div>
-    </div>
+      <% end %>
+    <% end %>
+    <%= link_to @placeable.user? ? [:users_place, id: place_index_item.id] : [:itinerary_place, itinerary_id: @placeable.id, id: place_index_item.id],
+      data: { turbo_method: :delete, turbo_confirm: 'このスポットを削除しますか？', turbo_frame: "_top" },
+      class: "position-absolute top-4 end-1 text-secondary" do %>
+      <i class="material-icons rounded-circle p-1 link-area">close</i>
+    <% end %>
   </div>
 <% end %>
 
