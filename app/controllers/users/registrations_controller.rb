@@ -34,7 +34,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if resource_updated
       flash[:notice] = "パスワードを変更しました。"
       bypass_sign_in resource, scope: resource_name if sign_in_after_change_password?
-      redirect_to users_edit_password_url
+      redirect_to :edit_user_registration
     else
       clean_up_passwords resource
       set_minimum_password_length

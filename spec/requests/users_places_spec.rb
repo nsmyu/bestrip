@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Users::Places", type: :request, focus: true do
+RSpec.describe "Users::Places", type: :request do
   let!(:user) { create(:user) }
   let(:user_place) { build(:user_place, :opera_house, placeable: user) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }

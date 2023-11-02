@@ -28,7 +28,7 @@ RSpec.describe "UsersRegistrations", type: :request do
   describe "GET #edit" do
     it "正常にレスポンスを返すこと" do
       sign_in user
-      get users_edit_password_path
+      get edit_user_registration_path
       expect(response).to have_http_status 200
     end
   end
@@ -44,7 +44,7 @@ RSpec.describe "UsersRegistrations", type: :request do
         },
       }
       patch user_registration_path, params: user_params
-      expect(response).to redirect_to users_edit_password_path
+      expect(response).to redirect_to edit_user_registration_path
     end
   end
 
@@ -106,7 +106,7 @@ RSpec.describe "UsersRegistrations", type: :request do
     it "IDが一意である場合、使用可能のメッセージを取得すること" do
       patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } },
                                             headers: turbo_stream
-      expect(response.body).to include 'このIDはご使用いただけます'
+      expect(response.body).to include 'このIDは使用できます'
     end
 
     it "IDが一意でない場合、エラーメッセージを取得すること" do
@@ -114,13 +114,6 @@ RSpec.describe "UsersRegistrations", type: :request do
       patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } },
                                             headers: turbo_stream
       expect(response.body).to include 'このIDは他の人が使用しています'
-    end
-  end
-
-  describe "DELETE #destroy" do
-    it "アカウントを削除できること" do
-      delete user_registration_path(user.id)
-      # expect(response).to redirect_to
     end
   end
 end

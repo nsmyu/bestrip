@@ -5,6 +5,7 @@ RSpec.describe "Itineraries", type: :request do
   let!(:other_user) { create(:user, bestrip_id: "other_user_id") }
   let!(:itinerary) { create(:itinerary, owner: user) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
+  let(:turbo_frame_modal) { { "turbo-frame": "modal" } }
 
   before do
     sign_in user
@@ -43,7 +44,7 @@ RSpec.describe "Itineraries", type: :request do
 
   describe "GET #new" do
     it "正常にレスポンスを返すこと" do
-      get new_itinerary_path
+      get new_itinerary_path, headers: turbo_frame_modal
       expect(response).to have_http_status 200
     end
   end
