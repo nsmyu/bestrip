@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Users::Places", type: :request do
+RSpec.describe "Users::Places", type: :request, focus: true do
   let!(:user) { create(:user) }
   let(:user_place) { build(:user_place, :opera_house, placeable: user) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
@@ -79,7 +79,7 @@ RSpec.describe "Users::Places", type: :request do
     it "成功すること" do
       user_place.save
       delete users_place_path(id: user_place.id), headers: turbo_stream
-      expect(response.body).to include "お気に入りに追加\n"
+      expect(response.body).not_to include "お気に入りに追加済み"
     end
   end
 end

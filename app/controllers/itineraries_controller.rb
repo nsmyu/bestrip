@@ -5,7 +5,6 @@ class ItinerariesController < ApplicationController
     authenticate_itinerary_member(@itinerary)
   }, only: %i(show edit update destroy)
 
-
   def index
     @itineraries = current_user.itineraries.order(departure_date: :desc)
   end

@@ -16,7 +16,7 @@
     <% elsif places_include?(@placeable, @place.place_id) %>
       <p class="mt-4 text-center text-sm text-dark">選択したプランの行きたい場所リストに追加しました</p>
       <div class="d-flex justify-content-center">
-        <%= link_to [:itinerary_places, id: @placeable.id], class:"d-flex align-items-center mb-2 text-primary hover-opacity", data: { turbo_frame: "_top" } do %>
+        <%= link_to [:itinerary_places, id: @placeable.id], class:"d-flex align-items-center my-2 text-primary hover-opacity", data: { turbo_frame: "_top" } do %>
           <span class="text-sm fw-bold">プランを確認</span>
           <i class="material-icons fs-4">navigate_next</i>
         <% end %>

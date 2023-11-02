@@ -9,7 +9,7 @@
   <%= turbo_stream.update "itinerary_place" do %>
     <%= link_to [:itinerary_place, itinerary_id: @placeable.id, id: @place.id], class: "btn btn-outline-primary d-flex justify-content-center align-items-center mt-3 mb-0 w-100", data: { turbo_method: :delete } do %>
       <i class="material-icons me-1">flag</i>
-      <span>作成中のプランに追加済み</span>
+      <span>行きたい場所リストに追加済み</span>
     <% end %>
   <% end %>
 <% end %>

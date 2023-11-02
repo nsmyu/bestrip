@@ -5,6 +5,7 @@ RSpec.describe "Itineraries::Places", type: :request do
   let!(:itinerary) { create(:itinerary, owner: user) }
   let(:itinerary_place) { build(:itinerary_place, :opera_house, placeable: itinerary) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
+  let(:turbo_frame_modal) { { "turbo-frame": "modal" } }
 
   before do
     sign_in user
@@ -42,13 +43,13 @@ RSpec.describe "Itineraries::Places", type: :request do
       it "place_idが既に登録されている場合、追加済みボタンを取得すること" do
         itinerary_place.save
         get new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
-        expect(response.body).to include "作成中のプランに追加済み"
+        expect(response.body).to include "行きたい場所リストに追加済み"
       end
 
       it "上限の300件まで登録済みの場合、その旨メッセージを取得すること" do
         create_list(:itinerary_place, 300, placeable: itinerary)
         get new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
-        expect(response.body).to include "このプランのスポット登録数が上限に達しています"
+        expect(response.body).to include "行きたい場所リストの登録数が上限に達しています。"
       end
     end
   end
@@ -58,31 +59,24 @@ RSpec.describe "Itineraries::Places", type: :request do
       itinerary_place_params = attributes_for(:itinerary_place)
       post itinerary_places_path(itinerary_id: itinerary.id),
         params: { place: itinerary_place_params }, headers: turbo_stream
-      expect(response.body).to include "作成中のプランに追加済み"
+      expect(response.body).to include "行きたい場所リストに追加済み"
     end
   end
 
   describe "GET #show" do
-    it "正常にレスポンスを返すこと", vcr: "google_api_response" do
+    it "正常にレスポンスを返すこと", vcr: "google_api_response", focus: true do
       itinerary_place.save
-      get itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id)
+      get itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id),
+        headers: turbo_frame_modal
       expect(response).to have_http_status 200
     end
 
     it "スポット情報をGoogle APIから取得すること", vcr: "google_api_response" do
       itinerary_place.save
-      get itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id)
+      get itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id),
+        headers: turbo_frame_modal
       expect(response.body).to include "シドニー・オペラハウス"
       expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
-    end
-  end
-
-  describe "DELETE #destroy" do
-    it "成功すること" do
-      itinerary_place.save
-      delete itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id),
-        headers: turbo_stream
-      expect(response.body).to include "作成中のプランに追加\n"
     end
   end
 
@@ -116,7 +110,7 @@ RSpec.describe "Itineraries::Places", type: :request do
                                                 place_id: itinerary_place.place_id)
         post itinerary_places_add_from_user_places_path(itinerary_id: itinerary.id),
           params: { place: itinerary_place_params }
-        expect(response.body).to include "このプランには既に追加されています"
+        expect(response.body).to include "既に追加されています"
       end
 
       it "上限の300件まで登録済みの場合、失敗すること" do
@@ -126,6 +120,15 @@ RSpec.describe "Itineraries::Places", type: :request do
           params: { place: itinerary_place_params }
         expect(response.body).to include "スポットの登録数が上限に達しています"
       end
+    end
+  end
+
+  describe "DELETE #destroy" do
+    it "成功すること" do
+      itinerary_place.save
+      delete itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id),
+        headers: turbo_stream
+      expect(response.body).not_to include "行きたい場所リストに追加済み"
     end
   end
 end

@@ -48,6 +48,6 @@ ja:
             attributes:
               place_id:
                 format: "%{message}"
-                taken: このプランには既に追加されています
+                taken: 既に追加されています
               placeable_id:
                 format: "%{message}"

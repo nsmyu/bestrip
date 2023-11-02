@@ -63,7 +63,7 @@ RSpec.describe "Itineraries::Places", type: :system do
     end
   end
 
-  describe "スポット検索", js: true, focus: true do
+  describe "スポット検索", js: true do
     it "検索結果を地図上に表示、情報ウィンドウのリンクをクリックするとスポット情報をモーダルで表示すること" do
       visit itinerary_places_find_path(itinerary_id: itinerary.id)
       fill_in "searchbox_text_input", with: "シドニー オペラハウス"

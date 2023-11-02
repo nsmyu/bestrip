@@ -4,18 +4,18 @@
     <% if places_include?(@placeable, @place_id) %>
       <%= link_to [:itinerary_place, itinerary_id: @placeable.id, id: @place.id], class: "btn btn-outline-primary d-flex justify-content-center align-items-center mt-3 mb-0 w-100", data: { turbo_method: :delete } do %>
         <i class="material-icons me-1">flag</i>
-        <span>作成中のプランに追加済み</span>
+        <span>行きたい場所リストに追加済み</span>
       <% end %>
     <% elsif @placeable.places.count >= 300 %>
       <button class="btn bg-gradient-primary d-flex justify-content-center align-items-center mt-3 mb-0 w-100" disabled>
         <i class="material-icons me-1">flag</i>
-        <span>作成中のプランに追加</span>
+        <span>行きたい場所リストに追加</span>
       </button>
-      <p class="mt-1 mb-3 text-xxs text-dark">※このプランのスポット登録数が上限に達しています。</p>
+      <p class="mt-1 mb-3 text-xxs text-dark">※行きたい場所リストの登録数が上限に達しています。</p>
     <% else %>
       <%= button_tag type: "submit", class: "btn bg-gradient-primary d-flex justify-content-center align-items-center mt-3 mb-0 w-100" do %>
         <i class="material-icons me-1">flag</i>
-        <span>作成中のプランに追加</span>
+        <span>行きたい場所リストに追加</span>
       <% end %>
     <% end %>
   <% end %>
