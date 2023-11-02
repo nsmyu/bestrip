@@ -77,7 +77,7 @@ RSpec.describe "Itineraries::Places", type: :system do
       within ".modal" do
         expect(page).to have_content "シドニー・オペラハウス"
         expect(page).to have_content "Bennelong Point, Sydney NSW 2000 オーストラリア"
-        expect(page).to have_content "作成中のプランに追加"
+        expect(page).to have_content "行きたい場所リストに追加"
       end
     end
   end
@@ -90,20 +90,20 @@ RSpec.describe "Itineraries::Places", type: :system do
         expect {
           visit new_itinerary_place_path(itinerary_id: itinerary.id,
                                          place_id: itinerary_place.place_id)
-          find(".bg-gradient-primary", text: "作成中のプランに追加").click
+          find(".bg-gradient-primary", text: "行きたい場所リストに追加").click
 
-          expect(page).to have_content "作成中のプランに追加済み"
+          expect(page).to have_content "行きたい場所リストに追加済み"
         }.to change(itinerary.places, :count).by(1)
       end
     end
 
     context "追加登録不可能な状態の場合" do
-      it "既に登録されている場合、追加済みボタンが表示されること" do
+      it "既に追加されている場合、追加済みボタンが表示されること" do
         itinerary_place.save
         visit new_itinerary_place_path(itinerary_id: itinerary.id,
                                        place_id: itinerary_place.place_id)
 
-        expect(page).to have_content "作成中のプランに追加済み"
+        expect(page).to have_content "行きたい場所リストに追加済み"
       end
 
       it "上限の300件まで登録済みの場合、その旨メッセージを表示すること" do
@@ -111,16 +111,16 @@ RSpec.describe "Itineraries::Places", type: :system do
         visit new_itinerary_place_path(itinerary_id: itinerary.id,
                                        place_id: itinerary_place.place_id)
 
-        expect(page).to have_content "このプランのスポット登録数が上限に達しています。"
+        expect(page).to have_content "行きたい場所リストの登録数が上限に達しています。"
       end
     end
   end
 
-  describe "お気に入り一覧から行きたい場所リストへ登録", js: true do
+  describe "お気に入り一覧から、プランを選択して行きたい場所リストへ追加", js: true do
     let!(:user_place) { create(:user_place, :opera_house, placeable: user) }
 
     context "追加登録可能な状態の場合" do
-      it "成功すること（追加登録後、行きたい場所リストへのリンクを表示すること）" do
+      it "成功すること（追加後、行きたい場所リストへのリンクを表示すること）" do
         expect {
           visit users_places_path
           within(:xpath, "//div[a[p[contains(text(), 'シドニー・オペラハウス')]]]") do
@@ -130,11 +130,11 @@ RSpec.describe "Itineraries::Places", type: :system do
           within(".modal", match: :first) do
             find(".select-box").click
             find("option", text: itinerary.title).click
-            click_on "選択した旅のプランに追加"
+            click_on "行きたい場所リストに追加"
 
             expect(page).to have_content "選択したプランの行きたい場所リストに追加しました"
 
-            click_on "行きたい場所リストを確認"
+            click_on "プランを確認"
           end
 
           expect(page).to have_content itinerary.title
@@ -145,7 +145,7 @@ RSpec.describe "Itineraries::Places", type: :system do
     end
 
     context "追加登録不可能な状態の場合" do
-      it "既に行きたい場所リストに登録されている場合、失敗すること" do
+      it "既に追加されている場合、失敗すること" do
         create(:itinerary_place, place_id: user_place.place_id, placeable: itinerary)
         expect {
           visit users_places_path
@@ -156,14 +156,14 @@ RSpec.describe "Itineraries::Places", type: :system do
           within(".modal", match: :first) do
             find(".select-box").click
             find("option", text: itinerary.title).click
-            click_on "選択した旅のプランに追加"
+            click_on "行きたい場所リストに追加"
 
-            expect(page).to have_content "このプランには既に追加されています"
+            expect(page).to have_content "既に追加されています"
           end
         }.not_to change(itinerary.places, :count)
       end
 
-      it "選択したプランの行きたい場所リストに上限の300件まで登録済みの場合、失敗すること" do
+      it "上限の300件まで登録済みの場合、失敗すること" do
         create_list(:itinerary_place, 300, placeable: itinerary)
         expect {
           visit users_places_path
@@ -174,7 +174,7 @@ RSpec.describe "Itineraries::Places", type: :system do
           within(".modal", match: :first) do
             find(".select-box").click
             find("option", text: itinerary.title).click
-            click_on "選択した旅のプランに追加"
+            click_on "行きたい場所リストに追加"
 
             expect(page).to have_content "スポットの登録数が上限に達しています"
           end
@@ -191,9 +191,9 @@ RSpec.describe "Itineraries::Places", type: :system do
         expect {
           visit new_itinerary_place_path(itinerary_id: itinerary.id,
                                          place_id: itinerary_place.place_id)
-          click_on "作成中のプランに追加済み", match: :first
+          click_on "行きたい場所リストに追加済み", match: :first
 
-          expect(page).to have_selector ".bg-gradient-primary", text: "作成中のプランに追加"
+          expect(page).to have_selector ".bg-gradient-primary", text: "行きたい場所リストに追加"
         }.to change(itinerary.places, :count).by(-1)
       end
     end

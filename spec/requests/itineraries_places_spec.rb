@@ -64,7 +64,7 @@ RSpec.describe "Itineraries::Places", type: :request do
   end
 
   describe "GET #show" do
-    it "正常にレスポンスを返すこと", vcr: "google_api_response", focus: true do
+    it "正常にレスポンスを返すこと", vcr: "google_api_response" do
       itinerary_place.save
       get itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id),
         headers: turbo_frame_modal

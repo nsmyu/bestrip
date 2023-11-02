@@ -83,7 +83,7 @@ RSpec.describe "Users::Places", type: :system do
     end
 
     context "追加登録不可能な状態の場合" do
-      it "既に登録されている場合、追加済みボタンが表示されること" do
+      it "既に追加されている場合、追加済みボタンが表示されること" do
         user_place.save
         visit new_users_place_path(place_id: user_place.place_id)
 

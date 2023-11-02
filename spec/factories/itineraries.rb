@@ -5,10 +5,6 @@ FactoryBot.define do
     return_date       { "2024-02-08" }
     owner
 
-    after(:build) do |itinerary|
-      itinerary.members << itinerary.owner
-    end
-
     trait :with_schedule do
       after(:build) do |itinerary|
         itinerary.schedules << build(:schedule)
