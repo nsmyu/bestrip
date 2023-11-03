@@ -30,6 +30,6 @@
       <p class="d-inline text-sm text-dark"><%= @post.user.name %></p>
     <% end %>
   </div>
-  <p class="py-3 fs-px-15 text-dark"><%= @post.caption %></p>
+  <%= simple_format(@post.caption, sanitize: true, class: "py-3 text-sm text-dark") %>
   <p class="text-sm"><%= date_posted(@post) %></p>
 </div>

@@ -31,7 +31,7 @@
             </div>
           <% end %>
         </div>
-        <p class="px-1 text-sm text-dark"><%= @user.introduction %></p>
+        <%= simple_format(@user.introduction, sanitize: true, class: "px-1 text-sm text-dark") %>
       </div>
     </div>
     <div class="mx-auto max-width-900">
