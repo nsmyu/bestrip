@@ -1,7 +1,7 @@
 Itinerary.create!(
   [
     {
-      title: "シドニー満喫 5泊6日",
+      title: "シドニー満喫 4泊6日",
       image: File.open("./app/assets/images/itinerary_post/sydney.jpg"),
       departure_date: "2023-11-01",
       return_date: "2023-11-06",

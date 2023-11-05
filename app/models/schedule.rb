@@ -4,7 +4,7 @@ class Schedule < ApplicationRecord
   validates :title, presence: true, length: { maximum: 50 }
   validates :note, length: { maximum: 500 }
   ICON_VALUES = [
-    "", "restaurant", "local_cafe", "hotel", "castle", "attractions",
+    nil, "", "restaurant", "local_cafe", "hotel", "castle", "attractions",
     "shopping_cart", "landscape", "local_activity", "train", "directions_car",
     "directions_bus", "flight", "directions_walk", "directions_bike",
   ].freeze

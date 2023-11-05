@@ -24,14 +24,14 @@ end
 
 Post.find(1).update(
   {
-    caption: "6日間で、シドニー市内、郊外のスポットも大満喫のプランでした✨\n\n#オーストラリア #シドニー #海外旅行",
+    caption: "シドニー市内、郊外のスポットも満喫してきました✨\n\n#オーストラリア #シドニー #海外旅行",
     photos_attributes: [{ url: File.open("./app/assets/images/itinerary_post/sydney.jpg") }],
   }
 )
 Post.find(2).update(
   {
     title: "オーストラリア🇦🇺シドニー",
-    caption: "5泊6日でシドニー周辺をゆったり旅してきました\nコアラ可愛かったな🐨\n\n#オーストラリア #シドニー #タロンガ動物園",
+    caption: "シドニーで5日間、ゆったり旅してきました\nコアラ可愛かったな🐨\n\n#オーストラリア #シドニー #タロンガ動物園",
     photos_attributes: [{ url: File.open("./app/assets/images/itinerary_post/koala.jpg") }],
   }
 )
