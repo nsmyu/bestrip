@@ -11,7 +11,6 @@ class PlacesController < ApplicationController
     @place_index_items.each do |place_index_item|
       query_params =
         GooglePlacesApiRequestable::Request.new(place_index_item.place_id, with_photos: false)
-      logger.debug { query_params.inspect }
       response = query_params.request
 
       case response
