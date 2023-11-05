@@ -25,7 +25,7 @@ Itinerary.create!(
       title: "北海道旅行⛄️",
       image: File.open("./app/assets/images/itinerary_post/otaru.jpg"),
       departure_date: "2022-12-01",
-      return_date: "2022-12-04",
+      return_date: "2022-12-03",
       owner: User.find(2),
     },
     {
