@@ -23,12 +23,16 @@ class User < ApplicationRecord
   before_validation :set_guest_email, if: :guest?, on: :create
   after_create :add_guest_to_itineraries, if: :guest?
 
-  devise :database_authenticatable, :registerable, :rememberable, :validatable
+  devise :database_authenticatable, :registerable, :rememberable, :validatable, :timeoutable
   mount_uploader :avatar, AvatarUploader
 
   def self.guest
     random_pass = SecureRandom.base36
     create!(name: "ゲスト様", password: random_pass, password_confirmation: random_pass, guest: true)
+  end
+
+  def destroy_guest_user
+    destroy
   end
 
   private

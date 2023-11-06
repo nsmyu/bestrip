@@ -16,6 +16,7 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def destroy
+    current_user.destroy_guest_user if current_user.guest?
     super
   end
 
