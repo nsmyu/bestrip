@@ -1,6 +1,6 @@
 <%= turbo_frame_tag post, class:"col-12 col-sm-6 col-md-4 my-2 mx-auto mx-sm-0 px-0 px-sm-2 max-width-400" do %>
   <div class="m-lg-1 bg-white">
-    <% if request.fullpath.end_with?('/', 'posts') %>
+    <% if request.fullpath.exclude?('/users/') %>
     <div class="pt-1 px-2">
       <div class="d-flex align-items-center">
         <%= image_tag post.user.avatar.url, class: "rounded-circle avatar-thumbnail p-1 me-1" %>

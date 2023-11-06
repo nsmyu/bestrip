@@ -8,7 +8,8 @@ class PostsController < ApplicationController
   end
 
   def search
-    @posts = Post.contains(params[:query]).order(created_at: :desc).page(params[:page]).per(9)
+    itinerary_ids = Itinerary.has_keyword(params[:keyword]).pluck(:id)
+    @posts = Post.has_keyword(params[:keyword], itinerary_ids).order(created_at: :desc).page(params[:page]).per(9)
   end
 
   def new

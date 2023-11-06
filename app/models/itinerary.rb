@@ -15,6 +15,10 @@ class Itinerary < ApplicationRecord
 
   mount_uploader :image, ItineraryImageUploader
 
+  scope :has_keyword, -> (keyword) do
+    joins(:schedules).merge(Schedule.where("schedules.title LIKE?", "%#{keyword}%")).distinct
+  end
+
   private
 
   def add_owner_to_members
