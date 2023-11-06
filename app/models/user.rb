@@ -6,11 +6,6 @@ class User < ApplicationRecord
   has_many :owned_itineraries, class_name: "Itinerary", dependent: :destroy
   has_many :posts, dependent: :destroy
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
-
-  before_validation :set_user_email, if: :guest_user?, on: :create
-
   validates :name,       presence: true, length: { maximum: 20 }
   VALID_BESTRIP_ID_REGEX = /\A[\w]{5,20}\z/
   validates :bestrip_id, uniqueness: { case_sensitive: false },
@@ -25,20 +20,24 @@ class User < ApplicationRecord
   end
   validates :introduction, length: { maximum: 500 }
 
+  before_validation :set_guest_email, if: :guest?, on: :create
+  after_create :add_guest_to_itineraries, if: :guest?
+
+  devise :database_authenticatable, :registerable, :rememberable, :validatable
   mount_uploader :avatar, AvatarUploader
 
   def self.guest
     random_pass = SecureRandom.base36
-    create!(name: "ゲストユーザー", password: random_pass, password_confirmation: random_pass, guest: true)
+    create!(name: "ゲスト様", password: random_pass, password_confirmation: random_pass, guest: true)
   end
 
-  def set_user_email
-    while email.blank? || User.find_by(email: email)
-      self.email = "guest_#{SecureRandom.base36}@example.com"
-    end
+  private
+
+  def set_guest_email
+    self.email = "guest_#{SecureRandom.base36}@example.com"
   end
 
-  def guest_user?
-    guest
+  def add_guest_to_itineraries
+    Itinerary.where(id: [1, 9, 12, 13, 15]).each { |itinerary| itinerary.members << self }
   end
 end

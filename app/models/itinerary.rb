@@ -1,17 +1,17 @@
 class Itinerary < ApplicationRecord
   include Placeable
 
-  after_commit :add_owner_to_members, on: :create
-
+  belongs_to :owner, class_name: 'User', foreign_key: :user_id
   has_many   :itinerary_users, dependent: :destroy
   has_many   :members, through: :itinerary_users, source: :user
-  belongs_to :owner, class_name: 'User', foreign_key: :user_id
   has_many   :schedules, dependent: :destroy
   has_many   :posts, dependent: :destroy
 
   validates :title, presence: true, length: { maximum: 30 }
   validates :departure_date, :return_date, presence: true
   validate :return_date_must_be_after_departure_date
+
+  after_commit :add_owner_to_members, on: :create
 
   mount_uploader :image, ItineraryImageUploader
 
