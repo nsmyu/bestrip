@@ -4,7 +4,11 @@ class PostsController < ApplicationController
   before_action :authenticate_post_owner, only: %i(edit update destroy)
 
   def index
-    @posts = Post.all.order(created_at: :desc).page(params[:page]).per(9)
+    @posts = Post.order(created_at: :desc).page(params[:page]).per(9)
+  end
+
+  def search
+    @posts = Post.contains(params[:query]).order(created_at: :desc).page(params[:page]).per(9)
   end
 
   def new
@@ -62,4 +66,8 @@ class PostsController < ApplicationController
                                  :itinerary_id,
                                  [photos_attributes: [:url, :id, :_destroy]])
   end
+
+  # def search_params
+
+  # end
 end

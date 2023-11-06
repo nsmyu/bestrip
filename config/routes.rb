@@ -39,5 +39,8 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :posts
+  resources :posts do
+    get 'search', to: 'posts#search', on: :collection
+  end
+
 end

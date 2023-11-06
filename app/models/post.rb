@@ -12,4 +12,8 @@ class Post < ApplicationRecord
     return if !id
     Post.find(id).photos
   end
+
+  def self.contains(query)
+    Post.where("title LIKE?", "%#{query}%").or(where("caption LIKE?", "%#{query}%"))
+  end
 end
