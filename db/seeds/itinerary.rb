@@ -71,14 +71,14 @@ Itinerary.create!(
       title: "メルボルン一週間の旅",
       image: File.open("./app/assets/images/itinerary_post/melbourne.jpg"),
       departure_date: "2022-11-01",
-      return_date: "2022-11-07",
+      return_date: "2022-11-06",
       owner: User.find(4),
     },
     {
       title: "沖縄旅行🌺",
       image: File.open("./app/assets/images/itinerary_post/aquarium.jpg"),
       departure_date: "2023-07-01",
-      return_date: "2023-07-04",
+      return_date: "2023-07-03",
       owner: User.find(4),
     },
     {
@@ -92,7 +92,7 @@ Itinerary.create!(
       title: "夏休み🌻北海道",
       image: File.open("./app/assets/images/itinerary_post/biei.jpg"),
       departure_date: "2023-08-01",
-      return_date: "2023-08-05",
+      return_date: "2023-08-03",
       owner: User.find(5),
     },
     {
