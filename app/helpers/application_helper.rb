@@ -9,7 +9,7 @@ module ApplicationHelper
   end
 
   def itinerary_page?
-    request.fullpath.include?('itineraries') && !request.fullpath.end_with?('itineraries')
+    request.fullpath.include?('itineraries/')
   end
 
   def user_page?

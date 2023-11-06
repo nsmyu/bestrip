@@ -1,9 +1,12 @@
 <main class="main-content position-relative">
   <div class="container-fluid py-4 px-sm-4 min-vh-100">
     <div class="mx-auto max-width-900">
-      <div class="row">
-        <%= render @posts %>
-      </div>
+      <%= turbo_frame_tag "posts-page-#{@posts.current_page}" do %>
+        <div class="row">
+          <%= render @posts %>
+          <%= turbo_frame_tag "posts-page-#{@posts.next_page}", src: path_to_next_page(@posts), loading: :lazy %>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class="fixed-plugin">

@@ -56,7 +56,7 @@ Itinerary.create!(
       owner: User.find(3),
     },
     {
-      title: "トルコ🇹🇷カッパドキアいきたい",
+      title: "トルコ計画🇹🇷",
       departure_date: "2024-03-01",
       return_date: "2024-03-07",
       owner: User.find(3),

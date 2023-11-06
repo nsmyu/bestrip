@@ -1011,7 +1011,7 @@ Itinerary.find(9).schedules.create!(
       start_at: "10:15:00",
       end_at: "18:00:00",
       icon: "flight",
-      note: "仮で入れました! 直行便のこの1本だけみたい",
+      note: "仮で入れました! 直行便はこれだけみたい。",
     },
     {
       schedule_date: Itinerary.find(9).return_date,
