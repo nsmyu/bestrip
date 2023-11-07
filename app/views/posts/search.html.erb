@@ -1,1 +1,8 @@
-<%= render 'index_layout' %>
+<%= turbo_frame_tag "posts" do %>
+  <%= turbo_frame_tag "posts-page-#{@posts.current_page}" do %>
+    <div class="row">
+      <%= render @posts %>
+      <%= turbo_frame_tag "posts-page-#{@posts.next_page}", src: path_to_next_page(@posts), loading: :lazy %>
+    </div>
+  <% end %>
+<% end %>

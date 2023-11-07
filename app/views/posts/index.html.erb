@@ -1,1 +1,30 @@
-<%= render 'index_layout' %>
+<main class="main-content position-relative">
+  <div class="container-fluid py-4 px-sm-4 min-vh-100">
+    <%= render 'search_form' %>
+    <div class="mx-auto max-width-900">
+      <%= turbo_frame_tag "posts" do %>
+        <%= turbo_frame_tag "posts-page-#{@posts.current_page}" do %>
+          <div class="row">
+            <%= render @posts %>
+            <%= turbo_frame_tag "posts-page-#{@posts.next_page}", src: path_to_next_page(@posts), loading: :lazy %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class="fixed-plugin">
+    <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2 btn bg-gradient-primary">
+      <% if current_user %>
+        <%= link_to :new_post, class: "d-flex align-items-center text-white", data: { turbo_frame: "modal" } do %>
+          <i class="material-symbols-outlined ms-0 me-1 fs-3">add_circle</i>
+          <p class="py-1 text-sm fw-bold">旅の思い出を投稿</p>
+        <% end %>
+      <% else %>
+        <%= link_to :new_user_session, class: "d-flex align-items-center text-white" do %>
+          <i class="material-symbols-outlined ms-0 me-1 fs-3">add_circle</i>
+          <p class="py-1 text-sm fw-bold">旅の思い出を投稿</p>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</main>

@@ -8,13 +8,13 @@ class Post < ApplicationRecord
   validates :caption, length: { maximum: 1000 }
   validates :photos, length: { minimum: 1, maximum: 20 }
 
-  scope :has_keyword, -> (keyword, itinerary_ids) do
+  scope :has_keyword, -> (keyword, itinerary_with_keyword) do
     where("title LIKE?", "%#{keyword}%")
       .or(where("caption LIKE?", "%#{keyword}%"))
-      .or(where(itinerary_id: [itinerary_ids]).merge(where(itinerary_public: true)))
+      .or(where(itinerary_id: [itinerary_with_keyword.pluck(:id)]).merge(where(itinerary_public: true)))
   end
 
-  def has_photos?
+  def has_saved_photos?
     return if !id
     Post.find(id).photos
   end
