@@ -20,26 +20,25 @@ class User < ApplicationRecord
   end
   validates :introduction, length: { maximum: 500 }
 
-  before_validation :set_guest_email, if: :guest?, on: :create
-  after_create :add_guest_to_itineraries, if: :guest?
+  after_create :add_guest_to_itineraries, if: :guest_user?
 
-  devise :database_authenticatable, :registerable, :rememberable, :validatable, :timeoutable
+  devise :database_authenticatable, :registerable, :rememberable, :validatable
   mount_uploader :avatar, AvatarUploader
 
   def self.guest
     random_pass = SecureRandom.base36
-    create!(name: "ゲスト様", password: random_pass, password_confirmation: random_pass, guest: true)
+    find_or_create_by!(email: 'guest@example.com') do |user|
+      user.name = "ゲスト様"
+      user.password = random_pass
+      user.password_confirmation = random_pass
+    end
   end
 
-  def destroy_guest_user
-    destroy
+  def guest_user?
+    email == 'guest@example.com'
   end
 
   private
-
-  def set_guest_email
-    self.email = "guest_#{SecureRandom.base36}@example.com"
-  end
 
   def add_guest_to_itineraries
     Itinerary.where(id: [1, 9, 12, 13, 15]).each { |itinerary| itinerary.members << self }
