@@ -1,8 +1,12 @@
 <%= turbo_frame_tag "posts" do %>
-  <%= turbo_frame_tag "posts-page-#{@posts.current_page}" do %>
-    <div class="row">
-      <%= render @posts %>
-      <%= turbo_frame_tag "posts-page-#{@posts.next_page}", src: path_to_next_page(@posts), loading: :lazy %>
-    </div>
+  <% if @posts.blank? %>
+    <p class="p-4 text-center text-sm text-dark">「<%= @keyword %>」に一致する投稿はありませんでした</p>
+  <% else %>
+    <%= turbo_frame_tag "posts-page-#{@posts.current_page}" do %>
+      <div class="row">
+        <%= render @posts %>
+        <%= turbo_frame_tag "posts-page-#{@posts.next_page}", src: path_to_next_page(@posts), loading: :lazy %>
+      </div>
+    <% end %>
   <% end %>
 <% end %>

@@ -8,8 +8,9 @@ class PostsController < ApplicationController
   end
 
   def search
-    itinerary_with_keyword = Itinerary.has_keyword(params[:keyword])
-    @posts = Post.has_keyword(params[:keyword], itinerary_with_keyword)
+    @keyword = params[:keyword]
+    itinerary_with_keyword = Itinerary.has_keyword(@keyword)
+    @posts = Post.has_keyword(@keyword, itinerary_with_keyword)
       .order(created_at: :desc)
       .page(params[:page]).per(9)
   end

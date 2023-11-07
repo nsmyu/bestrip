@@ -1,10 +1,14 @@
 <div class="mt-n4 mx-n4 mb-4 py-4 px-4 px-sm-5 bg-white">
   <div class="mx-auto max-width-700">
     <%= form_with url: search_posts_path, html: { data: { turbo_frame: "posts" } }, method: :get do |f| %>
-      <div class="input-group input-group-outline row mx-0 mb-4">
-      <%= f.search_field :keyword, class: "form-control" %>
+      <div class="input-group input-group-outline row mx-0">
+        <%= f.search_field :keyword, class: "form-control" %>
+        <label type="button" class="col-1 mb-0 ms-2 p-0">
+          <i class="material-icons fw-bold p-2 link-area rounded-circle text-2xl">search</i>
+          <%= f.submit class: "d-none" %>
+        </label>
       </div>
-      <%= f.submit "検索", class: "btn btn-primary" %>
     <% end %>
   </div>
 </div>
+
