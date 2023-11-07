@@ -8,6 +8,10 @@ class Post < ApplicationRecord
   validates :caption, length: { maximum: 1000 }
   validates :photos, length: { minimum: 1, maximum: 20 }
 
+  scope :has_hashtag, -> (hashtag) do
+     (where("caption LIKE?", "#{hashtag}"))
+  end
+
   scope :has_keyword, -> (keyword, itinerary_with_keyword) do
     where("title LIKE?", "%#{keyword}%")
       .or(where("caption LIKE?", "%#{keyword}%"))

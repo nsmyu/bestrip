@@ -1,12 +1,20 @@
-<%= turbo_frame_tag "posts" do %>
-  <% if @posts.blank? %>
-    <p class="p-4 text-center text-sm text-dark">「<%= @keyword %>」に一致する投稿はありませんでした</p>
-  <% else %>
-    <%= turbo_frame_tag "posts-page-#{@posts.current_page}" do %>
-      <div class="row">
-        <%= render @posts %>
-        <%= turbo_frame_tag "posts-page-#{@posts.next_page}", src: path_to_next_page(@posts), loading: :lazy %>
-      </div>
-    <% end %>
-  <% end %>
-<% end %>
+<main class="main-content position-relative">
+  <div class="container-fluid py-4 px-sm-4 min-vh-100">
+    <%= render 'search_form' %>
+    <div class="mx-auto max-width-900">
+      <%= turbo_frame_tag "posts" do %>
+        <% if @posts.blank? %>
+          <p class="p-4 text-center text-sm text-dark">「<%= @keyword %>」に一致する投稿はありませんでした</p>
+        <% else %>
+          <%= turbo_frame_tag "posts-page-#{@posts.current_page}" do %>
+            <div class="row">
+              <%= render @posts %>
+              <%= turbo_frame_tag "posts-page-#{@posts.next_page}", src: path_to_next_page(@posts), loading: :lazy %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <%= render 'index_fixed_button' %>
+</main>

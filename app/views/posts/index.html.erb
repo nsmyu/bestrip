@@ -12,19 +12,5 @@
       <% end %>
     </div>
   </div>
-  <div class="fixed-plugin">
-    <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2 btn bg-gradient-primary">
-      <% if current_user %>
-        <%= link_to :new_post, class: "d-flex align-items-center text-white", data: { turbo_frame: "modal" } do %>
-          <i class="material-symbols-outlined ms-0 me-1 fs-3">add_circle</i>
-          <p class="py-1 text-sm fw-bold">旅の思い出を投稿</p>
-        <% end %>
-      <% else %>
-        <%= link_to :new_user_session, class: "d-flex align-items-center text-white" do %>
-          <i class="material-symbols-outlined ms-0 me-1 fs-3">add_circle</i>
-          <p class="py-1 text-sm fw-bold">旅の思い出を投稿</p>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
+  <%= render 'index_fixed_button' %>
 </main>
