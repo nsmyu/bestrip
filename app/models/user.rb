@@ -20,7 +20,7 @@ class User < ApplicationRecord
   end
   validates :introduction, length: { maximum: 500 }
 
-  after_create :add_guest_to_itineraries, if: :guest_user?
+  after_create :add_guest_to_itineraries, if: :guest?
 
   devise :database_authenticatable, :registerable, :rememberable, :validatable
   mount_uploader :avatar, AvatarUploader
@@ -34,7 +34,7 @@ class User < ApplicationRecord
     end
   end
 
-  def guest_user?
+  def guest?
     email == 'guest@example.com'
   end
 

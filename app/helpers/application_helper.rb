@@ -13,6 +13,6 @@ module ApplicationHelper
   end
 
   def user_page?
-    request.fullpath.include?('users/edit')
+    controller_name == "registrations"
   end
 end

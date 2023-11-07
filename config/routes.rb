@@ -42,5 +42,4 @@ Rails.application.routes.draw do
   resources :posts do
     get 'search', to: 'posts#search', on: :collection
   end
-
 end

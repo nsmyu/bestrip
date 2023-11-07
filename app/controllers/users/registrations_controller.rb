@@ -27,6 +27,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update
+    block_guest_user and return if @user.guest?
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     resource_updated = update_resource(resource, account_update_params)
     yield resource if block_given?
@@ -43,12 +44,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update_without_password
+    block_guest_user and return if @user.guest? && params[:user][:email]
     @user.assign_attributes(update_without_password_params)
     if @user.save(context: :without_password)
       if update_without_password_params.key?(:email)
-        redirect_to users_edit_email_url, notice: "メールアドレスを変更しました。"
+        redirect_to :users_edit_email, notice: "メールアドレスを変更しました。"
       else
-        redirect_to users_edit_profile_url, notice: "プロフィールを変更しました。"
+        redirect_to :users_edit_profile, notice: "プロフィールを変更しました。"
       end
     else
       render update_without_password_params.key?(:email) ? :edit_email : :edit_profile
@@ -61,10 +63,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
   end
 
-  def after_sign_up_path_for(resource)
-    super(resource)
-  end
-
   def set_user
     @user = User.find(current_user.id)
   end
@@ -72,5 +70,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update_without_password_params
     params[:user][:bestrip_id] = nil if params[:user][:bestrip_id] == ""
     params.require(:user).permit(:name, :bestrip_id, :email, :avatar, :introduction)
+  end
+
+  def block_guest_user
+    redirect_to request.referer, notice: "ゲストユーザーの方は変更できません。"
   end
 end
