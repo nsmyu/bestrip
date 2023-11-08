@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   root 'posts#index'
+  get 'guide', to: 'home#guide'
+
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions',

@@ -1,0 +1,31 @@
+
+
+<div class="page-header bg-white max-vh-100">
+  <div class="mx-auto max-width-800">
+    <div class="row d-flex align-items-center py-4">
+      <div class="col-2 px-3">
+        <%= image_tag "bestrip_icon.png", class: "w-100" %>
+      </div>
+      <div class="col-10">
+        <p class="text-sm text-dark">
+          BesTripは、簡単に旅のプランを作成できるアプリです。<br>
+          メンバーと共同でスケジュールを編集したり、みんなの思い出投稿から素敵なスポットを発見したり。<br>
+          楽しく計画を立てて、Bestな旅に出かけましょう。
+        </p>
+        <%= link_to :guide, class: "d-flex mt-1 text-dark " do %>
+          <i class="material-icons">navigate_next</i>
+          <span class="fs-px-13 fw-bold">楽しみ方を詳しく見る</span>
+        <% end %>
+
+        <div class="d-flex mt-3">
+          <%= link_to :itineraries, class: "btn btn-outline-primary mb-0" do %>
+            <span>旅の計画を始める<span>
+          <% end %>
+          <%= link_to :users_guest_sign_in, class: "btn btn-outline-secondary ms-3 mb-0" do %>
+            <span>ゲストログイン</span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
