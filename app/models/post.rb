@@ -8,14 +8,12 @@ class Post < ApplicationRecord
   validates :caption, length: { maximum: 1000 }
   validates :photos, length: { minimum: 1, maximum: 20 }
 
-  scope :has_hashtag, -> (hashtag) do
-     (where("caption LIKE?", "#{hashtag}"))
+  scope :contains_keyword, -> (keyword) do
+    where("title LIKE?", "%#{keyword}%").or(where("caption LIKE?", "%#{keyword}%"))
   end
 
-  scope :has_keyword, -> (keyword, itinerary_with_keyword) do
-    where("title LIKE?", "%#{keyword}%")
-      .or(where("caption LIKE?", "%#{keyword}%"))
-      .or(where(itinerary_id: [itinerary_with_keyword.pluck(:id)]).merge(where(itinerary_public: true)))
+  scope :belongs_to_itineraries_containing_keyword, -> (itineraries) do
+    where(itinerary_id: [itineraries.pluck(:id)]).merge(where(itinerary_public: true))
   end
 
   def has_saved_photos?

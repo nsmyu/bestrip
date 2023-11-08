@@ -27,7 +27,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update
-    block_guest_user and return if @user.guest?
+    return if block_guest_user
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     resource_updated = update_resource(resource, account_update_params)
     yield resource if block_given?
@@ -44,7 +44,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update_without_password
-    block_guest_user and return if @user.guest? && params[:user][:email]
+    return if block_guest_user
     @user.assign_attributes(update_without_password_params)
     if @user.save(context: :without_password)
       if update_without_password_params.key?(:email)
@@ -73,6 +73,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def block_guest_user
-    redirect_to request.referer, notice: "ゲストユーザーの方は変更できません。"
+    if @user.guest? && !params[:user][:name]
+      redirect_to request.referer, notice: "ゲストユーザーの方は変更できません。"
+    end
   end
 end
