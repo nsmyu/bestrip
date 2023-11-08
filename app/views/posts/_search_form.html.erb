@@ -1,6 +1,6 @@
 <div class="mt-n4 mx-n4 mb-3 pt-4 pb-3 px-4 px-sm-5 bg-white position-sticky top-6 z-index-3">
   <div class="mx-auto max-width-700">
-    <%= form_with url: search_posts_path, class: "mt-2 search-form-icon-right", html: { data: { turbo_frame: "posts" } }, method: :get do |f| %>
+    <%= form_with url: search_posts_path, class: "mt-2 search-form-icon-right", method: :get do |f| %>
       <%= f.search_field :keyword, value: @keyword %>
       <%= f.button "" %>
     <% end %>
