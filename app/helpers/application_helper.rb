@@ -8,6 +8,10 @@ module ApplicationHelper
     "#{post.created_at.year}.#{post.created_at.month}.#{post.created_at.day}"
   end
 
+  def user_entry_page?
+    ['sign_in', 'sign_up'].any? { |path| request.fullpath.include?(path) }
+  end
+
   def itinerary_page?
     request.fullpath.include?('itineraries/')
   end

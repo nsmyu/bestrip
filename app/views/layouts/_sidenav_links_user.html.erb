@@ -11,7 +11,7 @@
   <li class="nav-item">
     <%= link_to "パスワード変更", :edit_user_registration, class:"nav-link sidenav-link text-dark" %>
   </li>
-  <li class="nav-item mt-4">
+  <li class="nav-item mt-5">
     <%= link_to :itineraries, class:"nav-link mb-0 py-2 text-secondary" do %>
       <div class="text-center me-2 d-flex align-items-center justify-content-center">
         <i class="material-icons">library_books</i>
@@ -20,11 +20,19 @@
     <% end %>
   </li>
   <li class="nav-item">
-    <%= link_to :root, class:"nav-link mb-0 py-2 text-secondary" do %>
+    <%= link_to :root, class:"nav-link py-2 text-secondary" do %>
       <div class="text-center me-2 d-flex align-items-center justify-content-center">
-        <i class="material-icons">home</i>
+        <%= image_tag "brand_icon_secondary.png", style: "height: 24px;" %>
       </div>
-      <span class="ms-1 pt-1">ホーム</span>
+      <span class="ms-1 pt-1">みんなの思い出</span>
+    <% end %>
+  </li>
+  <li class="nav-item">
+    <%= link_to :guide, class:"nav-link py-2 text-secondary" do %>
+      <div class="text-center me-2 d-flex align-items-center justify-content-center">
+        <i class="material-icons">help_outline</i>
+      </div>
+      <span class="ms-1">BesTripの楽しみ方</span>
     <% end %>
   </li>
   <li class="nav-item">

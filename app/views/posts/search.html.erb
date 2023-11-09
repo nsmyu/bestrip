@@ -1,4 +1,7 @@
 <main class="main-content position-relative">
-  <%= render 'home/introduction' %>
+  <% if !user_signed_in? %>
+    <%= render 'home/introduction' %>
+  <% end %>
   <%= render 'index_layout' %>
 </main>
+

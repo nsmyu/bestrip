@@ -1,6 +1,6 @@
 <main class="main-content mt-0">
-  <div class="page-header align-items-start max-vh-100" style="background-image: url(<%= asset_path 'sign_in.jpg' %>);">
-    <span class="mask bg-gradient-light opacity-6"></span>
+  <div class="page-header align-items-start min-vh-100" style="background-image: url(<%= asset_path 'sign_in.jpg' %>);">
+    <span class="mask bg-white opacity-5"></span>
     <div class="container mt-7 mb-8">
       <div class="row">
         <div class="col-xl-4 col-lg-6 col-md-8 col-12 mx-auto">
@@ -10,9 +10,9 @@
                 <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">ログイン</h4>
               </div>
             </div>
-            <div class="card-body">
+            <div class="card-body shadow">
               <div class="mt-3 text-center ms-auto">
-                <%= link_to :users_guest_sign_in, class: "btn btn-outline-secondary w-100 mt-0 mb-4 btn-lg" do %>
+                <%= link_to :users_guest_sign_in, class: "btn btn-outline-secondary w-100 mt-0 mb-3" do %>
                   <div class="text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="material-icons opacity-10 mx-2">person</i>
                     ゲストログインはこちら

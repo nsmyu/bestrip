@@ -1,18 +1,17 @@
-<main class="main-content bg-white py-3 min-vh-80">
-  <div class="page-header max-vh-100">
-    <div class="container my-lg-7">
+<main class="main-content mt-0">
+  <div class="page-header align-items-start min-vh-100" style="background-image: url(<%= asset_path 'sign_up.jpg' %>);">
+    <span class="mask bg-white opacity-8"></span>
+    <div class="container mt-7 mb-8">
       <div class="row">
-        <div class="col-6 d-lg-flex d-none h-100 pe-0 position-absolute top-0 start-0 text-center justify-content-center flex-column">
-          <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center" style="background-image: url(<%= asset_path 'sign_up.jpg' %>); background-size: cover;">
-          </div>
-        </div>
-        <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
-          <div class="card card-plain">
-            <div class="card-header">
-              <h4 class="font-weight-bolder">アカウント登録</h4>
+        <div class="col-xl-4 col-lg-6 col-md-8 col-12 mx-auto">
+          <div class="card z-index-0 fadeIn3 fadeInBottom border-radius-lg">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg py-5 pe-1">
+                <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">アカウント登録</h4>
+              </div>
             </div>
-            <div class="card-body pt-0">
-              <p class="text-sm mb-4 text-dark">各項目をご入力の上、「新規登録」ボタンを押してください。入力は全て必須です。</p>
+            <div class="card-body shadow">
+              <p class="mt-2 mb-3 text-sm text-dark">各項目を入力の上「新規登録」ボタンを押してください。入力は全て必須です。</p>
               <%= form_with model: resource, scope: resource_name, url: registration_path(resource_name) do |f| %>
                 <div class="input-group input-group-outline mb-3 <%= "is-filled" if resource[:name].present? %>" >
                   <%= f.label "ニックネーム（20文字以内で入力）", class: "form-label" %>
@@ -42,11 +41,11 @@
                     <%= resource.errors.full_messages_for(:password_confirmation).first if resource.errors.any? %>
                   </div>
                 </div>
-                <div class="text-center actions">
-                  <%= f.submit "新規登録", data: { turbo: false }, class: "btn btn-lg bg-gradient-primary btn-lg w-100 mt-4" %>
+                <div class="text-center">
+                  <%= f.submit "新規登録", data: { turbo: false }, class: "btn btn-lg bg-gradient-primary w-100 mt-3" %>
                 </div>
               <% end %>
-              <p class="mb-2 mx-auto text-sm text-center">
+              <p class="text-sm text-center">
                 アカウントをお持ちの方は
                 <%= link_to "ログイン", :new_user_session, data: { turbo: false }, class: "text-primary font-weight-bold" %>
               </p>
@@ -57,5 +56,3 @@
     </div>
   </div>
 </main>
-
-

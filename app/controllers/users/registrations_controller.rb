@@ -59,12 +59,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   private
 
-  def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+  def after_sign_up_path_for(resource)
+    itineraries_path
   end
 
   def set_user
     @user = User.find(current_user.id)
+  end
+
+  def configure_sign_up_params
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
   end
 
   def update_without_password_params

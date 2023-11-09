@@ -64,6 +64,7 @@ $dark:          $h-color !default;
 $dark-blue:     #1A237E !default;
 $accent:        #EC4646 !default;
 $favorite:      #FA507D !default;
+$charcoal:      #525454 !default;
 
 
 // scss-docs-start theme-colors-map
@@ -80,6 +81,7 @@ $theme-colors: (
   "dark-blue":  $dark-blue,
   "accent":     $accent,
   "favorite":   $favorite,
+  "charcoal":   $charcoal,
 ) !default;
 // scss-docs-end theme-colors-map
 

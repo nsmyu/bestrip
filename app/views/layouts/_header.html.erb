@@ -9,7 +9,7 @@
         </span>
       </button>
     <% end %>
-    <%= link_to image_tag("brand_logo.png", width: "100", alt: "brand_logo"), root_url, class: "navbar-brand" %>
+    <%= link_to image_tag("brand_logo.png", width: "100", alt: "brand_logo"), root_url, class: "navbar-brand ms-md-2 me-0" %>
     <div class="dropdown">
       <a class="navbar-toggler dropdown-toggle d-flex d-lg-none align-items-center text-secondary" type="button" data-bs-toggle="dropdown">
         <i class="material-symbols-outlined text-secondary fs-3">account_circle</i>
@@ -19,25 +19,40 @@
     <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5">
       <ul class="navbar-nav ms-auto">
         <% if user_signed_in? %>
-          <li class="nav-item mx-2 d-flex align-items-center">
-            <%= link_to "旅を計画する", :itineraries, class: "btn btn-sm bg-gradient-primary mb-0 fs-px-13", data: { turbo: false } %>
+          <li class="nav-item d-flex align-items-center me-2">
+            <%= link_to "旅の計画", :itineraries, class: "btn bg-gradient-primary mb-0 fs-px-13", data: { turbo: false } %>
           </li>
-          <li class="nav-item mx-2">
-            <%= link_to "みんなの投稿", :root, class: "nav-link border-radius-md link-area fs-px-13", data: { turbo: false} %>
+          <li class="nav-item d-flex align-items-center ms-3">
+            <%= link_to :guide, class: "nav-link d-flex align-items-center px-2 border-radius-md link-area",
+              "data-bs-toggle": "tooltip", "data-bs-placement": "bottom", title: "BesTripの楽しみ方", data: { turbo: false} do %>
+              <i class="material-symbols-outlined text-charcoal fs-4">help_outline</i>
+            <% end %>
           </li>
-          <li class="nav-item dropdown dropdown-hover mx-2 max-width-200 border-radius-md link-area cursor-pointer">
+          <li class="nav-item d-flex align-items-center ms-2">
+            <%= link_to :users_places, class: "nav-link d-flex align-items-center px-2 border-radius-md link-area",
+              "data-bs-toggle": "tooltip", "data-bs-placement": "bottom", title: "お気に入りスポット", data: { turbo: false} do %>
+              <i class="material-symbols-outlined text-charcoal fs-4">favorite_border</i>
+            <% end %>
+          </li>
+          <li class="nav-item d-flex align-items-center ms-2">
+            <%= link_to :root, class: "nav-link px-2 border-radius-md link-area",
+              "data-bs-toggle": "tooltip", "data-bs-placement": "bottom", title: "みんなの思い出", data: { turbo: false} do %>
+              <%= image_tag "brand_icon_charcoal.png", style: "height: 24px;" %>
+            <% end %>
+          </li>
+          <li class="nav-item dropdown dropdown-hover max-width-200 border-radius-md link-area cursor-pointer d-flex align-items-center ms-2">
             <a class="nav-link d-flex pe-3" type="button" data-bs-toggle="dropdown">
               <%= image_tag current_user.avatar.url, class: "header-avatar" %>
-              <p class="fw-normal text-ellipsis fs-px-13"><%= current_user.name %></p>
+              <p class="ms-1 fw-bold text-ellipsis text-sm text-charcoal"><%= current_user.name %></p>
             </a>
             <%= render 'layouts/header_dropdown' %>
           </li>
         <% else %>
-          <li class="nav-item mx-2">
-            <%= link_to "アカウント登録", :new_user_registration, class: "nav-link ps-2 fs-px-13", data: { turbo: false } %>
+          <li class="nav-item">
+            <%= link_to "アカウント登録", :new_user_registration, class: "nav-link px-3 border-radius-md link-area text-sm text-charcoal", data: { turbo: false } %>
           </li>
-          <li class="nav-item mx-2 d-flex align-items-center">
-            <%= link_to "ログイン", :new_user_session, class: "btn btn-sm bg-gradient-primary mb-0 fs-px-13", data: { turbo: false } %>
+          <li class="nav-item">
+            <%= link_to "ログイン", :new_user_session, class: "nav-link px-3 border-radius-md link-area text-sm text-charcoal", data: { turbo: false } %>
           </li>
         <% end %>
       </ul>
