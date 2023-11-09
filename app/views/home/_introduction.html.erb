@@ -1,31 +1,31 @@
-
-
-<div class="page-header bg-white max-vh-100">
-  <div class="mx-auto max-width-800">
-    <div class="row d-flex align-items-center py-4">
-      <div class="col-2 px-3">
-        <%= image_tag "bestrip_icon.png", class: "w-100" %>
-      </div>
-      <div class="col-10">
-        <p class="text-sm text-dark">
-          BesTripは、簡単に旅のプランを作成できるアプリです。<br>
-          メンバーと共同でスケジュールを編集したり、みんなの思い出投稿から素敵なスポットを発見したり。<br>
-          楽しく計画を立てて、Bestな旅に出かけましょう。
-        </p>
-        <%= link_to :guide, class: "d-flex mt-1 text-dark " do %>
+<div class="page-header max-vh-100" style="background-image: url(<%= asset_path 'first_view.jpg' %>);">
+  <span class="mask bg-white opacity-8"></span>
+  <div class="mx-auto my-3 py-4 px-4 max-width-800 z-index-2">
+    <div class="d-flex justify-content-center mb-1">
+      <%= image_tag "brand_name.png", style: "width: 130px;" %>
+    </div>
+    <div class="text-center">
+      <p class="text-sm" style="color: #333635;">
+        BesTripは、簡単に旅のプランを作成できるアプリです。<br>
+        メンバーと共同でスケジュールを編集したり、みんなの思い出投稿から素敵なスポットを発見したり。<br>
+        楽しく計画を立てて、Bestな旅に出かけましょう。
+      </p>
+      <%= link_to :guide, class: "d-inline-block mt-1" do %>
+        <div class="d-flex align-items-center hover-opacity" style="color: #535453;">
           <i class="material-icons">navigate_next</i>
-          <span class="fs-px-13 fw-bold">楽しみ方を詳しく見る</span>
-        <% end %>
-
-        <div class="d-flex mt-3">
-          <%= link_to :itineraries, class: "btn btn-outline-primary mb-0" do %>
-            <span>旅の計画を始める<span>
-          <% end %>
-          <%= link_to :users_guest_sign_in, class: "btn btn-outline-secondary ms-3 mb-0" do %>
-            <span>ゲストログイン</span>
-          <% end %>
+          <span class="text-sm fw-bold">BesTripの楽しみ方</span>
         </div>
+      <% end %>
+      <% if !user_signed_in? %>
+      <div class="d-flex justify-content-center mt-3">
+        <%= link_to :itineraries, class: "btn bg-gradient-primary mb-0 me-2" do %>
+          <span>旅の計画を始める<span>
+        <% end %>
+        <%= link_to :users_guest_sign_in, class: "btn btn-outline-secondary mb-0 ms-2" do %>
+          <span>ゲストログイン</span>
+        <% end %>
       </div>
+      <% end %>
     </div>
   </div>
 </div>

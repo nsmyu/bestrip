@@ -1,12 +1,28 @@
-<div class="mt-n4 mx-n4 mb-2 pt-4 pb-3 px-4 px-sm-5 bg-white position-sticky top-6 z-index-3 border-bottom">
-  <div class="mx-auto max-width-700">
-    <%= form_with url: search_posts_path, class: "mt-2 search-form-icon-right", method: :get do |f| %>
-      <%= f.search_field :keyword, value: @keyword, autocomplete: 'off' %>
-      <%= f.button "" %>
-    <% end %>
-    <div class="mt-1 d-sm-flex align-items-center">
-      <span class="ms-1 fs-px-13 fw-bold text-dark">人気の行き先 </span>
-      <%= simple_format(link_to_hashtag("#沖縄 #北海道 #東京 #東南アジア #オーストラリア"), class:"d-flex align-items-center ms-1 ms-sm-2 text-sm") %>
+<div class="mb-2 z-index-3" style="top: 63px;">
+  <div class="mx-auto ms-md-auto max-width-400">
+    <div class="dropdown">
+      <%= form_with url: search_posts_path, class: "search-form-icon-right", method: :get do |f| %>
+        <%= f.text_field :keyword, value: @keyword, "data-bs-toggle": "dropdown", "data-bs-auto-close": "outside", placeholder: "投稿を検索", autocomplete: 'off' %>
+        <ul class="dropdown-menu dropdown-menu-start p-2 border-radius-md border">
+          <li class="border-0 fs-px-3 text-dark fw-bold pb-1 ps-1">人気の行き先</li>
+          <li class="border-0 px-2 pb-1">
+            <%= simple_format(link_to_hashtag("#沖縄"), class: "text-sm") %>
+          </li>
+          <li class="border-0 px-2 pb-1">
+            <%= simple_format(link_to_hashtag("#北海道"), class: "text-sm") %>
+          </li>
+          <li class="border-0 px-2 pb-1">
+            <%= simple_format(link_to_hashtag("#東京"), class: "text-sm") %>
+          </li>
+          <li class="border-0 px-2 pb-1">
+            <%= simple_format(link_to_hashtag("#オーストラリア"), class: "text-sm") %>
+          </li>
+          <li class="border-0 px-2">
+            <%= simple_format(link_to_hashtag("#東南アジア"), class: "text-sm") %>
+          </li>
+        </ul>
+        <%= f.button "" %>
+      <% end %>
     </div>
   </div>
 </div>
