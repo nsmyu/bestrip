@@ -2,7 +2,10 @@
   <% if flash[:notice] %>
     <p class="p-4 text-center text-sm text-danger"><%= notice %></p>
   <% else %>
-    <%= render partial: "place_index_item", collection: @place_index_items %>
+    <%= paginate @place_index_items, window: 1 %>
+    <div class="my-3">
+      <%= render partial: "place_index_item", collection: @place_index_items %>
+    </div>
     <%= paginate @place_index_items, window: 1 %>
   <% end %>
 <% end %>

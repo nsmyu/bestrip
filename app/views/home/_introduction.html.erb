@@ -1,5 +1,5 @@
 <div class="page-header max-vh-100" style="background-image: url(<%= asset_path 'first_view.jpg' %>);">
-  <span class="mask bg-white opacity-8"></span>
+  <span class="mask bg-white" style="opacity: 0.85;"></span>
   <div class="mx-auto my-3 py-4 px-4 max-width-800 z-index-2">
     <div class="d-flex justify-content-center mb-1">
       <%= image_tag "brand_name.png", style: "width: 130px;" %>
@@ -11,16 +11,16 @@
         楽しく計画を立てて、Bestな旅に出かけましょう。
       </p>
       <%= link_to :guide, class: "d-inline-block mt-1" do %>
-        <div class="d-flex align-items-center hover-opacity" style="color: #535453;">
+        <div class="d-flex align-items-center hover-opacity text-dark" >
           <i class="material-icons">navigate_next</i>
-          <span class="text-sm fw-bold">BesTripの楽しみ方</span>
+          <span class="text-sm fw-bold text-charcoal">BesTripの楽しみ方</span>
         </div>
       <% end %>
       <div class="d-flex justify-content-center mt-3">
-        <%= link_to :new_user_registration, class: "btn bg-gradient-primary mb-0 me-2" do %>
+        <%= link_to :new_user_registration, class: "btn bg-gradient-primary mb-0 me-2 fs-px-13" do %>
           <span>旅の計画を始める<span>
         <% end %>
-        <%= link_to :users_guest_sign_in, class: "btn btn-outline-secondary mb-0 ms-2" do %>
+        <%= link_to :users_guest_sign_in, class: "btn btn-outline-secondary mb-0 ms-2 fs-px-13" do %>
           <span>ゲストログイン</span>
         <% end %>
       </div>

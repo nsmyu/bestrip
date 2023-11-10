@@ -8,7 +8,7 @@ require 'faker'
     email: "email_#{n+1}@example.com",
     avatar: File.open("./app/assets/images/avatar/avatar_#{n+1}.jpg"),
     introduction: Faker::Lorem.paragraph(sentence_count: 8),
-    password: random_pass,
-    password_confirmation: random_pass,
+    password: "password",
+    password_confirmation: "password",
   )
 end

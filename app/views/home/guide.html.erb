@@ -1,1 +1,90 @@
-<p>ガイド</p>
+<main class="main-content position-relative">
+  <div class="page-header max-vh-100" style="background-image: url(<%= asset_path 'first_view.jpg' %>);">
+    <span class="mask bg-white" style="opacity: 0.85;"></span>
+    <div class="mx-auto my-3 py-5 px-4 max-width-800 z-index-2">
+      <h5 class="text-center fw-bold text-charcoal">BesTripの楽しみ方</h5>
+      <p class="text-sm text-center" style="color: #333635;">
+        旅を思い立ったときから、思い出にひたる時間まで、あなたの旅をサポートします。<br>
+      </p>
+    </div>
+  </div>
+  <div class="container-fluid px-4 bg-white min-vh-100">
+    <div class="mx-auto max-width-900">
+      <div>
+        <h5 class="pt-5 pb-3 pb-sm-0 text-center text-dark">旅を計画する</h5>
+        <hr class="mt-3 mb-5 d-none d-sm-block horizontal-gradient-dark">
+        <div class="row d-flex align-items-center mb-6">
+          <div class="col-sm-6 px-0 px-sm-4">
+            <%= image_tag "guide/itineraries.png", class: "w-100 shadow-sm border" %>
+          </div>
+          <div class="col-sm-6 pt-3 pt-sm-0">
+            <h6>旅のプランを作成</h6>
+            <p class="text-sm text-dark">旅のタイトルを決めてプランを作成しましょう。作成したプランは、旅の記録として大切な思い出にもなります。</p>
+          </div>
+        </div>
+        <div class="row d-flex align-items-center mb-6">
+          <div class="col-sm-6 px-0 px-sm-4">
+            <%= image_tag "guide/itinerary.jpg", class: "w-100 shadow-sm border" %>
+          </div>
+          <div class="col-sm-6 pt-3 pt-sm-0">
+            <h6>共同でプランを編集</h6>
+            <p class="text-sm text-dark">一緒に旅するメンバーをプランに追加しましょう。追加されたメンバーも、スケジュールや行きたい場所リストの編集が可能です。</p>
+            <p class="mt-1 text-sm text-dark">みんなで楽しくプランを作り上げていきましょう。</p>
+          </div>
+        </div>
+        <div class="row d-flex align-items-center mb-6">
+          <div class="col-sm-6 px-0 px-sm-4">
+            <%= image_tag "guide/schedules.png", class: "w-100 shadow-sm border" %>
+          </div>
+          <div class="col-sm-6 pt-3 pt-sm-0">
+            <h6>スケジュールを管理</h6>
+            <p class="text-sm text-dark">予定が決まったら、スケジュールに追加しましょう。簡単に旅程表を作成することができます。</p>
+            <p class="mt-1 text-sm text-dark">スケジュールにはスポットの住所や地図情報を登録することができ、旅行中にも便利です。</p>
+          </div>
+        </div>
+        <div class="row d-flex align-items-center mb-6">
+          <div class="col-sm-6 px-0 px-sm-4">
+            <%= image_tag "guide/place_search.png", class: "w-100 shadow-sm border" %>
+          </div>
+          <div class="col-sm-6 pt-3 pt-sm-0">
+            <h6>行きたい場所をリストアップ</h6>
+            <p class="text-sm text-dark">地図からスポットを検索できます。気になるスポットを見つけたら、「行きたい場所リスト」に追加しておきましょう。</p>
+          </div>
+        </div>
+        <div class="row d-flex align-items-center mb-6">
+          <div class="col-sm-6 px-0 px-sm-4">
+            <%= image_tag "guide/place_list.png", class: "w-100 shadow-sm border" %>
+          </div>
+          <div class="col-sm-6 pt-3 pt-sm-0">
+            <h6>リストアップした場所をスケジュールに追加</h6>
+            <p class="text-sm text-dark">「行きたい場所リスト」に登録したスポットをスケジュールに追加しましょう。たくさんリストアップして、後からじっくり選んで予定を組み立てていくのがおすすめです。</p>
+          </div>
+        </div>
+      </div>
+      <div class="pt-2 pb-6">
+        <h5 class="pt-5 pb-3 pb-sm-0 text-center text-dark">思い出を共有する</h5>
+        <hr class="mt-3 mb-5 d-none d-sm-block horizontal-gradient-dark">
+          <div class="row d-flex align-items-center mb-6">
+            <div class="col-sm-6 px-0 px-sm-4">
+              <%= image_tag "guide/posts.png", class: "w-100 shadow-sm border" %>
+            </div>
+            <div class="col-sm-6 pt-3 pt-sm-0">
+              <h6>思い出を投稿する</h6>
+              <p class="text-sm text-dark">旅の後は、思い出の写真を投稿してあなたの旅を公開しましょう。旅を愛するBesTripユーザーたちが、あなたの投稿を待っています。</p>
+            </div>
+          </div>
+          <div class="row d-flex align-items-center mb-6">
+            <div class="col-sm-6 px-0 px-sm-4">
+              <%= image_tag "guide/post.png", class: "w-100 shadow-sm border" %>
+            </div>
+            <div class="col-sm-6 pt-3 pt-sm-0">
+              <h6>みんなの思い出から発見する</h6>
+              <p class="text-sm text-dark">投稿詳細ページでは、旅のスケジュールやスポット情報を見ることができます。他のユーザーの投稿から、次の旅の行き先が見つかるかもしれません。</p>
+              <p class="mt-1 text-sm text-dark">気になる場所を見つけたら、「お気に入りスポット」に追加しておきましょう。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
