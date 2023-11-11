@@ -6,7 +6,7 @@ class PlacesController < ApplicationController
   end
 
   def index_lazy
-    @place_index_items = @placeable.places.order(created_at: :desc).page(params[:page]).per(10)
+    @place_index_items = @placeable.places.order(created_at: :desc).page(params[:page]).per(8)
 
     @place_index_items.each do |place_index_item|
       query_params =
