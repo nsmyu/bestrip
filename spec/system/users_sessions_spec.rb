@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "UsersSessions", type: :system, focus: true do
+RSpec.describe "UsersSessions", type: :system do
   let!(:user) { create(:user) }
 
   before do
@@ -14,7 +14,7 @@ RSpec.describe "UsersSessions", type: :system, focus: true do
         fill_in "user[password]", with: user.password
         click_button "ログイン"
 
-        expect(current_path).to eq root_path
+        expect(current_path).to eq itineraries_path
         expect(page).to have_content "ログインしました。"
         within "header" do
           expect(page).to have_content user.name

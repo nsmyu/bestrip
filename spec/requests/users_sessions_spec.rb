@@ -13,7 +13,7 @@ RSpec.describe "UsersSessions", type: :request do
   describe "POST #create" do
     it "有効な値の場合、ログインに成功すること" do
       post user_session_path, params: { user: { email: user.email, password: user.password } }
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to itineraries_path
     end
 
     it "メールアドレスが間違っている場合、ログインに失敗すること" do
@@ -32,7 +32,7 @@ RSpec.describe "UsersSessions", type: :request do
     it "ログアウトに成功すること" do
       sign_in user
       delete destroy_user_session_path
-      expect(response).to redirect_to root_path # 修正する
+      expect(response).to redirect_to root_path
     end
   end
 end

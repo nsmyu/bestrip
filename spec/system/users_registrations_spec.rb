@@ -16,7 +16,7 @@ RSpec.describe "UsersRegistrations", type: :system do
         fill_in "user[password_confirmation]", with: user.password_confirmation
         click_button "新規登録"
 
-        expect(current_path).to eq root_path
+        expect(current_path).to eq itineraries_path
         expect(page).to have_content "アカウント登録が完了しました。"
         within "header" do
           expect(page).to have_content user.name

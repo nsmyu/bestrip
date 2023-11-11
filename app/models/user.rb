@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :owned_itineraries, class_name: "Itinerary", dependent: :destroy
   has_many :posts, dependent: :destroy
 
+  devise :database_authenticatable, :registerable, :rememberable, :validatable
+
   validates :name,       presence: true, length: { maximum: 20 }
   VALID_BESTRIP_ID_REGEX = /\A[\w]{5,20}\z/
   validates :bestrip_id, uniqueness: { case_sensitive: false },
@@ -22,7 +24,6 @@ class User < ApplicationRecord
 
   after_create :add_guest_to_itineraries, if: :guest?
 
-  devise :database_authenticatable, :registerable, :rememberable, :validatable
   mount_uploader :avatar, AvatarUploader
 
   def self.guest

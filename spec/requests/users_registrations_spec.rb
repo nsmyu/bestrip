@@ -15,7 +15,7 @@ RSpec.describe "UsersRegistrations", type: :request do
     it "正常な値の場合、ユーザー登録に成功すること" do
       user_params = attributes_for(:user)
       post user_registration_path, params: { user: user_params }
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to itineraries_path
     end
 
     it "無効な値の場合、ユーザー登録に失敗すること" do

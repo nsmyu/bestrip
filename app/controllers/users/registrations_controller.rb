@@ -9,6 +9,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def create
     super
+    logger.debug { resource.errors.full_messages_for(:password) }
   end
 
   def edit
