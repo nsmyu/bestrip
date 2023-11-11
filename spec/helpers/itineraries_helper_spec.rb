@@ -1,15 +1,16 @@
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the ItinerariesHelper. For example:
-#
-# describe ItinerariesHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
-# RSpec.describe ItinerariesHelper, type: :helper do
-#   pending "add some examples to (or delete) #{__FILE__}"
-# end
+RSpec.describe ItinerariesHelper, type: :helper do
+  let(:user) { create(:user) }
+  let(:other_user_1) { create(:user) }
+  let(:other_user_2) { create(:user) }
+  let(:itinerary) { create(:itinerary, owner: user) }
+
+  describe "#member_names(itinerary)" do
+    it "引数のitineraryに関連付けられたユーザーのニックネームを文字列にして返すこと" do
+      itinerary.members << other_user_1 << other_user_2
+      expect(helper.member_names(itinerary))
+        .to eq "#{user.name}, #{other_user_1.name}, #{other_user_2.name}"
+    end
+  end
+end

@@ -5,6 +5,7 @@ ja:
   time:
     formats:
       default: "%H:%M"
+      date_posted: "%Y.%-m.%-d"
   views:
     pagination:
       previous: <i class="fas fa-angle-left text-lg"></i>

@@ -1,15 +1,13 @@
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the PostsHelper. For example:
-#
-# describe PostsHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
 RSpec.describe PostsHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:text) { "テスト #タグ1　#タグ2" }
+
+  describe "#link_to_hashtag(text)", focus: true do
+    it "引数の文字列の中でHASHTAG_REGEXに一致する部分をリンクタグに変換して返すこと" do
+      expect(helper.link_to_hashtag(text))
+        .to match(/<a.+\shref="\/posts\/search\?keyword=%23%E3%82%BF%E3%82%B01">#タグ1<\/a>/)
+        .and match(/<a.+\shref="\/posts\/search\?keyword=%23%E3%82%BF%E3%82%B02">#タグ2<\/a>/)
+    end
+  end
 end

@@ -1,7 +1,7 @@
 <div id="user_place">
   <%= form_with url: users_places_path, model: [@placeable, @place] do |f| %>
     <%= f.hidden_field :place_id, value: @place_id %>
-    <% if places_include?(@placeable, @place_id) %>
+    <% if @placeable.added? @place.place_id %>
       <%= link_to [:users_place, id: @place.id], class: "btn btn-outline-favorite d-flex justify-content-center align-items-center mt-3 mb-0 w-100", data: { turbo_method: :delete } do %>
         <i class="material-icons me-1">favorite</i>
         <span>お気に入りに追加済み</span>

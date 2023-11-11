@@ -1,7 +1,7 @@
 <div id="itinerary_place">
   <%= form_with model: [@placeable, @place] do |f| %>
     <%= f.hidden_field :place_id, value: @place_id %>
-    <% if places_include?(@placeable, @place_id) %>
+    <% if @placeable.added? @place.place_id %>
       <%= link_to [:itinerary_place, itinerary_id: @placeable.id, id: @place.id], class: "btn btn-outline-primary d-flex justify-content-center align-items-center mt-3 mb-0 w-100", data: { turbo_method: :delete } do %>
         <i class="material-icons me-1">flag</i>
         <span>行きたい場所リストに追加済み</span>

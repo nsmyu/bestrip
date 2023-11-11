@@ -8,4 +8,11 @@ module Placeable
   def user?
     instance_of? User
   end
+
+  def added?(place_id)
+    Place
+      .where(placeable_type: self.class.to_s)
+      .where(placeable_id: id)
+      .where(place_id: place_id)
+  end
 end
