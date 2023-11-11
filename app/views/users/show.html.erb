@@ -11,7 +11,7 @@
               <% if @user.bestrip_id %>
             <p class="text-sm text-secondary">@<%= @user.bestrip_id %></p>
             <% end %>
-            <p class="pt-2 text-sm">投稿<%= @user.posts.count %>件&emsp;&ensp;旅のプラン<%= @user.itineraries.count %>件</p>
+            <p class="pt-2 text-sm text-dark">投稿<%= @user.posts.count %>件&emsp;&ensp;<%= link_to_if @user == current_user, "旅のプラン#{@user.itineraries.count}件", itineraries_path, class: "text-dark hover-opacity" %></p>
           </div>
           <% if @user == current_user %>
             <div class="col-1 mt-1 mt-sm-2 mb-auto ms-n4 ms-sm-n1">
