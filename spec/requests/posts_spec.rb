@@ -29,7 +29,7 @@ RSpec.describe "Posts", type: :request do
       get posts_path
       expect(response.body).to include test_post.title
       expect(response.body).to include test_post.user.name
-      expect(response.body).to include date_posted(test_post)
+      expect(response.body).to include I18n.l test_post.created_at, format: :date_posted
     end
   end
 
@@ -96,7 +96,7 @@ RSpec.describe "Posts", type: :request do
       expect(response.body).to include test_post.title
       expect(response.body).to include test_post.caption
       expect(response.body).to include test_post.user.name
-      expect(response.body).to include date_posted(test_post)
+      expect(response.body).to include I18n.l test_post.created_at, format: :date_posted
       expect(response.body).to include test_post.itinerary.schedules[0].title
     end
   end

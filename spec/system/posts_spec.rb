@@ -33,7 +33,7 @@ RSpec.describe "Posts", type: :system do
         expect(page).to have_content post.user.name
         expect(page).to have_selector "img[src$='cat.jpg']"
         expect(page).to have_content post.title
-        expect(page).to have_content date_posted(post)
+        expect(page).to have_content I18n.l post.created_at, format: :date_posted
       end
     end
 
@@ -120,7 +120,7 @@ RSpec.describe "Posts", type: :system do
       expect(page).to have_content post.title
       expect(page).to have_content post.user.name
       expect(page).to have_content post.caption
-      expect(page).to have_content date_posted(post)
+      expect(page).to have_content I18n.l post.created_at, format: :date_posted
     end
 
     it "ログインユーザーが投稿の作成者である場合は、ドロップダウンメニューを表示すること" do
