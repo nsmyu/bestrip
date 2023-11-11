@@ -89,19 +89,4 @@ RSpec.configure do |config|
   #   # test failures related to randomization by passing the same `--seed` value
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
-  config.define_derived_metadata do |meta|
-    meta[:aggregate_failures] = true unless meta.key?(:aggregate_failures)
-  end
-end
-
-require 'webmock/rspec'
-require 'vcr'
-
-VCR.configure do |config|
-  config.cassette_library_dir = 'spec/support/vcr'
-  config.hook_into :webmock
-  config.configure_rspec_metadata!
-  config.allow_http_connections_when_no_cassette = true
-  config.default_cassette_options = { record: :new_episodes }
-  config.filter_sensitive_data("<API_KEY>") { ENV["GOOGLE_API_KEY"] }
 end
