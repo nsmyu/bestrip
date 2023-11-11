@@ -6,9 +6,9 @@
         <button type="button" class="d-none" data-bs-dismiss="offcanvas" aria-label="閉じる"></button>
       </label>
       <div class="mt-4 ms-2 pt-1">
-        <% if itinerary_page? %>
+        <% if request.fullpath.include?('itineraries/') %>
           <%= render 'layouts/sidenav_links_itinerary' %>
-        <% elsif user_page? %>
+        <% elsif controller_name == "registrations" %>
           <%= render 'layouts/sidenav_links_user' %>
         <% else %>
           <%= render 'layouts/sidenav_links' %>

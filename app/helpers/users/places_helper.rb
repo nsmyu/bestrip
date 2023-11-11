@@ -1,2 +1,0 @@
-module Users::PlacesHelper
-end

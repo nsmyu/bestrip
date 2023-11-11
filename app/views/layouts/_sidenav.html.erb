@@ -2,9 +2,9 @@
 <% if user_signed_in? %>
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl fixed-start mt-4 ms-3 py-2 bg-white z-index-3" id="sidenav-main">
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
-      <% if itinerary_page? %>
+      <% if request.fullpath.include?('itineraries/') %>
         <%= render 'layouts/sidenav_links_itinerary' %>
-      <% elsif user_page? %>
+      <% elsif controller_name == "registrations" %>
         <%= render 'layouts/sidenav_links_user' %>
       <% else %>
         <%= render 'layouts/sidenav_links' %>

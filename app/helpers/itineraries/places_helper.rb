@@ -1,2 +1,0 @@
-module Itineraries::PlacesHelper
-end

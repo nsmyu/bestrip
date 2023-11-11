@@ -30,7 +30,9 @@
     </div>
     <%= render 'layouts/offcanvas' %>
     <%= yield %>
-    <%= render 'layouts/footer' %>
+    <% if !current_page?(new_user_registration_path) && !current_page?(new_user_session_path) %>
+      <%= render 'layouts/footer' %>
+    <% end %>
     <%= render 'layouts/confirm_modal' %>
     <%= turbo_frame_tag "modal" %>
   </body>
