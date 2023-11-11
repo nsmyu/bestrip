@@ -1,4 +1,10 @@
 module ApplicationHelper
+  BASE_TITLE = "BesTrip".freeze
+
+  def full_title(page_title)
+    page_title.blank? ? BASE_TITLE : "#{page_title} | #{BASE_TITLE}"
+  end
+
   def member_names(itinerary)
     sorted_members = itinerary.members.order("itinerary_users.created_at")
     sorted_members.map { |i| i.name }.join(", ")

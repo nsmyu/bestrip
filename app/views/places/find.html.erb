@@ -1,3 +1,4 @@
+<% provide :title, @placeable.user? ? "スポットを探す" : "スポットを探す - " + @itinerary.title %>
 <%= render 'layouts/sidenav' %>
 <% if @placeable.user? %>
   <%= render partial: 'searchbox', locals: { message: "スポットの名称やキーワードで検索できます。気になるスポットはお気に入りに追加しておきましょう。" } %>
