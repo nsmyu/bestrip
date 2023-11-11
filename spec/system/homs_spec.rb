@@ -1,7 +1,7 @@
 RSpec.describe "Homes", type: :system do
   let(:user) { create(:user) }
 
-  describe "楽しみ方ガイドページ", focus: true do
+  describe "楽しみ方ガイドページ" do
     before do
       visit guide_path
     end
