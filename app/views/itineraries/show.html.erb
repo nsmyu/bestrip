@@ -3,64 +3,7 @@
 <main class="main-content position-relative bg-pearl-white">
   <h5 class="page-heading">旅のプラン情報</h5>
   <div class="container-fluid py-3 py-sm-4 px-0 min-vh-100">
-    <div class="card mb-3 mx-auto max-width-550">
-      <div class="card-body text-dark">
-        <%= image_tag @itinerary.image.url, class: "mb-3 border-radius-lg w-100" %>
-        <div class="d-flex justify-content-between">
-          <p class="mb-2 lh-base"><span class="fw-bold text-xs">タイトル</span><br><%= @itinerary.title %></p>
-          <% if current_user == @itinerary.owner %>
-            <div class="dropdown">
-              <label for="itinerary_dropdown" class="mb-0 cursor-pointer">
-                <i class="material-icons mt-n1 me-n1 p-2 text-secondary link-area rounded-circle">more_horiz</i>
-              </label>
-              <button class="d-none" id="itinerary_dropdown" data-bs-toggle="dropdown"></button>
-              <ul class="border dropdown-menu dropdown-menu-end mt-2"></li>
-                <li>
-                  <%= link_to :edit_itinerary, class: "dropdown-item d-flex align-items-center", data: { turbo_frame: "modal" } do %>
-                    <i class="material-symbols-outlined pe-1 fs-6">edit</i>
-                    <p class="text-sm">編集</p>
-                  <% end %>
-                </li>
-                <li>
-                  <%= link_to [:itinerary, id: @itinerary.id], class: "dropdown-item d-flex align-items-center text-danger", data: { turbo_method: :delete, turbo_confirm: 'この旅のプランを削除しますか？この操作は取り消せません。' } do %>
-                    <i class="material-symbols-outlined pe-1 fs-6">delete</i>
-                    <p class="text-sm">削除</p>
-                  <% end %>
-                </li>
-              </ul>
-            </div>
-          <% end %>
-        </div>
-        <p class="mb-2 lh-base"><span class="fw-bold text-xs">旅行期間</span><br><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
-        <p>
-          <span class="fw-bold text-xs d-inline-block mb-2">旅のプラン作成者</span><br>
-          <%= image_tag @itinerary.owner.avatar.url, id: 'image-preview', class: "rounded-circle avatar-thumbnail me-2" %>
-          <%= @itinerary.owner.name %>
-        </p>
-      </div>
-    </div>
-    <div class="card mb-3 mx-auto max-width-550">
-      <div class="card-body text-dark">
-        <h6 class="border-bottom pb-2">旅のメンバー</h6>
-        <% @itinerary_members.each do |member| %>
-          <div class="d-flex justify-content-between mt-3 align-items-center">
-            <%= link_to [:user, id: member.id], class:"hover-opacity" do %>
-              <%= image_tag member.avatar.url, id: 'image-preview', class: "rounded-circle avatar-thumbnail me-2" %>
-              <p class="d-inline text-sm text-dark"><%= member.name %></p>
-            <% end %>
-            <% if current_user == @itinerary.owner && member!= @itinerary.owner %>
-              <%= link_to [:itinerary_user, id: @itinerary.id, user_id: member.id], data: { turbo_method: :delete, turbo_confirm: member.name + 'をメンバーから削除しますか？' } do %>
-                <i class="material-icons p-2 fw-normal text-dark link-area rounded-circle">person_remove</i>
-              <% end %>
-            <% end %>
-          </div>
-        <% end %>
-        <hr class="dark horizontal mb-2">
-        <%= link_to :new_itinerary_user, class: "py-2 px-4 border-radius-lg link-area d-flex align-items-center justify-content-center", data: { turbo_frame: "modal" } do %>
-          <i class="material-icons me-2 fs-5">person_add</i>
-          <p class="text-sm">メンバーを追加</p>
-        <% end %>
-      </div>
-    </div>
+    <%= render "info" %>
+    <%= render "members" %>
   </div>
 </main>

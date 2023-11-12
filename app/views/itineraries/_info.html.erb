@@ -1,0 +1,36 @@
+<div class="card mb-3 mx-auto max-width-550">
+  <div class="card-body text-dark">
+    <%= image_tag @itinerary.image.url, class: "mb-3 border-radius-lg w-100" %>
+    <div class="d-flex justify-content-between">
+      <p class="mb-2 lh-base"><span class="fw-bold text-xs">タイトル</span><br><%= @itinerary.title %></p>
+      <% if current_user == @itinerary.owner %>
+        <div class="dropdown">
+          <label for="itinerary_dropdown" class="mb-0 cursor-pointer">
+            <i class="material-icons mt-n1 me-n1 p-2 text-secondary link-area rounded-circle">more_horiz</i>
+          </label>
+          <button class="d-none" id="itinerary_dropdown" data-bs-toggle="dropdown"></button>
+          <ul class="border dropdown-menu dropdown-menu-end mt-2"></li>
+            <li>
+              <%= link_to :edit_itinerary, class: "dropdown-item d-flex align-items-center", data: { turbo_frame: "modal" } do %>
+                <i class="material-symbols-outlined pe-1 fs-6">edit</i>
+                <p class="text-sm">編集</p>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to [:itinerary, id: @itinerary.id], class: "dropdown-item d-flex align-items-center text-danger", data: { turbo_method: :delete, turbo_confirm: 'この旅のプランを削除しますか？この操作は取り消せません。' } do %>
+                <i class="material-symbols-outlined pe-1 fs-6">delete</i>
+                <p class="text-sm">削除</p>
+              <% end %>
+            </li>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+    <p class="mb-2 lh-base"><span class="fw-bold text-xs">旅行期間</span><br><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
+    <p>
+      <span class="fw-bold text-xs d-inline-block mb-2">旅のプラン作成者</span><br>
+      <%= image_tag @itinerary.owner.avatar.url, id: 'image-preview', class: "rounded-circle avatar-thumbnail me-2" %>
+      <%= @itinerary.owner.name %>
+    </p>
+  </div>
+</div>
