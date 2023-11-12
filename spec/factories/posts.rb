@@ -1,10 +1,14 @@
 FactoryBot.define do
   factory :post do
-    sequence(:title) { |n| "Post_#{n}" }
-    caption { "One of the best trips of my life!" }
+    sequence(:title) { |n| "Post of Trip_#{n}" }
+    caption { "The trip was great! #bestrip" }
     itinerary_public { "true" }
     itinerary
     user { itinerary.owner if itinerary }
+
+    trait :with_caption_awesome do
+      caption { "The trip was awesome! #bestrip" }
+    end
 
     trait :with_photo do
       after(:build) do |post|

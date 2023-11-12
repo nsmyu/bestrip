@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :request, focus: true do
+RSpec.describe "Posts", type: :request do
   let!(:user) { create(:user) }
   let!(:itinerary_1) { create(:itinerary, :with_schedule, owner: user) }
   let!(:itinerary_2) { create(:itinerary, :with_schedule, owner: user) }
-  let!(:post_1) { create(:post, :with_photo, caption: "caption_1", itinerary: itinerary_1) }
-  let!(:post_2) { create(:post, :with_photo, caption: "caption_2", itinerary: itinerary_2) }
+  let!(:post_1) { create(:post, :with_photo, itinerary: itinerary_1) }
+  let!(:post_2) { create(:post, :with_caption_awesome, :with_photo, itinerary: itinerary_2) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
   before do
@@ -37,13 +37,13 @@ RSpec.describe "Posts", type: :request, focus: true do
     end
 
     it "タイトルにキーワードが含まれる投稿を取得すること" do
-      get search_posts_path(keyword: post_1.title)
+      get search_posts_path(keyword: post_1.title.slice(/Trip_\d+/))
       expect(response.body).to include post_1.title
       expect(response.body).not_to include post_2.title
     end
 
     it "キャプションにキーワードが含まれる投稿を取得すること" do
-      get search_posts_path(keyword: post_1.caption)
+      get search_posts_path(keyword: "great")
       expect(response.body).to include post_1.title
       expect(response.body).not_to include post_2.title
     end
@@ -52,6 +52,11 @@ RSpec.describe "Posts", type: :request, focus: true do
       get search_posts_path(keyword: post_1.itinerary.schedules[0].title)
       expect(response.body).to include post_1.title
       expect(response.body).not_to include post_2.title
+    end
+
+    it "キーワードに該当する投稿が無い場合、その旨メッセージを取得すること" do
+      get search_posts_path(keyword: "find_nothing")
+      expect(response.body).to include "「find_nothing」に一致する投稿は見つかりませんでした"
     end
   end
 
@@ -116,7 +121,7 @@ RSpec.describe "Posts", type: :request, focus: true do
 
     it "投稿の各情報を取得すること" do
       expect(response.body).to include post_1.title
-      expect(response.body).to include post_1.caption
+      expect(response.body).to include post_1.caption.slice(/[\w\s]+!/)
       expect(response.body).to include I18n.l post_1.created_at, format: :date_posted
       expect(response.body).to include post_1.user.name
       expect(response.body).to include post_1.itinerary.schedules[0].title

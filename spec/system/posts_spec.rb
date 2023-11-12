@@ -1,17 +1,18 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :system do
+RSpec.describe "Posts", type: :system, focus: true do
   let!(:user) { create(:user) }
   let(:other_user) { create(:user) }
-  let!(:itinerary) { create(:itinerary, :with_schedule, owner: user) }
+  let!(:itinerary_1) { create(:itinerary, :with_schedule, owner: user) }
+  let!(:itinerary_2) { create(:itinerary, :with_schedule, owner: user) }
+  let!(:post_1) { create(:post, :with_photo, itinerary: itinerary_1) }
+  let!(:post_2) { create(:post, :with_caption_awesome, :with_photo, itinerary: itinerary_2) }
 
   before do
     sign_in user
   end
 
   describe "一覧表示" do
-    let!(:post) { create(:post, :with_photo, itinerary: itinerary) }
-
     before do
       visit posts_path
     end
@@ -19,9 +20,9 @@ RSpec.describe "Posts", type: :system do
     it "投稿を作成日の降順で表示すること" do
       now = Time.current
       post_2_days_ago =
-        create(:post, :with_photo, created_at: now.ago(2.days), itinerary: itinerary)
-      post_yesterday = create(:post, :with_photo, created_at: now.yesterday, itinerary: itinerary)
-      post_today = create(:post, :with_photo, created_at: now, itinerary: itinerary)
+        create(:post, :with_photo, created_at: now.ago(2.days), itinerary: itinerary_1)
+      post_yesterday = create(:post, :with_photo, created_at: now.yesterday, itinerary: itinerary_1)
+      post_today = create(:post, :with_photo, created_at: now, itinerary: itinerary_1)
       visit posts_path
 
       expect(page.text)
@@ -29,19 +30,19 @@ RSpec.describe "Posts", type: :system do
     end
 
     it "投稿のタイトル、写真、投稿者名、投稿日を表示すること" do
-      within("turbo-frame#post_#{post.id}") do
-        expect(page).to have_content post.user.name
+      within("turbo-frame#post_#{post_1.id}") do
+        expect(page).to have_content post_1.user.name
         expect(page).to have_selector "img[src$='cat.jpg']"
-        expect(page).to have_content post.title
-        expect(page).to have_content I18n.l post.created_at, format: :date_posted
+        expect(page).to have_content post_1.title
+        expect(page).to have_content I18n.l post_1.created_at, format: :date_posted
       end
     end
 
     it "投稿をクリックすると、投稿詳細ページへ遷移すること" do
-      click_on post.title
+      click_on post_1.title
 
-      expect(current_path).to eq post_path(post.id)
-      expect(page).to have_content post.title
+      expect(current_path).to eq post_path(post_1.id)
+      expect(page).to have_content post_1.title
     end
 
     it "「旅の思い出を投稿」をクリックすると、投稿作成モーダルを表示すること", js: true do
@@ -50,6 +51,43 @@ RSpec.describe "Posts", type: :system do
       within(".modal") do
         expect(page).to have_content "旅の思い出を投稿"
       end
+    end
+  end
+
+  describe "投稿を検索" do
+    before do
+      visit posts_path
+    end
+
+    it "タイトルにキーワードが含まれる投稿を表示すること" do
+      fill_in "keyword", with: post_1.title.slice(/Trip_\d+/)
+      find("#keyword").sibling("button").click
+
+      expect(page).to have_content post_1.title
+      expect(page).not_to have_content post_2.title
+    end
+
+    it "キャプションにキーワードが含まれる投稿を表示すること" do
+      fill_in "keyword", with: "great"
+      find("#keyword").sibling("button").click
+
+      expect(page).to have_content post_1.title
+      expect(page).not_to have_content post_2.title
+    end
+
+    it "関連付けられたプランのスケジュールにキーワードが含まれる投稿を表示すること" do
+      fill_in "keyword", with: itinerary_1.schedules[0].title
+      find("#keyword").sibling("button").click
+
+      expect(page).to have_content post_1.title
+      expect(page).not_to have_content post_2.title
+    end
+
+    it "キーワードに該当する投稿が無い場合、その旨メッセージを取得すること" do
+      fill_in "keyword", with: "find_nothing"
+      find("#keyword").sibling("button").click
+
+      expect(page).to have_content "「find_nothing」に一致する投稿は見つかりませんでした"
     end
   end
 
@@ -64,7 +102,7 @@ RSpec.describe "Posts", type: :system do
       it "成功すること" do
         expect {
           find(".select-box").click
-          find("option", text: "#{itinerary.title}").click
+          find("option", text: "#{itinerary_1.title}").click
           image_path = Rails.root.join('spec/fixtures/cat.jpg')
           attach_file "post[photos_attributes][0][url]", image_path, make_visible: true
           fill_in "post[title]", with: new_post.title
@@ -109,108 +147,112 @@ RSpec.describe "Posts", type: :system do
   end
 
   describe "詳細表示" do
-    let!(:post) { create(:post, :with_photo, itinerary: itinerary) }
-
     before do
-      visit post_path(id: post.id)
+      visit post_path(id: post_1.id)
     end
 
     it "投稿の各情報を表示すること" do
       expect(page).to have_selector "img[src$='cat.jpg']"
-      expect(page).to have_content post.title
-      expect(page).to have_content post.user.name
-      expect(page).to have_content post.caption
-      expect(page).to have_content I18n.l post.created_at, format: :date_posted
+      expect(page).to have_content post_1.title
+      expect(page).to have_content post_1.user.name
+      expect(page).to have_content post_1.caption
+      expect(page).to have_content I18n.l post_1.created_at, format: :date_posted
+    end
+
+    it "ハッシュタグをクリックすると、一覧表示ページに遷移し、ハッシュタグを含む投稿を表示すること" do
+      visit post_path(id: post_1.id)
+      click_on "#bestrip"
+
+      expect(page).to have_content post_1.title
+      expect(page).to have_content post_2.title
+      expect(current_path).to eq search_posts_path
     end
 
     it "ログインユーザーが投稿の作成者である場合は、ドロップダウンメニューを表示すること" do
       expect(page).to have_selector "button[id='post_dropdown']"
     end
 
-    it "ログインユーザーが投稿の作成者でない場合は、ドロップダウンメニューを表示しないこと" do
+    it "ログインユーザーが投稿の作成者でない場合は、ドロップダウントグルを表示しないこと" do
       sign_out user
       sign_in other_user
-      visit post_path(id: post.id)
+      visit post_path(id: post_1.id)
 
       expect(page).not_to have_selector "button[id='post_dropdown']"
     end
 
-    it "紐付けられた旅のプランのスケジュール情報を表示すること" do
-      expect(page).to have_content I18n.l post.itinerary.schedules[0].start_at
-      expect(page).to have_content post.itinerary.schedules[0].icon
-      expect(page).to have_content post.itinerary.schedules[0].title
-    end
+    it "ドロップダウンメニューの「編集」をクリックすると、投稿編集モーダルを表示すること", js: true do
+      find("i", text: "more_horiz", visible: false).click
+      click_on "編集"
 
-    it "紐付けられた旅のプランのスケジュールを日付順で表示すること" do
-      schedule_1st_day = create(:schedule,
-        schedule_date: itinerary.departure_date,
-        itinerary: itinerary)
-      schedule_2nd_day = create(:schedule,
-        schedule_date: itinerary.departure_date.tomorrow,
-        itinerary: itinerary)
-      schedule_8th_day = create(:schedule,
-        schedule_date: itinerary.return_date,
-        itinerary: itinerary)
-
-      visit post_path(id: post.id)
-
-      expect(page.text).to match /#{"1日目"}[\s\S]*#{"2日目"}[\s\S]*#{"8日目"}/
-      within(:xpath, "//div[h6[contains(text(), '1日目')]]") do
-        expect(page).to have_content I18n.l schedule_1st_day.start_at
-      end
-      within(:xpath, "//div[h6[contains(text(), '2日目')]]") do
-        expect(page).to have_content I18n.l schedule_2nd_day.start_at
-      end
-      within(:xpath, "//div[h6[contains(text(), '8日目')]]") do
-        expect(page).to have_content I18n.l schedule_8th_day.start_at
+      within(".modal") do
+        expect(page).to have_content "投稿の編集"
+        expect(page.has_field?('post[title]', with: post_1.title)).to be_truthy
       end
     end
+    # ドロップダウンメニュー「削除」のリンクについては、後述の削除処理でテストを行う
 
-    it "紐付けられた旅のプランが非公開に設定されている場合は、スケジュールを表示しないこと" do
-      post.update(itinerary_public: false)
-      visit post_path(id: post.id)
+    describe "投稿に関連付けられたプランのスケジュール表示" do
+      it "スケジュールの各情報を表示すること" do
+        expect(page).to have_content I18n.l itinerary_1.schedules[0].start_at
+        expect(page).to have_content itinerary_1.schedules[0].icon
+        expect(page).to have_content itinerary_1.schedules[0].title
+      end
 
-      expect(page).not_to have_content post.itinerary.schedules[0].title
-    end
+      it "スケジュールを日付順で表示すること" do
+        schedule_1st_day = create(:schedule,
+          schedule_date: itinerary_1.departure_date,
+          itinerary: itinerary_1)
+        schedule_2nd_day = create(:schedule,
+          schedule_date: itinerary_1.departure_date.tomorrow,
+          itinerary: itinerary_1)
+        schedule_8th_day = create(:schedule,
+          schedule_date: itinerary_1.return_date,
+          itinerary: itinerary_1)
 
-    describe "リンクのテスト", js: true do
-      it "ドロップダウンメニューの「編集」をクリックすると、投稿編集モーダルを表示すること" do
-        find("i", text: "more_horiz", visible: false).click
-        click_on "編集"
+        visit post_path(id: post_1.id)
 
-        within(".modal") do
-          expect(page).to have_content "投稿の編集"
-          expect(page.has_field?('post[title]', with: post.title)).to be_truthy
+        expect(page.text).to match /#{"1日目"}[\s\S]*#{"2日目"}[\s\S]*#{"8日目"}/
+        within(:xpath, "//div[h6[contains(text(), '1日目')]]") do
+          expect(page).to have_content I18n.l schedule_1st_day.start_at
+        end
+        within(:xpath, "//div[h6[contains(text(), '2日目')]]") do
+          expect(page).to have_content I18n.l schedule_2nd_day.start_at
+        end
+        within(:xpath, "//div[h6[contains(text(), '8日目')]]") do
+          expect(page).to have_content I18n.l schedule_8th_day.start_at
         end
       end
 
-      # ドロップダウンメニュー「削除」のリンクについては、後述の削除処理でテストを行う
-
-      it "スケジュールのタイトル右側のアイコンをクリックすると、スポット情報のモーダルを表示すること" do
-        find("i", text: "pin_drop", visible: false).click
+      it "スケジュール右側のアイコンをクリックすると、スポット情報のモーダルを表示すること", js: true do
+        within(:xpath, "//div[div[p[contains(text(), '#{itinerary_1.schedules[0].title}')]]]") do
+          find("i", text: "pin_drop").click
+        end
 
         within(".modal") do
           expect(page).to have_content "スポット情報"
           expect(page).to have_content "シドニー・オペラハウス"
         end
       end
+
+      it "投稿のプラン公開設定が非公開に設定されている場合は、スケジュールを表示しないこと" do
+        post_1.update(itinerary_public: false)
+        visit post_path(id: post_1.id)
+
+        expect(page).not_to have_content itinerary_1.schedules[0].title
+      end
     end
   end
 
   describe "編集", js: true do
-    let!(:post) { create(:post, :with_photo, itinerary: itinerary) }
-
     before do
-      visit edit_post_path(id: post.id)
+      visit edit_post_path(id: post_1.id)
     end
 
     context "有効な値の場合" do
       it "画像以外の各項目の変更に成功すること" do
-        other_itinerary = create(:itinerary, owner: user)
-
-        visit edit_post_path(id: post.id)
+        visit edit_post_path(id: post_1.id)
         find(".select-box").click
-        find("option", text: "#{other_itinerary.title}").click
+        find("option", text: "#{itinerary_2.title}").click
         fill_in "post[title]", with: "Edited title"
         fill_in "post[caption]", with: "Edited caption."
         click_on "投稿する"
@@ -218,6 +260,7 @@ RSpec.describe "Posts", type: :system do
         expect(page).to have_content "旅の思い出を更新しました。"
         expect(page).to have_content "Edited title"
         expect(page).to have_content "Edited caption."
+        expect(page).to have_content itinerary_2.schedules[0].title
       end
 
       it "画像の変更に成功すること" do
@@ -271,11 +314,9 @@ RSpec.describe "Posts", type: :system do
   end
 
   describe "削除", js: true do
-    let!(:post) { create(:post, :with_photo, itinerary: itinerary) }
-
     it "成功すること" do
       expect {
-        visit post_path(id: post.id)
+        visit post_path(id: post_1.id)
         find("i", text: "more_horiz", visible: false).click
         click_on "削除"
 
