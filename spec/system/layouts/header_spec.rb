@@ -1,4 +1,4 @@
-RSpec.describe "ヘッダー", type: :system, focus: true do
+RSpec.describe "ヘッダー", type: :system do
   let!(:user) { create(:user) }
   let(:itinerary) { create(:itinerary, owner: user) }
 
