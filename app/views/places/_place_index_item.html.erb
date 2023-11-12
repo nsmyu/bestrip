@@ -15,18 +15,18 @@
       <div class="mt-3">
         <% if @placeable.user? %>
           <%= link_to places_select_itinerary_itineraries_path(place_id: place_index_item.place_id),
-            class:"d-inline-block hover-opacity", data: { turbo_frame: "modal" } do %>
-            <div class="d-flex align-items-center text-primary">
+            class:"btn btn-round btn-sm btn-outline-primary mb-2 py-1", data: { turbo_frame: "modal" } do %>
+            <div class="d-flex align-items-center">
               <i class="material-symbols-outlined me-1 fs-5" style="padding-bottom: 2px;">add_notes</i>
-              <p class="text-sm fw-bold">旅のプランに追加</p>
+              <span class="fw-bold">旅のプランに追加</span>
             </div>
           <% end %>
         <% else %>
           <%= link_to new_itinerary_schedule_path(place_id: place_index_item.place_id),
-            class:"d-inline-block hover-opacity", data: { turbo_frame: "modal" } do %>
-            <div class="d-flex align-items-center text-primary">
+            class:"btn btn-round btn-sm btn-outline-primary mb-2 py-1", data: { turbo_frame: "modal" } do %>
+            <div class="d-flex align-items-center">
               <i class="material-symbols-outlined me-1 fs-5" style="padding-bottom: 2px;">more_time</i>
-              <p class="text-sm fw-bold">スケジュールに追加</p>
+              <span class="fw-bold">スケジュールに追加</span>
             </div>
           <% end %>
         <% end %>

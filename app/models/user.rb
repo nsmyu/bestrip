@@ -42,6 +42,6 @@ class User < ApplicationRecord
   private
 
   def add_guest_to_itineraries
-    Itinerary.where(id: [1, 9, 12, 13, 15]).each { |itinerary| itinerary.members << self }
+    Itinerary.where(id: [1, 9, 13]).each { |itinerary| itinerary.members << self }
   end
 end

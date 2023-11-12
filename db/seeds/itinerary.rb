@@ -56,7 +56,7 @@ Itinerary.create!(
       owner: User.find(3),
     },
     {
-      title: "トルコ計画🇹🇷",
+      title: "トルコ計画中🇹🇷",
       departure_date: "2024-03-01",
       return_date: "2024-03-07",
       owner: User.find(3),
@@ -95,13 +95,6 @@ Itinerary.create!(
       return_date: "2023-08-03",
       owner: User.find(5),
     },
-    {
-      title: "GW屋久島トレッキング",
-      image: File.open("./app/assets/images/itinerary_post/yakushima.jpg"),
-      departure_date: "2024-05-01",
-      return_date: "2024-05-05",
-      owner: User.find(5),
-    },
   ]
 )
 
@@ -118,4 +111,3 @@ Itinerary.find(12).members << User.find(5)
 Itinerary.find(12).members << User.find(7)
 Itinerary.find(13).members << User.find(8)
 Itinerary.find(14).members << User.find(6)
-Itinerary.find(15).members << User.find(3)
