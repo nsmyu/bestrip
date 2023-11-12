@@ -1,0 +1,8 @@
+<div class="fixed-plugin">
+  <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2 btn bg-gradient-primary">
+    <%= link_to path, class: "d-flex align-items-center text-white", data: ({ turbo_frame: "modal" } if user_signed_in?) do %>
+      <i class="material-symbols-outlined ms-0 me-1 fs-3">add_circle</i>
+      <p class="py-1 text-sm fw-bold"><%= link_text %></p>
+    <% end %>
+  </div>
+</div>

@@ -35,12 +35,5 @@
       </div>
     </div>
   </div>
-  <div class="fixed-plugin">
-    <div class="fixed-plugin-button position-fixed rounded-pill px-3 py-2 btn bg-gradient-primary">
-      <%= link_to :new_itinerary, class: "d-flex align-items-center text-white", data: { turbo_frame: "modal" } do %>
-        <i class="material-symbols-outlined ms-0 me-1 fs-3">add_circle</i>
-        <p class="py-1 text-sm fw-bold">新しいプランを作成</p>
-      <% end %>
-    </div>
-  </div>
+  <%= render partial: 'layouts/fixed_button', locals: { path: :new_itinerary, link_text: "新しいプランを作成" } %>
 </main>
