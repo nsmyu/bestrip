@@ -8,7 +8,7 @@ RSpec.describe "サイドバー", type: :system do
     end
   end
 
-  context "ユーザーがログイン済みの場合", focus: true do
+  context "ユーザーがログイン済みの場合" do
     before do
       sign_in user
     end
@@ -18,7 +18,7 @@ RSpec.describe "サイドバー", type: :system do
         visit itineraries_path
       end
 
-      it "「旅のプラン一覧」をクリックすると、旅のプラン一覧ページに遷移すること" do
+      it "「旅のプラン一覧」をクリックすると、旅のプラン一覧画面に遷移すること" do
         within ".sidenav" do
           click_on "旅のプラン一覧"
         end
@@ -36,7 +36,7 @@ RSpec.describe "サイドバー", type: :system do
         end
       end
 
-      it "「お気に入りスポット」をクリックすると、お気に入りスポット一覧ページに遷移すること" do
+      it "「お気に入りスポット」をクリックすると、お気に入りスポット一覧画面に遷移すること" do
         within ".sidenav" do
           click_on "お気に入りスポット"
         end
@@ -44,7 +44,7 @@ RSpec.describe "サイドバー", type: :system do
         expect(current_path).to eq users_places_path
       end
 
-      it "「スポットを探す」をクリックすると、スポット検索ページに遷移すること" do
+      it "「スポットを探す」をクリックすると、スポット検索画面に遷移すること" do
         within ".sidenav" do
           click_on "スポットを探す"
         end
@@ -58,7 +58,7 @@ RSpec.describe "サイドバー", type: :system do
         visit itinerary_path(id: itinerary.id)
       end
 
-      it "旅のプランのタイトルをクリックすると、旅のプラン詳細ページに遷移すること" do
+      it "旅のプランのタイトルをクリックすると、旅のプラン詳細画面に遷移すること" do
         within ".sidenav" do
           click_on itinerary.title
         end
@@ -66,7 +66,7 @@ RSpec.describe "サイドバー", type: :system do
         expect(current_path).to eq itinerary_path(id: itinerary.id)
       end
 
-      it "「スケジュール」をクリックすると、スケジュール一覧ページに遷移すること" do
+      it "「スケジュール」をクリックすると、スケジュール一覧画面に遷移すること" do
         within ".sidenav" do
           click_on "スケジュール"
         end
@@ -74,7 +74,7 @@ RSpec.describe "サイドバー", type: :system do
         expect(current_path).to eq itinerary_schedules_path(itinerary_id: itinerary.id)
       end
 
-      it "「行きたい場所リスト」をクリックすると、行きたい場所リスト一覧ページに遷移すること" do
+      it "「行きたい場所リスト」をクリックすると、行きたい場所リスト一覧画面に遷移すること" do
         within ".sidenav" do
           click_on "行きたい場所リスト"
         end
@@ -82,7 +82,7 @@ RSpec.describe "サイドバー", type: :system do
         expect(current_path).to eq itinerary_places_path(itinerary_id: itinerary.id)
       end
 
-      it "「スポットを探す」をクリックすると、スポット検索ページに遷移すること" do
+      it "「スポットを探す」をクリックすると、スポット検索画面に遷移すること" do
         within ".sidenav" do
           click_on "スポットを探す"
         end
@@ -96,7 +96,7 @@ RSpec.describe "サイドバー", type: :system do
         visit users_edit_profile_path
       end
 
-      it "「プロフィール編集」をクリックすると、プロフィール編集ページに遷移すること" do
+      it "「プロフィール編集」をクリックすると、プロフィール編集画面に遷移すること" do
         within ".sidenav" do
           click_on "プロフィール編集"
         end
@@ -104,7 +104,7 @@ RSpec.describe "サイドバー", type: :system do
         expect(current_path).to eq users_edit_profile_path
       end
 
-      it "「メールアドレス変更」をクリックすると、メールアドレス変更ページに遷移すること" do
+      it "「メールアドレス変更」をクリックすると、メールアドレス変更画面に遷移すること" do
         within ".sidenav" do
           click_on "メールアドレス変更"
         end
@@ -112,7 +112,7 @@ RSpec.describe "サイドバー", type: :system do
         expect(current_path).to eq users_edit_email_path
       end
 
-      it "「パスワード変更」をクリックすると、パスワード変更ページに遷移すること" do
+      it "「パスワード変更」をクリックすると、パスワード変更画面に遷移すること" do
         within ".sidenav" do
           click_on "パスワード変更"
         end
