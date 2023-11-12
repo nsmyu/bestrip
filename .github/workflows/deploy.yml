@@ -3,7 +3,7 @@ name: EC2 deploy
 on:
   push:
     branches:
-      - 'develop/08-place'
+      - 'develop/09-refactoring'
 
 jobs:
   rubocop:
@@ -33,7 +33,7 @@ jobs:
           port: 22
           script: |
             cd /var/www/bestrip
-            git pull origin develop/08-place
+            git pull origin develop/09-refactoring
             ~/.rbenv/shims/bundle install
             ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production
             ~/.rbenv/shims/bundle exec rails db:seeds

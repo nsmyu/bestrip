@@ -57,11 +57,14 @@ function initSearchBox() {
                   </div>
                   <div class="col-7 px-0">
                     <p id="firstHeading" class="text-sm text-dark fw-bold lh-sm">${places[i].name}</p>
-                    <p class="mb-2 text-xxs text-dark">
-                      クチコミ評価<i class="material-icons rating-icon ps-1">star</i>${places[i].rating}
-                    </p>
-                    <a href="/itineraries/${itineraryId.value}/places/new?place_id=${places[i].place_id}" class="text-primary text-xs fw-bold" data-turbo-frame="modal">
-                      スポット詳細<i class="material-icons fs-4" style="vertical-align: -8px;">navigate_next</i>
+                    <div class="d-flex align-items-center mt-1 mb-2 text-xxs text-dark">
+                      <span>クチコミ評価</span>
+                      <i class="material-icons rating-icon fs-px-15 ps-1">star</i>
+                      <span>${places[i].rating}</span>
+                    </div>
+                    <a href="/itineraries/${itineraryId.value}/places/new?place_id=${places[i].place_id}" class="d-flex align-items-center text-primary text-xs fw-bold" data-turbo-frame="modal">
+                      <span>スポット詳細</span>
+                      <i class="material-icons fs-4">navigate_next</i>
                     </a>
                   </div>
                 </div>
@@ -78,11 +81,14 @@ function initSearchBox() {
                 </div>
                 <div class="col-7 px-0">
                   <p id="firstHeading" class="text-sm text-dark fw-bold lh-sm">${places[i].name}</p>
-                  <p class="mb-2 text-xxs text-dark">
-                    クチコミ評価<i class="material-icons rating-icon ps-1">star</i>${places[i].rating}
-                  </p>
-                  <a href="/users/places/new?place_id=${places[i].place_id}" class="text-primary text-xs fw-bold" data-turbo-frame="modal">
-                    スポット詳細<i class="material-icons fs-4" style="vertical-align: -8px;">navigate_next</i>
+                  <div class="d-flex align-items-center mt-1 mb-2 text-xxs text-dark">
+                    <span>クチコミ評価</span>
+                    <i class="material-icons rating-icon fs-px-15 ps-1">star</i>
+                    <span>${places[i].rating}</span>
+                  </div>
+                  <a href="/users/places/new?place_id=${places[i].place_id}" class="d-flex align-items-center text-primary text-xs fw-bold" data-turbo-frame="modal">
+                    <span>スポット詳細</span>
+                    <i class="material-icons fs-4">navigate_next</i>
                   </a>
                 </div>
               </div>

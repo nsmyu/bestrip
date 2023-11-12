@@ -51,7 +51,7 @@ export default class extends Controller {
       const deleteBtnIcon = document.createElement("i");
 
       img.src = reader.result;
-      img.setAttribute("class", "post-photo-preview");
+      img.setAttribute("class", "square-image");
       imgBox.setAttribute("class", "col-3 p-1 position-relative");
       imgBox.setAttribute("data-post-form-target", "imageBox");
       deleteBtn.setAttribute("class", "position-absolute top-5 end-5 link cursor-pointer");

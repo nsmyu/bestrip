@@ -9,7 +9,7 @@
   </div>
   <div class="mb-4">
     <%= f.label "旅のスケジュールを公開", class: "m-0 px-0 fw-bold" %>
-    <%= f.check_box :itinerary_public, class: "ms-2 post-checkbox", checked: true, checked_value: true, unchecked_value: false %>
+    <%= f.check_box :itinerary_public, class: "ms-2 post-form-checkbox", checked: true, checked_value: true, unchecked_value: false %>
     <p class="mb-2 text-dark text-xs">チェックを入れると投稿の詳細画面で旅のスケジュールが公開されます。</p>
   </div>
   <div class="mb-4" >
@@ -29,7 +29,7 @@
       <% if post.has_saved_photos? %>
         <% post.photos.each_with_index do |photo, i| %>
           <div class="col-3 p-1 position-relative" data-post-form-target="imageBox">
-            <%= image_tag (photo.url.to_s if photo.url), class: "post-photo-preview" %>
+            <%= image_tag (photo.url.to_s if photo.url), class: "square-image" %>
             <a class="position-absolute top-5 end-5 link cursor-pointer" id="delete_btn_<%= i %>" data-action="click->post-form#deletePhoto">
               <i class="material-icons text-white bg-dark rounded-circle">close</i>
             </a>

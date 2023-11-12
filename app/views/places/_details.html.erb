@@ -1,7 +1,11 @@
 <div class="my-3">
   <p class="fs-5 text-dark fw-bold lh-sm"><%= place_details[:name] %></p>
   <% if place_details[:rating] %>
-    <p class="text-xs text-dark fw-bold pt-1">クチコミ評価<i class="material-icons rating-icon ps-1">star</i><%= place_details[:rating] %></p>
+    <div class="d-flex align-items-center pt-1">
+      <p class="text-xs text-dark fw-bold">クチコミ評価</p>
+      <i class="material-icons ps-1 rating-icon fs-px-15">star</i>
+      <p class="text-xs text-dark fw-bold"><%= place_details[:rating] %></p>
+    </div>
   <% end %>
   <% if @placeable && @placeable.user? %>
     <%= render 'places/forms/user_place' %>
