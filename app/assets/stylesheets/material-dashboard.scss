@@ -385,10 +385,11 @@ label:has(#reset_place_btn) {
 
 .flash {
   position: fixed;
-  top: 55px;
+  top: 50px;
   left: 50%;
   transform: translateX(-50%)
              translateY(-50%);
+  z-index: 100;
   color: #183B72;
   background-color: #CFE1FE;
   border: 1px solid #B7D4FF;

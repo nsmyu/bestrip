@@ -1,4 +1,4 @@
-<%= render "layouts/modal", title: "旅のプランに追加" do %>
+<%= render "shared/modal", title: "旅のプランに追加" do %>
   <%= turbo_frame_tag "itinerary_place" do %>
     <%= form_with url: itinerary_places_add_from_user_places_path(itinerary_id: @itinerary.id), model: [@placeable, @place],
       data: { controller: "itinerary-place", itinerary_place_target: "form" } do |f| %>
