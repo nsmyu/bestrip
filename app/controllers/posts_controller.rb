@@ -4,14 +4,14 @@ class PostsController < ApplicationController
   before_action :authenticate_post_owner, only: %i(edit update destroy)
 
   def index
-    @posts = Post.order(created_at: :desc).page(params[:page]).per(9)
+    @posts = Post.includes([:user, :photos]).order(created_at: :desc).page(params[:page]).per(9)
   end
 
   def search
     @keyword = params[:keyword]
     itineraries = Itinerary.contains_keyword(@keyword)
-    @posts = Post.contains_keyword(@keyword)
-      .or(Post.belongs_to_itineraries_containing_keyword(itineraries))
+    @posts = Post.contains_keyword(@keyword).includes([:user, :photos])
+      .or(Post.belongs_to_itineraries_containing_keyword(itineraries).includes([:user, :photos]))
       .order(created_at: :desc)
       .page(params[:page]).per(9)
   end

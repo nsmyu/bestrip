@@ -6,7 +6,7 @@ class ItinerariesController < ApplicationController
   }, only: %i(show edit update destroy)
 
   def index
-    @itineraries = current_user.itineraries.order(departure_date: :desc)
+    @itineraries = current_user.itineraries.includes(:members).order(departure_date: :desc)
   end
 
   def new
