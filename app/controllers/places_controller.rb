@@ -7,7 +7,6 @@ class PlacesController < ApplicationController
 
   def index_lazy
     @place_index_items = @placeable.places.order(created_at: :desc).page(params[:page]).per(8)
-
     @place_index_items.each do |place_index_item|
       query_params =
         GooglePlacesApiRequestable::Request.new(place_index_item.place_id, with_photos: false)
@@ -17,8 +16,8 @@ class PlacesController < ApplicationController
       when Hash
         if response[:error_message].blank?
           place_details = attributes_for(response)
-
           place_details.delete(:photos)
+
           place_details.each do |attr, value|
             place_index_item.send("#{attr}=", value)
           end
