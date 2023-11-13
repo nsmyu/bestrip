@@ -13,9 +13,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def sort_schedules_by_date_time(schedules)
-    date_sorted_schedules = schedules.order(:schedule_date)
-    @date_time_sorted_schedules = date_sorted_schedules
+  def sort_schedules_by_date_time(unsorted_schedules)
+    @schedules = unsorted_schedules
+      .order(:schedule_date)
       .group_by(&:schedule_date)
       .map do |date, schedule_items|
         [

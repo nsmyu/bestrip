@@ -12,9 +12,7 @@
         </div>
         <div class="col-lg-6 col-md-7 mt-3 mt-md-0 px-0 px-sm-2 mx-auto max-width-500">
           <%= render 'text' %>
-          <% if @date_time_sorted_schedules %>
-            <%= render 'schedule' %>
-          <% end %>
+          <%= render 'schedule' if @schedules %>
         </div>
       </div>
     </div>

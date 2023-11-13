@@ -31,8 +31,8 @@ class PostsController < ApplicationController
 
   def show
     if @post.itinerary_public?
-      schedules = @post.itinerary.schedules
-      sort_schedules_by_date_time(schedules)
+      unsorted_schedules = @post.itinerary.schedules
+      sort_schedules_by_date_time(unsorted_schedules)
       @date_list = (@post.itinerary.departure_date..@post.itinerary.return_date).to_a
     end
   end
@@ -71,8 +71,4 @@ class PostsController < ApplicationController
                                  :itinerary_id,
                                  [photos_attributes: [:url, :id, :_destroy]])
   end
-
-  # def search_params
-
-  # end
 end

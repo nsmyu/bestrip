@@ -9,8 +9,8 @@ class SchedulesController < ApplicationController
   before_action :set_schedule, only: %i(show edit update destroy)
 
   def index
-    schedules = Itinerary.find(params[:itinerary_id]).schedules
-    sort_schedules_by_date_time(schedules)
+    unsorted_schedules = Itinerary.find(params[:itinerary_id]).schedules
+    sort_schedules_by_date_time(unsorted_schedules)
   end
 
   def new

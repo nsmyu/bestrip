@@ -23,7 +23,10 @@ export default class extends Controller {
   setTitle(event) {
     const selectBox = event.currentTarget;
     const selectedIndex = selectBox.selectedIndex;
-    this.titleFieldTarget.value = selectBox.options[selectedIndex].textContent;
+
+    if (selectedIndex != 0) {
+      this.titleFieldTarget.value = selectBox.options[selectedIndex].textContent;
+    }
   }
 
   selectPhotos(event) {
