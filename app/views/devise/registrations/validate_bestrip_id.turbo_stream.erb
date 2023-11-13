@@ -1,6 +1,7 @@
 <%= turbo_stream.update "bestrip_id" do %>
   <div class="d-sm-flex align-items-center">
-    <%= button_tag "IDが使用可能か確認", type: :submit, formaction: :validate_bestrip_id, formmethod: :patch, class: "btn bg-light btn-sm my-1 me-2 text-dark fw-bold" %>
+    <%= button_tag "IDが使用可能か確認", type: :submit, formaction: :validate_bestrip_id, formmethod: :patch,
+      class: "btn btn-round btn-outline-dark btn-sm my-1 me-2 py-1" %>
     <div class="fs-px-13 text-dark d-flex align-items-center">
       <% if !resource.errors.messages.key?(:bestrip_id) && !resource.bestrip_id.blank? then %>
         <i class="material-symbols-outlined text-primary fs-5">task_alt</i>
@@ -9,6 +10,7 @@
     </div>
     <div class="error-message">
       <%= @user.errors.full_messages_for(:bestrip_id).first if @user.errors.any? %>
+      <%= @blank_error %>
     </div>
   </div>
 <% end %>

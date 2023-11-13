@@ -3,17 +3,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :set_user,
     only: %i(edit_email edit_profile validate_bestrip_id update_without_password)
 
-  def new
-    super
-  end
-
   def create
     super
     logger.debug { resource.errors.full_messages_for(:password) }
-  end
-
-  def edit
-    super
   end
 
   def edit_email
@@ -25,6 +17,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def validate_bestrip_id
     @user.assign_attributes(update_without_password_params)
     @user.valid?
+    @blank_error = "お好みのIDを入力してください" if @user.bestrip_id.blank?
   end
 
   def update
