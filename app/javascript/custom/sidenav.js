@@ -8,7 +8,7 @@ function changeNavLinkColor() {
         link.classList.add("current-page");
       }
     });
-  };
+  }
 }
 
 document.addEventListener('DOMContentLoaded', changeNavLinkColor);
