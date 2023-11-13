@@ -2,7 +2,9 @@ class ApplicationController < ActionController::Base
   private
 
   def authenticate_itinerary_member(itinerary)
-    redirect_to :root if itinerary.members.exclude?(current_user)
+    if itinerary.members.exclude?(current_user)
+      redirect_to :itineraries, notice: "この操作ができるのは指定されたプランのメンバーのみです。"
+    end
   end
 
   def set_itinerary
