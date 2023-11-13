@@ -29,7 +29,7 @@ export default class extends Controller {
     }
   }
 
-  selectPhotos(event) {
+  selectPhoto(event) {
     const currentField = event.currentTarget;
     const currentFieldId = Number(currentField.id.replace(/photo_field_/g, ''));
     const file = currentField.files[0];
@@ -67,7 +67,7 @@ export default class extends Controller {
       deleteBtn.appendChild(deleteBtnIcon);
       imgBox.appendChild(deleteBtn);
       this.previewTarget.appendChild(imgBox);
-    };
+    }
   }
 
   deletePhoto(event) {

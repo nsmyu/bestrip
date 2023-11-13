@@ -19,14 +19,14 @@ function configureDatePickr() {
 
     if(departureDate.value) {
       configureMinReturnDate()
-    };
+    }
   }
 
   if (scheduleDate) {
     config.minDate = departureDate.textContent;
     config.maxDate = returnDate.textContent;
     flatpickr(scheduleDate, config)
-  };
+  }
 }
 
 function configureTimePickr() {
@@ -41,9 +41,9 @@ function configureTimePickr() {
 document.addEventListener('DOMContentLoaded', () => {
   configureDatePickr();
   configureTimePickr();
-});
+})
 
 document.addEventListener('turbo:frame-load', () => {
   configureDatePickr();
   configureTimePickr();
-});
+})

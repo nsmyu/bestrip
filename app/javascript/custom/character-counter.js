@@ -6,7 +6,6 @@ function countChars() {
     const maxCharsLength = charCount.textContent.slice(2);
 
     function addCharsLengthError() {
-      console.log(charCount)
       charCount.classList.add('error-message');
       document.querySelector("#submit_btn").disabled = true;
     }
@@ -36,7 +35,7 @@ function countChars() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', countChars)
-document.addEventListener('turbo:frame-load', countChars)
+document.addEventListener('DOMContentLoaded', countChars);
+document.addEventListener('turbo:frame-load', countChars);
 
 

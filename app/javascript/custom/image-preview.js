@@ -9,7 +9,7 @@ function previewImage() {
       reader.onloadend = () => {
         const imagePreview = document.querySelector('#image_preview');
         imagePreview.src = reader.result;
-      };
+      }
     });
   }
 }

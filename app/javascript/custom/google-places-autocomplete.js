@@ -19,27 +19,27 @@ function initAutocomplete() {
     const placeName = document.getElementById("place_name");
     const placeAddress = document.getElementById("place_address");
     const placePhoto = document.getElementById("place_photo");
-    const mapFrame = document.getElementById("map_frame")
+    const mapFrame = document.getElementById("map_frame");
 
-    emptyplaceInfoCard.style.display = "none"
-    placeInfoCard.style.display = "block"
-    placeId.value = place.place_id
-    placeName.textContent = place.name
-    placeAddress.textContent = place.formatted_address
-    mapFrame.setAttribute('src', mapFrame.src.split(/place_id:/)[0] + `place_id:${place.place_id}`)
+    emptyplaceInfoCard.style.display = "none";
+    placeInfoCard.style.display = "block";
+    placeId.value = place.place_id;
+    placeName.textContent = place.name;
+    placeAddress.textContent = place.formatted_address;
+    mapFrame.setAttribute('src', mapFrame.src.split(/place_id:/)[0] + `place_id:${place.place_id}`);
 
     if (place.photos) {
-      placePhoto.setAttribute('src', place.photos[0].getUrl())
+      placePhoto.setAttribute('src', place.photos[0].getUrl());
     } else {
-      placePhoto.setAttribute('src', "/assets/default_place_thumbnail.png")
+      placePhoto.setAttribute('src', "/assets/default_place_thumbnail.png");
     }
-  })
+  });
 
   document.getElementById("reset_place_btn").addEventListener("click", () => {
     placeId.value = null;
     emptyplaceInfoCard.style.display = "block";
     placeInfoCard.style.display = "none";
-  })
+  });
 
   if (placeId && placeId.value) {
     emptyplaceInfoCard.style.display = "none";

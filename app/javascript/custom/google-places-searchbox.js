@@ -7,7 +7,7 @@ function initSearchBox() {
   });
   const input = document.getElementById("searchbox_text_input");
   const searchBox = new google.maps.places.SearchBox(input);
-  const itineraryId = document.querySelector("#itinerary_id")
+  const itineraryId = document.querySelector("#itinerary_id");
 
   map.addListener("bounds_changed", () => {
     searchBox.setBounds(map.getBounds());
@@ -30,7 +30,6 @@ function initSearchBox() {
 
     for (let i = 0; i < places.length; i++) {
       if (!places[i].geometry || !places[i].geometry.location) {
-        console.log("Returned place contains no geometry");
         return;
       }
 
@@ -102,8 +101,8 @@ function initSearchBox() {
             infowindow[j].close(map, markers[j]);
           }
           infowindow[i].open(map, markers[i])
-        })
-      })
+        });
+      });
 
       if (places[i].geometry.viewport) {
         bounds.union(places[i].geometry.viewport);

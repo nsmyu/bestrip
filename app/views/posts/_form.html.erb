@@ -21,7 +21,7 @@
             <i class="material-icons me-2 text-sm">add_a_photo</i>
             <span>画像を選択</span>
           </div>
-          <%= photo.file_field :url, accept: "image/*", id: "photo_field_#{photo.index}" , class: "d-none", data: { post_form_target: "photoField", action: "change->post-form#selectPhotos" } %>
+          <%= photo.file_field :url, accept: "image/*", id: "photo_field_#{photo.index}" , class: "d-none", data: { post_form_target: "photoField", action: "change->post-form#selectPhoto" } %>
         </label>
       <% end %>
     </div>
