@@ -2,33 +2,33 @@
   <% if user_signed_in? %>
     <li class="border-0 p-0">
       <%= link_to [:user, id: current_user.id], class: "dropdown-item py-2 px-3 border-radius-md", data: { turbo: false } do %>
-        <p class="dropdown-header d-flex justify-content-cente align-items-center p-0 text-dark">プロフィール</p>
+        <p class="dropdown-header d-flex align-items-center p-0 text-dark">プロフィール</p>
       <% end %>
     </li>
     <li class="border-0 p-0">
       <%= link_to :users_edit_email, class: "dropdown-item py-2 px-3 border-radius-md", data: { turbo: false } do %>
-        <p class="dropdown-header d-flex justify-content-cente align-items-center p-0 text-dark">メールアドレス変更</p>
+        <p class="dropdown-header d-flex align-items-center p-0 text-dark">メールアドレス変更</p>
       <% end %>
     </li>
     <li class="border-0 p-0">
       <%= link_to :edit_user_registration, class: "dropdown-item py-2 px-3 border-radius-md", data: { turbo: false } do %>
-        <p class="dropdown-header d-flex justify-content-cente align-items-center p-0 text-dark">パスワード変更</p>
+        <p class="dropdown-header d-flex align-items-center p-0 text-dark">パスワード変更</p>
       <% end %>
     </li>
     <li class="border-0 p-0">
       <%= link_to :destroy_user_session, class: "dropdown-item py-2 px-3 border-radius-md", data: { turbo_method: :delete } do %>
-        <p class="dropdown-header d-flex justify-content-cente align-items-center p-0 text-dark">ログアウト</p>
+        <p class="dropdown-header d-flex align-items-center p-0 text-dark">ログアウト</p>
       <% end %>
     </li>
   <% else %>
     <li class="border-0 p-0">
       <%= link_to :new_user_session, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
-        <p class="dropdown-header text-dark d-flex justify-content-cente align-items-center p-0">ログイン</p>
+        <p class="dropdown-header text-dark d-flex align-items-center p-0">ログイン</p>
       <% end %>
     </li>
     <li class="border-0 p-0">
       <%= link_to :new_user_registration, class: "dropdown-item py-2 ps-3 border-radius-md" do %>
-        <p class="dropdown-header text-dark d-flex justify-content-cente align-items-center p-0">アカウント登録</p>
+        <p class="dropdown-header text-dark d-flex align-items-center p-0">アカウント登録</p>
       <% end %>
     </li>
   <% end %>
