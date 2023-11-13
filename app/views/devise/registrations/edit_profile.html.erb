@@ -42,6 +42,7 @@
                   class: "btn btn-round btn-outline-dark btn-sm my-1 me-2 py-1" %>
                 <div class="error-message" >
                   <%= @user.errors.full_messages_for(:bestrip_id).first if @user.errors.any? %>
+                  <%= @blank_error %>
                 </div>
               </div>
             </div>

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Itineraries", type: :request do
+RSpec.describe "Itineraries", type: :request, focus: true do
   let!(:user) { create(:user) }
   let!(:other_user) { create(:user, bestrip_id: "other_user_id") }
   let!(:itinerary) { create(:itinerary, owner: user) }
@@ -101,7 +101,6 @@ RSpec.describe "Itineraries", type: :request do
 
     context "ログインユーザーがプランのメンバーではない場合" do
       it "indexにリダイレクトされること" do
-        sign_out user
         sign_in other_user
         get itinerary_path(itinerary.id)
         expect(response).to redirect_to itineraries_path
@@ -129,7 +128,6 @@ RSpec.describe "Itineraries", type: :request do
     context "ログインユーザーがプラン作成者ではない場合" do
       it "showにリダイレクトされること" do
         itinerary.members << other_user
-        sign_out user
         sign_in other_user
         get edit_itinerary_path(itinerary.id)
         expect(response).to redirect_to itinerary_path(itinerary.id)
@@ -182,7 +180,6 @@ RSpec.describe "Itineraries", type: :request do
     context "ログインユーザーがプラン作成者ではない場合" do
       it "失敗すること" do
         itinerary.members << other_user
-        sign_out user
         sign_in other_user
         patch itinerary_path(itinerary.id), params: { itinerary: { title: "Edited Title" } }
         expect(response).to redirect_to itinerary_path(id: itinerary.id)
@@ -192,22 +189,17 @@ RSpec.describe "Itineraries", type: :request do
   end
 
   describe "DELETE #destroy" do
-    context "ログインユーザーがプラン作成者の場合" do
-      it "成功すること" do
-        delete itinerary_path(itinerary.id)
-        expect(response).to redirect_to itineraries_path
-        expect(user.itineraries).not_to include itinerary
-      end
+    it "ログインユーザーがプラン作成者の場合、成功すること" do
+      delete itinerary_path(itinerary.id)
+      expect(response).to redirect_to itineraries_path
+      expect(user.reload.itineraries).not_to include itinerary
     end
 
-    context "ログインユーザーがプラン作成者ではない場合" do
-      it "失敗すること" do
-        itinerary.members << other_user
-        sign_out user
-        sign_in other_user
-        delete itinerary_path(itinerary.id)
-        expect(other_user.itineraries).to include itinerary
-      end
+    it "ログインユーザーがプラン作成者ではない場合、失敗すること" do
+      itinerary.members << other_user
+      sign_in other_user
+      delete itinerary_path(itinerary.id)
+      expect(other_user.reload.itineraries).to include itinerary
     end
   end
 end

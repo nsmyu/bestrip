@@ -9,8 +9,8 @@ class ItineraryUsersController < ApplicationController
   end
 
   def search_user
-    @bestrip_id = params[:bestrip_id]
-    @user = User.find_by(bestrip_id: @bestrip_id)
+    bestrip_id = params[:bestrip_id]
+    @user = User.find_by(bestrip_id: bestrip_id)
     if @user.nil?
       flash.now[:notice] = 'ユーザーが見つかりませんでした'
       render :new
@@ -28,9 +28,9 @@ class ItineraryUsersController < ApplicationController
     member = User.find(params[:user_id])
     if current_user == @itinerary.owner && member != @itinerary.owner
       @itinerary.itinerary_users.find_by(user_id: member.id).destroy
-      redirect_to @itinerary
+      redirect_to @itinerary, notice: "メンバーから削除しました。"
     else
-      redirect_to @itinerary
+      redirect_to @itinerary, notice: "この操作ができるのはプラン作成者のみです。"
     end
   end
 end
