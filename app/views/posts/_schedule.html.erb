@@ -1,6 +1,6 @@
-<% @schedules.each_with_index do |(date, schedules), i| %>
+<% @day_schedules.each do |day, schedules| %>
   <div class="mb-2 pt-3 px-3 bg-white text-dark">
-    <h6><%= date ? "#{@date_list.index(date) + 1}日目" : "その他の予定" %></h6>
+    <h6><%= day %></h6>
     <% schedules.each do |schedule| %>
       <div class="border-top">
         <div class="row px-3 d-flex height-60 align-items-center">

@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, except: %i(index search show)
+  before_action :authenticate_user!, except: %i(new create edit update destroy)
   before_action :set_post, only: %i(show edit update destroy)
   before_action :authenticate_post_owner, only: %i(edit update destroy)
 
@@ -33,7 +33,13 @@ class PostsController < ApplicationController
     if @post.itinerary_public?
       unsorted_schedules = @post.itinerary.schedules
       sort_schedules_by_date_time(unsorted_schedules)
-      @date_list = (@post.itinerary.departure_date..@post.itinerary.return_date).to_a
+      date_list = (@post.itinerary.departure_date..@post.itinerary.return_date).to_a
+      @day_schedules = @schedules.map do |date, schedules|
+        [
+          date ? (date_list.index(date).to_i + 1).to_s + "日目" : "その他の予定",
+          schedules,
+        ]
+      end
     end
   end
 
