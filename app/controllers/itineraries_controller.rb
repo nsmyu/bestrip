@@ -4,6 +4,7 @@ class ItinerariesController < ApplicationController
     set_itinerary
     authenticate_itinerary_member(@itinerary)
   }, only: %i(show edit update destroy)
+  before_action :authenticate_itinerary_owner, only: %i(edit update destroy)
 
   def index
     @itineraries = current_user.itineraries.includes(:members).order(departure_date: :desc)
@@ -14,8 +15,8 @@ class ItinerariesController < ApplicationController
   end
 
   def create
-    @user = User.find(current_user.id)
-    @itinerary = @user.owned_itineraries.new(itinerary_params)
+    user = User.find(current_user.id)
+    @itinerary = user.owned_itineraries.new(itinerary_params)
     if @itinerary.save
       redirect_to @itinerary, notice: "新しい旅のプランを作成しました。"
     end
@@ -35,15 +36,17 @@ class ItinerariesController < ApplicationController
   end
 
   def destroy
-    if current_user == @itinerary.owner
-      @itinerary.destroy
-      redirect_to :itineraries, notice: "旅のプランを削除しました。"
-    else
-      redirect_to :itineraries
-    end
+    @itinerary.destroy
+    redirect_to :itineraries, notice: "旅のプランを削除しました。"
   end
 
   private
+
+  def authenticate_itinerary_owner
+    if current_user != @itinerary.owner
+      redirect_to @itinerary, notice: "この操作ができるのはプラン作成者のみです。"
+    end
+  end
 
   def itinerary_params
     params.require(:itinerary).permit(:title, :image, :departure_date, :return_date, :user_id)
