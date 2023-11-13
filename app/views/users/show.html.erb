@@ -9,8 +9,8 @@
           </div>
           <div class="col-8 col-sm-9 ps-sm-4 text-dark">
             <p class="fs-5 fw-bold lh-1"><%= @user.name %></p>
-              <% if @user.bestrip_id %>
-            <p class="text-sm text-secondary">@<%= @user.bestrip_id %></p>
+            <% if @user.bestrip_id %>
+              <p class="text-sm text-secondary">@<%= @user.bestrip_id %></p>
             <% end %>
             <div class="d-flex ">
               <p class="pt-2 text-sm text-dark">投稿<%= @user.posts.count %>件</p>

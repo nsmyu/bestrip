@@ -6,69 +6,7 @@
     <% if @schedules.blank? %>
       <p class="p-4 text-center text-sm text-dark">スケジュールは登録されていません</p>
     <% else %>
-      <div class="row max-width-700 w-md-80 w-ms-90 mx-auto">
-        <% @schedules.each do |date, schedules| %>
-          <div class="card mb-2 mb-sm-3 pt-3 px-3 text-dark">
-            <p class="d-none d-sm-block mb-2 fw-bold"><%= date ? (l date) : "その他の予定" %></p>
-            <h6 class="d-sm-none"><%= date ? (l date) : "その他の予定" %></h6>
-            <% schedules.each_with_index do |schedule, i| %>
-              <div class="border-top">
-                <div class="row px-3 px-sm-0 align-items-center schedule-item">
-                  <div class="col-1 col-sm-2 px-0 text-center">
-                    <div class="lh-1 ms-md-n3">
-                      <% if schedule.start_at || schedule.end_at %>
-                        <p class="d-inline-block fw-bold text-sm lh-1"><%= (l schedule.start_at) if schedule.start_at %><br><span class="text-xs"><%= "-#{(l schedule.end_at)}" if schedule.end_at%></span></p>
-                      <% else %>
-                        <p class="fw-bold text-sm lh-1">--:--</p>
-                      <% end %>
-                    </div>
-                  </div>
-                  <div class="col-11 col-sm-10">
-                    <div class="row">
-                      <div class="col-1 d-flex align-items-center">
-                        <% if schedule.icon.present? %>
-                          <i class="material-icons d-inline-block ms-sm-n3 ms-2 rounded-circle schedule-icon"><%= schedule.icon %></i>
-                        <% end %>
-                      </div>
-                      <div class="col-10 d-flex pe-0 align-items-center">
-                        <p class="ms-3 ms-sm-n3 text-sm text-ellipsis"><%= schedule.title %></p>
-                      </div>
-                      <div class="col-1 px-0">
-                        <div class="dropdown">
-                          <label for="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>" class="cursor-pointer m-0">
-                            <i class="material-icons p-2 text-secondary link-area rounded-circle">more_vert</i>
-                          </label>
-                          <button class="d-none" id="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                          <ul class="border dropdown-menu dropdown-menu-end mt-4" aria-labelledby="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>"></li>
-                            <li>
-                              <%= link_to [:itinerary_schedule, id: schedule.id], class: "dropdown-item d-flex align-items-center", data: { turbo_frame: "modal" } do %>
-                                <i class="material-symbols-outlined pe-1 fs-6">article</i>
-                                <p class="text-sm">スケジュール詳細</p>
-                              <% end %>
-                            </li>
-                            <li>
-                              <%= link_to [:edit_itinerary_schedule, itinerary_id: schedule.itinerary.id, id: schedule.id], class: "dropdown-item d-flex align-items-center", data: { turbo_frame: "modal" } do %>
-                                <i class="material-symbols-outlined pe-1 fs-6">edit</i>
-                                <p class="text-sm">編集</p>
-                              <% end %>
-                            </li>
-                            <li>
-                              <%= link_to [:itinerary_schedule, itinerary_id: schedule.itinerary.id, id: schedule.id], class: "dropdown-item d-flex align-items-center text-danger", data: { turbo_method: :delete, turbo_confirm: 'このスケジュールを削除しますか？' } do %>
-                                <i class="material-symbols-outlined pe-1 fs-6">delete</i>
-                                <p class="text-sm">削除</p>
-                              <% end %>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
+      <%= render 'schedules' %>
     <% end %>
   </div>
   <%= render partial: 'shared/fixed_button', locals: { path: :new_itinerary_schedule, link_text: "スケジュールを追加" } %>

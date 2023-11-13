@@ -3,7 +3,7 @@
   <div class="input-group input-group-outline row mx-0 mb-4">
     <%= f.label :title, class: "m-0 px-0 fw-bold" do %>タイトル（50文字以内）<span class="required">必須</span><% end%>
     <%= f.text_field :title, class: "form-control", placeholder: "タイトルを入力" %>
-    <div class="px-0" id="title_error"></div>
+    <div class="px-0 error-message" id="title_error"></div>
   </div>
   <div class="input-group input-group-outline row mx-0 mb-4">
     <%= f.label :schedule_date, class: "m-0 px-0 fw-bold" %>
@@ -58,8 +58,7 @@
         <div class="px-1">
           <iframe
             src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_API_KEY'] %>&zoom=15&q=place_id:<%= @place_id %>"
-            id="map_frame" loading="lazy" frameborder="0" style="border:0"
-            referrerpolicy="no-referrer-when-downgrade" >
+            id="map_frame" loading="lazy" frameborder="0" style="border:0" referrerpolicy="no-referrer-when-downgrade" >
           </iframe>
         </div>
       </div>
