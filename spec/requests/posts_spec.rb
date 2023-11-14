@@ -1,27 +1,28 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :request do
-  let!(:user) { create(:user) }
+RSpec.describe "Posts", type: :request, focus: true do
+  let(:user) { create(:user) }
   let(:other_user) { create(:user) }
-  let!(:itinerary_1) { create(:itinerary, :with_schedule, owner: user) }
-  let!(:itinerary_2) { create(:itinerary, :with_schedule, owner: user) }
+  let(:itinerary_1) { create(:itinerary, :with_schedule, owner: user) }
+  let(:itinerary_2) { create(:itinerary, :with_schedule, owner: user) }
   let!(:post_1) { create(:post, :with_photo, itinerary: itinerary_1) }
   let!(:post_2) { create(:post, :with_caption_awesome, :with_photo, itinerary: itinerary_2) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
   describe "GET #index" do
-    it "正常にレスポンスを返すこと" do
+    before do
       get posts_path
+    end
+
+    it "正常にレスポンスを返すこと" do
       expect(response).to have_http_status 200
     end
 
     it "投稿を全て取得すること" do
-      get posts_path
       expect(response.body).to include post_1.title, post_2.title
     end
 
     it "投稿のタイトル、投稿者名、投稿日を取得すること" do
-      get posts_path
       expect(response.body).to include post_1.title
       expect(response.body).to include I18n.l post_1.created_at, format: :date_posted
       expect(response.body).to include post_1.user.name
@@ -98,7 +99,7 @@ RSpec.describe "Posts", type: :request do
         expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
       end
 
-      it "itineraryが選択されていない場合、失敗すること" do
+      it "旅のプランが選択されていない場合、失敗すること" do
         post_params = attributes_for(:post, itinerary_id: nil)
         post posts_path, params: { post: post_params }, headers: turbo_stream
         expect(response.body).to include "旅のプランを選択してください"
@@ -121,7 +122,7 @@ RSpec.describe "Posts", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "投稿の各情報を取得すること" do
+    it "投稿の各情報、関連付けられたプランのスケジュールを取得すること" do
       expect(response.body).to include post_1.title
       expect(response.body).to include post_1.caption.slice(/[\w\s]+!/)
       expect(response.body).to include I18n.l post_1.created_at, format: :date_posted
@@ -141,7 +142,7 @@ RSpec.describe "Posts", type: :request do
         expect(response).to have_http_status 200
       end
 
-      it "投稿の編集可能な項目の値を取得すること" do
+      it "投稿のタイトル、キャプション、関連付けられたプランのタイトルを取得すること" do
         expect(response.body).to include post_1.title
         expect(response.body).to include post_1.caption
         expect(response.body).to include post_1.itinerary.title
@@ -217,7 +218,7 @@ RSpec.describe "Posts", type: :request do
     end
 
     context "ログインユーザーが投稿者ではない場合" do
-      it "失敗すること（indexにリダイレクトされること）" do
+      it "失敗すること（rootにリダイレクトされること）" do
         sign_in other_user
         post_params = attributes_for(:post, title: "Edited Title")
         patch post_path(id: post_1.id), params: { post: post_params },

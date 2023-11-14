@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "ItineraryUsers", type: :request, focus: true do
+RSpec.describe "ItineraryUsers", type: :request do
   let(:user) { create(:user) }
   let(:other_user_1) { create(:user, bestrip_id: "other_user_1_id") }
   let(:other_user_2) { create(:user) }

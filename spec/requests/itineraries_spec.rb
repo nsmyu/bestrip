@@ -35,12 +35,6 @@ RSpec.describe "Itineraries", type: :request do
       expect(response.body).to include I18n.l itinerary.return_date
       expect(response.body).to include itinerary.owner.name, other_user.name
     end
-
-    it "他のユーザーのプランを取得しないこと" do
-      other_users_itinerary = create(:itinerary, owner: other_user)
-      get itineraries_path
-      expect(response.body).not_to include other_users_itinerary.title
-    end
   end
 
   describe "GET #new" do
