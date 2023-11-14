@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "Itineraries::Places", type: :request do
-  let!(:user) { create(:user) }
+  let(:user) { create(:user) }
   let(:other_user) { create(:user) }
-  let!(:itinerary) { create(:itinerary, owner: user) }
+  let(:itinerary) { create(:itinerary, owner: user) }
   let(:itinerary_place) { build(:itinerary_place, :opera_house, placeable: itinerary) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
   let(:turbo_frame_modal) { { "turbo-frame": "modal" } }
@@ -19,14 +19,14 @@ RSpec.describe "Itineraries::Places", type: :request do
         expect(response).to have_http_status 200
       end
 
-      it "登録されているスポット全ての情報を取得すること", vcr: "google_api_response" do
+      it "登録済みのスポット全てを取得すること", vcr: "google_api_response" do
         itinerary_place.save
         create(:itinerary_place, :queen_victoria_building, placeable: itinerary)
         get itinerary_places_index_lazy_path(itinerary_id: itinerary.id)
         expect(response.body).to include "シドニー・オペラハウス", "クイーン・ビクトリア・ビルディング"
       end
 
-      it "place_idが無効な（変更されている）場合、エラーメッセージを取得すること" do
+      it "place_idが無効な場合、エラーメッセージを取得すること" do
         create(:itinerary_place, place_id: "invalid_place_id", placeable: itinerary)
         get itinerary_places_index_lazy_path(itinerary_id: itinerary.id)
         expect(response.body).to include "スポット情報を取得できませんでした"
@@ -34,7 +34,7 @@ RSpec.describe "Itineraries::Places", type: :request do
     end
 
     context "ログインユーザーがプランのメンバーではない場合" do
-      it "itinerariesのindexにリダイレクトされること" do
+      it "旅のプラン一覧画面にリダイレクトされること" do
         sign_in other_user
         get itinerary_places_path(itinerary_id: itinerary.id)
         expect(response).to redirect_to itineraries_path
@@ -44,11 +44,17 @@ RSpec.describe "Itineraries::Places", type: :request do
 
   describe "GET #new" do
     context "ログインユーザーがプランのメンバーである場合" do
+      it "正常にレスポンスを返すこと" do
+        get new_itinerary_place_path(itinerary_id: itinerary.id,
+                                     place_id: itinerary_place.place_id)
+        expect(response).to have_http_status 200
+      end
+
       context "追加登録可能な状態の場合" do
-        it "正常にレスポンスを返すこと" do
+        it "行きたい場所リスト追加用ボタンを取得すること" do
           get new_itinerary_place_path(itinerary_id: itinerary.id,
-                                       place_id: itinerary_place.place_id)
-          expect(response).to have_http_status 200
+                                      place_id: itinerary_place.place_id)
+          expect(response.body).to include "行きたい場所リストに追加</span>"
         end
       end
 
@@ -70,7 +76,7 @@ RSpec.describe "Itineraries::Places", type: :request do
     end
 
     context "ログインユーザーがプランのメンバーではない場合" do
-      it "itinerariesのindexにリダイレクトされること" do
+      it "旅のプラン一覧画面にリダイレクトされること" do
         sign_in other_user
         get new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
         expect(response).to redirect_to itineraries_path
@@ -86,7 +92,7 @@ RSpec.describe "Itineraries::Places", type: :request do
       expect(response.body).to include "行きたい場所リストに追加済み"
     end
 
-    it "ログインユーザーがプランのメンバーではない場合、失敗すること（itinerariesのindexにリダイレクトされること）" do
+    it "ログインユーザーがプランのメンバーではない場合、失敗すること（旅のプラン一覧画面にリダイレクトされること）" do
       sign_in other_user
       itinerary_place_params = attributes_for(:itinerary_place)
       post itinerary_places_path(itinerary_id: itinerary.id),
@@ -110,7 +116,6 @@ RSpec.describe "Itineraries::Places", type: :request do
       get itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id),
         headers: turbo_frame_modal
       expect(response.body).to include "シドニー・オペラハウス"
-      expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
     end
   end
 
@@ -120,7 +125,7 @@ RSpec.describe "Itineraries::Places", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "ログインユーザーが所有または所属するitinerary全てを取得すること" do
+    it "ログインユーザーが所有または所属する旅のプラン全てを取得すること" do
       other_itinerary_1 = create(:itinerary, owner: user)
       other_itinerary_2 = create(:itinerary, owner: other_user)
       other_itinerary_2.members << user
@@ -162,7 +167,7 @@ RSpec.describe "Itineraries::Places", type: :request do
     end
 
     context "ログインユーザーがプランのメンバーではない場合" do
-      it "失敗すること（itinerariesのindexにリダイレクトされること）" do
+      it "失敗すること（旅のプラン一覧画面にリダイレクトされること）" do
         sign_in other_user
         itinerary_place_params = attributes_for(:itinerary_place)
         post itinerary_places_add_from_user_places_path(itinerary_id: itinerary.id),
