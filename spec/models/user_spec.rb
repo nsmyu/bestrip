@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   it "ニックネーム、メールアドレス、パスワード、一致する確認用パスワードあれば有効であること" do
-    expect(build(:user)).to be_valid
+    expect(build(:user, bestrip_id: nil, introduction: nil)).to be_valid
   end
 
   it "ニックネームがなければ無効であること" do
@@ -11,17 +11,18 @@ RSpec.describe User, type: :model do
     expect(user.errors).to be_of_kind(:name, :blank)
   end
 
+  it "ニックネームは20文字以下であれば有効であること" do
+    expect(build(:user, name: "a" * 20)).to be_valid
+  end
+
   it "ニックネームが21文字以上の場合は無効であること" do
     user = build(:user, name: "a" * 21)
     user.valid?
     expect(user.errors).to be_of_kind(:name, :too_long)
   end
 
-  it "BesTrip IDが重複している場合は無効であること" do
-    create(:user, bestrip_id: "user_id")
-    other_user = build(:user, bestrip_id: "user_id")
-    other_user.valid?
-    expect(other_user.errors).to be_of_kind(:bestrip_id, :taken)
+  it "bestrip_idは20文字以下であれば有効であること" do
+    expect(build(:user, bestrip_id: "a" * 20)).to be_valid
   end
 
   it "BesTrip IDが21文字以上の場合は無効であること" do
@@ -30,7 +31,14 @@ RSpec.describe User, type: :model do
     expect(user.errors).to be_of_kind(:bestrip_id, :too_long)
   end
 
-  it "BesTrip IDに半角英数字、アンダースコア以外は使用できないこと" do
+  it "BesTrip IDが他のユーザーと重複している場合は無効であること" do
+    create(:user, bestrip_id: "user_id")
+    other_user = build(:user, bestrip_id: "user_id")
+    other_user.valid?
+    expect(other_user.errors).to be_of_kind(:bestrip_id, :taken)
+  end
+
+  it "BesTrip IDに半角英数字、アンダースコア以外を使用している場合は無効であること" do
     user = build(:user, bestrip_id: "invlid-id")
     user.valid?
     expect(user.errors).to be_of_kind(:bestrip_id, :invalid)

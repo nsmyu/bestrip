@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Itinerary, type: :model do
-  it "タイトル、出発日、帰宅日、user_id(owner)があれば有効であること" do
+  it "タイトル、出発日、帰宅日があり、user_id(owner)があれば有効であること" do
     expect(create(:itinerary)).to be_valid
   end
 
@@ -9,6 +9,10 @@ RSpec.describe Itinerary, type: :model do
     itinerary = build(:itinerary, title: nil)
     itinerary.valid?
     expect(itinerary.errors).to be_of_kind(:title, :blank)
+  end
+
+  it "タイトルは30文字以下であれば有効であること" do
+    expect(create(:itinerary, title: "a" * 30)).to be_valid
   end
 
   it "タイトルが31文字以上の場合は無効であること" do
@@ -36,8 +40,7 @@ RSpec.describe Itinerary, type: :model do
   end
 
   it "user_id(owner)がなければ無効であること" do
-    itinerary = build(:itinerary)
-    itinerary.owner = nil
+    itinerary = build(:itinerary, owner: nil)
     itinerary.valid?
     expect(itinerary.errors).to be_of_kind(:owner, :blank)
   end

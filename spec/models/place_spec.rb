@@ -14,8 +14,7 @@ RSpec.describe Place, type: :model do
   it "同じplaceable関連付けでplace_idが重複している場合は無効であること" do
     user_place = create(:user_place)
     other_user_place =
-      build(:user_place, place_id: user_place.place_id,
-                         placeable: user_place.placeable)
+      build(:user_place, place_id: user_place.place_id, placeable: user_place.placeable)
     other_user_place.valid?
     expect(other_user_place.errors).to be_of_kind(:place_id, :taken)
   end
@@ -24,6 +23,12 @@ RSpec.describe Place, type: :model do
     user_place = build(:user_place, placeable: nil)
     user_place.valid?
     expect(user_place.errors).to be_of_kind(:placeable, :blank)
+  end
+
+  it "ひとつのplaceableにつき、300個以下の関連付けは有効であること" do
+    user = create(:user)
+    create_list(:user_place, 299, placeable: user)
+    expect(build(:user_place, placeable: user)).to be_valid
   end
 
   it "ひとつのplaceableにつき、301個以上の関連付けは無効であること" do
