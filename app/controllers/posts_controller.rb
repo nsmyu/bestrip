@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, except: %i(new create edit update destroy)
+  before_action :authenticate_user!, only: %i(new create edit update destroy)
   before_action :set_post, only: %i(show edit update destroy)
   before_action :authenticate_post_owner, only: %i(edit update destroy)
 
@@ -66,7 +66,7 @@ class PostsController < ApplicationController
 
   def authenticate_post_owner
     if current_user != @post.user
-      redirect_to :posts
+      redirect_to :root, notice: "この操作ができるのは投稿者のみです。"
     end
   end
 

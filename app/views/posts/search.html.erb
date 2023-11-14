@@ -1,6 +1,6 @@
 <% provide :title, @keyword.present? ? "「#{@keyword}」を含む投稿 - みんなの思い出" : "" %>
 <main class="main-content position-relative bg-pearl-white">
-  <%= render 'home/introduction' !user_signed_in? %>
+  <%= render 'home/introduction' if !user_signed_in? %>
   <%= render 'index_layout' %>
 </main>
 

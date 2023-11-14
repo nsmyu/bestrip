@@ -1,1 +1,15 @@
-<%= render "errors" %>
+<%= turbo_stream.update "itinerary_error" do %>
+  <%= render 'error', post: @post, attribute: :itinerary %>
+<% end %>
+<%= turbo_stream.update "photos_error" do %>
+  <%= render 'error', post: @post, attribute: :photos %>
+<% end %>
+<%= turbo_stream.update "title_error" do %>
+  <%= render 'error', post: @post, attribute: :title %>
+<% end %>
+<%= turbo_stream.update "error_notice" do %>
+  <% if @post.errors.any? %>
+    <p class="error-message">入力内容に誤りがあります。赤字箇所をご確認ください。</p>
+  <% end %>
+<% end %>
+
