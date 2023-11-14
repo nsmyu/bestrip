@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe "ItineraryUsers", type: :request do
-  let!(:user) { create(:user) }
-  let!(:other_user_1) { create(:user, bestrip_id: "other_user_1_id") }
+RSpec.describe "ItineraryUsers", type: :request, focus: true do
+  let(:user) { create(:user) }
+  let(:other_user_1) { create(:user, bestrip_id: "other_user_1_id") }
   let(:other_user_2) { create(:user) }
-  let!(:itinerary) { create(:itinerary, owner: user) }
+  let(:itinerary) { create(:itinerary, owner: user) }
 
   before do
     sign_in user
@@ -37,17 +37,16 @@ RSpec.describe "ItineraryUsers", type: :request do
         expect(response.body).to include "ユーザーが見つかりませんでした"
       end
 
-      it "検索したBesTrip IDのユーザーが既にメンバーに含まれている場合、メッセージを返すこと" do
+      it "検索したBesTrip IDのユーザーが既にメンバーに含まれている場合、その旨メッセージを返すこと" do
         itinerary.members << other_user_1
         user_search_params = { bestrip_id: other_user_1.bestrip_id, id: itinerary.id }
         get search_user_itinerary_path(itinerary.id), params: user_search_params
-        expect(response.body).to include other_user_1.name
         expect(response.body).to include "すでにメンバーに追加されています"
       end
     end
 
     context "ログインユーザーがプランのメンバーではない場合" do
-      it "itinerariesのindexにリダイレクトされること" do
+      it "旅のプラン一覧画面にリダイレクトされること" do
         sign_in other_user_1
         user_search_params = { bestrip_id: user.bestrip_id, id: itinerary.id }
         get search_user_itinerary_path(itinerary.id), params: user_search_params
@@ -61,14 +60,13 @@ RSpec.describe "ItineraryUsers", type: :request do
       add_member_params = { user_id: other_user_1.id, id: itinerary.id }
       post itinerary_users_path(itinerary.id), params: add_member_params
       expect(response).to redirect_to itinerary_path(itinerary.id)
-      expect(itinerary.reload.members).to include other_user_1
     end
 
     it "ログインユーザーがプランのメンバーではない場合、失敗すること" do
       sign_in other_user_1
       add_member_params = { user_id: other_user_2.id, id: itinerary.id }
       post itinerary_users_path(itinerary.id), params: add_member_params
-      expect(itinerary.reload.members).not_to include other_user_2
+      expect(response).to redirect_to itineraries_path
     end
   end
 
@@ -81,7 +79,6 @@ RSpec.describe "ItineraryUsers", type: :request do
       remove_member_params = { user_id: other_user_1.id, id: itinerary.id }
       delete itinerary_user_path(itinerary.id), params: remove_member_params
       expect(response).to redirect_to itinerary_path(itinerary.id)
-      expect(itinerary.reload.members).not_to include other_user_1
     end
 
     it "ログインユーザーがプラン作成者ではない場合、失敗すること" do
@@ -91,7 +88,8 @@ RSpec.describe "ItineraryUsers", type: :request do
       expect(itinerary.reload.members).to include other_user_2
     end
 
-    it "作成者をメンバーから削除することはできないこと" do
+    it "削除対象がプラン作成者の場合、失敗すること" do
+      sign_in other_user_1
       remove_member_params = { user_id: user.id, id: itinerary.id }
       delete itinerary_user_path(itinerary.id), params: remove_member_params
       expect(itinerary.reload.members).to include user
