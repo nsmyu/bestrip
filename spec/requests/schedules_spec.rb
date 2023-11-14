@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Schedules", type: :request, focus: true do
+RSpec.describe "Schedules", type: :request do
   let!(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let!(:itinerary) { create(:itinerary, owner: user) }
@@ -263,7 +263,8 @@ RSpec.describe "Schedules", type: :request, focus: true do
       it "失敗すること（itinerariesのindexにリダイレクトされること）" do
         sign_in other_user
         schedule_params = attributes_for(:schedule, title: "Edited Title")
-        patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+        patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
+          params: { schedule: schedule_params }, headers: turbo_stream
         expect(response).to redirect_to itineraries_path
       end
     end

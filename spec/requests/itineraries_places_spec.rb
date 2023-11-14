@@ -46,7 +46,8 @@ RSpec.describe "Itineraries::Places", type: :request do
     context "ログインユーザーがプランのメンバーである場合" do
       context "追加登録可能な状態の場合" do
         it "正常にレスポンスを返すこと" do
-          get new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
+          get new_itinerary_place_path(itinerary_id: itinerary.id,
+                                       place_id: itinerary_place.place_id)
           expect(response).to have_http_status 200
         end
       end
@@ -54,13 +55,15 @@ RSpec.describe "Itineraries::Places", type: :request do
       context "追加登録不可能な状態の場合" do
         it "place_idが既に登録されている場合、追加済みボタンを取得すること" do
           itinerary_place.save
-          get new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
+          get new_itinerary_place_path(itinerary_id: itinerary.id,
+                                       place_id: itinerary_place.place_id)
           expect(response.body).to include "行きたい場所リストに追加済み"
         end
 
         it "上限の300件まで登録済みの場合、その旨メッセージを取得すること" do
           create_list(:itinerary_place, 300, placeable: itinerary)
-          get new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
+          get new_itinerary_place_path(itinerary_id: itinerary.id,
+                                       place_id: itinerary_place.place_id)
           expect(response.body).to include "行きたい場所リストの登録数が上限に達しています。"
         end
       end
