@@ -1,1 +1,8 @@
-<%= render "errors" %>
+<%= turbo_stream.update "title_error" do %>
+  <%= @schedule.errors.full_messages_for(:title).first if @schedule.errors.any? %>
+<% end %>
+<%= turbo_stream.update "error_notice" do %>
+  <% if @schedule.errors.any? %>
+    <p class="error-message">入力内容に誤りがあります。赤字箇所をご確認ください。</p>
+  <% end %>
+<% end %>
