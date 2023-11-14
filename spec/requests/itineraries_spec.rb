@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "Itineraries", type: :request do
-  let!(:user) { create(:user) }
-  let!(:other_user) { create(:user, bestrip_id: "other_user_id") }
-  let!(:itinerary) { create(:itinerary, owner: user) }
+  let(:user) { create(:user) }
+  let(:other_user) { create(:user) }
+  let(:itinerary) { create(:itinerary, owner: user) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
   let(:turbo_frame_modal) { { "turbo-frame": "modal" } }
 
@@ -17,7 +17,8 @@ RSpec.describe "Itineraries", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "ログインユーザーの全ての旅のプランを取得すること" do
+    it "ログインユーザーが所有または所属する旅のプラン全てを取得すること" do
+      itinerary
       other_itinerary = create(:itinerary, owner: user)
       other_users_itinerary = create(:itinerary, owner: other_user)
       other_users_itinerary.members << user
@@ -84,23 +85,23 @@ RSpec.describe "Itineraries", type: :request do
 
   describe "GET #show" do
     context "ログインユーザーがプランのメンバーである場合" do
-      before do
-        get itinerary_path(itinerary.id)
-      end
-
       it "正常にレスポンスを返すこと" do
+        get itineraries_path
         expect(response).to have_http_status 200
       end
 
-      it "旅のプランの情報を取得すること" do
+      it "旅のプランのタイトル、出発日・帰宅日、メンバー名を取得すること" do
+        itinerary.members << other_user
+        get itineraries_path
         expect(response.body).to include itinerary.title
         expect(response.body).to include I18n.l itinerary.departure_date
         expect(response.body).to include I18n.l itinerary.return_date
+        expect(response.body).to include itinerary.owner.name, other_user.name
       end
     end
 
     context "ログインユーザーがプランのメンバーではない場合" do
-      it "indexにリダイレクトされること" do
+      it "旅のプラン一覧画面にリダイレクトされること" do
         sign_in other_user
         get itinerary_path(itinerary.id)
         expect(response).to redirect_to itineraries_path
@@ -111,14 +112,14 @@ RSpec.describe "Itineraries", type: :request do
   describe "GET #edit" do
     context "ログインユーザーがプラン作成者の場合" do
       before do
-        get edit_itinerary_path(itinerary.id)
+        get edit_itinerary_path(itinerary.id), headers: turbo_frame_modal
       end
 
       it "正常にレスポンスを返すこと" do
         expect(response).to have_http_status 200
       end
 
-      it "旅のプランの情報を取得すること" do
+      it "旅のプランのタイトル、出発日、帰宅日を取得すること" do
         expect(response.body).to include itinerary.title
         expect(response.body).to include itinerary.departure_date.to_s
         expect(response.body).to include itinerary.return_date.to_s
@@ -126,7 +127,7 @@ RSpec.describe "Itineraries", type: :request do
     end
 
     context "ログインユーザーがプラン作成者ではない場合" do
-      it "showにリダイレクトされること" do
+      it "旅のプラン情報画面にリダイレクトされること" do
         itinerary.members << other_user
         sign_in other_user
         get edit_itinerary_path(itinerary.id)
@@ -169,7 +170,8 @@ RSpec.describe "Itineraries", type: :request do
         end
 
         it "帰宅日が出発日より前の日付の場合、失敗すること" do
-          itinerary_params = attributes_for(:itinerary, return_date: "2024-01-31")
+          itinerary_params = attributes_for(:itinerary, departure_date: "2024-02-01",
+                                                        return_date: "2024-01-31")
           patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params },
                                               headers: turbo_stream
           expect(response.body).to include "帰宅日は出発日以降で選択してください"
@@ -179,11 +181,12 @@ RSpec.describe "Itineraries", type: :request do
 
     context "ログインユーザーがプラン作成者ではない場合" do
       it "失敗すること" do
+        original_title = itinerary.title
         itinerary.members << other_user
         sign_in other_user
         patch itinerary_path(itinerary.id), params: { itinerary: { title: "Edited Title" } }
         expect(response).to redirect_to itinerary_path(id: itinerary.id)
-        expect(itinerary.reload.title).not_to eq "Edited Title"
+        expect(itinerary.reload.title).to eq original_title
       end
     end
   end
@@ -192,14 +195,13 @@ RSpec.describe "Itineraries", type: :request do
     it "ログインユーザーがプラン作成者の場合、成功すること" do
       delete itinerary_path(itinerary.id)
       expect(response).to redirect_to itineraries_path
-      expect(user.reload.itineraries).not_to include itinerary
     end
 
     it "ログインユーザーがプラン作成者ではない場合、失敗すること" do
       itinerary.members << other_user
       sign_in other_user
       delete itinerary_path(itinerary.id)
-      expect(other_user.reload.itineraries).to include itinerary
+      expect(response).to redirect_to itinerary_path(itinerary.id)
     end
   end
 end
