@@ -12,18 +12,20 @@ RSpec.describe "UsersSessions", type: :request do
 
   describe "POST #create" do
     it "有効な値の場合、ログインに成功すること" do
-      post user_session_path, params: { user: { email: user.email, password: user.password } }
+      user_params = { email: user.email, password: user.password }
+      post user_session_path, params: { user: user_params }
       expect(response).to redirect_to itineraries_path
     end
 
     it "メールアドレスが間違っている場合、ログインに失敗すること" do
-      post user_session_path,
-        params: { user: { email: "wrong@example.com", password: user.password } }
+      user_params = { email: "wrong@example.com", password: user.password }
+      post user_session_path, params: { user: user_params }
       expect(response.body).to include "メールアドレスまたはパスワードが違います。"
     end
 
     it "パスワードが間違っている場合、ログインに失敗すること" do
-      post user_session_path, params: { user: { email: user.email, password: "wrongpassword" } }
+      user_params = { email: user.email, password: "wrongpassword" }
+      post user_session_path, params: { user: user_params }
       expect(response.body).to include "メールアドレスまたはパスワードが違います。"
     end
   end

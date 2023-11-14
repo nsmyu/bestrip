@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
-  let!(:user) { create(:user) }
-  let!(:itinerary) { create(:itinerary, owner: user) }
-  let!(:test_post) { create(:post, :with_photo, itinerary: itinerary) }
+  let(:user) { create(:user) }
+  let(:itinerary) { create(:itinerary, owner: user) }
+  let!(:post) { create(:post, :with_photo, itinerary: itinerary) }
 
   describe "GET #show" do
     before do
@@ -20,8 +20,8 @@ RSpec.describe "Users", type: :request do
       expect(response.body).to include user.introduction
     end
 
-    it "ユーザーの投稿の情報を取得すること" do
-      expect(response.body).to include test_post.title
+    it "ユーザーの投稿を取得すること" do
+      expect(response.body).to include post.title
     end
   end
 end

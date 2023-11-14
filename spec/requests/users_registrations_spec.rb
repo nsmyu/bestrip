@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "UsersRegistrations", type: :request do
+RSpec.describe "UsersRegistrations", type: :request, focus: true do
   let(:user) { create(:user) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
@@ -12,13 +12,13 @@ RSpec.describe "UsersRegistrations", type: :request do
   end
 
   describe "POST #create" do
-    it "正常な値の場合、ユーザー登録に成功すること" do
+    it "正常な値の場合、アカウント登録に成功すること" do
       user_params = attributes_for(:user)
       post user_registration_path, params: { user: user_params }
       expect(response).to redirect_to itineraries_path
     end
 
-    it "無効な値の場合、ユーザー登録に失敗すること" do
+    it "無効な値の場合、アカウント登録に失敗すること" do
       user_params = attributes_for(:user, name: "")
       post user_registration_path, params: { user: user_params }
       expect(response.body).to include "ニックネームを入力してください"
@@ -34,16 +34,12 @@ RSpec.describe "UsersRegistrations", type: :request do
   end
 
   describe "PATCH #update" do
-    it "パスワードを変更できること" do
+    it "有効な値の場合、パスワードの変更に成功すること" do
       sign_in user
-      user_params = {
-        user: {
-          current_password: user.password,
-          password: "newpassword",
-          password_confirmation: "newpassword",
-        },
-      }
-      patch user_registration_path, params: user_params
+      user_params = attributes_for(:user, current_password: user.password,
+                                          password: "newpassword",
+                                          password_confirmation: "newpassword")
+      patch user_registration_path, params: { user: user_params }
       expect(response).to redirect_to edit_user_registration_path
     end
   end
@@ -73,8 +69,10 @@ RSpec.describe "UsersRegistrations", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "ニックネームを取得すること" do
+    it "ニックネーム、bestrip ID、自己紹介を取得すること" do
       expect(response.body).to include user.name
+      expect(response.body).to include user.bestrip_id
+      expect(response.body).to include user.introduction
     end
   end
 
@@ -83,18 +81,22 @@ RSpec.describe "UsersRegistrations", type: :request do
       sign_in user
     end
 
-    it "パスワード以外の各項目を変更できること" do
-      user_params = {
-        user: {
-          email: "new_email@example.com",
-          name: "New nickname",
-          introduction: "New introduction.",
-        },
-      }
-      patch users_update_without_password_path, params: user_params
-      expect(user.reload.email).to eq "new_email@example.com"
-      expect(user.reload.name).to eq "New nickname"
-      expect(user.reload.introduction).to eq "New introduction."
+    it "有効な値の場合、パスワード以外の各項目の変更に成功すること" do
+      user_params = attributes_for(:user, email: "edited_email@example.com",
+                                          name: "edited name",
+                                          bestrip_id: "edited_id",
+                                          introduction: "Edited introduction.")
+      patch users_update_without_password_path, params: { user: user_params }
+      expect(user.reload.email).to eq "edited_email@example.com"
+      expect(user.reload.name).to eq "edited name"
+      expect(user.reload.bestrip_id).to eq "edited_id"
+      expect(user.reload.introduction).to eq "Edited introduction."
+    end
+
+    it "無効な値の場合、パスワード以外の各項目の変更に失敗すること" do
+      user_params = attributes_for(:user, email: "")
+      patch users_update_without_password_path, params: { user: user_params }
+      expect(response.body).to include "メールアドレスを入力してください"
     end
   end
 
@@ -109,11 +111,17 @@ RSpec.describe "UsersRegistrations", type: :request do
       expect(response.body).to include 'このIDは使用できます'
     end
 
-    it "IDが一意でない場合、エラーメッセージを取得すること" do
+    it "IDが一意でない場合、使用不可のメッセージを取得すること" do
       create(:user, bestrip_id: "user_id")
       patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "user_id" } },
                                             headers: turbo_stream
       expect(response.body).to include 'このIDは他の人が使用しています'
+    end
+
+    it "無効な値の場合、エラーメッセージを取得すること" do
+      patch users_validate_bestrip_id_path, params: { user: { bestrip_id: "id" } },
+                                            headers: turbo_stream
+      expect(response.body).to include 'IDは5文字以上で入力してください'
     end
   end
 end
