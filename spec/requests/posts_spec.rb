@@ -1,16 +1,18 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :request, focus: true do
+RSpec.describe "Posts", type: :request do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:itinerary_1) { create(:itinerary, :with_schedule, owner: user) }
   let(:itinerary_2) { create(:itinerary, :with_schedule, owner: user) }
-  let!(:post_1) { create(:post, :with_photo, itinerary: itinerary_1) }
-  let!(:post_2) { create(:post, :with_caption_awesome, :with_photo, itinerary: itinerary_2) }
+  let(:post_1) { create(:post, :with_photo, itinerary: itinerary_1) }
+  let(:post_2) { create(:post, :with_caption_awesome, :with_photo, itinerary: itinerary_2) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
   describe "GET #index" do
     before do
+      post_1
+      post_2
       get posts_path
     end
 
@@ -31,6 +33,8 @@ RSpec.describe "Posts", type: :request, focus: true do
 
   describe "GET #search" do
     before do
+      post_1
+      post_2
       get posts_path
     end
 
@@ -76,7 +80,7 @@ RSpec.describe "Posts", type: :request, focus: true do
         photo_params = { photos_attributes: [attributes_for(:photo)] }
         post_params = attributes_for(:post, itinerary_id: itinerary_1.id).merge(photo_params)
         post posts_path, params: { post: post_params }
-        expect(response).to redirect_to post_path(Post.all[2].id)
+        expect(response).to redirect_to post_path(Post.all[0].id)
       end
     end
 

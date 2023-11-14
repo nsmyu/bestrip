@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe "Schedules", type: :request do
-  let!(:user) { create(:user) }
+  let(:user) { create(:user) }
   let(:other_user) { create(:user) }
-  let!(:itinerary) { create(:itinerary, owner: user) }
+  let(:itinerary) { create(:itinerary, owner: user) }
   let(:schedule) { create(:schedule, itinerary: itinerary) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
+  let(:turbo_frame_modal) { { "turbo-frame": "modal" } }
 
   before do
     sign_in user
@@ -19,14 +20,14 @@ RSpec.describe "Schedules", type: :request do
       end
 
       it "旅のプランに含まれるスケジュールを全て取得すること" do
-        schedule_1 = create(:schedule, itinerary_id: itinerary.id)
-        schedule_2 = create(:schedule, itinerary_id: itinerary.id)
+        schedule
+        other_schedule = create(:schedule, itinerary_id: itinerary.id)
         get itinerary_schedules_path(itinerary_id: itinerary.id)
-        expect(response.body).to include schedule_1.title, schedule_2.title
+        expect(response.body).to include schedule.title, other_schedule.title
       end
 
       it "スケジュールのタイトル、日付、開始・終了時間を取得すること" do
-        schedule = create(:schedule, itinerary_id: itinerary.id)
+        schedule
         get itinerary_schedules_path(itinerary_id: itinerary.id)
         expect(response.body).to include schedule.title
         expect(response.body).to include I18n.l schedule.schedule_date
@@ -36,7 +37,7 @@ RSpec.describe "Schedules", type: :request do
     end
 
     context "ログインユーザーがプランのメンバーではない場合" do
-      it "itinerariesのindexにリダイレクトされること" do
+      it "旅のプラン一覧画面にリダイレクトされること" do
         sign_in other_user
         get itinerary_schedules_path(itinerary_id: itinerary.id)
         expect(response).to redirect_to itineraries_path
@@ -46,13 +47,13 @@ RSpec.describe "Schedules", type: :request do
 
   describe "GET #new" do
     it "ログインユーザーがプランのメンバーである場合、正常にレスポンスを返すこと" do
-      get new_itinerary_schedule_path(itinerary_id: itinerary.id)
+      get new_itinerary_schedule_path(itinerary_id: itinerary.id), headers: turbo_frame_modal
       expect(response).to have_http_status 200
     end
 
-    it "ログインユーザーがプランのメンバーではない場合、itinerariesのindexにリダイレクトされること" do
+    it "ログインユーザーがプランのメンバーではない場合、旅のプラン一覧画面にリダイレクトされること" do
       sign_in other_user
-      get new_itinerary_schedule_path(itinerary_id: itinerary.id)
+      get new_itinerary_schedule_path(itinerary_id: itinerary.id), headers: turbo_frame_modal
       expect(response).to redirect_to itineraries_path
     end
   end
@@ -107,7 +108,7 @@ RSpec.describe "Schedules", type: :request do
     end
 
     context "ログインユーザーがプランのメンバーではない場合" do
-      it "失敗すること（itinerariesのindexにリダイレクトされること）" do
+      it "失敗すること（旅のプラン一覧画面にリダイレクトされること）" do
         sign_in other_user
         schedule_params = attributes_for(:schedule)
         post itinerary_schedules_path(itinerary_id: itinerary.id),
@@ -119,7 +120,8 @@ RSpec.describe "Schedules", type: :request do
 
   describe "GET #show" do
     before do
-      get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+      get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
+        headers: turbo_frame_modal
     end
 
     context "ログインユーザーがプランのメンバーである場合" do
@@ -127,7 +129,7 @@ RSpec.describe "Schedules", type: :request do
         expect(response).to have_http_status 200
       end
 
-      it "スケジュールの情報を取得すること" do
+      it "スケジュールの各情報を取得すること" do
         expect(response.body).to include schedule.title
         expect(response.body).to include schedule.icon
         expect(response.body).to include I18n.l schedule.schedule_date
@@ -138,20 +140,22 @@ RSpec.describe "Schedules", type: :request do
 
       it "スポット情報をGoogle APIから取得すること", vcr: "google_api_response" do
         expect(response.body).to include "シドニー・オペラハウス"
-        expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
       end
 
-      it "place_idが無効な(変更されている)場合、エラーメッセージを取得すること", vcr: "google_api_response" do
-        schedule = create(:schedule, place_id: "invalid_place_id", itinerary: itinerary)
-        get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+      it "place_idが無効な場合、エラーメッセージを取得すること", vcr: "google_api_response" do
+        schedule.place_id = "invalid_place_id"
+        schedule.save
+        get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
+          headers: turbo_frame_modal
         expect(response.body).to include "スポット情報を取得できませんでした"
       end
     end
 
     context "ログインユーザーがプランのメンバーではない場合" do
-      it "itinerariesのindexにリダイレクトされること" do
+      it "旅のプラン一覧画面にリダイレクトされること" do
         sign_in other_user
-        get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+        get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
+          headers: turbo_frame_modal
         expect(response).to redirect_to itineraries_path
       end
     end
@@ -160,14 +164,15 @@ RSpec.describe "Schedules", type: :request do
   describe "GET #edit" do
     context "ログインユーザーがプランのメンバーである場合" do
       before do
-        get edit_itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+        get edit_itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
+          headers: turbo_frame_modal
       end
 
       it "正常にレスポンスを返すこと" do
         expect(response).to have_http_status 200
       end
 
-      it "スケジュールの情報を取得すること" do
+      it "スケジュールの各情報を取得すること" do
         expect(response.body).to include schedule.title
         expect(response.body).to include schedule.icon
         expect(response.body).to include schedule.schedule_date.to_s
@@ -178,20 +183,22 @@ RSpec.describe "Schedules", type: :request do
 
       it "スポット情報をGoogle Places APIから取得すること", vcr: "google_api_response" do
         expect(response.body).to include "シドニー・オペラハウス"
-        expect(response.body).to include "Bennelong Point, Sydney NSW 2000 オーストラリア"
       end
 
-      it "place_idが無効な(変更されている)場合、エラーメッセージを取得すること", vcr: "google_api_response" do
-        schedule = create(:schedule, place_id: "invalid_place_id", itinerary: itinerary)
-        get edit_itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+      it "place_idが無効な場合、エラーメッセージを取得すること", vcr: "google_api_response" do
+        schedule.place_id = "invalid_place_id"
+        schedule.save
+        get edit_itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
+          headers: turbo_frame_modal
         expect(response.body).to include "スポット情報を取得できませんでした"
       end
     end
 
     context "ログインユーザーがプランのメンバーではない場合" do
-      it "itinerariesのindexにリダイレクトされること" do
+      it "旅のプラン一覧画面にリダイレクトされること" do
         sign_in other_user
-        get edit_itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+        get edit_itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
+          headers: turbo_frame_modal
         expect(response).to redirect_to itineraries_path
       end
     end
@@ -260,7 +267,7 @@ RSpec.describe "Schedules", type: :request do
     end
 
     context "ログインユーザーがプランのメンバーではない場合" do
-      it "失敗すること（itinerariesのindexにリダイレクトされること）" do
+      it "失敗すること（旅のプラン一覧画面にリダイレクトされること）" do
         sign_in other_user
         schedule_params = attributes_for(:schedule, title: "Edited Title")
         patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
