@@ -47,7 +47,7 @@ RSpec.describe "ItineraryUsers", type: :request do
     end
 
     context "ログインユーザーがプランのメンバーではない場合" do
-      it "indexにリダイレクトされること" do
+      it "itinerariesのindexにリダイレクトされること" do
         sign_in other_user_1
         user_search_params = { bestrip_id: user.bestrip_id, id: itinerary.id }
         get search_user_itinerary_path(itinerary.id), params: user_search_params
