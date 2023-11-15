@@ -1,7 +1,7 @@
 RSpec.describe "Users", type: :system do
-  let!(:user) { create(:user) }
-  let!(:other_user) { create(:user) }
-  let!(:itinerary) { create(:itinerary, owner: user) }
+  let(:user) { create(:user) }
+  let(:other_user) { create(:user) }
+  let(:itinerary) { create(:itinerary, owner: user) }
   let!(:post) { create(:post, :with_photo, itinerary: itinerary) }
 
   describe "プロフィール表示" do
@@ -16,8 +16,9 @@ RSpec.describe "Users", type: :system do
       expect(page).to have_content user.introduction
     end
 
-    it "ユーザーの投稿の情報を表示すること" do
+    it "ユーザーの投稿を表示すること" do
       expect(page).to have_content post.title
+      expect(page).to have_content I18n.l post.created_at, format: :date_posted
     end
 
     context "ログインユーザー自身のプロフィールページの場合" do
@@ -26,6 +27,7 @@ RSpec.describe "Users", type: :system do
         click_on "プロフィール編集"
 
         expect(current_path).to eq users_edit_profile_path
+        expect(page).to have_content user.name
       end
 
       it "「旅のプラン⚪︎件」をクリックすると、旅のプラン一覧画面へ遷移すること" do
