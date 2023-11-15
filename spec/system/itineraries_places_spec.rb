@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Itineraries::Places", type: :system do
+RSpec.describe "Itineraries::Places", type: :system, focus: true do
   shared_examples "旅のメンバー共通機能" do |user_type|
     before do
       if user_type == :owner
@@ -89,7 +89,7 @@ RSpec.describe "Itineraries::Places", type: :system do
 
           expect {
             within ".modal" do
-              click_on "行きたい場所リストに追加"
+              find(:xpath, "//form[button[span[contains(text(), '行きたい場所リストに追加')]]]").click
 
               expect(page).to have_xpath "//a[span[contains(text(), '行きたい場所リストに追加済み')]]"
             end
@@ -185,14 +185,14 @@ RSpec.describe "Itineraries::Places", type: :system do
           expect {
             visit new_itinerary_place_path(itinerary_id: itinerary.id,
                                           place_id: itinerary_place.place_id)
-            click_on "行きたい場所リストに追加済み", match: :first
+            find(:xpath, "//a[span[contains(text(), '行きたい場所リストに追加済み')]]").click
 
             expect(page).to have_xpath "//form[button[span[contains(text(), '行きたい場所リストに追加')]]]"
           }.to change(itinerary.places, :count).by(-1)
         end
       end
 
-      context "行きたい場所リスト一覧画面から削除する場合" do
+      context "行きたい場所リスト一覧ページから削除する場合" do
         it "成功すること" do
           expect {
             visit itinerary_places_path(itinerary_id: itinerary.id)
