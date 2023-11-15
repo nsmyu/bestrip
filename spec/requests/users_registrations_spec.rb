@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "UsersRegistrations", type: :request, focus: true do
+RSpec.describe "UsersRegistrations", type: :request do
   let(:user) { create(:user) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 

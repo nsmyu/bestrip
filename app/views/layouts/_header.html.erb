@@ -20,23 +20,23 @@
       <ul class="navbar-nav ms-auto">
         <% if user_signed_in? %>
           <li class="nav-item d-flex align-items-center me-2">
-            <%= link_to "旅の計画", :itineraries, class: "btn bg-gradient-primary mb-0 fs-px-13", data: { turbo: false } %>
+            <%= link_to "旅の計画", :itineraries, class: "btn bg-gradient-primary mb-0 fs-px-13" %>
           </li>
           <li class="nav-item d-flex align-items-center ms-3">
             <%= link_to :guide, class: "nav-link d-flex align-items-center px-2 border-radius-md link-area",
-              "data-bs-toggle": "tooltip", "data-bs-placement": "bottom", title: "BesTripの楽しみ方", data: { turbo: false} do %>
+              "data-bs-toggle": "tooltip", "data-bs-placement": "bottom", title: "BesTripの楽しみ方" do %>
               <i class="material-symbols-outlined text-charcoal fs-4">help_outline</i>
             <% end %>
           </li>
           <li class="nav-item d-flex align-items-center ms-2">
             <%= link_to :users_places, class: "nav-link d-flex align-items-center px-2 border-radius-md link-area",
-              "data-bs-toggle": "tooltip", "data-bs-placement": "bottom", title: "お気に入りスポット", data: { turbo: false} do %>
+              "data-bs-toggle": "tooltip", "data-bs-placement": "bottom", title: "お気に入りスポット" do %>
               <i class="material-symbols-outlined text-charcoal fs-4">favorite_border</i>
             <% end %>
           </li>
           <li class="nav-item d-flex align-items-center ms-2">
             <%= link_to :root, class: "nav-link px-2 border-radius-md link-area",
-              "data-bs-toggle": "tooltip", "data-bs-placement": "bottom", title: "みんなの思い出", data: { turbo: false} do %>
+              "data-bs-toggle": "tooltip", "data-bs-placement": "bottom", title: "みんなの思い出" do %>
               <%= image_tag "brand_icon_charcoal.png", style: "height: 24px;" %>
             <% end %>
           </li>
@@ -49,10 +49,10 @@
           </li>
         <% else %>
           <li class="nav-item">
-            <%= link_to "アカウント登録", :new_user_registration, class: "nav-link px-3 border-radius-md link-area text-sm text-charcoal", data: { turbo: false } %>
+            <%= link_to "アカウント登録", :new_user_registration, class: "nav-link px-3 border-radius-md link-area text-sm text-charcoal" %>
           </li>
           <li class="nav-item">
-            <%= link_to "ログイン", :new_user_session, class: "nav-link px-3 border-radius-md link-area text-sm text-charcoal", data: { turbo: false } %>
+            <%= link_to "ログイン", :new_user_session, class: "nav-link px-3 border-radius-md link-area text-sm text-charcoal" %>
           </li>
         <% end %>
       </ul>
