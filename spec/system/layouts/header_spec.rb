@@ -68,6 +68,13 @@ RSpec.describe "ヘッダー", type: :system do
       assert_current_path root_path
     end
 
+    it "ユーザーのニックネームとアバター画像を表示すること" do
+      within "header" do
+        expect(page).to have_selector "img[src*='default_avatar']"
+        expect(page).to have_content user.name
+      end
+    end
+
     it "ドロップダウンメニューの「プロフィール」をクリックすると、自分のプロフィールページへ遷移すること", js: true do
       within "header" do
         find("p", text: user.name).hover

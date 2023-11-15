@@ -11,6 +11,7 @@ RSpec.describe "Users", type: :system do
     end
 
     it "ユーザーのプロフィール情報を表示すること" do
+      expect(page).to have_selector "img[src*='default_avatar']"
       expect(page).to have_content user.name
       expect(page).to have_content user.bestrip_id
       expect(page).to have_content user.introduction
