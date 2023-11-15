@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Itineraries::Places", type: :system, focus: true do
+RSpec.describe "Itineraries::Places", type: :system do
   shared_examples "旅のメンバー共通機能" do |user_type|
     before do
       if user_type == :owner
