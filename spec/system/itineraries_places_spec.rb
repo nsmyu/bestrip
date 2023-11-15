@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Itineraries::Places", type: :system, focus: true do
+RSpec.describe "Itineraries::Places", type: :system do
   shared_examples "旅のメンバー共通機能" do |user_type|
     before do
       if user_type == :owner
@@ -101,7 +101,7 @@ RSpec.describe "Itineraries::Places", type: :system, focus: true do
         it "既に追加されている場合、追加済みボタンが表示されること" do
           itinerary_place.save
           visit itinerary_places_find_path(itinerary_id: itinerary.id,
-                                          place_id: itinerary_place.place_id)
+                                           place_id: itinerary_place.place_id)
           search_place_and_open_place_modal
 
           within ".modal" do
@@ -112,7 +112,7 @@ RSpec.describe "Itineraries::Places", type: :system, focus: true do
         it "上限の300件まで登録済みの場合、その旨メッセージを表示し、追加ボタンが無効化されていること" do
           create_list(:itinerary_place, 300, placeable: itinerary)
           visit itinerary_places_find_path(itinerary_id: itinerary.id,
-                                          place_id: itinerary_place.place_id)
+                                           place_id: itinerary_place.place_id)
           search_place_and_open_place_modal
 
           within ".modal" do
@@ -184,7 +184,7 @@ RSpec.describe "Itineraries::Places", type: :system, focus: true do
         it "成功すること（ボタンが追加用フォームに切り替わること）" do
           expect {
             visit new_itinerary_place_path(itinerary_id: itinerary.id,
-                                          place_id: itinerary_place.place_id)
+                                           place_id: itinerary_place.place_id)
             find(:xpath, "//a[span[contains(text(), '行きたい場所リストに追加済み')]]").click
 
             expect(page).to have_xpath "//form[button[span[contains(text(), '行きたい場所リストに追加')]]]"
@@ -225,5 +225,3 @@ RSpec.describe "Itineraries::Places", type: :system, focus: true do
     it_behaves_like "旅のメンバー共通機能", :member
   end
 end
-
-

@@ -53,7 +53,7 @@ RSpec.describe "Itineraries::Places", type: :request do
       context "追加登録可能な状態の場合" do
         it "行きたい場所リスト追加用ボタンを取得すること" do
           get new_itinerary_place_path(itinerary_id: itinerary.id,
-                                      place_id: itinerary_place.place_id)
+                                       place_id: itinerary_place.place_id)
           expect(response.body).to include "行きたい場所リストに追加</span>"
         end
       end
