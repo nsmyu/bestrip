@@ -3,12 +3,7 @@ require 'rails_helper'
 RSpec.describe "Itineraries::Places", type: :system do
   shared_examples "旅のメンバー共通機能" do |user_type|
     before do
-      if user_type == :owner
-        sign_in user
-      elsif user_type == :member
-        itinerary.members << user
-        sign_in user
-      end
+      set_signed_in_user(user_type)
     end
 
     describe "一覧表示" do
