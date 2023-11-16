@@ -5,8 +5,8 @@ RSpec.describe "Posts", type: :request do
   let(:other_user) { create(:user) }
   let(:itinerary_1) { create(:itinerary, :with_schedule, owner: user) }
   let(:itinerary_2) { create(:itinerary, :with_schedule, owner: user) }
-  let(:post_1) { create(:post, :with_photo, itinerary: itinerary_1) }
-  let(:post_2) { create(:post, :with_caption_awesome, :with_photo, itinerary: itinerary_2) }
+  let(:post_1) { create(:post, :caption_great_with_hashtag, :with_photo, itinerary: itinerary_1) }
+  let(:post_2) { create(:post, :caption_awesome_no_hashtag, :with_photo, itinerary: itinerary_2) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
   describe "GET #index" do
