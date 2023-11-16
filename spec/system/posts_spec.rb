@@ -1,16 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :system do
-  let!(:user) { create(:user) }
+RSpec.describe "Posts", type: :system, focus: true do
+  let(:user) { create(:user) }
   let(:other_user) { create(:user) }
-  let!(:itinerary_1) { create(:itinerary, :with_schedule, owner: user) }
-  let!(:itinerary_2) { create(:itinerary, :with_schedule, owner: user) }
-  let!(:post_1) { create(:post, :with_photo, itinerary: itinerary_1) }
-  let!(:post_2) { create(:post, :with_caption_awesome, :with_photo, itinerary: itinerary_2) }
-
-  before do
-    sign_in user
-  end
+  let(:itinerary_1) { create(:itinerary, :with_schedule, owner: user) }
+  let(:itinerary_2) { create(:itinerary, :with_schedule, owner: user) }
+  let!(:post_1) { create(:post, :caption_great_with_hashtag, :with_photo, itinerary: itinerary_1) }
+  let!(:post_2) { create(:post, :caption_awesome_no_hashtag, :with_photo, itinerary: itinerary_2) }
 
   describe "一覧表示" do
     before do
@@ -45,11 +41,23 @@ RSpec.describe "Posts", type: :system do
       expect(page).to have_content post_1.title
     end
 
-    it "「旅の思い出を投稿」をクリックすると、投稿作成モーダルを表示すること", js: true do
-      click_on "旅の思い出を投稿"
+    context "ユーザーがログインしていない場合" do
+      it "「旅の思い出を投稿」をクリックすると、ログインページに遷移すること" do
+        click_on "旅の思い出を投稿"
 
-      within(".modal") do
-        expect(page).to have_content "旅の思い出を投稿"
+        expect(current_path).to eq new_user_session_path
+      end
+    end
+
+    context "ユーザーがログイン済みの場合" do
+      it "「旅の思い出を投稿」をクリックすると、投稿作成モーダルを表示すること", js: true do
+        sign_in user
+        visit posts_path
+        click_on "旅の思い出を投稿"
+
+        within(".modal") do
+          expect(page).to have_content "旅の思い出を投稿"
+        end
       end
     end
   end
@@ -95,7 +103,9 @@ RSpec.describe "Posts", type: :system do
     let(:new_post) { build(:post) }
 
     before do
-      visit new_post_path
+      sign_in user
+      visit posts_path
+      click_on "旅の思い出を投稿"
     end
 
     context "有効な値の場合" do
@@ -113,6 +123,7 @@ RSpec.describe "Posts", type: :system do
           expect(page).to have_selector "img[src$='cat.jpg']"
           expect(page).to have_content new_post.title
           expect(page).to have_content new_post.caption
+          expect(current_path).to eq post_path(id: Post.last.id)
         }.to change(Post, :count).by(1)
       end
     end
@@ -135,6 +146,17 @@ RSpec.describe "Posts", type: :system do
 
           expect(page).to have_content "タイトルは30文字以内で入力してください"
         }.not_to change(Post, :count)
+      end
+
+      it "写真が20枚添付されると、「画像を選択」ボタンが無効化されること" do
+        find(".select-box").click
+        image_path = Rails.root.join('spec/fixtures/cat.jpg')
+        20.times do |i|
+          attach_file "post[photos_attributes][#{i}][url]", image_path, make_visible: true
+        end
+
+        expect(find("input.active-field", visible: false).find(:xpath, ".."))
+          .to match_css("label.disabled")
       end
 
       it "メモが1001文字以上入力された場合、「投稿する」ボタンが無効化されること" do
@@ -164,16 +186,18 @@ RSpec.describe "Posts", type: :system do
       click_on "#bestrip"
 
       expect(page).to have_content post_1.title
-      expect(page).to have_content post_2.title
+      expect(page).not_to have_content post_2.title
       expect(current_path).to eq search_posts_path
     end
 
     it "ログインユーザーが投稿の作成者である場合は、ドロップダウンメニューを表示すること" do
+      sign_in user
+      visit post_path(id: post_1.id)
+
       expect(page).to have_selector "button[id='post_dropdown']"
     end
 
-    it "ログインユーザーが投稿の作成者でない場合は、ドロップダウントグルを表示しないこと" do
-      sign_out user
+    it "ログインユーザーが投稿の作成者でない場合は、ドロップダウンメニューを表示しないこと" do
       sign_in other_user
       visit post_path(id: post_1.id)
 
@@ -181,6 +205,8 @@ RSpec.describe "Posts", type: :system do
     end
 
     it "ドロップダウンメニューの「編集」をクリックすると、投稿編集モーダルを表示すること", js: true do
+      sign_in user
+      visit post_path(id: post_1.id)
       find("i", text: "more_horiz", visible: false).click
       click_on "編集"
 
@@ -213,13 +239,13 @@ RSpec.describe "Posts", type: :system do
 
         expect(page.text).to match /#{"1日目"}[\s\S]*#{"2日目"}[\s\S]*#{"8日目"}/
         within(:xpath, "//div[h6[contains(text(), '1日目')]]") do
-          expect(page).to have_content I18n.l schedule_1st_day.start_at
+          expect(page).to have_content schedule_1st_day.title
         end
         within(:xpath, "//div[h6[contains(text(), '2日目')]]") do
-          expect(page).to have_content I18n.l schedule_2nd_day.start_at
+          expect(page).to have_content schedule_2nd_day.title
         end
         within(:xpath, "//div[h6[contains(text(), '8日目')]]") do
-          expect(page).to have_content I18n.l schedule_8th_day.start_at
+          expect(page).to have_content schedule_8th_day.title
         end
       end
 
@@ -245,6 +271,7 @@ RSpec.describe "Posts", type: :system do
 
   describe "編集", js: true do
     before do
+      sign_in user
       visit edit_post_path(id: post_1.id)
     end
 
@@ -261,6 +288,7 @@ RSpec.describe "Posts", type: :system do
         expect(page).to have_content "Edited title"
         expect(page).to have_content "Edited caption."
         expect(page).to have_content itinerary_2.schedules[0].title
+        expect(current_path).to eq post_path(id: post_1.id)
       end
 
       it "画像の変更に成功すること" do
@@ -315,6 +343,7 @@ RSpec.describe "Posts", type: :system do
 
   describe "削除", js: true do
     it "成功すること" do
+      sign_in user
       expect {
         visit post_path(id: post_1.id)
         find("i", text: "more_horiz", visible: false).click
@@ -325,6 +354,7 @@ RSpec.describe "Posts", type: :system do
         click_on "削除する"
 
         expect(page).to have_content "投稿を削除しました。"
+        expect(page).not_to have_content post_1.title
         expect(current_path).to eq posts_path
       }.to change(Post, :count).by(-1)
     end

@@ -58,7 +58,7 @@ RSpec.describe "サイドバー", type: :system do
         visit itinerary_path(id: itinerary.id)
       end
 
-      it "旅のプランの情報を表示すること", focus: true do
+      it "旅のプランの情報を表示すること" do
         within ".sidenav" do
           expect(page).to have_selector "img[src*='default_itinerary']"
           expect(page).to have_content itinerary.title
