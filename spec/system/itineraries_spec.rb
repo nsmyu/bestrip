@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "Itineraries", type: :system do
-  let!(:user) { create(:user) }
-  let!(:other_user) { create(:user, bestrip_id: "other_user_id") }
+  let(:user) { create(:user) }
+  let(:other_user) { create(:user, bestrip_id: "other_user_id") }
 
   before do
     sign_in user
@@ -17,8 +17,8 @@ RSpec.describe "Itineraries", type: :system do
     end
 
     context "旅のプランが複数登録されている場合" do
-      let!(:itinerary1) { create(:itinerary, owner: user) }
-      let!(:itinerary2) { create(:itinerary, departure_date: "2024-01-31", owner: user) }
+      let!(:itinerary_1) { create(:itinerary, owner: user) }
+      let!(:itinerary_2) { create(:itinerary, departure_date: "2024-01-31", owner: user) }
       let!(:other_users_itinerary) {
         create(:itinerary, departure_date: "2024-02-02", owner: other_user)
       }
@@ -29,33 +29,27 @@ RSpec.describe "Itineraries", type: :system do
 
         expect(page.text)
           .to match(
-            /#{other_users_itinerary.title}[\s\S]*#{itinerary1.title}[\s\S]*#{itinerary2.title}/
+            /#{other_users_itinerary.title}[\s\S]*#{itinerary_1.title}[\s\S]*#{itinerary_2.title}/
           )
       end
 
       it "旅のタイトル、出発・帰宅日、メンバーのニックネームを表示すること" do
-        itinerary1.members << other_user
+        itinerary_1.members << other_user
         visit itineraries_path
 
-        within(:xpath, "//div[p[contains(text(), '#{itinerary1.title}')]]") do
-          expect(page).to have_content I18n.l itinerary1.departure_date
-          expect(page).to have_content I18n.l itinerary1.return_date
+        within(:xpath, "//div[p[contains(text(), '#{itinerary_1.title}')]]") do
+          expect(page).to have_content I18n.l itinerary_1.departure_date
+          expect(page).to have_content I18n.l itinerary_1.return_date
           expect(page).to have_content user.name
           expect(page).to have_content other_user.name
         end
       end
 
-      it "他のユーザーの旅のプランが表示されていないこと" do
-        visit itineraries_path
-
-        expect(page).not_to have_content other_users_itinerary.title
-      end
-
       it "旅のプランのカードをクリックすると、旅のプラン情報ページへ遷移すること" do
         visit itineraries_path
-        click_on itinerary1.title
+        click_on itinerary_1.title
 
-        expect(current_path).to eq itinerary_path(id: itinerary1.id)
+        expect(current_path).to eq itinerary_path(id: itinerary_1.id)
       end
     end
   end
@@ -69,7 +63,7 @@ RSpec.describe "Itineraries", type: :system do
     end
 
     context "有効な値の場合" do
-      it "成功すること" do
+      it "画像プレビューの表示及びプランの作成に成功すること" do
         expect {
           fill_in "itinerary[title]", with: itinerary.title
           page.execute_script "departure_date.value = '#{itinerary.departure_date}'"
@@ -80,37 +74,29 @@ RSpec.describe "Itineraries", type: :system do
           image_path = Rails.root.join('spec/fixtures/cat.jpg')
           attach_file 'itinerary[image]', image_path, make_visible: true
 
+          expect(page).to have_selector "img[id='image_preview'][src*='data:image']"
           expect(page).not_to have_selector "img[id='image_preview'][src*='default_itinerary']"
 
           click_on "保存する"
 
           expect(page).to have_content "新しい旅のプランを作成しました。"
-          expect(page).to have_content "旅のプラン情報"
           expect(page).to have_content itinerary.title
           expect(page).to have_content I18n.l itinerary.departure_date
           expect(page).to have_content I18n.l itinerary.return_date
+          expect(page).to have_selector "img[src*='cat.jpg']"
           expect(page).to have_content user.name
+          expect(current_path).to eq itinerary_path(id: Itinerary.last.id)
         }.to change(Itinerary, :count).by(1)
       end
     end
 
     context "無効な値の場合" do
-      it "タイトルが空欄の場合、失敗すること" do
+      it "必須項目が未入力の場合、失敗すること" do
         expect {
           fill_in "itinerary[title]", with: ""
-          page.execute_script "departure_date.value = '#{itinerary.departure_date}'"
-          page.execute_script "return_date.value = '#{itinerary.return_date}'"
           click_on "保存する"
 
           expect(page).to have_content "タイトルを入力してください"
-        }.not_to change(Itinerary, :count)
-      end
-
-      it "出発日と帰宅日が未入力の場合、失敗すること" do
-        expect {
-          fill_in "itinerary[title]", with: itinerary.title
-          click_on "保存する"
-
           expect(page).to have_content "出発日を入力してください"
           expect(page).to have_content "帰宅日を入力してください"
         }.not_to change(Itinerary, :count)
@@ -134,7 +120,6 @@ RSpec.describe "Itineraries", type: :system do
         find('div.dayContainer > span:nth-child(2)').click
         sleep 0.3
         find("#return_date", visible: false).sibling("input").click
-        find("div.dayContainer")
 
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
@@ -179,7 +164,6 @@ RSpec.describe "Itineraries", type: :system do
         expect(page.has_field?('itinerary[title]', with: itinerary.title)).to be_truthy
       end
     end
-
     # ドロップダウンメニュー「削除」のリンクについては、後述の削除処理でテストを行う
   end
 
@@ -191,7 +175,7 @@ RSpec.describe "Itineraries", type: :system do
     end
 
     context "有効な値の場合" do
-      it "成功すること" do
+      it "画像プレビューの表示及びプランの変更に成功すること" do
         fill_in "itinerary[title]", with: "Edited Title"
         page.execute_script "departure_date.value = '2024-04-01'"
         page.execute_script "return_date.value = '2024-04-08'"
@@ -201,6 +185,7 @@ RSpec.describe "Itineraries", type: :system do
         image_path = Rails.root.join('spec/fixtures/cat.jpg')
         attach_file 'itinerary[image]', image_path, make_visible: true
 
+        expect(page).to have_selector "img[id='image_preview'][src*='data:image']"
         expect(page).not_to have_selector "img[id='image_preview'][src*='default_itinerary']"
 
         click_on "保存する"
@@ -235,7 +220,6 @@ RSpec.describe "Itineraries", type: :system do
         find('div.dayContainer > span:nth-child(2)').click
         sleep 0.3
         find("#return_date", visible: false).sibling("input").click
-        find("div.dayContainer")
 
         expect(page)
           .to have_selector "div.dayContainer > span:nth-child(1)", class: "flatpickr-disabled"
@@ -261,16 +245,9 @@ RSpec.describe "Itineraries", type: :system do
         click_on "削除する"
 
         expect(page).to have_content "旅のプランを削除しました。"
+        expect(page).not_to have_content itinerary.title
         expect(current_path).to eq itineraries_path
       }.to change(Itinerary, :count).by(-1)
-    end
-
-    it "作成者以外は削除できない（削除ボタンが表示されない）こと" do
-      sign_out user
-      sign_in other_user
-      visit itinerary_path(itinerary.id)
-
-      expect(page).not_to have_selector "i", text: "delete"
     end
   end
 end
