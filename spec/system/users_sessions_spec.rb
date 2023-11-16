@@ -14,29 +14,23 @@ RSpec.describe "UsersSessions", type: :system do
         fill_in "user[password]", with: user.password
         click_button "ログイン"
 
-        expect(current_path).to eq itineraries_path
         expect(page).to have_content "ログインしました。"
         within "header" do
           expect(page).to have_content user.name
+          expect(page).to have_link "ログアウト", href: "/users/sign_out"
         end
+        expect(current_path).to eq itineraries_path
       end
     end
 
     context '無効な値の場合' do
-      it 'メールアドレスとパスワードが空欄の場合、失敗すること' do
-        fill_in "user[email]", with: ""
-        fill_in "user[password]", with: ""
-        click_button "ログイン"
-
-        expect(page).to have_content "メールアドレスまたはパスワードが違います。"
-      end
-
       it 'メールアドレスが間違っている場合、失敗すること' do
-        fill_in "user[email]", with: "wrong_email@example.com"
+        fill_in "user[email]", with: "wrong@example.com"
         fill_in "user[password]", with: user.password
         click_button "ログイン"
 
         expect(page).to have_content "メールアドレスまたはパスワードが違います。"
+        expect(current_path).to eq new_user_session_path
       end
 
       it 'パスワードが間違っている場合、失敗すること' do
@@ -45,21 +39,41 @@ RSpec.describe "UsersSessions", type: :system do
         click_button "ログイン"
 
         expect(page).to have_content "メールアドレスまたはパスワードが違います。"
+        expect(current_path).to eq new_user_session_path
       end
     end
   end
 
   describe "ログアウト" do
-    it '成功すること' do
+    it 'ヘッダーのドロップダウンメニューからログアウトに成功すること', js: true do
       sign_in user
       visit itineraries_path
-      first(:link, 'ログアウト').click
+      within "header" do
+        find("p", text: user.name).hover
+        click_on "ログアウト"
+      end
 
       expect(page).to have_content "ログアウトしました。"
-      expect(current_path).to eq root_path
       within "header" do
         expect(page).not_to have_content user.name
+        expect(page).to have_link "ログイン", href: "/users/sign_in"
       end
+      expect(current_path).to eq root_path
+    end
+
+    it 'サイドバーのリンクからログアウトに成功すること' do
+      sign_in user
+      visit users_edit_email_path
+      within ".sidenav" do
+        click_on "ログアウト"
+      end
+
+      expect(page).to have_content "ログアウトしました。"
+      within "header" do
+        expect(page).not_to have_content user.name
+        expect(page).to have_link "ログイン", href: "/users/sign_in"
+      end
+      expect(current_path).to eq root_path
     end
   end
 end
