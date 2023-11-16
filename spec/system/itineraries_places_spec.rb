@@ -214,7 +214,7 @@ RSpec.describe "Itineraries::Places", type: :system do
     it_behaves_like "旅のメンバー共通機能", :owner
   end
 
-  context "ログインユーザーがプランのメンバーの場合" do
+  context "ログインユーザーがプランの作成者以外のメンバーの場合" do
     let(:user) { create(:user) }
     let(:itinerary) { create(:itinerary) }
     it_behaves_like "旅のメンバー共通機能", :member
