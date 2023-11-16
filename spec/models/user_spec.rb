@@ -21,6 +21,16 @@ RSpec.describe User, type: :model do
     expect(user.errors).to be_of_kind(:name, :too_long)
   end
 
+  it "bestrip_idが4文字以下の場合は無効であること" do
+    user = build(:user, bestrip_id: "a" * 4)
+    user.valid?
+    expect(user.errors).to be_of_kind(:bestrip_id, :too_short)
+  end
+
+  it "bestrip_idは5文字以上であれば有効であること" do
+    expect(build(:user, bestrip_id: "a" * 5)).to be_valid
+  end
+
   it "bestrip_idは20文字以下であれば有効であること" do
     expect(build(:user, bestrip_id: "a" * 20)).to be_valid
   end
@@ -70,13 +80,21 @@ RSpec.describe User, type: :model do
   end
 
   it "パスワードが5文字以下の場合は無効であること" do
-    user = build(:user, password: "a" * 5)
+    user = build(:user, password: "a" * 5, password_confirmation: "a" * 5)
     user.valid?
     expect(user.errors).to be_of_kind(:password, :too_short)
   end
 
+  it "パスワードは6文字以上であれば有効であること" do
+    expect(build(:user, password: "a" * 6, password_confirmation: "a" * 6)).to be_valid
+  end
+
+  it "パスワードは128文字以下であれば有効であること" do
+    expect(build(:user, password: "a" * 128, password_confirmation: "a" * 128)).to be_valid
+  end
+
   it "パスワードが129文字以上の場合は無効であること" do
-    user = build(:user, password: "a" * 129)
+    user = build(:user, password: "a" * 129, password_confirmation: "a" * 129,)
     user.valid?
     expect(user.errors).to be_of_kind(:password, :too_long)
   end
@@ -91,5 +109,15 @@ RSpec.describe User, type: :model do
     user = build(:user, password_confirmation: "wrongpassword")
     user.valid?
     expect(user.errors).to be_of_kind(:password_confirmation, :confirmation)
+  end
+
+  it "自己紹介は500文字以下であれば有効であること" do
+    expect(build(:user, introduction: "a" * 500)).to be_valid
+  end
+
+  it "自己紹介が501文字以上の場合は無効であること" do
+    user = build(:user, introduction: "a" * 501)
+    user.valid?
+    expect(user.errors).to be_of_kind(:introduction, :too_long)
   end
 end
