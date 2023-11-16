@@ -161,7 +161,7 @@ RSpec.describe "Itineraries", type: :system do
 
       within(".modal") do
         expect(page).to have_content "旅のプラン情報編集"
-        expect(page.has_field?('itinerary[title]', with: itinerary.title)).to be_truthy
+        expect(page).to have_field 'itinerary[title]', with: itinerary.title
       end
     end
     # ドロップダウンメニュー「削除」のリンクについては、後述の削除処理でテストを行う

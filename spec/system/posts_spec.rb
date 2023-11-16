@@ -156,7 +156,7 @@ RSpec.describe "Posts", type: :system do
         end
 
         expect(find("input.active-field", visible: false).find(:xpath, ".."))
-          .to match_css("label.disabled")
+          .to match_css(".disabled")
       end
 
       it "メモが1001文字以上入力された場合、「投稿する」ボタンが無効化されること" do
@@ -212,7 +212,7 @@ RSpec.describe "Posts", type: :system do
 
       within(".modal") do
         expect(page).to have_content "投稿の編集"
-        expect(page.has_field?('post[title]', with: post_1.title)).to be_truthy
+        expect(page).to have_field 'post[title]', with: post_1.title
       end
     end
     # ドロップダウンメニュー「削除」のリンクについては、後述の削除処理でテストを行う
