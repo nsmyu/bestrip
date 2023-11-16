@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Schedules", type: :system do
+RSpec.describe "Schedules", type: :system, focus: true do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:itinerary) { create(:itinerary, owner: user) }
@@ -21,9 +21,9 @@ RSpec.describe "Schedules", type: :system do
       let!(:schedule) { create(:schedule, itinerary: itinerary) }
 
       it "スケジュールを日付の昇順で表示すること" do
-        sched_day3 = create(:schedule, schedule_date: "2024-02-03", itinerary: itinerary)
+        sched_day3 = create(:schedule, date: "2024-02-03", itinerary: itinerary)
         sched_day2 = create(:schedule, itinerary: itinerary)
-        sched_day1 = create(:schedule, schedule_date: "2024-02-01", itinerary: itinerary)
+        sched_day1 = create(:schedule, date: "2024-02-01", itinerary: itinerary)
 
         visit itinerary_schedules_path(itinerary_id: itinerary.id)
 
@@ -38,7 +38,7 @@ RSpec.describe "Schedules", type: :system do
 
         visit itinerary_schedules_path(itinerary_id: itinerary.id)
 
-        within(:xpath, "//div[p[contains(text(), '#{I18n.l schedule.schedule_date}')]]") do
+        within(:xpath, "//div[p[contains(text(), '#{I18n.l schedule.date}')]]") do
           expect(page.text)
             .to match(/#{sched_10am.title}[\s\S]*#{sched_1pm.title}[\s\S]*#{sched_2pm.title}/)
         end
@@ -47,7 +47,7 @@ RSpec.describe "Schedules", type: :system do
       it "スケジュールの日付、時間、アイコン、タイトルを表示すること" do
         visit itinerary_schedules_path(itinerary_id: itinerary.id)
 
-        within(:xpath, "//div[p[contains(text(), '#{I18n.l schedule.schedule_date}')]]") do
+        within(:xpath, "//div[p[contains(text(), '#{I18n.l schedule.date}')]]") do
           expect(page).to have_content I18n.l schedule.start_at
           expect(page).to have_content I18n.l schedule.end_at
           expect(page).to have_content schedule.icon
@@ -100,7 +100,7 @@ RSpec.describe "Schedules", type: :system do
       it "成功すること" do
         expect {
           fill_in "schedule[title]", with: schedule.title
-          page.execute_script "schedule_date.value = '#{schedule.schedule_date}'"
+          page.execute_script "schedule_date.value = '#{schedule.date}'"
           page.execute_script "schedule_start_at.value = '#{schedule.start_at}'"
           page.execute_script "schedule_end_at.value = '#{schedule.end_at}'"
           find("i", text: "#{schedule.icon}").click
@@ -108,7 +108,7 @@ RSpec.describe "Schedules", type: :system do
           click_on "保存する"
 
           expect(page).to have_content "新しいスケジュールを作成しました。"
-          within(:xpath, "//div[p[contains(text(), '#{I18n.l schedule.schedule_date}')]]") do
+          within(:xpath, "//div[p[contains(text(), '#{I18n.l schedule.date}')]]") do
             expect(page).to have_content schedule.title
             expect(page).to have_content schedule.icon
             expect(page).to have_content I18n.l schedule.start_at
@@ -223,7 +223,7 @@ RSpec.describe "Schedules", type: :system do
         expect(page).to have_content "スケジュール詳細"
         expect(page).to have_content schedule.title
         expect(page).to have_content schedule.icon
-        expect(page).to have_content I18n.l schedule.schedule_date
+        expect(page).to have_content I18n.l schedule.date
         expect(page).to have_content I18n.l schedule.start_at
         expect(page).to have_content I18n.l schedule.end_at
         expect(page).to have_content schedule.note

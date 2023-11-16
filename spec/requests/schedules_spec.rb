@@ -30,7 +30,7 @@ RSpec.describe "Schedules", type: :request do
         schedule
         get itinerary_schedules_path(itinerary_id: itinerary.id)
         expect(response.body).to include schedule.title
-        expect(response.body).to include I18n.l schedule.schedule_date
+        expect(response.body).to include I18n.l schedule.date
         expect(response.body).to include I18n.l schedule.start_at
         expect(response.body).to include I18n.l schedule.end_at
       end
@@ -85,14 +85,14 @@ RSpec.describe "Schedules", type: :request do
         end
 
         it "日付が出発日より前の場合、失敗すること" do
-          schedule_params = attributes_for(:schedule, schedule_date: "2024-01-31")
+          schedule_params = attributes_for(:schedule, date: "2024-01-31")
           post itinerary_schedules_path(itinerary_id: itinerary.id),
             params: { schedule: schedule_params }, headers: turbo_stream
           expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
         end
 
         it "日付が帰宅日より後の場合、失敗すること" do
-          schedule_params = attributes_for(:schedule, schedule_date: "2024-02-09")
+          schedule_params = attributes_for(:schedule, date: "2024-02-09")
           post itinerary_schedules_path(itinerary_id: itinerary.id),
             params: { schedule: schedule_params }, headers: turbo_stream
           expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
@@ -132,7 +132,7 @@ RSpec.describe "Schedules", type: :request do
       it "スケジュールの各情報を取得すること" do
         expect(response.body).to include schedule.title
         expect(response.body).to include schedule.icon
-        expect(response.body).to include I18n.l schedule.schedule_date
+        expect(response.body).to include I18n.l schedule.date
         expect(response.body).to include I18n.l schedule.start_at
         expect(response.body).to include I18n.l schedule.end_at
         expect(response.body).to include schedule.note
@@ -175,7 +175,7 @@ RSpec.describe "Schedules", type: :request do
       it "スケジュールの各情報を取得すること" do
         expect(response.body).to include schedule.title
         expect(response.body).to include schedule.icon
-        expect(response.body).to include schedule.schedule_date.to_s
+        expect(response.body).to include schedule.date.to_s
         expect(response.body).to include schedule.start_at.strftime("%-H:%M")
         expect(response.body).to include schedule.end_at.strftime("%-H:%M")
         expect(response.body).to include schedule.note
@@ -209,7 +209,7 @@ RSpec.describe "Schedules", type: :request do
       context "有効な値の場合" do
         it "各項目の変更に成功すること" do
           schedule_params = attributes_for(:schedule, title: "Edited Title",
-                                                      schedule_date: "2024-02-03",
+                                                      date: "2024-02-03",
                                                       start_at: "14:00:00",
                                                       end_at: "16:00:00",
                                                       place_id: "edited_place_id",
@@ -219,7 +219,7 @@ RSpec.describe "Schedules", type: :request do
             params: { schedule: schedule_params }
           expect(response).to redirect_to itinerary_schedules_path(itinerary_id: itinerary.id)
           expect(schedule.reload.title).to eq "Edited Title"
-          expect(schedule.reload.schedule_date.to_s).to eq "2024-02-03"
+          expect(schedule.reload.date.to_s).to eq "2024-02-03"
           expect(schedule.reload.start_at.to_s).to include "14:00:00"
           expect(schedule.reload.end_at.to_s).to include "16:00:00"
           expect(schedule.reload.place_id).to eq "edited_place_id"
@@ -244,14 +244,14 @@ RSpec.describe "Schedules", type: :request do
         end
 
         it "日付が出発日より前の場合、失敗すること" do
-          schedule_params = attributes_for(:schedule, schedule_date: "2024-01-31")
+          schedule_params = attributes_for(:schedule, date: "2024-01-31")
           patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
             params: { schedule: schedule_params }, headers: turbo_stream
           expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
         end
 
         it "日付が帰宅日より後の場合、失敗すること" do
-          schedule_params = attributes_for(:schedule, schedule_date: "2024-02-09")
+          schedule_params = attributes_for(:schedule, date: "2024-02-09")
           patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
             params: { schedule: schedule_params }, headers: turbo_stream
           expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"

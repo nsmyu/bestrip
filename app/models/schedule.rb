@@ -9,12 +9,12 @@ class Schedule < ApplicationRecord
     "directions_bus", "flight", "directions_walk", "directions_bike",
   ].freeze
   validates :icon, inclusion: { in: ICON_VALUES }
-  validate :schedule_date_must_be_between_departure_date_and_return_date
+  validate :schedule_must_be_between_departure_date_and_return_date
 
-  def schedule_date_must_be_between_departure_date_and_return_date
-    return if !schedule_date
-    if (schedule_date < itinerary.departure_date) || (itinerary.return_date < schedule_date)
-      errors.add(:schedule_date, "出発日〜帰宅日の間で選択してください")
+  def schedule_must_be_between_departure_date_and_return_date
+    return if !date
+    if (date < itinerary.departure_date) || (itinerary.return_date < date)
+      errors.add(:date, "出発日〜帰宅日の間で選択してください")
     end
   end
 end

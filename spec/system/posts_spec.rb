@@ -225,15 +225,12 @@ RSpec.describe "Posts", type: :system do
       end
 
       it "スケジュールを日付順で表示すること" do
-        schedule_1st_day = create(:schedule,
-          schedule_date: itinerary_1.departure_date,
-          itinerary: itinerary_1)
-        schedule_2nd_day = create(:schedule,
-          schedule_date: itinerary_1.departure_date.tomorrow,
-          itinerary: itinerary_1)
-        schedule_8th_day = create(:schedule,
-          schedule_date: itinerary_1.return_date,
-          itinerary: itinerary_1)
+        schedule_1st_day = create(:schedule, date: itinerary_1.departure_date,
+                                             itinerary: itinerary_1)
+        schedule_2nd_day = create(:schedule, date: itinerary_1.departure_date.tomorrow,
+                                             itinerary: itinerary_1)
+        schedule_8th_day = create(:schedule, date: itinerary_1.return_date,
+                                             itinerary: itinerary_1)
 
         visit post_path(id: post_1.id)
 

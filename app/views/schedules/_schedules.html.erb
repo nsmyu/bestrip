@@ -27,11 +27,11 @@
                 </div>
                 <div class="col-1 px-0">
                   <div class="dropdown">
-                    <label for="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>" class="cursor-pointer m-0">
+                    <label for="schedule_dropdown_<%= schedule.date ? (schedule.date.to_s + i.to_s) : i %>" class="cursor-pointer m-0">
                       <i class="material-icons p-2 text-secondary link-area rounded-circle">more_vert</i>
                     </label>
-                    <button class="d-none" id="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                    <ul class="border dropdown-menu dropdown-menu-end mt-4" aria-labelledby="schedule_dropdown_<%= schedule.schedule_date ? (schedule.schedule_date.to_s + i.to_s) : i %>"></li>
+                    <button class="d-none" id="schedule_dropdown_<%= schedule.date ? (schedule.date.to_s + i.to_s) : i %>" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="border dropdown-menu dropdown-menu-end mt-4" aria-labelledby="schedule_dropdown_<%= schedule.date ? (schedule.date.to_s + i.to_s) : i %>"></li>
                       <li>
                         <%= link_to [:itinerary_schedule, id: schedule.id], class: "dropdown-item d-flex align-items-center", data: { turbo_frame: "modal" } do %>
                           <i class="material-symbols-outlined pe-1 fs-6">article</i>

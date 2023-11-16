@@ -3,7 +3,7 @@
     <div class="col-11 mb-1 mx-0 text-dark">
       <p class="d-inline ps-0 fw-bold lh-base"><%= @schedule.title %></p>
       <div class="d-flex align-items-center mb-3 text-dark ">
-        <p class="text-sm"><%= @schedule.schedule_date ? (l @schedule.schedule_date) : "日付未定" %>&ensp;</p>
+        <p class="text-sm"><%= @schedule.date ? (l @schedule.date) : "日付未定" %>&ensp;</p>
         <i class="material-symbols-outlined fs-6 fw-light">schedule</i>
         <p class="text-sm"><%= @schedule.start_at ? (l @schedule.start_at) : "未定" %> - <%= @schedule.end_at ? (l @schedule.end_at) : "未定" %></p>
       </div>
