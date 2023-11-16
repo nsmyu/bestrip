@@ -35,6 +35,7 @@ RSpec.describe "Itineraries::Places", type: :request do
 
     context "ログインユーザーがプランのメンバーではない場合" do
       it "旅のプラン一覧画面にリダイレクトされること" do
+        sign_out user
         sign_in other_user
         get itinerary_places_path(itinerary_id: itinerary.id)
         expect(response).to redirect_to itineraries_path
@@ -77,6 +78,7 @@ RSpec.describe "Itineraries::Places", type: :request do
 
     context "ログインユーザーがプランのメンバーではない場合" do
       it "旅のプラン一覧画面にリダイレクトされること" do
+        sign_out user
         sign_in other_user
         get new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
         expect(response).to redirect_to itineraries_path
@@ -93,6 +95,7 @@ RSpec.describe "Itineraries::Places", type: :request do
     end
 
     it "ログインユーザーがプランのメンバーではない場合、失敗すること（旅のプラン一覧画面にリダイレクトされること）" do
+      sign_out user
       sign_in other_user
       itinerary_place_params = attributes_for(:itinerary_place)
       post itinerary_places_path(itinerary_id: itinerary.id),
@@ -168,6 +171,7 @@ RSpec.describe "Itineraries::Places", type: :request do
 
     context "ログインユーザーがプランのメンバーではない場合" do
       it "失敗すること（旅のプラン一覧画面にリダイレクトされること）" do
+        sign_out user
         sign_in other_user
         itinerary_place_params = attributes_for(:itinerary_place)
         post itinerary_places_add_from_user_places_path(itinerary_id: itinerary.id),
@@ -189,6 +193,7 @@ RSpec.describe "Itineraries::Places", type: :request do
     end
 
     it "ログインユーザーがプランのメンバーではない場合、失敗すること" do
+      sign_out user
       sign_in other_user
       delete itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id),
         headers: turbo_stream

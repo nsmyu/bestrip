@@ -17,6 +17,7 @@ RSpec.describe "ItineraryUsers", type: :request do
     end
 
     it "ログインユーザーがプランのメンバーではない場合、indexにリダイレクトされること" do
+      sign_out user
       sign_in other_user_1
       get new_itinerary_user_path(itinerary.id)
       expect(response).to redirect_to itineraries_path
@@ -47,6 +48,7 @@ RSpec.describe "ItineraryUsers", type: :request do
 
     context "ログインユーザーがプランのメンバーではない場合" do
       it "旅のプラン一覧画面にリダイレクトされること" do
+        sign_out user
         sign_in other_user_1
         user_search_params = { bestrip_id: user.bestrip_id, id: itinerary.id }
         get search_user_itinerary_path(itinerary.id), params: user_search_params
@@ -63,6 +65,7 @@ RSpec.describe "ItineraryUsers", type: :request do
     end
 
     it "ログインユーザーがプランのメンバーではない場合、失敗すること" do
+      sign_out user
       sign_in other_user_1
       add_member_params = { user_id: other_user_2.id, id: itinerary.id }
       post itinerary_users_path(itinerary.id), params: add_member_params
@@ -82,6 +85,7 @@ RSpec.describe "ItineraryUsers", type: :request do
     end
 
     it "ログインユーザーがプラン作成者ではない場合、失敗すること" do
+      sign_out user
       sign_in other_user_1
       remove_member_params = { user_id: other_user_2.id, id: itinerary.id }
       delete itinerary_user_path(itinerary.id), params: remove_member_params
@@ -89,6 +93,7 @@ RSpec.describe "ItineraryUsers", type: :request do
     end
 
     it "削除対象がプラン作成者の場合、失敗すること" do
+      sign_out user
       sign_in other_user_1
       remove_member_params = { user_id: user.id, id: itinerary.id }
       delete itinerary_user_path(itinerary.id), params: remove_member_params

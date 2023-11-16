@@ -52,6 +52,7 @@ RSpec.describe "Schedules", type: :request do
     end
 
     it "ログインユーザーがプランのメンバーではない場合、旅のプラン一覧画面にリダイレクトされること" do
+      sign_out user
       sign_in other_user
       get new_itinerary_schedule_path(itinerary_id: itinerary.id), headers: turbo_frame_modal
       expect(response).to redirect_to itineraries_path
@@ -109,6 +110,7 @@ RSpec.describe "Schedules", type: :request do
 
     context "ログインユーザーがプランのメンバーではない場合" do
       it "失敗すること（旅のプラン一覧画面にリダイレクトされること）" do
+        sign_out user
         sign_in other_user
         schedule_params = attributes_for(:schedule)
         post itinerary_schedules_path(itinerary_id: itinerary.id),
@@ -153,6 +155,7 @@ RSpec.describe "Schedules", type: :request do
 
     context "ログインユーザーがプランのメンバーではない場合" do
       it "旅のプラン一覧画面にリダイレクトされること" do
+        sign_out user
         sign_in other_user
         get itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
           headers: turbo_frame_modal
@@ -196,6 +199,7 @@ RSpec.describe "Schedules", type: :request do
 
     context "ログインユーザーがプランのメンバーではない場合" do
       it "旅のプラン一覧画面にリダイレクトされること" do
+        sign_out user
         sign_in other_user
         get edit_itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
           headers: turbo_frame_modal
@@ -268,6 +272,7 @@ RSpec.describe "Schedules", type: :request do
 
     context "ログインユーザーがプランのメンバーではない場合" do
       it "失敗すること（旅のプラン一覧画面にリダイレクトされること）" do
+        sign_out user
         sign_in other_user
         schedule_params = attributes_for(:schedule, title: "Edited Title")
         patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
@@ -284,6 +289,7 @@ RSpec.describe "Schedules", type: :request do
     end
 
     it "ログインユーザーがプランのメンバーではない場合、失敗すること" do
+      sign_out user
       sign_in other_user
       delete itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
       expect(response).to redirect_to itineraries_path

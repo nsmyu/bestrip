@@ -123,6 +123,7 @@ RSpec.describe "Itineraries", type: :request do
     context "ログインユーザーがプラン作成者ではない場合" do
       it "旅のプラン情報画面にリダイレクトされること" do
         itinerary.members << other_user
+        sign_out user
         sign_in other_user
         get edit_itinerary_path(itinerary.id)
         expect(response).to redirect_to itinerary_path(itinerary.id)
@@ -177,6 +178,7 @@ RSpec.describe "Itineraries", type: :request do
       it "失敗すること" do
         original_title = itinerary.title
         itinerary.members << other_user
+        sign_out user
         sign_in other_user
         patch itinerary_path(itinerary.id), params: { itinerary: { title: "Edited Title" } }
         expect(response).to redirect_to itinerary_path(id: itinerary.id)
@@ -193,6 +195,7 @@ RSpec.describe "Itineraries", type: :request do
 
     it "ログインユーザーがプラン作成者ではない場合、失敗すること" do
       itinerary.members << other_user
+      sign_out user
       sign_in other_user
       delete itinerary_path(itinerary.id)
       expect(response).to redirect_to itinerary_path(itinerary.id)
