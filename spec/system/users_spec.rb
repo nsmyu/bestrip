@@ -27,8 +27,8 @@ RSpec.describe "Users", type: :system do
         find("i", text: "more_horiz", visible: false).click
         click_on "プロフィール編集"
 
+        expect(page.has_field?('user[name]', with: user.name)).to be_truthy
         expect(current_path).to eq users_edit_profile_path
-        expect(page).to have_content user.name
       end
 
       it "「旅のプラン⚪︎件」をクリックすると、旅のプラン一覧画面へ遷移すること" do

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :system, focus: true do
+RSpec.describe "Posts", type: :system do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:itinerary_1) { create(:itinerary, :with_schedule, owner: user) }
