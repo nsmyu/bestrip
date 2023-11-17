@@ -100,7 +100,7 @@ RSpec.describe User, type: :model do
   end
 
   it "パスワードに半角英数字以外は使用できないこと" do
-    user = build(:user, password: "invalid-password")
+    user = build(:user, password: "invalid-password", password_confirmation: "invalid-password")
     user.valid?
     expect(user.errors).to be_of_kind(:password, :invalid)
   end
