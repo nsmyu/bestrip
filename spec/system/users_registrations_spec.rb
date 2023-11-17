@@ -8,35 +8,39 @@ RSpec.describe "UsersRegistrations", type: :system do
       visit new_user_registration_path
     end
 
-    it "有効な値の場合、成功すること" do
-      expect {
-        fill_in "user[name]", with: user.name
-        fill_in "user[email]", with: user.email
-        fill_in "user[password]", match: :first, with: user.password
-        fill_in "user[password_confirmation]", with: user.password_confirmation
-        click_button "新規登録"
+    context "有効な値の場合" do
+      it "成功すること" do
+        expect {
+          fill_in "user[name]", with: user.name
+          fill_in "user[email]", with: user.email
+          fill_in "user[password]", match: :first, with: user.password
+          fill_in "user[password_confirmation]", with: user.password_confirmation
+          click_button "新規登録"
 
-        expect(page).to have_content "アカウント登録が完了しました。"
-        within "header" do
-          expect(page).to have_content user.name
-        end
-        expect(current_path).to eq itineraries_path
-      }.to change(User, :count).by(1)
+          expect(page).to have_content "アカウント登録が完了しました。"
+          within "header" do
+            expect(page).to have_content user.name
+          end
+          expect(current_path).to eq itineraries_path
+        }.to change(User, :count).by(1)
+      end
     end
 
-    it "無効な値の場合、失敗すること" do
-      expect {
-        fill_in "user[name]", with: ""
-        fill_in "user[email]", with: "invalid_email_address"
-        fill_in "user[password]", match: :first, with: "foo"
-        fill_in "user[password_confirmation]", with: "bar"
-        click_button "新規登録"
+    context "無効な値の場合" do
+      it "失敗すること" do
+        expect {
+          fill_in "user[name]", with: ""
+          fill_in "user[email]", with: "invalid_email_address"
+          fill_in "user[password]", match: :first, with: "foo"
+          fill_in "user[password_confirmation]", with: "bar"
+          click_button "新規登録"
 
-        expect(page).to have_content "ニックネームを入力してください"
-        expect(page).to have_content "メールアドレスを正しく入力してください"
-        expect(page).to have_content "パスワードは6文字以上で入力してください"
-        expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
-      }.not_to change(User, :count)
+          expect(page).to have_content "ニックネームを入力してください"
+          expect(page).to have_content "メールアドレスを正しく入力してください"
+          expect(page).to have_content "パスワードは6文字以上で入力してください"
+          expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
+        }.not_to change(User, :count)
+      end
     end
   end
 
@@ -218,14 +222,14 @@ RSpec.describe "UsersRegistrations", type: :system do
     end
 
     describe "BesTrip IDの使用可否チェックボタン", js: true do
-      it "入力したIDがユニークな場合、使用可能メッセージが表示されること" do
+      it "入力したIDがユーザー間で一意の場合、使用可能メッセージが表示されること" do
         fill_in "BesTrip ID", with: "user_id"
         click_on "IDが使用可能か確認"
 
         expect(page).to have_content "このIDは使用できます"
       end
 
-      it "入力したIDが重複している場合、エラーメッセージが表示されること" do
+      it "入力したIDがユーザー間で重複している場合、エラーメッセージが表示されること" do
         other_user.bestrip_id = "user_id"
         other_user.save
         fill_in "BesTrip ID", with: "user_id"

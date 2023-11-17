@@ -227,7 +227,7 @@ RSpec.describe "UsersRegistrations", type: :request do
     end
 
     context "有効な値の場合" do
-      it "IDが一意である場合、使用可能のメッセージを取得すること" do
+      it "IDがユーザー間で一意である場合、使用可能のメッセージを取得すること" do
         user_params = attributes_for(:user, bestrip_id: "user_id")
         patch users_validate_bestrip_id_path, params: { user: user_params },
                                               headers: turbo_stream
@@ -236,7 +236,7 @@ RSpec.describe "UsersRegistrations", type: :request do
     end
 
     context "無効な値の場合" do
-      it "IDが一意でない場合、使用不可のメッセージを取得すること" do
+      it "IDがユーザー間で一意でない場合、使用不可のメッセージを取得すること" do
         create(:user, bestrip_id: "user_id")
         user_params = attributes_for(:user, bestrip_id: "user_id")
         patch users_validate_bestrip_id_path, params: { user: user_params },

@@ -87,20 +87,24 @@ RSpec.describe "Itineraries::Places", type: :request do
   end
 
   describe "POST #create" do
-    it "ログインユーザーがプランのメンバーである場合、成功すること" do
-      itinerary_place_params = attributes_for(:itinerary_place)
-      post itinerary_places_path(itinerary_id: itinerary.id),
-        params: { place: itinerary_place_params }, headers: turbo_stream
-      expect(response.body).to include "行きたい場所リストに追加済み"
+    context "ログインユーザーがプランのメンバーである場合" do
+      it "成功すること" do
+        itinerary_place_params = attributes_for(:itinerary_place)
+        post itinerary_places_path(itinerary_id: itinerary.id),
+          params: { place: itinerary_place_params }, headers: turbo_stream
+        expect(response.body).to include "行きたい場所リストに追加済み"
+      end
     end
 
-    it "ログインユーザーがプランのメンバーではない場合、失敗すること（旅のプラン一覧画面にリダイレクトされること）" do
-      sign_out user
-      sign_in other_user
-      itinerary_place_params = attributes_for(:itinerary_place)
-      post itinerary_places_path(itinerary_id: itinerary.id),
-        params: { place: itinerary_place_params }, headers: turbo_stream
-      expect(response).to redirect_to itineraries_path
+    context "ログインユーザーがプランのメンバーではない場合" do
+      it "失敗すること（旅のプラン一覧画面にリダイレクトされること）" do
+        sign_out user
+        sign_in other_user
+        itinerary_place_params = attributes_for(:itinerary_place)
+        post itinerary_places_path(itinerary_id: itinerary.id),
+          params: { place: itinerary_place_params }, headers: turbo_stream
+        expect(response).to redirect_to itineraries_path
+      end
     end
   end
 
@@ -186,18 +190,22 @@ RSpec.describe "Itineraries::Places", type: :request do
       itinerary_place.save
     end
 
-    it "ログインユーザーがプランのメンバーである場合、成功すること" do
-      delete itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id),
-        headers: turbo_stream
-      expect(itinerary.reload.places).not_to include itinerary_place
+    context "ログインユーザーがプランのメンバーである場合" do
+      it "成功すること" do
+        delete itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id),
+          headers: turbo_stream
+        expect(itinerary.reload.places).not_to include itinerary_place
+      end
     end
 
-    it "ログインユーザーがプランのメンバーではない場合、失敗すること" do
-      sign_out user
-      sign_in other_user
-      delete itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id),
-        headers: turbo_stream
-      expect(itinerary.reload.places).to include itinerary_place
+    context "ログインユーザーがプランのメンバーではない場合" do
+      it "失敗すること" do
+        sign_out user
+        sign_in other_user
+        delete itinerary_place_path(itinerary_id: itinerary.id, id: itinerary_place.id),
+          headers: turbo_stream
+        expect(itinerary.reload.places).to include itinerary_place
+      end
     end
   end
 end

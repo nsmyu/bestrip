@@ -190,32 +190,36 @@ RSpec.describe "Posts", type: :system do
       expect(current_path).to eq search_posts_path
     end
 
-    it "ログインユーザーが投稿の作成者である場合は、ドロップダウンメニューを表示すること" do
-      sign_in user
-      visit post_path(id: post_1.id)
+    context "ログインユーザーが投稿の作成者である場合" do
+      it "ドロップダウンメニューを表示すること" do
+        sign_in user
+        visit post_path(id: post_1.id)
 
-      expect(page).to have_selector "button[id='post_dropdown']"
+        expect(page).to have_selector "button[id='post_dropdown']"
+      end
+
+      it "ドロップダウンメニューの「編集」をクリックすると、投稿編集モーダルを表示すること", js: true do
+        sign_in user
+        visit post_path(id: post_1.id)
+        find("i", text: "more_horiz", visible: false).click
+        click_on "編集"
+
+        within(".modal") do
+          expect(page).to have_content "投稿の編集"
+          expect(page).to have_field 'post[title]', with: post_1.title
+        end
+      end
+      # ドロップダウンメニュー「削除」のリンクについては、後述の削除処理でテストを行う
     end
 
-    it "ログインユーザーが投稿の作成者でない場合は、ドロップダウンメニューを表示しないこと" do
-      sign_in other_user
-      visit post_path(id: post_1.id)
+    context "ログインユーザーが投稿の作成者ではない場合" do
+      it "ドロップダウンメニューを表示しないこと" do
+        sign_in other_user
+        visit post_path(id: post_1.id)
 
-      expect(page).not_to have_selector "button[id='post_dropdown']"
-    end
-
-    it "ドロップダウンメニューの「編集」をクリックすると、投稿編集モーダルを表示すること", js: true do
-      sign_in user
-      visit post_path(id: post_1.id)
-      find("i", text: "more_horiz", visible: false).click
-      click_on "編集"
-
-      within(".modal") do
-        expect(page).to have_content "投稿の編集"
-        expect(page).to have_field 'post[title]', with: post_1.title
+        expect(page).not_to have_selector "button[id='post_dropdown']"
       end
     end
-    # ドロップダウンメニュー「削除」のリンクについては、後述の削除処理でテストを行う
 
     describe "投稿に関連付けられたプランのスケジュール表示" do
       it "スケジュールの各情報を表示すること" do

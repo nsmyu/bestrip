@@ -143,28 +143,32 @@ RSpec.describe "Itineraries", type: :system do
       expect(page).to have_content other_user.name
     end
 
-    it "ログインユーザーがプラン作成者の場合は、ドロップダウンメニューを表示すること" do
-      expect(page).to have_selector "button[id='itinerary_dropdown']"
+    context "ログインユーザーがプラン作成者の場合" do
+      it "ドロップダウンメニューを表示すること" do
+        expect(page).to have_selector "button[id='itinerary_dropdown']"
+      end
+
+      it "ドロップダウンメニューの「編集」をクリックすると、投稿編集モーダルを表示すること", js: true do
+        find("i", text: "more_horiz", visible: false).click
+        click_on "編集"
+
+        within(".modal") do
+          expect(page).to have_content "旅のプラン情報編集"
+          expect(page).to have_field 'itinerary[title]', with: itinerary.title
+        end
+      end
+      # ドロップダウンメニュー「削除」のリンクについては、後述の削除処理でテストを行う
     end
 
-    it "ログインユーザーがプラン作成者でない場合は、ドロップダウンメニューを表示しないこと" do
-      sign_out user
-      sign_in other_user
-      visit itinerary_path(itinerary.id)
+    context "ログインユーザーがプラン作成者でない場合" do
+      it "ドロップダウンメニューを表示しないこと" do
+        sign_out user
+        sign_in other_user
+        visit itinerary_path(itinerary.id)
 
-      expect(page).not_to have_selector "button[id='itinerary_dropdown']"
-    end
-
-    it "ドロップダウンメニューの「編集」をクリックすると、投稿編集モーダルを表示すること", js: true do
-      find("i", text: "more_horiz", visible: false).click
-      click_on "編集"
-
-      within(".modal") do
-        expect(page).to have_content "旅のプラン情報編集"
-        expect(page).to have_field 'itinerary[title]', with: itinerary.title
+        expect(page).not_to have_selector "button[id='itinerary_dropdown']"
       end
     end
-    # ドロップダウンメニュー「削除」のリンクについては、後述の削除処理でテストを行う
   end
 
   describe "編集", js: true do

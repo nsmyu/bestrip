@@ -192,17 +192,21 @@ RSpec.describe "Itineraries", type: :request do
   end
 
   describe "DELETE #destroy" do
-    it "ログインユーザーがプラン作成者の場合、成功すること" do
-      delete itinerary_path(itinerary.id)
-      expect(response).to redirect_to itineraries_path
+    context "ログインユーザーがプラン作成者の場合" do
+      it "成功すること" do
+        delete itinerary_path(itinerary.id)
+        expect(response).to redirect_to itineraries_path
+      end
     end
 
-    it "ログインユーザーがプラン作成者ではない場合、失敗すること" do
-      itinerary.members << other_user
-      sign_out user
-      sign_in other_user
-      delete itinerary_path(itinerary.id)
-      expect(response).to redirect_to itinerary_path(itinerary.id)
+    context "ログインユーザーがプラン作成者ではない場合" do
+      it "失敗すること" do
+        itinerary.members << other_user
+        sign_out user
+        sign_in other_user
+        delete itinerary_path(itinerary.id)
+        expect(response).to redirect_to itinerary_path(itinerary.id)
+      end
     end
   end
 end

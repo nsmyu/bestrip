@@ -14,7 +14,7 @@ RSpec.describe "Users", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "ユーザーの各情報を取得すること" do
+    it "ユーザーのプロフィール情報を取得すること" do
       expect(response.body).to include user.name
       expect(response.body).to include user.bestrip_id
       expect(response.body).to include user.introduction

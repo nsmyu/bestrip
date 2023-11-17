@@ -237,16 +237,20 @@ RSpec.describe "Posts", type: :request do
   end
 
   describe "DELETE #destroy" do
-    it "ログインユーザーが投稿者の場合、成功すること" do
-      sign_in user
-      delete post_path(id: post_1.id)
-      expect(user.reload.posts).not_to include post_1
+    context "ログインユーザーが投稿者の場合" do
+      it "成功すること" do
+        sign_in user
+        delete post_path(id: post_1.id)
+        expect(user.reload.posts).not_to include post_1
+      end
     end
 
-    it "ログインユーザーが投稿者ではない場合、失敗すること" do
-      sign_in other_user
-      delete post_path(id: post_1.id)
-      expect(user.reload.posts).to include post_1
+    context "ログインユーザーが投稿者ではない場合" do
+      it "失敗すること" do
+        sign_in other_user
+        delete post_path(id: post_1.id)
+        expect(user.reload.posts).to include post_1
+      end
     end
   end
 end

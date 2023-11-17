@@ -46,16 +46,20 @@ RSpec.describe "Schedules", type: :request do
   end
 
   describe "GET #new" do
-    it "ログインユーザーがプランのメンバーである場合、正常にレスポンスを返すこと" do
-      get new_itinerary_schedule_path(itinerary_id: itinerary.id), headers: turbo_frame_modal
-      expect(response).to have_http_status 200
+    context "ログインユーザーがプランのメンバーである場合" do
+      it "正常にレスポンスを返すこと" do
+        get new_itinerary_schedule_path(itinerary_id: itinerary.id), headers: turbo_frame_modal
+        expect(response).to have_http_status 200
+      end
     end
 
-    it "ログインユーザーがプランのメンバーではない場合、旅のプラン一覧画面にリダイレクトされること" do
-      sign_out user
-      sign_in other_user
-      get new_itinerary_schedule_path(itinerary_id: itinerary.id), headers: turbo_frame_modal
-      expect(response).to redirect_to itineraries_path
+    context "ログインユーザーがプランのメンバーではない場合" do
+      it "旅のプラン一覧画面にリダイレクトされること" do
+        sign_out user
+        sign_in other_user
+        get new_itinerary_schedule_path(itinerary_id: itinerary.id), headers: turbo_frame_modal
+        expect(response).to redirect_to itineraries_path
+      end
     end
   end
 
@@ -288,16 +292,20 @@ RSpec.describe "Schedules", type: :request do
   end
 
   describe "DELETE #destroy" do
-    it "ログインユーザーがプランのメンバーである場合、成功すること" do
-      delete itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
-      expect(response).to redirect_to itinerary_schedules_path
+    context "ログインユーザーがプランのメンバーである場合" do
+      it "成功すること" do
+        delete itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+        expect(response).to redirect_to itinerary_schedules_path
+      end
     end
 
-    it "ログインユーザーがプランのメンバーではない場合、失敗すること" do
-      sign_out user
-      sign_in other_user
-      delete itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
-      expect(response).to redirect_to itineraries_path
+    context "ログインユーザーがプランのメンバーではない場合" do
+      it "失敗すること" do
+        sign_out user
+        sign_in other_user
+        delete itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id)
+        expect(response).to redirect_to itineraries_path
+      end
     end
   end
 end

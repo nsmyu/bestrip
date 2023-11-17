@@ -11,16 +11,20 @@ RSpec.describe "ItineraryUsers", type: :request do
   end
 
   describe "GET #new" do
-    it "ログインユーザーがプランのメンバーである場合、 正常にレスポンスを返すこと" do
-      get new_itinerary_user_path(itinerary.id)
-      expect(response).to have_http_status 200
+    context "ログインユーザーがプランのメンバーである場合" do
+      it "正常にレスポンスを返すこと" do
+        get new_itinerary_user_path(itinerary.id)
+        expect(response).to have_http_status 200
+      end
     end
 
-    it "ログインユーザーがプランのメンバーではない場合、indexにリダイレクトされること" do
-      sign_out user
-      sign_in other_user_1
-      get new_itinerary_user_path(itinerary.id)
-      expect(response).to redirect_to itineraries_path
+    context "ログインユーザーがプランのメンバーではない場合" do
+      it "indexにリダイレクトされること" do
+        sign_out user
+        sign_in other_user_1
+        get new_itinerary_user_path(itinerary.id)
+        expect(response).to redirect_to itineraries_path
+      end
     end
   end
 
@@ -58,18 +62,22 @@ RSpec.describe "ItineraryUsers", type: :request do
   end
 
   describe "POST #create" do
-    it "ログインユーザーがプランのメンバーである場合、成功すること" do
-      add_member_params = { user_id: other_user_1.id, id: itinerary.id }
-      post itinerary_users_path(itinerary.id), params: add_member_params
-      expect(response).to redirect_to itinerary_path(itinerary.id)
+    context "ログインユーザーがプランのメンバーである場合" do
+      it "成功すること" do
+        add_member_params = { user_id: other_user_1.id, id: itinerary.id }
+        post itinerary_users_path(itinerary.id), params: add_member_params
+        expect(response).to redirect_to itinerary_path(itinerary.id)
+      end
     end
 
-    it "ログインユーザーがプランのメンバーではない場合、失敗すること" do
-      sign_out user
-      sign_in other_user_1
-      add_member_params = { user_id: other_user_2.id, id: itinerary.id }
-      post itinerary_users_path(itinerary.id), params: add_member_params
-      expect(response).to redirect_to itineraries_path
+    context "ログインユーザーがプランのメンバーではない場合" do
+      it "失敗すること" do
+        sign_out user
+        sign_in other_user_1
+        add_member_params = { user_id: other_user_2.id, id: itinerary.id }
+        post itinerary_users_path(itinerary.id), params: add_member_params
+        expect(response).to redirect_to itineraries_path
+      end
     end
   end
 
@@ -78,26 +86,30 @@ RSpec.describe "ItineraryUsers", type: :request do
       itinerary.members << other_user_1 << other_user_2
     end
 
-    it "ログインユーザーがプラン作成者の場合、成功すること" do
-      remove_member_params = { user_id: other_user_1.id, id: itinerary.id }
-      delete itinerary_user_path(itinerary.id), params: remove_member_params
-      expect(response).to redirect_to itinerary_path(itinerary.id)
+    context "削除可能な場合" do
+      it "ログインユーザーがプラン作成者の場合、成功すること" do
+        remove_member_params = { user_id: other_user_1.id, id: itinerary.id }
+        delete itinerary_user_path(itinerary.id), params: remove_member_params
+        expect(response).to redirect_to itinerary_path(itinerary.id)
+      end
     end
 
-    it "ログインユーザーがプラン作成者ではない場合、失敗すること" do
-      sign_out user
-      sign_in other_user_1
-      remove_member_params = { user_id: other_user_2.id, id: itinerary.id }
-      delete itinerary_user_path(itinerary.id), params: remove_member_params
-      expect(itinerary.reload.members).to include other_user_2
-    end
+    context "削除不可能な場合" do
+      it "ログインユーザーがプラン作成者ではない場合、失敗すること" do
+        sign_out user
+        sign_in other_user_1
+        remove_member_params = { user_id: other_user_2.id, id: itinerary.id }
+        delete itinerary_user_path(itinerary.id), params: remove_member_params
+        expect(itinerary.reload.members).to include other_user_2
+      end
 
-    it "削除対象がプラン作成者の場合、失敗すること" do
-      sign_out user
-      sign_in other_user_1
-      remove_member_params = { user_id: user.id, id: itinerary.id }
-      delete itinerary_user_path(itinerary.id), params: remove_member_params
-      expect(itinerary.reload.members).to include user
+      it "削除対象がプラン作成者の場合、失敗すること" do
+        sign_out user
+        sign_in other_user_1
+        remove_member_params = { user_id: user.id, id: itinerary.id }
+        delete itinerary_user_path(itinerary.id), params: remove_member_params
+        expect(itinerary.reload.members).to include user
+      end
     end
   end
 end

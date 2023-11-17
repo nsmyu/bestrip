@@ -11,44 +11,48 @@ RSpec.describe "ItineraryUsers", type: :system do
         click_on "メンバーを追加"
       end
 
-      it "検索したユーザーの情報を表示し、メンバー追加に成功すること" do
-        expect {
+      context "検索したユーザーをメンバーに追加すること可能な場合" do
+        it "ユーザーの情報を表示し、メンバー追加に成功すること" do
+          expect {
+            fill_in "bestrip_id", with: other_user.bestrip_id
+            within '.modal' do
+              click_on 'button'
+
+              expect(page).to have_selector "img[src*='default_avatar']"
+              expect(page).to have_content other_user.name
+              expect(page).to have_xpath "//input[@value='メンバーに追加']"
+
+              click_on "メンバーに追加"
+            end
+
+            expect(page).to have_content "メンバーを追加しました。"
+            expect(page).to have_content other_user.name
+            expect(current_path).to eq itinerary_path(itinerary.id)
+          }.to change(itinerary.members, :count).by(1)
+        end
+      end
+
+      context "検索したユーザーをメンバーに追加すること不可能な場合" do
+        it "ユーザーが存在しない場合、その旨メッセージを表示し、追加ボタンは表示しないこと" do
+          fill_in "bestrip_id", with: "no_user_id"
+          within '.modal' do
+            click_on 'button'
+          end
+
+          expect(page).to have_content "ユーザーが見つかりませんでした"
+          expect(page).not_to have_xpath "//input[@value='メンバーに追加']"
+        end
+
+        it "ユーザーが既にメンバーに含まれている場合、その旨メッセージを表示し、追加ボタンは表示しないこと" do
+          itinerary.members << other_user
           fill_in "bestrip_id", with: other_user.bestrip_id
           within '.modal' do
             click_on 'button'
-
-            expect(page).to have_selector "img[src*='default_avatar']"
-            expect(page).to have_content other_user.name
-            expect(page).to have_xpath "//input[@value='メンバーに追加']"
-
-            click_on "メンバーに追加"
           end
 
-          expect(page).to have_content "メンバーを追加しました。"
-          expect(page).to have_content other_user.name
-          expect(current_path).to eq itinerary_path(itinerary.id)
-        }.to change(itinerary.members, :count).by(1)
-      end
-
-      it "検索したユーザーが存在しない場合、その旨メッセージを表示し、追加ボタンは表示しないこと" do
-        fill_in "bestrip_id", with: "no_user_id"
-        within '.modal' do
-          click_on 'button'
+          expect(page).to have_content "すでにメンバーに追加されています"
+          expect(page).not_to have_xpath "//input[@value='メンバーに追加']"
         end
-
-        expect(page).to have_content "ユーザーが見つかりませんでした"
-        expect(page).not_to have_xpath "//input[@value='メンバーに追加']"
-      end
-
-      it "検索したユーザーが既にメンバーに含まれている場合、その旨メッセージを表示し、追加ボタンは表示しないこと" do
-        itinerary.members << other_user
-        fill_in "bestrip_id", with: other_user.bestrip_id
-        within '.modal' do
-          click_on 'button'
-        end
-
-        expect(page).to have_content "すでにメンバーに追加されています"
-        expect(page).not_to have_xpath "//input[@value='メンバーに追加']"
       end
     end
 
