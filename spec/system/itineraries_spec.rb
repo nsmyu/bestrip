@@ -204,6 +204,7 @@ RSpec.describe "Itineraries", type: :system do
         click_on "保存する"
 
         expect(page).to have_content "タイトルを入力してください"
+        expect(itinerary.reload.title).to eq itinerary.title
       end
 
       it "タイトルが31文字以上の場合、失敗すること" do
@@ -211,6 +212,7 @@ RSpec.describe "Itineraries", type: :system do
         click_on "保存する"
 
         expect(page).to have_content "タイトルは30文字以内で入力してください"
+        expect(itinerary.reload.title).to eq itinerary.title
       end
     end
 

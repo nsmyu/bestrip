@@ -100,7 +100,7 @@ RSpec.describe "Posts", type: :system do
   end
 
   describe "新規作成", js: true do
-    let(:new_post) { build(:post) }
+    let(:new_post) { build(:post, :caption_great_with_hashtag) }
 
     before do
       sign_in user
@@ -313,6 +313,9 @@ RSpec.describe "Posts", type: :system do
         expect(page).to have_content "旅のプランを選択してください"
         expect(page).to have_content "写真は1枚以上選択してください"
         expect(page).to have_content "タイトルを入力してください"
+        expect(post_1.reload.itinerary_id).to eq post_1.itinerary_id
+        expect(post_1.reload.photos).to eq post_1.photos
+        expect(post_1.reload.title).to eq post_1.title
       end
 
       it "タイトルが空欄の場合、失敗すること" do
@@ -320,6 +323,7 @@ RSpec.describe "Posts", type: :system do
         click_on "投稿する"
 
         expect(page).to have_content "タイトルを入力してください"
+        expect(post_1.reload.title).to eq post_1.title
       end
 
       it "タイトルが31文字以上の場合、失敗すること" do
@@ -327,6 +331,7 @@ RSpec.describe "Posts", type: :system do
         click_on "投稿する"
 
         expect(page).to have_content "タイトルは30文字以内で入力してください"
+        expect(post_1.reload.title).to eq post_1.title
       end
 
       it "メモが1001文字以上入力された場合、「投稿する」ボタンが押せないこと" do

@@ -155,6 +155,9 @@ RSpec.describe "Itineraries", type: :request do
           expect(response.body).to include "タイトルを入力してください"
           expect(response.body).to include "出発日を入力してください"
           expect(response.body).to include "帰宅日を入力してください"
+          expect(itinerary.reload.title).to eq itinerary.title
+          expect(itinerary.reload.departure_date).to eq itinerary.departure_date
+          expect(itinerary.reload.return_date).to eq itinerary.return_date
         end
 
         it "タイトルが31文字以上の場合、失敗すること" do
@@ -162,6 +165,7 @@ RSpec.describe "Itineraries", type: :request do
           patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params },
                                               headers: turbo_stream
           expect(response.body).to include "タイトルは30文字以内で入力してください"
+          expect(itinerary.reload.title).to eq itinerary.title
         end
 
         it "帰宅日が出発日より前の日付の場合、失敗すること" do
@@ -170,19 +174,19 @@ RSpec.describe "Itineraries", type: :request do
           patch itinerary_path(itinerary.id), params: { itinerary: itinerary_params },
                                               headers: turbo_stream
           expect(response.body).to include "帰宅日は出発日以降で選択してください"
+          expect(itinerary.reload.return_date).to eq itinerary.return_date
         end
       end
     end
 
     context "ログインユーザーがプラン作成者ではない場合" do
       it "失敗すること" do
-        original_title = itinerary.title
         itinerary.members << other_user
         sign_out user
         sign_in other_user
         patch itinerary_path(itinerary.id), params: { itinerary: { title: "Edited Title" } }
         expect(response).to redirect_to itinerary_path(id: itinerary.id)
-        expect(itinerary.reload.title).to eq original_title
+        expect(itinerary.reload.title).to eq itinerary.title
       end
     end
   end

@@ -320,6 +320,7 @@ RSpec.describe "Schedules", type: :system do
           click_on "保存する"
 
           expect(page).to have_content "タイトルを入力してください"
+          expect(schedule.reload.title).to eq schedule.title
         end
 
         it "タイトルが51文字以上の場合、失敗すること" do
@@ -327,6 +328,7 @@ RSpec.describe "Schedules", type: :system do
           click_on "保存する"
 
           expect(page).to have_content "タイトルは50文字以内で入力してください"
+          expect(schedule.reload.title).to eq schedule.title
         end
 
         it "メモが501文字以上入力されると「保存する」ボタンが無効化されること" do

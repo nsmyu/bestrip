@@ -187,6 +187,7 @@ RSpec.describe "Posts", type: :request do
           patch post_path(id: post_1.id), params: { post: post_params },
                                           headers: turbo_stream
           expect(response.body).to include "タイトルを入力してください"
+          expect(post_1.reload.title).to eq post_1.title
         end
 
         it "タイトルが31文字以上の場合、失敗すること" do
@@ -194,6 +195,7 @@ RSpec.describe "Posts", type: :request do
           patch post_path(id: post_1.id), params: { post: post_params },
                                           headers: turbo_stream
           expect(response.body).to include "タイトルは30文字以内で入力してください"
+          expect(post_1.reload.title).to eq post_1.title
         end
 
         it "キャプションが1001文字以上の場合、失敗すること" do
@@ -201,6 +203,7 @@ RSpec.describe "Posts", type: :request do
           patch post_path(id: post_1.id), params: { post: post_params },
                                           headers: turbo_stream
           expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
+          expect(post_1.reload.caption).to eq post_1.caption
         end
 
         it "itineraryが選択されていない場合、失敗すること" do
@@ -208,6 +211,7 @@ RSpec.describe "Posts", type: :request do
           patch post_path(id: post_1.id), params: { post: post_params },
                                           headers: turbo_stream
           expect(response.body).to include "旅のプランを選択してください"
+          expect(post_1.reload.itinerary_id).to eq post_1.itinerary_id
         end
 
         it "写真が1枚も選択されていない（既存の写真が削除される）場合、失敗すること" do

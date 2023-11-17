@@ -238,6 +238,7 @@ RSpec.describe "Schedules", type: :request do
           patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
             params: { schedule: schedule_params }, headers: turbo_stream
           expect(response.body).to include "タイトルを入力してください"
+          expect(schedule.reload.title).to eq schedule.title
         end
 
         it "タイトルが51文字以上の場合、失敗すること" do
@@ -245,6 +246,7 @@ RSpec.describe "Schedules", type: :request do
           patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
             params: { schedule: schedule_params }, headers: turbo_stream
           expect(response.body).to include "タイトルは50文字以内で入力してください"
+          expect(schedule.reload.title).to eq schedule.title
         end
 
         it "日付が出発日より前の場合、失敗すること" do
@@ -252,6 +254,7 @@ RSpec.describe "Schedules", type: :request do
           patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
             params: { schedule: schedule_params }, headers: turbo_stream
           expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
+          expect(schedule.reload.date).to eq schedule.date
         end
 
         it "日付が帰宅日より後の場合、失敗すること" do
@@ -259,6 +262,7 @@ RSpec.describe "Schedules", type: :request do
           patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
             params: { schedule: schedule_params }, headers: turbo_stream
           expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
+          expect(schedule.reload.date).to eq schedule.date
         end
 
         it "メモが501文字以上の場合、失敗すること" do
@@ -266,6 +270,7 @@ RSpec.describe "Schedules", type: :request do
           patch itinerary_schedule_path(itinerary_id: itinerary.id, id: schedule.id),
             params: { schedule: schedule_params }, headers: turbo_stream
           expect(response.body).to include "入力内容に誤りがあります。赤字箇所をご確認ください。"
+          expect(schedule.reload.note).to eq schedule.note
         end
       end
     end
