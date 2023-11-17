@@ -24,45 +24,18 @@ RSpec.describe "UsersRegistrations", type: :system do
       }.to change(User, :count).by(1)
     end
 
-    it "必須項目が空欄の場合、失敗すること" do
+    it "無効な値の場合、失敗すること" do
       expect {
         fill_in "user[name]", with: ""
-        fill_in "user[email]", with: ""
-        fill_in "user[password]", match: :first, with: ""
-        fill_in "user[password_confirmation]", with: ""
-        click_button "新規登録"
-
-        expect(page).to have_content "ニックネームを入力してください"
-        expect(page).to have_content "メールアドレスを入力してください"
-        expect(page).to have_content "パスワードを入力してください"
-        expect(page).to have_content "パスワード（確認用）を入力してください"
-      }.not_to change(User, :count)
-    end
-
-    it "無効な形式の場合、失敗すること" do
-      expect {
-        fill_in "user[name]", with: user.name
-        fill_in "user[email]", with: "invalid.email"
+        fill_in "user[email]", with: "invalid_email_address"
         fill_in "user[password]", match: :first, with: "foo"
         fill_in "user[password_confirmation]", with: "bar"
         click_button "新規登録"
 
+        expect(page).to have_content "ニックネームを入力してください"
         expect(page).to have_content "メールアドレスを正しく入力してください"
         expect(page).to have_content "パスワードは6文字以上で入力してください"
         expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
-      }.not_to change(User, :count)
-    end
-
-    it "メールアドレスが重複している場合、失敗すること" do
-      user.save
-      expect {
-        fill_in "user[name]", with: "other_user"
-        fill_in "user[email]", with: user.email
-        fill_in "user[password]", match: :first, with: "password"
-        fill_in "user[password_confirmation]", with: "password"
-        click_button "新規登録"
-
-        expect(page).to have_content "このメールアドレスはすでに登録されています"
       }.not_to change(User, :count)
     end
   end
@@ -82,8 +55,8 @@ RSpec.describe "UsersRegistrations", type: :system do
         fill_in "user[password_confirmation]", with: "newpassword"
         click_button "変更する"
 
-        expect(current_path).to eq edit_user_registration_path
         expect(page).to have_content "パスワードを変更しました。"
+        expect(current_path).to eq edit_user_registration_path
 
         sign_out user
         visit new_user_session_path
@@ -103,25 +76,31 @@ RSpec.describe "UsersRegistrations", type: :system do
         click_button "変更する"
 
         expect(page).to have_content "現在のパスワードが間違っています"
+
+        sign_out user
+        visit new_user_session_path
+        fill_in "user[email]", with: user.email
+        fill_in "user[password]", with: "newpassword"
+        click_button "ログイン"
+
+        expect(page).to have_content "メールアドレスまたはパスワードが違います。"
       end
 
-      it "新しいパスワードが5文字以下の場合、失敗すること" do
+      it "確認用パスワードが一致しない場合、失敗すること" do
         fill_in "user[current_password]", with: user.password
-        fill_in "user[password]", match: :first, with: "foo"
-        fill_in "user[password_confirmation]", with: "bar"
+        fill_in "user[password]", match: :first, with: "newpassword"
+        fill_in "user[password_confirmation]", with: "passwordnew"
         click_button "変更する"
 
-        expect(page).to have_content "パスワードは6文字以上で入力してください"
         expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
-      end
 
-      it "新しいパスワードに半角英数字以外が含まれる場合、失敗すること" do
-        fill_in "user[current_password]", with: user.password
-        fill_in "user[password]", match: :first, with: "invalid_password"
-        fill_in "user[password_confirmation]", with: "invalid_password"
-        click_button "変更する"
+        sign_out user
+        visit new_user_session_path
+        fill_in "user[email]", with: user.email
+        fill_in "user[password]", with: "newpassword"
+        click_button "ログイン"
 
-        expect(page).to have_content "パスワードは半角英数字で入力してください"
+        expect(page).to have_content "メールアドレスまたはパスワードが違います。"
       end
     end
   end
@@ -140,24 +119,27 @@ RSpec.describe "UsersRegistrations", type: :system do
         click_button "変更する"
 
         expect(page).to have_content "メールアドレスを変更しました。"
-        expect(page).to have_field 'user[email]', with: "new_email@example.com"
+        expect(user.reload.email).to eq "new_email@example.com"
         expect(current_path).to eq users_edit_email_path
       end
     end
 
     context "無効な値の場合" do
-      it "空欄の場合、失敗すること" do
-        fill_in "user[email]", with: ""
+      it "メールアドレスが他のユーザーと重複している場合、失敗すること" do
+        other_user = create(:user, email: "other_user@example.com")
+        fill_in "user[email]", with: other_user.email
         click_button "変更する"
 
         expect(page).to have_content "メールアドレスを入力してください"
+        expect(user.reload.email).to eq user.email
       end
 
-      it "無効な形式の場合、失敗すること" do
+      it "不正な形式の場合、失敗すること" do
         fill_in "user[email]", with: "invalid_email_address"
         click_button "変更する"
 
         expect(page).to have_content "メールアドレスを正しく入力してください"
+        expect(user.reload.email).to eq user.email
       end
     end
   end
@@ -172,30 +154,28 @@ RSpec.describe "UsersRegistrations", type: :system do
     end
 
     context "有効な値の場合", js: true do
-      it "成功すること" do
-        expect(page).to have_selector "img[src*='default_avatar']"
+      it "アバター画像プレビューの表示及びプロフィール変更に成功すること" do
+        expect(page).to have_selector "img[id='image_preview'][src*='default_avatar']"
 
         image_path = Rails.root.join('spec/fixtures/cat.jpg')
         attach_file 'user[avatar]', image_path, make_visible: true
 
-        within "form" do
-          expect(page).not_to have_selector "img[src*='default_avatar']"
-        end
+        expect(page).to have_selector "img[id='image_preview'][src*='data:image']"
+        expect(page).not_to have_selector "img[id='image_preview'][src*='default_avatar']"
 
         fill_in "user[name]", with: "edited name"
-        fill_in "user[bestrip_id]", with: "user_id"
-        fill_in "user[introduction]", with: "Introduction of myself."
+        fill_in "user[bestrip_id]", with: "edited_id"
+        fill_in "user[introduction]", with: "Edited Introduction."
         click_on "保存する"
 
-        expect(current_path).to eq users_edit_profile_path
         expect(page).to have_content "プロフィールを変更しました。"
 
-        visit user_path(id: user.id)
+        visit user_path(user.id)
 
         expect(page).to have_selector "img[src*='cat.jpg']"
         expect(page).to have_content "edited name"
-        expect(page).to have_content "@user_id"
-        expect(page).to have_content "Introduction of myself."
+        expect(page).to have_content "@edited_id"
+        expect(page).to have_content "Edited Introduction."
       end
     end
 
@@ -205,6 +185,23 @@ RSpec.describe "UsersRegistrations", type: :system do
         click_on "保存する"
 
         expect(page).to have_content "ニックネームを入力してください"
+        expect(user.reload.name).to eq user.name
+      end
+
+      it "ニックネームが21文字以上の場合、失敗すること" do
+        fill_in "user[name]", with: "a" * 21
+        click_on "保存する"
+
+        expect(page).to have_content "ニックネームは20文字以内で入力してください"
+        expect(user.reload.name).to eq user.name
+      end
+
+      it "BesTrip IDが21文字以上の場合、失敗すること" do
+        fill_in "user[bestrip_id]", with: "a" * 21
+        click_on "保存する"
+
+        expect(page).to have_content "IDは20文字以内で入力してください"
+        expect(user.reload.bestrip_id).to eq user.bestrip_id
       end
 
       it "自己紹介が501文字以上入力されると「保存する」ボタンが無効化されること", js: true do

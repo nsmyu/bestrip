@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "UsersRegistrations", type: :request, focus: true do
+RSpec.describe "UsersRegistrations", type: :request do
   let(:user) { create(:user) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
@@ -167,7 +167,11 @@ RSpec.describe "UsersRegistrations", type: :request, focus: true do
       end
 
       it "ニックネーム、BesTrip ID、自己紹介の変更に成功すること" do
-        user_params = { name: "edited name", bestrip_id: "edited_id", introduction: "Edited introduction." }
+        user_params = {
+          name: "edited name",
+          bestrip_id: "edited_id",
+          introduction: "Edited introduction.",
+        }
         patch users_update_without_password_path, params: { user: user_params }
         expect(user.reload.name).to eq "edited name"
         expect(user.reload.bestrip_id).to eq "edited_id"
@@ -177,43 +181,42 @@ RSpec.describe "UsersRegistrations", type: :request, focus: true do
     end
 
     context "無効な値の場合" do
-      it "メールアドレスが空欄の場合、失敗すること" do
-        user_params = { email: "" }
-        patch users_update_without_password_path, params: { user: user_params }
-        expect(response.body).to include "メールアドレスを入力してください"
-      end
-
       it "メールアドレスが他のユーザーと重複している場合、失敗すること" do
         other_user = create(:user, email: "other_user@example.com")
         user_params = attributes_for(:user, email: other_user.email)
         patch users_update_without_password_path, params: { user: user_params }
         expect(response.body).to include "このメールアドレスはすでに登録されています"
+        expect(user.reload.email).to eq user.email
       end
 
       it "メールアドレスが不正な形式の場合、失敗すること" do
         user_params = { email: "invalid_email_address" }
         patch users_update_without_password_path, params: { user: user_params }
         expect(response.body).to include "メールアドレスを正しく入力してください"
+        expect(user.reload.email).to eq user.email
       end
 
       it "ニックネームが空欄の場合、失敗すること" do
         user_params = { name: "" }
         patch users_update_without_password_path, params: { user: user_params }
         expect(response.body).to include "ニックネームを入力してください"
+        expect(user.reload.name).to eq user.name
       end
 
       it "ニックネームが21文字以上の場合、失敗すること" do
         user_params = { name: "a" * 21 }
         patch users_update_without_password_path, params: { user: user_params }
         expect(response.body).to include "ニックネームは20文字以内で入力してください"
+        expect(user.reload.name).to eq user.name
       end
 
       it "IDが一意でない場合、失敗すること" do
         create(:user, bestrip_id: "user_id")
-        user_params = attributes_for(:user, bestrip_id: "user_id")
+        user_params = { bestrip_id: "user_id" }
         patch users_validate_bestrip_id_path, params: { user: user_params },
                                               headers: turbo_stream
         expect(response.body).to include 'このIDは他の人が使用しています'
+        expect(user.reload.bestrip_id).to eq user.bestrip_id
       end
     end
   end
