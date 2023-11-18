@@ -332,13 +332,31 @@ RSpec.describe "Schedules", type: :system do
       end
 
       describe "日付入力のflatpickr", focus: true do
-        it "出発日〜帰宅日以外の日付選択ボタンが無効化されていること" do
+        it "出発日〜帰宅日の日付は選択可能であること" do
+          find("#schedule_date", visible: false).sibling("input").click
+          within("div.flatpickr-calendar") do
+            expect(find("span[aria-label='2月 1, 2024']")).click
+          end
+          click_on "保存する"
+          
+          expect(page).to have_content "スケジュール情報を変更しました。"
+
+          find("i", text: "more_vert", visible: false, match: :first).click
+          click_on "編集", match: :first
+          find("#schedule_date", visible: false).sibling("input").click
+          within("div.flatpickr-calendar") do
+            expect(find("span[aria-label='2月 8, 2024']")).click
+          end
+          click_on "保存する"
+          
+          expect(page).to have_content "スケジュール情報を変更しました。"
+        end
+
+        it "出発日〜帰宅日に含まれない日付のボタンが無効化されていること" do
           find("#schedule_date", visible: false).sibling("input").click
 
           within("div.flatpickr-calendar") do
             expect(find("span[aria-label='1月 31, 2024']")).to match_css(".flatpickr-disabled")
-            expect(find("span[aria-label='2月 1, 2024']")).not_to match_css(".flatpickr-disabled")
-            expect(find("span[aria-label='2月 8, 2024']")).not_to match_css(".flatpickr-disabled")
             expect(find("span[aria-label='2月 9, 2024']")).to match_css(".flatpickr-disabled")
           end
         end
