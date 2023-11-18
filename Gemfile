@@ -74,6 +74,7 @@ group :development do
   gem "web-console"
   gem 'rubocop-airbnb'
   gem "bullet"
+  gem "rails-erd"
 end
 
 group :test do
