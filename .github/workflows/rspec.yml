@@ -5,7 +5,7 @@ on:
 
 jobs:
   rspec:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest-xlarge
     env:
       GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
     timeout-minutes: 10
