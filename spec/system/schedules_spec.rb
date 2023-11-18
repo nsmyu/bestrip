@@ -335,7 +335,7 @@ RSpec.describe "Schedules", type: :system do
         it "出発日〜帰宅日の日付は選択可能であること" do
           find("#schedule_date", visible: false).sibling("input").click
           within("div.flatpickr-calendar") do
-            expect(find("span[aria-label='2月 1, 2024']")).click
+            find("span[aria-label='2月 1, 2024']").click
           end
           click_on "保存する"
 
@@ -345,7 +345,7 @@ RSpec.describe "Schedules", type: :system do
           click_on "編集", match: :first
           find("#schedule_date", visible: false).sibling("input").click
           within("div.flatpickr-calendar") do
-            expect(find("span[aria-label='2月 8, 2024']")).click
+            find("span[aria-label='2月 8, 2024']").click
           end
           click_on "保存する"
 
