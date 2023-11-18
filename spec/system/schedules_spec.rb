@@ -343,6 +343,7 @@ RSpec.describe "Schedules", type: :system do
 
           find("i", text: "more_vert", visible: false, match: :first).click
           click_on "編集", match: :first
+          sleep 0.3
           find("#schedule_date", visible: false).sibling("input").click
           within("div.flatpickr-calendar") do
             find("span[aria-label='2月 8, 2024']").click
