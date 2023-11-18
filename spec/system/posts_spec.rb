@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :system do
+RSpec.describe "Posts", type: :system, focus: true do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:itinerary_1) { create(:itinerary, :with_schedule, owner: user) }
@@ -159,10 +159,15 @@ RSpec.describe "Posts", type: :system do
           .to match_css(".disabled")
       end
 
-      it "メモが1001文字以上入力された場合、「投稿する」ボタンが無効化されること" do
-        fill_in "post[caption]", with: "a" * 1001
+      it "キャプションが1001文字以上入力された場合、「投稿する」ボタンが無効化されること" do
+        fill_in "post[caption]", with: "a" * 1000
 
-        expect(page).to have_content "1001"
+        expect(page).to have_content "1000/1000"
+        expect(find("#submit_btn")).not_to be_disabled
+
+        fill_in "post[caption]", with: "a" * 1001, fill_options: { clear: :backspace }
+
+        expect(page).to have_content "1001/1000"
         expect(find("#submit_btn")).to be_disabled
       end
     end
@@ -338,10 +343,15 @@ RSpec.describe "Posts", type: :system do
         expect(post_1.reload.title).to eq post_1.title
       end
 
-      it "メモが1001文字以上入力された場合、「投稿する」ボタンが押せないこと" do
-        fill_in "post[caption]", with: "a" * 1001
+      it "キャプションが1001文字以上入力された場合、「投稿する」ボタンが押せないこと" do
+        fill_in "post[caption]", with: "a" * 1000, fill_options: { clear: :backspace }
 
-        expect(page).to have_content "1001"
+        expect(page).to have_content "1000/1000"
+        expect(find("#submit_btn")).not_to be_disabled
+
+        fill_in "post[caption]", with: "a" * 1001, fill_options: { clear: :backspace }
+
+        expect(page).to have_content "1001/1000"
         expect(find("#submit_btn")).to be_disabled
       end
     end

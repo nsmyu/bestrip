@@ -211,12 +211,12 @@ RSpec.describe "UsersRegistrations", type: :system do
       it "自己紹介が501文字以上入力されると「保存する」ボタンが無効化されること", js: true do
         fill_in "user[introduction]", with: "a" * 500
 
-        expect(page).to have_content "500"
+        expect(page).to have_content "500/500"
         expect(find("#submit_btn")).not_to be_disabled
 
-        fill_in "user[introduction]", with: "a" * 501
+        fill_in "user[introduction]", with: "a" * 501, fill_options: { clear: :backspace }
 
-        expect(page).to have_content "501"
+        expect(page).to have_content "501/500"
         expect(find("#submit_btn")).to be_disabled
       end
     end

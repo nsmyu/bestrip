@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Schedules", type: :system, focus: true do
+RSpec.describe "Schedules", type: :system do
   shared_examples "旅のメンバー共通機能" do |user_type|
     before do
       set_signed_in_user(user_type)
