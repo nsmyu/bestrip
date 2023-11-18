@@ -338,7 +338,7 @@ RSpec.describe "Schedules", type: :system do
             expect(find("span[aria-label='2月 1, 2024']")).click
           end
           click_on "保存する"
-          
+
           expect(page).to have_content "スケジュール情報を変更しました。"
 
           find("i", text: "more_vert", visible: false, match: :first).click
@@ -348,7 +348,7 @@ RSpec.describe "Schedules", type: :system do
             expect(find("span[aria-label='2月 8, 2024']")).click
           end
           click_on "保存する"
-          
+
           expect(page).to have_content "スケジュール情報を変更しました。"
         end
 
