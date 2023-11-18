@@ -165,7 +165,7 @@ RSpec.describe "Posts", type: :system do
         expect(page).to have_content "1000/1000"
         expect(find("#submit_btn")).not_to be_disabled
 
-        fill_in "post[caption]", with: "a" * 1001, fill_options: { clear: :backspace }
+        fill_in "post[caption]", with: "a" * 1001
 
         expect(page).to have_content "1001/1000"
         expect(find("#submit_btn")).to be_disabled
@@ -344,12 +344,12 @@ RSpec.describe "Posts", type: :system do
       end
 
       it "キャプションが1001文字以上入力された場合、「投稿する」ボタンが押せないこと" do
-        fill_in "post[caption]", with: "a" * 1000, fill_options: { clear: :backspace }
+        fill_in "post[caption]", with: "a" * 1000
 
         expect(page).to have_content "1000/1000"
         expect(find("#submit_btn")).not_to be_disabled
 
-        fill_in "post[caption]", with: "a" * 1001, fill_options: { clear: :backspace }
+        fill_in "post[caption]", with: "a" * 1001
 
         expect(page).to have_content "1001/1000"
         expect(find("#submit_btn")).to be_disabled

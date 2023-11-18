@@ -166,15 +166,15 @@ RSpec.describe "Schedules", type: :system do
           }.not_to change(Schedule, :count)
         end
 
-        it "出発日〜帰宅日に含まれない日付のボタンが無効化されていること", focus: true do
+        it "日付選択のflatpickrについて、出発日〜帰宅日(2/1〜8)に含まれない日付ボタンは無効化されていること" do
           find("#schedule_date", visible: false).sibling("input").click
 
-          expect(page)
-            .to have_selector "div.dayContainer > span[aria-label='1月 31, 2024']",
-            class: "flatpickr-disabled"
-          expect(page)
-            .to have_selector "div.dayContainer > span[aria-label='2月 9, 2024']",
-            class: "flatpickr-disabled"
+          within "div.dayContainer" do
+            expect(page)
+              .to have_selector "span[aria-label='1月 31, 2024']", class: "flatpickr-disabled"
+            expect(page)
+              .to have_selector "span[aria-label='2月 9, 2024']", class: "flatpickr-disabled"
+          end
         end
 
         it "メモが501文字以上入力されると「保存する」ボタンが無効化されること" do
@@ -183,7 +183,7 @@ RSpec.describe "Schedules", type: :system do
           expect(page).to have_content "500/500"
           expect(find("#submit_btn", visible: false)).not_to be_disabled
 
-          fill_in "schedule[note]", with: "a" * 501, fill_options: { clear: :backspace }
+          fill_in "schedule[note]", with: "a" * 501
 
           expect(page).to have_content "501/500"
           expect(find("#submit_btn", visible: false)).to be_disabled
@@ -316,13 +316,24 @@ RSpec.describe "Schedules", type: :system do
           expect(schedule.reload.title).to eq schedule.title
         end
 
+        it "日付選択のflatpickrについて、出発日〜帰宅日(2/1〜8)に含まれない日付ボタンは無効化されていること" do
+          find("#schedule_date", visible: false).sibling("input").click
+
+          within "div.dayContainer" do
+            expect(page)
+              .to have_selector "span[aria-label='1月 31, 2024']", class: "flatpickr-disabled"
+            expect(page)
+              .to have_selector "span[aria-label='2月 9, 2024']", class: "flatpickr-disabled"
+          end
+        end
+
         it "メモが501文字以上入力されると「保存する」ボタンが無効化されること" do
-          fill_in "schedule[note]", with: "a" * 500, fill_options: { clear: :backspace }
+          fill_in "schedule[note]", with: "a" * 500
 
           expect(page).to have_content "500/500"
           expect(find("#submit_btn")).not_to be_disabled
 
-          fill_in "schedule[note]", with: "a" * 501, fill_options: { clear: :backspace }
+          fill_in "schedule[note]", with: "a" * 501
 
           expect(page).to have_content "501/500"
           expect(find("#submit_btn")).to be_disabled
