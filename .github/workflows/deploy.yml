@@ -16,7 +16,7 @@ jobs:
 
   deploy:
     needs: rspec
-    runs-on: macos-latest-xlarge
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     environment: production
 
