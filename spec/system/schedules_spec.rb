@@ -166,6 +166,15 @@ RSpec.describe "Schedules", type: :system do
           }.not_to change(Schedule, :count)
         end
 
+        it "出発日〜帰宅日に含まれない日付のボタンが無効化されていること", focus: true do
+          find("#schedule_date", visible: false).sibling("input").click
+
+          expect(page)
+            .to have_selector "div.dayContainer > span[aria-label='1月 31, 2024']", class: "flatpickr-disabled"
+          expect(page)
+            .to have_selector "div.dayContainer > span[aria-label='2月 9, 2024']", class: "flatpickr-disabled"
+        end
+
         it "メモが501文字以上入力されると「保存する」ボタンが無効化されること" do
           fill_in "schedule[note]", with: "a" * 500
 
