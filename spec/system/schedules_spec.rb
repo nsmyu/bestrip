@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Schedules", type: :system do
+RSpec.describe "Schedules", type: :system, focus: true do
   shared_examples "旅のメンバー共通機能" do |user_type|
     before do
       set_signed_in_user(user_type)
@@ -169,12 +169,12 @@ RSpec.describe "Schedules", type: :system do
         it "メモが501文字以上入力されると「保存する」ボタンが無効化されること" do
           fill_in "schedule[note]", with: "a" * 500
 
-          expect(page).to have_content "500"
+          expect(page).to have_content "500/500"
           expect(find("#submit_btn", visible: false)).not_to be_disabled
 
-          fill_in "schedule[note]", with: "a" * 501
+          fill_in "schedule[note]", with: "a" * 501, fill_options: { clear: :backspace }
 
-          expect(page).to have_content "501"
+          expect(page).to have_content "501/500"
           expect(find("#submit_btn", visible: false)).to be_disabled
         end
       end
@@ -306,14 +306,14 @@ RSpec.describe "Schedules", type: :system do
         end
 
         it "メモが501文字以上入力されると「保存する」ボタンが無効化されること" do
-          fill_in "schedule[note]", with: "a" * 500
+          fill_in "schedule[note]", with: "a" * 500, fill_options: { clear: :backspace }
 
-          expect(page).to have_content "500"
+          expect(page).to have_content "500/500"
           expect(find("#submit_btn")).not_to be_disabled
 
-          fill_in "schedule[note]", with: "a" * 501
+          fill_in "schedule[note]", with: "a" * 501, fill_options: { clear: :backspace }
 
-          expect(page).to have_content "501"
+          expect(page).to have_content "501/500"
           expect(find("#submit_btn")).to be_disabled
         end
       end

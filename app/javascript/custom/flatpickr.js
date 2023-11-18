@@ -2,7 +2,7 @@ function configureDatePickr() {
   const departureDate = document.querySelector("#departure_date");
   const returnDate = document.querySelector("#return_date");
   const scheduleDate = document.querySelector("#schedule_date");
-  const config = { locale: 'ja', altInput: true, altFormat: 'Y/m/j（D）', disableMobile: true };
+  const config = { locale: 'ja', altInput: true, altFormat: 'Y/m/d（D）', disableMobile: true };
 
   function configureMinReturnDate() {
     config.minDate = departureDate.value;
