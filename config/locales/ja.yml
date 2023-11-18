@@ -21,7 +21,7 @@ ja:
           errors:
         schedule:
           title: タイトル
-          schedule_date: 日付
+          date: 日付
           start_at: 開始時間
           end_at: 終了時間
           icon: アイコン
