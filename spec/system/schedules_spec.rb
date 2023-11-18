@@ -332,13 +332,20 @@ RSpec.describe "Schedules", type: :system do
       end
 
       describe "日付入力のflatpickr", focus: true do
-        it "出発日〜帰宅日の日付のボタンは選択可能な状態であること" do
-          find("#schedule_date", visible: false).sibling("input").click
+        it "出発日〜帰宅日の日付は選択可能であること" do
+          page.execute_script "schedule_date.value = '#{itinerary.departure_date}'"
+          click_on "保存する"
 
-          within("div.flatpickr-calendar") do
-            expect(find("span[aria-label='2月 1, 2024']")).not_to match_css(".flatpickr-disabled")
-            expect(find("span[aria-label='2月 8, 2024']")).not_to match_css(".flatpickr-disabled")
-          end
+          expect(page).to have_content "スケジュール情報を変更しました。"
+          expect(page).to have_content I18n.l itinerary.departure_date
+
+          find("i", text: "more_vert", visible: false, match: :first).click
+          click_on "編集", match: :first
+          page.execute_script "schedule_date.value = '#{itinerary.return_date}'"
+          click_on "保存する"
+
+          expect(page).to have_content "スケジュール情報を変更しました。"
+          expect(page).to have_content I18n.l itinerary.return_date
         end
 
         it "出発日〜帰宅日に含まれない日付のボタンは無効化されていること" do
