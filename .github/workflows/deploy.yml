@@ -36,7 +36,7 @@ jobs:
             git pull origin develop/09-refactoring
             ~/.rbenv/shims/bundle install
             ~/.rbenv/shims/bundle exec rails db:migrate RAILS_ENV=production
-            ~/.rbenv/shims/bundle exec rails db:seeds
+            ~/.rbenv/shims/bundle exec rails db:seed
             ~/.rbenv/shims/bundle exec rails assets:precompile RAILS_ENV=production
             sudo systemctl restart nginx
             kill $(cat tmp/server.pid)
