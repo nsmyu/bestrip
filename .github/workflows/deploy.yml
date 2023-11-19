@@ -3,7 +3,7 @@ name: EC2 deploy
 on:
   push:
     branches:
-      - 'develop/09-refactoring'
+      - 'main'
 
 jobs:
   rubocop:
@@ -33,7 +33,7 @@ jobs:
           port: 22
           script: |
             cd /var/www/bestrip
-            git pull origin develop/09-refactoring
+            git pull origin main
             ~/.rbenv/shims/bundle install
             ~/.rbenv/shims/bundle exec rails db:drop DISABLE_DATABASE_ENVIRONMENT_CHECK=1 RAILS_ENV=production
             ~/.rbenv/shims/bundle exec rails db:create RAILS_ENV=production
