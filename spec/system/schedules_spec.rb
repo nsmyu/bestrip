@@ -183,7 +183,7 @@ RSpec.describe "Schedules", type: :system do
           expect(page).to have_content "500/500"
           expect(find("#submit_btn", visible: false)).not_to be_disabled
 
-          find("schedule[note]").send_keys(*([:backspace] * 500))
+          find("textarea[name='schedule[note]']").send_keys(*([:backspace] * 500))
           fill_in "schedule[note]", with: "a" * 501
 
           expect(page).to have_content "501/500"
@@ -334,7 +334,7 @@ RSpec.describe "Schedules", type: :system do
           expect(page).to have_content "500/500"
           expect(find("#submit_btn")).not_to be_disabled
 
-          find("schedule[note]").send_keys(*([:backspace] * 500))
+          find("textarea[name='schedule[note]']").send_keys(*([:backspace] * 500))
           fill_in "schedule[note]", with: "a" * 501
 
           expect(page).to have_content "501/500"
