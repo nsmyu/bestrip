@@ -182,8 +182,9 @@ RSpec.describe "Schedules", type: :system do
 
           expect(page).to have_content "500/500"
           expect(find("#submit_btn", visible: false)).not_to be_disabled
-
-          fill_in "schedule[note]", with: "a" * 501, fill_options: { clear: :backspace }
+          
+          find("schedule[note]").send_keys(*([:backspace] * 500))
+          fill_in "schedule[note]", with: "a" * 501
 
           expect(page).to have_content "501/500"
           expect(find("#submit_btn", visible: false)).to be_disabled
@@ -333,7 +334,8 @@ RSpec.describe "Schedules", type: :system do
           expect(page).to have_content "500/500"
           expect(find("#submit_btn")).not_to be_disabled
 
-          fill_in "schedule[note]", with: "a" * 501, fill_options: { clear: :backspace }
+          find("schedule[note]").send_keys(*([:backspace] * 500))
+          fill_in "schedule[note]", with: "a" * 501
 
           expect(page).to have_content "501/500"
           expect(find("#submit_btn")).to be_disabled
