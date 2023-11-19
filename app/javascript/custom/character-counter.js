@@ -3,12 +3,7 @@ function countChars() {
   const charCount = document.querySelector('#char_count');
 
   if (textInput) {
-    const maxCharsLength = charCount.textContent.slice(2);
-
-    function addCharsLengthError() {
-      charCount.classList.add('error-message');
-      document.querySelector("#submit_btn").disabled = true;
-    }
+    const maxCharsLength = charCount.textContent.replace(/\d*\//g, '');
 
     if (textInput.value.length > 0) {
       charCount.querySelector('span').textContent = textInput.value.length;
@@ -32,6 +27,11 @@ function countChars() {
         document.querySelector('#submit_btn').removeAttribute('disabled');
       }
     });
+
+    function addCharsLengthError() {
+      charCount.classList.add('error-message');
+      document.querySelector("#submit_btn").disabled = true;
+    }
   }
 }
 
