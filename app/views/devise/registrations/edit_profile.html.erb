@@ -7,11 +7,11 @@
       <div class="px-2">
         <%= form_with model: resource, url: users_update_without_password_path do |f| %>
           <div class="row mt-3 mb-4 d-flex align-items-center">
-            <div class="col-4 col-sm-3">
-              <%= image_tag resource.avatar.url, id: 'image_preview', class: "w-100 rounded-circle" %>
+            <div class="col-3">
+              <%= image_tag resource.avatar.url, id: 'image_preview', class: "square-image rounded-circle" %>
             </div>
-            <div class="col-6 col-sm-9">
-              <label class="btn btn-outline-primary mb-0 px-3">
+            <div class="col-9">
+              <label class="btn btn-outline-primary btn-sm mb-0">
                 <i class="material-icons me-2 pb-1 fs-6">add_a_photo</i>
                 <span>画像を変更</span>
                 <%= f.file_field :avatar, accept: "image/*", id: "image_input", class: "d-none" %>

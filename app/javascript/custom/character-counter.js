@@ -36,6 +36,5 @@ function countChars() {
 }
 
 document.addEventListener('DOMContentLoaded', countChars);
+document.addEventListener('turbo:load', countChars);
 document.addEventListener('turbo:frame-load', countChars);
-
-
