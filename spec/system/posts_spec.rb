@@ -165,6 +165,7 @@ RSpec.describe "Posts", type: :system do
         expect(page).to have_content "1000/1000"
         expect(find("#submit_btn")).not_to be_disabled
 
+        find("textarea[name='post[caption]']").send_keys(*([:backspace] * 1000))
         fill_in "post[caption]", with: "a" * 1001
 
         expect(page).to have_content "1001/1000"
@@ -349,6 +350,7 @@ RSpec.describe "Posts", type: :system do
         expect(page).to have_content "1000/1000"
         expect(find("#submit_btn")).not_to be_disabled
 
+        find("textarea[name='post[caption]']").send_keys(*([:backspace] * 1000))
         fill_in "post[caption]", with: "a" * 1001
 
         expect(page).to have_content "1001/1000"
