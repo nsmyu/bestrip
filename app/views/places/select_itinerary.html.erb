@@ -1,16 +1,20 @@
 <%= render "shared/modal", title: "旅のプランに追加" do %>
-  <%= turbo_frame_tag "itinerary_place" do %>
-    <%= form_with url: itinerary_places_add_from_user_places_path(itinerary_id: @itinerary.id), model: [@placeable, @place],
-      data: { controller: "itinerary-place", itinerary_place_target: "form" } do |f| %>
-      <div class="row input-group input-group-outline mx-0 mb-4">
-        <label class="m-0 mb-1 px-0 fw-bold">スポットを追加する旅のプラン</label>
-        <label class="select-box px-0">
-          <%= select_tag "itineraries", options_from_collection_for_select(@itineraries, :id, :title), include_blank: "旅のプランを選択",
-            class: "form-control cursor-pointer", data: { itinerary_place_target: "select", action: "change->itinerary-place#setItinerary" } %>
-        </label>
-      </div>
-      <%= f.hidden_field :place_id, value: @place_id %>
-      <%= f.submit "行きたい場所リストに追加", class: "btn bg-gradient-primary d-block mt-3 mx-auto", data: { itinerary_place_target: "submit" }, disabled: true %>
+  <% if @itinerary.blank? %>
+    <p class="py-3 text-dark text-sm">旅のプランがありません</p>
+  <% else %>
+    <%= turbo_frame_tag "itinerary_place" do %>
+      <%= form_with url: itinerary_places_add_from_user_places_path(itinerary_id: @itinerary.id), model: [@placeable, @place],
+        data: { controller: "itinerary-place", itinerary_place_target: "form" } do |f| %>
+        <div class="row input-group input-group-outline mx-0 mb-4">
+          <label class="m-0 mb-1 px-0 fw-bold">スポットを追加する旅のプラン</label>
+          <label class="select-box px-0">
+            <%= select_tag "itineraries", options_from_collection_for_select(@itineraries, :id, :title), include_blank: "旅のプランを選択",
+              class: "form-control cursor-pointer", data: { itinerary_place_target: "select", action: "change->itinerary-place#setItinerary" } %>
+          </label>
+        </div>
+        <%= f.hidden_field :place_id, value: @place_id %>
+        <%= f.submit "行きたい場所リストに追加", class: "btn bg-gradient-primary d-block mt-3 mx-auto", data: { itinerary_place_target: "submit" }, disabled: true %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>
