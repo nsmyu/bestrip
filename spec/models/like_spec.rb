@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Like, type: :model do
-  describe "バリデーション", focus: true do
+  describe "バリデーション" do
     it "user_id、post_idがあれば有効であること" do
       expect(build(:like)).to be_valid
     end
