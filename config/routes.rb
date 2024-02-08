@@ -44,4 +44,6 @@ Rails.application.routes.draw do
   resources :posts do
     get 'search', to: 'posts#search', on: :collection
   end
+
+  resources :likes, only: %i(index create destroy)
 end
