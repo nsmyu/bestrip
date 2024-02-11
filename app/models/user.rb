@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :owned_itineraries, class_name: "Itinerary", dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   devise :database_authenticatable, :registerable, :rememberable, :validatable
 
