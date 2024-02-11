@@ -8,7 +8,7 @@ RSpec.describe "Likes", type: :system do
     sign_in user
   end
 
-  describe "いいね", js: true, focus: true do
+  describe "いいね", js: true do
     it "投稿に「いいね」ができること（「いいね」作成フォームが削除リンクに切り替わること）" do
       visit post_path(id: test_post.id)
 
@@ -27,6 +27,15 @@ RSpec.describe "Likes", type: :system do
         find(:xpath, "//a[i[contains(text(), 'thumb_up')]]").click
         expect(page).to have_xpath "//form[button[i[contains(text(), 'thumb_up')]]]"
       }.to change(Like, :count).by(-1)
+    end
+
+    it "「いいね」が0件の場合は何も表示せず、1件以上の場合は「いいね」数を表示すること" do
+      visit post_path(id: test_post.id)
+      expect(page).to have_xpath "//form[button[span[contains(text(), '')]]]"
+
+      find(:xpath, "//form[button[i[contains(text(), 'thumb_up')]]]").click
+
+      expect(page).to have_xpath "//a[span[contains(text(), '1')]]"
     end
   end
 end
