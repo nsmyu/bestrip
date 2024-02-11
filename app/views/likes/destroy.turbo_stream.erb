@@ -1,8 +1,8 @@
 <%= turbo_stream.update "like" do %>
   <%= form_with url: likes_path do |f| %>
-    <%= button_tag type: "submit", class: "btn btn-outline-favorite d-flex justify-content-center align-items-center mt-3 mb-0 w-100" do %>
+    <%= button_tag type: "submit", class: "d-flex border-0 bg-transparent hover-opacity text-secondary text-sm mb-0 p-0" do %>
       <i class="material-icons me-1">thumb_up</i>
-      <span>いいね！</span>
+      <span><%= @post.likes.count if @post.likes != [] %></span>
     <% end %>
   <% end %>
 <% end %>

@@ -32,7 +32,7 @@
   </div>
   <div class="py-3 border-bottom border-top">
     <%= simple_format(link_to_hashtag(@post.caption), sanitize: true, class: "pb-2 text-sm text-dark") %>
-    <p class="text-sm"><%= l @post.created_at, format: :date_posted %></p>
+    <p class="text-xs"><%= l @post.created_at, format: :date_posted %></p>
   </div>
   <%= render 'interaction' %>
 </div>

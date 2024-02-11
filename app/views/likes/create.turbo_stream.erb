@@ -1,6 +1,6 @@
 <%= turbo_stream.update "like" do %>
-  <%= link_to [:like, id: @post.id], class: "btn btn-outline-favorite d-flex justify-content-center align-items-center mt-3 mb-0 w-100", data: { turbo_method: :delete } do %>
+  <%= link_to [:like, id: @post.id], class: "d-flex justify-content-between align-items-center border-0 bg-transparent text-primary text-sm mb-0 lh-1", data: { turbo_method: :delete } do %>
     <i class="material-icons me-1">thumb_up</i>
-    <span>いいね済み</span>
+    <span><%= @post.likes.count if @post.likes != [] %></span>
   <% end %>
 <% end %>
