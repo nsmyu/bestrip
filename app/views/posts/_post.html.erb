@@ -16,5 +16,9 @@
         </p>
       </div>
     <% end %>
+    <div class="d-flex align-items-center bg-transparent text-sm px-2 pb-2 lh-1">
+      <i class="material-icons me-1 fs-px-15">thumb_up</i>
+      <span><%= post.likes_count if post.likes_count != 0 %></span>
+    </div>
   </div>
 <% end %>
