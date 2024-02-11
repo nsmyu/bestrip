@@ -1,0 +1,8 @@
+<%= form_with model: @comment do |f| %>
+  <div class="input-group input-group-outline align-items-center">
+    <%= f.text_area :content, id: "text_input", class: "form-control border-0 bg-gray-200", placeholder: "コメントを入力…" %>
+    <%= button_tag type: "submit", id: "submit_btn", class: "d-flex border-0 bg-transparent hover-opacity text-secondary text-sm mb-0 ms-2 px-0" do %>
+      <i class="material-icons me-1">send</i>
+    <% end %>
+  </div>
+<% end %>

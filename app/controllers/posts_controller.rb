@@ -30,6 +30,7 @@ class PostsController < ApplicationController
   end
 
   def show
+    @comment = @post.comments.new(user: current_user)
     if @post.itinerary_public?
       unsorted_schedules = @post.itinerary.schedules
       sort_schedules_by_date_time(unsorted_schedules)
