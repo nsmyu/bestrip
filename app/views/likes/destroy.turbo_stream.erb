@@ -1,0 +1,8 @@
+<%= turbo_stream.update "like" do %>
+  <%= form_with url: likes_path do |f| %>
+    <%= button_tag type: "submit", class: "btn btn-outline-favorite d-flex justify-content-center align-items-center mt-3 mb-0 w-100" do %>
+      <i class="material-icons me-1">thumb_up</i>
+      <span>いいね！</span>
+    <% end %>
+  <% end %>
+<% end %>

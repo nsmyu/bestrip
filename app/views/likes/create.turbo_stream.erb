@@ -1,14 +1,6 @@
 <%= turbo_stream.update "like" do %>
-  <%
-=begin%>
- <%= link_to [:users_place, id: @place.id], class: "btn btn-outline-favorite d-flex justify-content-center align-items-center mt-3 mb-0 w-100", data: { turbo_method: :delete } do %>
-<%
-=end%>
-        <i class="material-icons me-1">thumb_up</i>
-        <span>いいね！</span>
-  <%
-=begin%>
- <% end %>
-<%
-=end%>
+  <%= link_to [:like, id: @post.id], class: "btn btn-outline-favorite d-flex justify-content-center align-items-center mt-3 mb-0 w-100", data: { turbo_method: :delete } do %>
+    <i class="material-icons me-1">thumb_up</i>
+    <span>いいね済み</span>
+  <% end %>
 <% end %>

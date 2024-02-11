@@ -21,4 +21,8 @@ class Post < ApplicationRecord
     return if !id
     Post.find(id).photos
   end
+
+  def liked_by?(user)
+    Like.where(post_id: id).where(user_id: user.id).present?
+  end
 end
