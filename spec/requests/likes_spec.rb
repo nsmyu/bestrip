@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Likes", type: :request do
+RSpec.describe "Likes", type: :request, focus: true do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:itinerary) { create(:itinerary, owner: other_user) }
@@ -20,16 +20,16 @@ RSpec.describe "Likes", type: :request do
 
   describe "POST #create" do
     it "成功すること" do
-      post likes_path(test_post.id), params: { user_id: user.id }
-      expect(response.body).to include "お気に入りに追加済み"
+      post likes_path(test_post.id), headers: turbo_stream
+      expect(response.body).to include "いいね済み"
     end
   end
 
-  # describe "GET /destroy" do
-  #   it "returns http success" do
-  #     get "/likes/destroy"
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
-
+  describe "GET #destroy" do
+    it "成功すること" do
+      create(:like, post: test_post, user: user)
+      delete like_path(test_post.id), headers: turbo_stream
+      expect(response.body).to include "いいね"
+    end
+  end
 end

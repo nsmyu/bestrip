@@ -23,6 +23,7 @@ class Post < ApplicationRecord
   end
 
   def liked_by?(user)
-    Like.where(post_id: id).where(user_id: user.id).present?
+    return if likes == []
+    likes.where(user_id: user.id).present?
   end
 end
