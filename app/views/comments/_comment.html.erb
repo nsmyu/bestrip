@@ -5,7 +5,7 @@
         <%= image_tag comment.user.avatar.url, class: "avatar avatar-thumbnail" %>
       <% end %>
     </div>
-    <div class="col-10 ms-n2 ps-0">
+    <div class="col-10 ms-n3 ps-1">
       <%= link_to [:user, id: comment.user.id], data: { turbo_frame: "_top" }, class: "hover-opacity" do %>
         <p class="text-xs text-dark fw-bold lh-sm"><%= comment.user.name %></p>
       <% end %>

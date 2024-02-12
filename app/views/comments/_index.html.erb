@@ -1,3 +1,6 @@
 <div id="comments">
-  <%= render @comments %>
+  <%= turbo_frame_tag "posts-page-#{@comments.current_page}" do %>
+    <%= render @comments %>
+    <%= turbo_frame_tag "posts-page-#{@comments.next_page}", src: path_to_next_page(@comments), loading: :lazy %>
+  <% end %>
 </div>
