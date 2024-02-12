@@ -83,7 +83,7 @@ class PostsController < ApplicationController
   def sort_comments(unsorted_comments)
     time_sorted_comments = unsorted_comments.order(created_at: :desc)
 
-    if @post.comments.where(user_id: current_user.id).length == 0
+    if !current_user || (@post.comments.where(user_id: current_user.id).length == 0)
       @comments = time_sorted_comments
     else
       @comments = time_sorted_comments

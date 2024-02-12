@@ -7,6 +7,8 @@ RSpec.describe "Posts", type: :request do
   let(:itinerary_2) { create(:itinerary, :with_schedule, owner: user) }
   let(:post_1) { create(:post, :caption_great_with_hashtag, :with_photo, itinerary: itinerary_1) }
   let(:post_2) { create(:post, :caption_awesome_no_hashtag, :with_photo, itinerary: itinerary_2) }
+  let(:comment_1) { create(:comment, user: user, post: post_1) }
+  let(:comment_2) { create(:comment, user: other_user, post: post_1) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
   describe "GET #index" do
@@ -132,6 +134,16 @@ RSpec.describe "Posts", type: :request do
       expect(response.body).to include I18n.l post_1.created_at, format: :date_posted
       expect(response.body).to include post_1.user.name
       expect(response.body).to include post_1.itinerary.schedules[0].title
+    end
+
+    it "投稿につけられたコメントを全て取得すること" do
+      comment_1
+      comment_2
+      get post_path(id: post_1.id)
+      expect(response.body).to include comment_1.user.name
+      expect(response.body).to include comment_1.content
+      expect(response.body).to include comment_2.user.name
+      expect(response.body).to include comment_2.content
     end
   end
 
