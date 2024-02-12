@@ -11,7 +11,7 @@ RSpec.describe "Comments", type: :request do
     sign_in user
   end
 
-  describe "POST #create", focus: true do
+  describe "POST #create" do
     context "有効な値の場合" do
       it "成功すること" do
         comment = build(:comment, user_id: user.id)
