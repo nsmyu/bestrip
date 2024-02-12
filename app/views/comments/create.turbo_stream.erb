@@ -1,5 +1,4 @@
-<%= turbo_stream.update "comment" do %>
-  <% @post.comments.each do |comment| %>
-    <p><%= comment.content %></p>
-  <% end %>
+<%= turbo_stream.prepend "comments", @comment %>
+<%= turbo_stream.update "new_comment" do %>
+  <%= render 'form' %>
 <% end %>

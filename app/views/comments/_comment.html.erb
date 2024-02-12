@@ -1,0 +1,16 @@
+<%= turbo_frame_tag comment, class: "" do %>
+  <div class="row my-4">
+    <div class="col-2">
+      <%= link_to [:user, id: comment.user.id], data: { turbo_frame: "_top" }, class: "hover-opacity" do %>
+        <%= image_tag comment.user.avatar.url, class: "avatar avatar-thumbnail" %>
+      <% end %>
+    </div>
+    <div class="col-10 ms-n3 ps-0">
+      <%= link_to [:user, id: comment.user.id], data: { turbo_frame: "_top" }, class: "hover-opacity" do %>
+        <p class="text-xs text-dark fw-bold lh-sm"><%= comment.user.name %></p>
+      <% end %>
+      <p class="text-sm text-dark"><%= comment.content %></p>
+      <p class="mt-1 text-xs text-secondary"><%= l comment.created_at, format: :date_posted %></p>
+    </div>
+  </div>
+<% end %>
