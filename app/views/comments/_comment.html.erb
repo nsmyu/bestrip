@@ -5,12 +5,19 @@
         <%= image_tag comment.user.avatar.url, class: "avatar avatar-thumbnail" %>
       <% end %>
     </div>
-    <div class="col-10 ms-n3 ps-0">
+    <div class="col-10 ms-n2 ps-0">
       <%= link_to [:user, id: comment.user.id], data: { turbo_frame: "_top" }, class: "hover-opacity" do %>
         <p class="text-xs text-dark fw-bold lh-sm"><%= comment.user.name %></p>
       <% end %>
       <p class="text-sm text-dark"><%= comment.content %></p>
-      <p class="mt-1 text-xs text-secondary"><%= time_since_creation(comment.created_at) %></p>
+      <div class="d-flex align-items-center">
+        <p class="text-xs text-secondary py-1"><%= time_since_creation(comment.created_at) %></p>
+        <% if (current_user == comment.user) || (current_user == @post.user) %>
+          <%= link_to [:comment, id: comment.id], class: "d-flex align-items-center ms-2", data: { turbo_method: :delete, turbo_confirm: 'このコメントを削除しますか？' } do %>
+            <i class="material-symbols-outlined fs-6 text-secondary p-1 rounded-circle link-area">delete</i>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 <% end %>
