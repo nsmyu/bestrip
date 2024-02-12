@@ -1,5 +1,5 @@
 Itinerary.all.each do |itinerary|
-  next if itinerary.departure_date > Date.new(2024, 1, 1)
+  next if itinerary.departure_date >= Date.new(2024, 3, 1)
 
   itinerary.posts.new(
     {

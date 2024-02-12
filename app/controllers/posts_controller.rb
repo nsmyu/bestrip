@@ -31,7 +31,7 @@ class PostsController < ApplicationController
 
   def show
     @new_comment = @post.comments.new(user: current_user)
-    @comments = @post.comments.includes(:user).order(created_at: :desc)
+    sort_comments(@post.comments.includes(:user))
     if @post.itinerary_public?
       unsorted_schedules = @post.itinerary.schedules
       sort_schedules_by_date_time(unsorted_schedules)
@@ -78,5 +78,17 @@ class PostsController < ApplicationController
                                  :itinerary_public,
                                  :itinerary_id,
                                  [photos_attributes: [:url, :id, :_destroy]])
+  end
+
+  def sort_comments(unsorted_comments)
+    time_sorted_comments = unsorted_comments.order(created_at: :desc)
+
+    if @post.comments.where(user_id: current_user.id).length == 0
+      @comments = time_sorted_comments
+    else
+      @comments = time_sorted_comments
+        .partition { |comment| comment.user_id == current_user.id }
+        .flatten
+    end
   end
 end
