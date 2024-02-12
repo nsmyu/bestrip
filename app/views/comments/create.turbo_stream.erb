@@ -1,0 +1,5 @@
+<%= turbo_stream.update "comment" do %>
+  <% @post.comments.each do |comment| %>
+    <p><%= comment.content %></p>
+  <% end %>
+<% end %>

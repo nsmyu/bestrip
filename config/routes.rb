@@ -45,7 +45,7 @@ Rails.application.routes.draw do
     get 'search', to: 'posts#search', on: :collection
     member do
       resources :likes, only: %i(index create destroy)
-      resources :comments, only: %i(new create edit destroy)
+      resources :comments, only: %i(create edit destroy)
     end
   end
 end
