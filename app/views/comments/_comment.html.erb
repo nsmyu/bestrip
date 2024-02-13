@@ -12,7 +12,8 @@
       </div>
       <div class="mt-1 ps-2 d-flex align-items-center">
         <p class="ps-1 text-xs text-secondary"><%= time_since_creation(comment.created_at) %></p>
-        <%= link_to "返信", [:new_reply_post, comment_id: comment.id], class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity", data: { turbo_frame: "new_reply_#{comment.id}" } %>
+        <%= link_to "返信", [:new_reply_post, comment_id: (comment.parent_id ? comment.parent.id : comment.id)],
+          class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity", data: { turbo_frame: "new_reply_#{(comment.parent_id ? comment.parent.id : comment.id)}" } %>
         <% if (current_user == comment.user) || (current_user == @post.user) %>
           <%= link_to "削除", [:comment, id: comment.id], class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity", data: { turbo_method: :delete, turbo_confirm: 'このコメントを削除しますか？' } %>
         <% end %>
