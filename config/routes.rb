@@ -46,6 +46,7 @@ Rails.application.routes.draw do
     member do
       resources :likes, only: %i(index create destroy)
       resources :comments, only: %i(create destroy)
+      get 'show_replies', to: 'comments#show_replies'
     end
   end
 end

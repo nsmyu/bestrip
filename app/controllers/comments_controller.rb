@@ -10,6 +10,12 @@ class CommentsController < ApplicationController
     redirect_to @post if !@comment.save
   end
 
+  def show_replies
+    @post = Post.find(params[:id])
+    @comment = Comment.find(params[:comment_id])
+    @replies = Comment.where(parent_id: @comment.id).includes(:user).order(:created_at)
+  end
+
   def destroy
     @comment = Comment.find(params[:id])
     if (current_user != @comment.user) && (current_user != @comment.post.user)
@@ -22,6 +28,6 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:content)
+    params.require(:comment).permit(:content, :parent_id)
   end
 end

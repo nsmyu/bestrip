@@ -31,7 +31,8 @@ class PostsController < ApplicationController
 
   def show
     @new_comment = @post.comments.new(user: current_user)
-    sort_comments(@post.comments.includes(:user))
+    sort_comments(@post.comments.where(parent_id: nil).includes(:user))
+
     if @post.itinerary_public?
       unsorted_schedules = @post.itinerary.schedules
       sort_schedules_by_date_time(unsorted_schedules)
