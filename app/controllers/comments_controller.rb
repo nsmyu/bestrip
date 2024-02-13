@@ -16,6 +16,10 @@ class CommentsController < ApplicationController
     @replies = Comment.where(parent_id: @comment.id).includes(:user).order(:created_at)
   end
 
+  def hide_replies
+    @comment = Comment.find(params[:comment_id])
+  end
+
   def destroy
     @comment = Comment.find(params[:id])
     if (current_user != @comment.user) && (current_user != @comment.post.user)

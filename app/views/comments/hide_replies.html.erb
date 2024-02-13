@@ -1,0 +1,7 @@
+<%= turbo_frame_tag "replies_#{@comment.id}" do %>
+  <%= link_to [:show_replies_post, comment_id: @comment.id], class: "d-flex align-items-center mt-3 ms-2", data: { turbo_frame: "replies_#{@comment.id}" } do %>
+    <p class="ms-1 text-xs text-dark">
+      <span style="letter-spacing:-0.18em;margin-right:1em;">ーー</span>返信<%= @comment.replies_count %>件を表示する
+    </p>
+  <% end %>
+<% end %>
