@@ -3,6 +3,11 @@ class CommentsController < ApplicationController
     authenticate_user!
   }
 
+  def new_reply
+    @comment = Comment.find(params[:comment_id])
+    @new_reply = @comment.replies.new(user: current_user)
+  end
+
   def create
     @post = Post.find(params[:id])
     @new_comment = @post.comments.new(user: current_user)

@@ -1,4 +1,8 @@
-<%= turbo_stream.prepend "comments", @comment %>
+<% if @comment.parent_id %>
+  <%= turbo_stream.update "new_reply_#{@comment.parent.id}", @comment %>
+<% else %>
+  <%= turbo_stream.prepend "comments", @comment %>
+<% end %>
 <%= turbo_stream.update "new_comment" do %>
   <%= render 'form' %>
 <% end %>
