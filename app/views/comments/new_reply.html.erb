@@ -1,21 +1,19 @@
-
-<%= turbo_frame_tag "new_reply_#{@new_reply.parent.id}" do %>
-  <div id="reply">
-    <div class="d-flex align-items-center mt-3">
-      <%= link_to [:user, id: @new_reply.user.id], data: { turbo_frame: "_top" }, class: "hover-opacity" do %>
-        <%= image_tag @new_reply.user.avatar.url, class: "avatar avatar-thumbnail" %>
+<%= turbo_frame_tag "comment_form" do %>
+  <div class="d-flex mt-3">
+    <%= link_to [:user, id: current_user.id], data: { turbo_frame: "_top" }, class: "hover-opacity" do %>
+      <%= image_tag current_user.avatar.url, class: "avatar avatar-thumbnail" %>
+    <% end %>
+    <div class="flex-fill ms-2">
+      <%= form_with model: @new_reply do |f| %>
+        <div class="input-group input-group-outline">
+          <%= f.hidden_field :parent_id, value: @new_reply.parent.id %>
+          <%= f.text_area :content, id: "text_input", class: "form-control", rows: "2", placeholder: "#{@comment.user.name}さんに返信…", autofocus: true %>
+        </div>
+        <div class="mt-2 d-flex justify-content-end">
+          <%= link_to "キャンセル", [:post, id: @comment.post], data: { turbo_frame: "comment_form" }, class: "btn btn-sm bg-gradient-light" %>
+          <%= button_tag "投稿する", type: "submit", id: "submit_btn", class: "btn btn-sm bg-gradient-primary ms-2" %>
+        </div>
       <% end %>
-      <div class="flex-fill">
-        <%= form_with model: @new_reply do |f| %>
-          <div class="input-group input-group-outline align-items-center ms-2">
-            <%= f.hidden_field :parent_id, value: @new_reply.parent.id %>
-            <%= f.text_area :content, id: "text_input", class: "form-control border-0 bg-gray-200", rows: "1", placeholder: "#{@new_reply.parent.user.name}さんに返信…", autofocus: true %>
-            <%= button_tag type: "submit", id: "submit_btn", class: "d-flex border-0 bg-transparent hover-opacity text-secondary text-sm mb-0 ms-2 px-0" do %>
-              <i class="material-icons me-1">send</i>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
     </div>
   </div>
 <% end %>

@@ -5,7 +5,11 @@ class CommentsController < ApplicationController
 
   def new_reply
     @comment = Comment.find(params[:comment_id])
-    @new_reply = @comment.replies.new(user: current_user)
+    if @comment.parent
+      @new_reply = @comment.parent.replies.new(user: current_user)
+    else
+      @new_reply = @comment.replies.new(user: current_user)
+    end
   end
 
   def create

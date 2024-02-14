@@ -1,8 +1,15 @@
 <% if @comment.parent_id %>
-  <%= turbo_stream.update "new_reply_#{@comment.parent.id}", @comment %>
+  <% if @comment.parent.replies_count == 0 %>
+    <%= turbo_stream.prepend "replies_#{@comment.parent_id}" do %>
+      <%= link_to [:hide_replies_post, comment_id: @comment.parent_id], class: "d-flex align-items-center mt-3 ms-2 hover-opacity", data: { turbo_frame: "replies_#{@comment.parent_id}" } do %>
+        <p class="ms-1 text-xs text-dark"><span style="letter-spacing:-0.18em;margin-right:1em;">ーー</span>返信を非表示にする</p>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= turbo_stream.append "replies_#{@comment.parent.id}", @comment %>
 <% else %>
   <%= turbo_stream.prepend "comments", @comment %>
 <% end %>
-<%= turbo_stream.update "new_comment" do %>
-  <%= render 'form' %>
+<%= turbo_stream.update "comment_form" do %>
+  <%= render 'new' %>
 <% end %>

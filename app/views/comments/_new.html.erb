@@ -1,10 +1,17 @@
-<%= turbo_frame_tag 'new_comment' do %>
-  <%= form_with model: @new_comment do |f| %>
-    <div class="input-group input-group-outline align-items-center">
-      <%= f.text_area :content, id: "text_input", class: "form-control border-0 bg-gray-200", rows: "1", placeholder: "コメントを入力…" %>
-      <%= button_tag type: "submit", id: "submit_btn", class: "d-flex border-0 bg-transparent hover-opacity text-secondary text-sm mb-0 ms-2 px-0" do %>
-        <i class="material-icons me-1">send</i>
+<%= turbo_frame_tag "comment_form" do %>
+  <div class="d-flex mt-3">
+    <%= link_to [:user, id: current_user.id], data: { turbo_frame: "_top" }, class: "hover-opacity" do %>
+      <%= image_tag current_user.avatar.url, class: "avatar avatar-thumbnail" %>
+    <% end %>
+    <div class="flex-fill ms-2">
+      <%= form_with model: @new_comment do |f| %>
+        <div class="input-group input-group-outline">
+          <%= f.text_area :content, id: "text_input", class: "form-control", rows: "2", placeholder: "コメントを入力…" %>
+        </div>
+        <div class="mt-2 d-flex justify-content-end">
+          <%= button_tag "投稿する", type: "submit", id: "submit_btn", class: "btn btn-sm bg-gradient-primary ms-2" %>
+        </div>
       <% end %>
     </div>
-  <% end %>
+  </div>
 <% end %>
