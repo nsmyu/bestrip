@@ -1,5 +1,5 @@
-<%= turbo_frame_tag comment, class: "" do %>
-  <div class="d-flex mt-3">
+<%= turbo_frame_tag comment do %>
+  <div class="d-flex my-3">
     <%= link_to [:user, id: comment.user.id], data: { turbo_frame: "_top" }, class: "hover-opacity" do %>
       <%= image_tag comment.user.avatar.url, class: "avatar avatar-thumbnail mt-1" %>
     <% end %>

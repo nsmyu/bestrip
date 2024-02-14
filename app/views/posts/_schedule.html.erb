@@ -1,42 +1,47 @@
-<details>
-  <summary class="h6">スケジュールを見てみる</summary>
-  <% @day_schedules.each do |day, schedules| %>
-    <div class="mb-2 pt-3 px-3 bg-white text-dark">
-      <h6><%= day %></h6>
-      <% schedules.each do |schedule| %>
-        <div class="border-top">
-          <div class="row px-3 d-flex height-60 align-items-center">
-            <div class="col-md-2 col-1 p-0 fw-bold lh-1">
-              <% if schedule.start_at || schedule.end_at %>
-                <p class="d-none d-sm-block fs-px-15 fw-bold lh-1"><%= (l schedule.start_at) if schedule.start_at %></p>
-                <p class="d-sm-none text-sm fw-bold lh-1"><%= (l schedule.start_at) if schedule.start_at %></p>
-                <span class="text-xs"><%= "-#{(l schedule.end_at)}" if schedule.end_at%></span>
-              <% else %>
-                <p class="fs-px-15 fw-bold">--:--</p>
-              <% end %>
-            </div>
-            <div class="col-md-10 col-11">
-              <div class="row">
-                <div class="col-sm-1 col-2 px-sm-0 px-3 d-flex align-items-center">
-                  <% if schedule.icon.present? %>
-                    <i class="material-icons schedule-icon ms-md-n2 ms-md-n1 ms-1" ><%= schedule.icon %></i>
-                  <% end %>
-                </div>
-                <div class="col-sm-10 col-9 ms-n2 pe-0 d-flex align-items-center">
-                  <p class="text-ellipsis text-sm"><%= schedule.title %></p>
-                </div>
-                <div class="col-1 ps-2 d-flex align-items-center">
-                  <% if schedule.place_id.present? %>
-                    <%= link_to [:new_users_place, place_id: schedule.place_id], data: { turbo_frame: "modal" } do %>
-                      <i class="material-icons rounded-circle link-area p-2">pin_drop</i>
+<details class="mb-3 mx-1 mx-sm-0 border-top bg-white">
+  <summary class="px-3 py-2 bg-primary text-white text-sm fw-bold">
+    <span class="do-open">この旅のスケジュールを見てみる</span>
+		<span class="do-close">スケジュールを閉じる</span>
+  </summary>
+  <div class="border border-primary pt-3 px-3">
+    <% @day_schedules.each do |day, schedules| %>
+      <div class="mb-4 bg-white text-dark">
+        <h6 class="mb-0 pb-2 text-primary"><%= day %></h6>
+        <% schedules.each do |schedule| %>
+          <div class="border-top <%= "border-bottom" if schedule == schedules.last %>">
+            <div class="row mx-0 d-flex height-60 align-items-center">
+              <div class="col-md-2 col-1 p-0 fw-bold lh-1">
+                <% if schedule.start_at || schedule.end_at %>
+                  <p class="d-none d-sm-block fs-px-15 fw-bold lh-1"><%= (l schedule.start_at) if schedule.start_at %></p>
+                  <p class="d-sm-none text-sm fw-bold lh-1"><%= (l schedule.start_at) if schedule.start_at %></p>
+                  <span class="text-xs"><%= "-#{(l schedule.end_at)}" if schedule.end_at%></span>
+                <% else %>
+                  <p class="fs-px-15 fw-bold">--:--</p>
+                <% end %>
+              </div>
+              <div class="col-md-10 col-11">
+                <div class="row">
+                  <div class="col-sm-1 col-2 px-sm-0 px-3 d-flex align-items-center">
+                    <% if schedule.icon.present? %>
+                      <i class="material-icons schedule-icon ms-md-n2 ms-md-n1 ms-1" ><%= schedule.icon %></i>
                     <% end %>
-                  <% end %>
+                  </div>
+                  <div class="col-sm-10 col-9 ms-n2 pe-0 d-flex align-items-center">
+                    <p class="text-ellipsis text-sm"><%= schedule.title %></p>
+                  </div>
+                  <div class="col-1 ps-2 d-flex align-items-center">
+                    <% if schedule.place_id.present? %>
+                      <%= link_to [:new_users_place, place_id: schedule.place_id], data: { turbo_frame: "modal" } do %>
+                        <i class="material-icons rounded-circle link-area p-2">pin_drop</i>
+                      <% end %>
+                    <% end %>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </details>

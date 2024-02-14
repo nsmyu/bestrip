@@ -82,7 +82,7 @@ class PostsController < ApplicationController
   end
 
   def sort_comments(unsorted_comments)
-    if !current_user || (@post.comments.where(user_id: current_user.id).length == 0)
+    if !current_user || @post.comments.where(user_id: current_user.id).length.zero?
       @comments = unsorted_comments.order(created_at: :desc).page(params[:page]).per(5)
     else
       own_comments = unsorted_comments.where(user_id: current_user.id).order(created_at: :desc)

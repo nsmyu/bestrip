@@ -1,6 +1,10 @@
-<div id="comments">
-  <%= turbo_frame_tag "posts-page-#{@comments.current_page}" do %>
-    <%= render @comments %>
-    <%= turbo_frame_tag "posts-page-#{@comments.next_page}", src: path_to_next_page(@comments), loading: :lazy %>
+<div id="comments" class="max-height-vh-70 overflow-auto mb-3 px-3 py-2 bg-white">
+  <% if @comments.count.zero? %>
+    <p class="text-sm py-2 text-center">コメントはまだありません</p>
+  <% else %>
+    <%= turbo_frame_tag "posts-page-#{@comments.current_page}" do %>
+      <%= render @comments %>
+      <%= turbo_frame_tag "posts-page-#{@comments.next_page}", src: path_to_next_page(@comments), loading: :lazy %>
+    <% end %>
   <% end %>
 </div>

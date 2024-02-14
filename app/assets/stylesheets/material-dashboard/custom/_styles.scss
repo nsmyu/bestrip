@@ -76,11 +76,14 @@ label {
 }
 .input-group-outline.is-focused {
   .form-control {
-    border-color: $primary;
+    border-color: $secondary;
   }
 }
 .form-control.active {
-  border-color: $primary !important;
+  border-color: $secondary !important;
+}
+input::placeholder, textarea::placeholder {
+  color: $secondary !important;
 }
 .required {
   margin-left: 3px;
@@ -325,4 +328,11 @@ label:has(.schedule-icon-btn:checked) {
   background: linear-gradient(to right, #fff, $dark, #fff);
   height: 1.3px;
   width: 80%;
+}
+
+details[open] .do-open {
+	display: none ;
+}
+details:not([open]) .do-close {
+	display: none ;
 }
