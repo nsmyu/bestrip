@@ -28,7 +28,7 @@ RSpec.describe "Comments", type: :request do
         comment_params = { content: comment.content, user_id: comment.user_id }
         post comments_path(post_2.id), params: { comment: comment_params }, headers: turbo_stream
         expect(response).to redirect_to post_path(post_2.id)
-        expect(post_2.reload.comments.count).to eq 0
+        expect(post_2.reload.comments_count).to eq 0
       end
 
       it "コメント本文が1001文字以上の場合、失敗すること" do
@@ -36,7 +36,7 @@ RSpec.describe "Comments", type: :request do
         comment_params = { content: comment.content, user_id: comment.user_id }
         post comments_path(post_2.id), params: { comment: comment_params }, headers: turbo_stream
         expect(response).to redirect_to post_path(post_2.id)
-        expect(post_2.reload.comments.count).to eq 0
+        expect(post_2.reload.comments_count).to eq 0
       end
     end
   end

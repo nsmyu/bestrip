@@ -3,7 +3,7 @@
     <%= render 'likes/form' %>
   </div>
   <div class="col ps-4 d-flex align-items-center">
-    <i class="material-icons me-1">chat_bubble_outline</i><span class="text-sm fw-bold"><%= @post.comments.count %></span>
+    <i class="material-icons me-1" style="padding-top:2px;">chat_bubble_outline</i><span class="text-sm"><%= @post.comments_count %></span>
   </div>
 </div>
 <%= render 'comments/new' %>

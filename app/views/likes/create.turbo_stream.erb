@@ -1,6 +1,6 @@
-<%= turbo_stream.update "like" do %>
+<%= turbo_stream.update "like_#{@post.id}" do %>
   <%= link_to [:like, id: @post.id], class: "d-flex align-items-center text-favorite lh-1", data: { turbo_method: :delete } do %>
-    <i class="material-icons me-1" style="font-size:22px;">favorite</i><span class="text-sm fw-bold"><%= @post.likes.count %></span>
+    <i class="material-icons me-1" style="font-size:22px;">favorite</i><span class="text-sm"><%= @post.likes.count %></span>
   <% end %>
 <% end %>
 

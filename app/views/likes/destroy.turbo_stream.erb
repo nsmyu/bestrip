@@ -1,7 +1,7 @@
-<%= turbo_stream.update "like" do %>
+<%= turbo_stream.update "like_#{@post.id}" do %>
   <%= form_with url: likes_path do |f| %>
     <%= button_tag type: "submit", class: "d-flex align-items-center p-0 border-0 hover-opacity text-secondary bg-transparent" do %>
-      <i class="material-icons me-1" style="font-size:22px;">favorite_border</i><span class="text-sm fw-bold"><%= @post.likes.count %></span>
+      <i class="material-icons me-1" style="font-size:22px;">favorite_border</i><span class="text-sm"><%= @post.likes.count %></span>
     <% end %>
   <% end %>
 <% end %>

@@ -1,24 +1,44 @@
 <%= turbo_frame_tag post, class:"col-12 col-sm-6 col-md-4 my-2 mx-auto mx-sm-0 px-0 px-sm-2 max-width-400" do %>
   <div class="m-lg-1 bg-white">
     <% if request.fullpath.exclude?('/users/') %>
-      <div class="pt-1 px-2">
+      <div class="p-2 pb-0">
         <div class="d-flex align-items-center">
-          <%= image_tag post.user.avatar.url, class: "rounded-circle avatar-thumbnail p-1 me-1" %>
+          <%= link_to user_path(id: post.user.id), data: { turbo: false } do %>
+            <%= image_tag post.user.avatar.url, class: "rounded-circle avatar-thumbnail me-2 hover-opacity" %>
+          <% end %>
           <%= link_to post.user.name, user_path(id: post.user.id), class: "text-dark text-sm hover-opacity", data: { turbo: false } %>
         </div>
       </div>
     <% end %>
-    <%= link_to post_path(id: post.id), class:"hover-opacity", data: { turbo: false } do %>
-      <%= image_tag post.photos[0].url.to_s, class: "pt-1 px-2 w-100" %>
-      <div class="p-2">
-        <p class="px-1 fs-px-15 fw-bold text-dark text-ellipsis lh-sm"><%= post.title %><br>
+    <div class="p-2">
+      <%= link_to post_path(id: post.id), class:"hover-opacity", data: { turbo: false } do %>
+        <%= image_tag post.photos[0].url.to_s, class: "w-100" %>
+        <p class="px-1 fs-px-15 fw-bold text-dark text-ellipsis lh-sm py-2"><%= post.title %><br>
           <span class="text-xs fw-normal text-secondary lh-base"><%= l post.created_at, format: :date_posted %></span>
         </p>
+      <% end %>
+      <div class="row m-0 border-top lh-1 pt-2">
+        <div class="col-2 ps-0">
+          <div id="like_<%= post.id %>">
+            <%= form_with url: likes_path(post.id) do |f| %>
+              <% if post.liked_by? current_user %>
+                <%= link_to [:like, id: post.id], class: "d-flex align-items-center text-favorite lh-1", data: { turbo_method: :delete } do %>
+                  <i class="material-icons me-1" style="font-size:22px;">favorite</i><span class="text-sm"><%= post.likes_count %></span>
+                <% end %>
+              <% else %>
+                <%= button_tag type: "submit", class: "d-flex align-items-center p-0 border-0 hover-opacity text-secondary bg-transparent" do %>
+                  <i class="material-icons me-1" style="font-size:22px;">favorite_border</i><span class="text-sm"><%= post.likes_count %></span>
+                <% end %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-2">
+          <%= link_to post_path(id: post.id), class: "d-flex align-items-center text-secondary hover-opacity", data: { turbo: false } do %>
+            <i class="material-icons me-1" style="padding-top:2px;">chat_bubble_outline</i><span class="text-sm"><%= post.comments_count %></span>
+          <% end %>
+        </div>
       </div>
-    <% end %>
-    <div class="d-flex align-items-center bg-transparent text-sm px-2 pb-2 lh-1">
-      <i class="material-icons me-1 fs-px-15">thumb_up</i>
-      <span><%= post.likes_count if post.likes_count != 0 %></span>
     </div>
   </div>
 <% end %>
