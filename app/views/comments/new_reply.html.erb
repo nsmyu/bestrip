@@ -8,7 +8,7 @@
         <div class="input-group input-group-outline d-flex align-items-center" data-controller="post-comments">
           <%= f.hidden_field :parent_id, value: @new_reply.parent.id %>
           <%= f.text_area :content, class: "form-control border-secondary", data: { action: "input->post-comments#activateSubmitBtn"}, rows: "1", placeholder: "#{@comment.user.name}さんに返信…", autofocus: true %>
-          <%= link_to [:post, id: @comment.post], class: "d-flex ms-2 hover-opacity text-secondary", data: { turbo_frame: "comment_form", action: "click->post-comments#unmarkComment"}  do %>
+          <%= link_to [:post, id: @comment.post], id:"reply_cancel_btn", class: "d-flex ms-2 hover-opacity text-secondary", data: { turbo_frame: "comment_form", action: "click->post-comments#unmarkComment"}  do %>
             <i class="material-icons me-1">cancel</i>
           <% end %>
           <%= button_tag type: "submit", id: "submit_btn", class: "d-flex border-0 bg-transparent text-secondary text-sm ms-1 px-0", disabled: true do %>

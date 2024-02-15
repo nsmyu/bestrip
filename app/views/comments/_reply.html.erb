@@ -1,12 +1,12 @@
 <%= turbo_frame_tag reply, class: "" do %>
-  <div class="d-flex mt-3">
+  <div class="d-flex align-items-start mt-3">
     <%= link_to [:user, id: reply.user.id], data: { turbo_frame: "_top" }, class: "hover-opacity" do %>
       <%= image_tag reply.user.avatar.url, class: "avatar avatar-thumbnail mt-1" %>
     <% end %>
     <div class="ms-2 flex-fill">
-      <div class="p-2 bg-gray-200 border-radius-lg" id="comment_body_<%= reply.id %>">
+      <div class="p-2 pt-1 bg-gray-200 border-radius-lg" id="comment_body_<%= reply.id %>">
         <%= link_to [:user, id: reply.user.id], data: { turbo_frame: "_top" }, class: "hover-opacity" do %>
-          <p class="px-1 text-sm text-dark fw-bold"><%= reply.user.name %></p>
+          <p class="d-inline-block px-1 text-sm text-dark fw-bold"><%= reply.user.name %></p>
         <% end %>
         <p class="px-1 text-sm text-dark lh-sm w-100"><%= reply.content %></p>
       </div>
@@ -15,8 +15,8 @@
         <%= link_to "返信", [:new_reply_post, comment_id: reply.id], id: "reply_btn_to_#{reply.id}", class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity",
           data: { turbo_frame: "comment_form", action: "click->post-comments#markComment"} %>
         <% if (current_user == reply.user) || (current_user == @post.user) %>
-          <%= link_to "削除", [:comment, id: reply.id], class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity",
-            data: { turbo_method: :delete, turbo_confirm: 'このコメントを削除しますか？' } %>
+          <%= link_to "削除", [:comment, id: reply.id], id: "delete_btn_#{reply.id}", class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity",
+            data: { turbo_method: :delete, turbo_confirm: 'このコメントを削除しますか？', action: "click->post-comments#clearForm" } %>
         <% end %>
       </div>
     </div>

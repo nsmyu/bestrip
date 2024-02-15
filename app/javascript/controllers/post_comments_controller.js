@@ -36,4 +36,22 @@ export default class extends Controller {
       submitBtn.classList.add("text-secondary");
     }
   }
+
+  clearForm(event) {
+    const deleteBtnId = event.currentTarget.id.replace(/delete_btn_/, '');
+    const deleteTarget = document.querySelector(`#comment_body_${deleteBtnId}`);
+    const observeTarget = document.querySelector("#comments");
+    const replyCancelBtn = document.querySelector("#reply_cancel_btn");
+
+    if (deleteTarget.classList.contains("bg-primary-opacity")) {
+      const observer = new MutationObserver(() => {
+        replyCancelBtn.click();
+        observer.disconnect();
+      })
+      observer.observe(observeTarget, {
+        childList: true,
+        subtree: true
+      })
+    }
+  }
 }
