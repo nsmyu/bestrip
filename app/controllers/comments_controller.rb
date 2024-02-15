@@ -1,7 +1,12 @@
 class CommentsController < ApplicationController
-  before_action -> {
-    authenticate_user!
-  }
+  before_action :authenticate_user!
+
+  def create
+    @post = Post.find(params[:id])
+    @new_comment = @post.comments.new(user: current_user)
+    @comment = @post.comments.new(comment_params.merge(user_id: current_user.id))
+    redirect_to @post if !@comment.save
+  end
 
   def new_reply
     @comment = Comment.find(params[:comment_id])
@@ -10,13 +15,6 @@ class CommentsController < ApplicationController
     else
       @new_reply = @comment.replies.new(user: current_user)
     end
-  end
-
-  def create
-    @post = Post.find(params[:id])
-    @new_comment = @post.comments.new(user: current_user)
-    @comment = @post.comments.new(comment_params.merge(user_id: current_user.id))
-    redirect_to @post if !@comment.save
   end
 
   def show_replies
