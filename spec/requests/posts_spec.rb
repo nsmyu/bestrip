@@ -136,14 +136,23 @@ RSpec.describe "Posts", type: :request do
       expect(response.body).to include post_1.itinerary.schedules[0].title
     end
 
-    it "投稿につけられたコメントを全て取得すること" do
-      comment_1
-      comment_2
-      get post_path(id: post_1.id)
-      expect(response.body).to include comment_1.user.name
-      expect(response.body).to include comment_1.content
-      expect(response.body).to include comment_2.user.name
-      expect(response.body).to include comment_2.content
+    describe "投稿へのコメント" do
+      before do
+        comment_1
+        comment_2
+      end
+
+      it "ユーザーがログインしている場合、投稿へのコメントを全て取得すること" do
+        sign_in user
+        get post_path(id: post_1.id)
+        expect(response.body).to include comment_1.user.name, comment_1.content
+        expect(response.body).to include comment_2.user.name, comment_2.content
+      end
+
+      it "ユーザーがログインしていない場合、ログインを促すメッセージを取得すること" do
+        get post_path(id: post_1.id)
+        expect(response.body).to include "ログインすると、投稿に「いいね♡」やコメントができます。"
+      end
     end
   end
 

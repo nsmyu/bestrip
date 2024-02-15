@@ -11,13 +11,6 @@ RSpec.describe "Likes", type: :request do
     sign_in user
   end
 
-  # describe "GET /index" do
-  #   it "returns http success" do
-  #     get "/likes/index"
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
-
   describe "POST #create" do
     it "成功すること" do
       post likes_path(test_post.id), headers: turbo_stream

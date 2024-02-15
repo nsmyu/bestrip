@@ -85,9 +85,9 @@ class PostsController < ApplicationController
     if !current_user || @post.comments.where(user_id: current_user.id).length.zero?
       @comments = unsorted_comments.order(created_at: :desc).page(params[:page]).per(5)
     else
-      own_comments = unsorted_comments.where(user_id: current_user.id).order(created_at: :desc)
-      others_comments = unsorted_comments.where.not(user_id: current_user.id).order(created_at: :desc)
-      @comments = own_comments.or(others_comments).page(params[:page]).per(5)
+      @comments = unsorted_comments.where(user_id: current_user.id).order(created_at: :desc)
+        .or(unsorted_comments.where.not(user_id: current_user.id).order(created_at: :desc))
+        .page(params[:page]).per(5)
     end
   end
 end

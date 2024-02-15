@@ -2,6 +2,6 @@ FactoryBot.define do
   factory :comment do
     user
     post
-    content { "Looks amazing!" }
+    content { Faker::Lorem.paragraph(sentence_count: 3) }
   end
 end

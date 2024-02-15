@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Comments", type: :request, focus: true do
+RSpec.describe "Comments", type: :request do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:itinerary) { create(:itinerary, owner: other_user) }
@@ -55,14 +55,12 @@ RSpec.describe "Comments", type: :request, focus: true do
       expect(response).to have_http_status 200
     end
 
-    it "コメントへの返信（返信者のニックネーム、返信本文）を全て取得すること" do
+    it "コメントへの返信を全て取得すること" do
       reply_1 = create(:comment, post: post_1, parent: comment)
       reply_2 = create(:comment, post: post_1, parent: comment)
       get show_replies_post_path(post_1.id), params: { comment_id: comment.id }
-      expect(response.body).to include reply_1.user.name
-      expect(response.body).to include reply_1.content
-      expect(response.body).to include reply_2.user.name
-      expect(response.body).to include reply_2.content
+      expect(response.body).to include reply_1.user.name, reply_1.content
+      expect(response.body).to include reply_2.user.name, reply_2.content
     end
 
     it "返信を非表示にするためのリンクを取得すること" do
