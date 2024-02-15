@@ -11,7 +11,7 @@
           <%= link_to [:post, id: @comment.post], id:"reply_cancel_btn", class: "d-flex ms-2 hover-opacity text-secondary", data: { turbo_frame: "comment_form", action: "click->post-comments#unmarkComment"}  do %>
             <i class="material-icons me-1">cancel</i>
           <% end %>
-          <%= button_tag type: "submit", id: "submit_btn", class: "d-flex border-0 bg-transparent text-secondary text-sm ms-1 px-0", disabled: true do %>
+          <%= button_tag type: "submit", id: "submit_btn", class: "d-flex border-0 bg-transparent text-secondary text-sm ms-1 px-0", data: { action: "click->post-comments#unmarkComment"}, disabled: true do %>
             <i class="material-icons">send</i>
           <% end %>
         </div>

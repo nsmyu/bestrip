@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "Comments", type: :request do
+RSpec.describe "Comments", type: :request, focus: true do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:itinerary) { create(:itinerary, owner: other_user) }
   let(:post_1) { create(:post, :with_photo, itinerary: itinerary, user: user) }
   let(:post_2) { create(:post, :with_photo, itinerary: itinerary, user: other_user) }
+  let(:comment) { create(:comment, post: post_1) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
   before do
@@ -15,8 +16,8 @@ RSpec.describe "Comments", type: :request do
   describe "POST #create" do
     context "有効な値の場合" do
       it "成功すること" do
-        comment = build(:comment, user_id: user.id)
-        comment_params = { content: comment.content, user_id: comment.user_id }
+        comment = build(:comment, user: user)
+        comment_params = { content: comment.content, user: comment.user }
         post comments_path(post_2.id), params: { comment: comment_params }, headers: turbo_stream
         expect(response.body).to include comment.content
       end
@@ -24,7 +25,7 @@ RSpec.describe "Comments", type: :request do
 
     context "無効な値の場合" do
       it "コメント本文が空欄の場合、失敗すること" do
-        comment = build(:comment, content: "", user_id: user.id)
+        comment = build(:comment, content: "", user: user)
         comment_params = { content: comment.content, user_id: comment.user_id }
         post comments_path(post_2.id), params: { comment: comment_params }, headers: turbo_stream
         expect(response).to redirect_to post_path(post_2.id)
@@ -32,12 +33,55 @@ RSpec.describe "Comments", type: :request do
       end
 
       it "コメント本文が1001文字以上の場合、失敗すること" do
-        comment = build(:comment, content: "a" * 1001, user_id: user.id)
-        comment_params = { content: comment.content, user_id: comment.user_id }
+        comment = build(:comment, content: "a" * 1001, user: user)
+        comment_params = { content: comment.content, user: comment.user }
         post comments_path(post_2.id), params: { comment: comment_params }, headers: turbo_stream
         expect(response).to redirect_to post_path(post_2.id)
         expect(post_2.reload.comments_count).to eq 0
       end
+    end
+  end
+
+  describe "GET #new_reply" do
+    it "正常にレスポンスを返すこと" do
+      get new_reply_post_path(post_1.id), params: { comment_id: comment.id }
+      expect(response).to have_http_status 200
+    end
+  end
+
+  describe "GET #show_replies" do
+    it "正常にレスポンスを返すこと" do
+      get show_replies_post_path(post_1.id), params: { comment_id: comment.id }
+      expect(response).to have_http_status 200
+    end
+
+    it "コメントへの返信（返信者のニックネーム、返信本文）を全て取得すること" do
+      reply_1 = create(:comment, post: post_1, parent: comment)
+      reply_2 = create(:comment, post: post_1, parent: comment)
+      get show_replies_post_path(post_1.id), params: { comment_id: comment.id }
+      expect(response.body).to include reply_1.user.name
+      expect(response.body).to include reply_1.content
+      expect(response.body).to include reply_2.user.name
+      expect(response.body).to include reply_2.content
+    end
+
+    it "返信を非表示にするためのリンクを取得すること" do
+      create(:comment, post: post_1, parent: comment)
+      get show_replies_post_path(post_1.id), params: { comment_id: comment.id }
+      expect(response.body).to include "返信を非表示にする"
+    end
+  end
+
+  describe "GET #hide_replies" do
+    it "正常にレスポンスを返すこと" do
+      get hide_replies_post_path(post_1.id), params: { comment_id: comment.id }
+      expect(response).to have_http_status 200
+    end
+
+    it "返信を表示するためのリンクを取得すること" do
+      create(:comment, post: post_1, parent: comment)
+      get hide_replies_post_path(post_1.id), params: { comment_id: comment.id }
+      expect(response.body).to include "返信1件を表示する"
     end
   end
 
