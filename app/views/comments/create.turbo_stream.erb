@@ -8,8 +8,12 @@
   <% end %>
   <%= turbo_stream.append "replies_#{@comment.parent.id}", @comment %>
 <% else %>
+  <% if @post.comments_count.zero? %>
+    <%= turbo_stream.remove "zero_comment_message" %>
+  <% end %>
   <%= turbo_stream.prepend "comments", @comment %>
 <% end %>
+<%= turbo_stream.update "comments_count", (@post.comments_count + 1) %>
 <%= turbo_stream.update "comment_form" do %>
   <%= render 'new' %>
 <% end %>
