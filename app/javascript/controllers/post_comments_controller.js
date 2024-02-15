@@ -3,117 +3,37 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
 
   markComment(event) {
-    this.unmarkComment()
+    this.unmarkComment();
 
     const replyTarget = event.currentTarget;
     const targetCommentId = replyTarget.id.replace(/reply_btn_to_/, '');
     const targetCommentBody = document.querySelector(`#comment_body_${targetCommentId}`);
+
     targetCommentBody.classList.remove("bg-gray-200");
     targetCommentBody.classList.add("bg-primary-opacity");
   }
 
   unmarkComment() {
-    const previousTarget = document.getElementsByClassName("bg-primary-opacity")
+    const previousTarget = document.getElementsByClassName("bg-primary-opacity");
+
     if (previousTarget[0]) {
       previousTarget[0].classList.add("bg-gray-200");
       previousTarget[0].classList.remove("bg-primary-opacity");
     }
   }
 
-  // connect() {
-  //   const registeredPhotosHiddenFields = document.querySelectorAll(`[id^='post_photos_attributes']`);
+  activateSubmitBtn(event) {
+    const input = event.currentTarget;
+    const submitBtn = document.querySelector("#submit_btn");
 
-  //   if (registeredPhotosHiddenFields.length == 0) {
-  //     this.photoFieldTarget.classList.add("active-field");
-  //   } else {
-  //     const lastRegisterdPhotoFieldId = Number(this.photoFieldTargets.slice(-1)[0].id.replace(/photo_field_/g, ''));
-  //     this.createNextField(lastRegisterdPhotoFieldId);
-
-  //     if (registeredPhotosHiddenFields.length == MAX_PHOTOS_COUNT_PER_POST) {
-  //       document.querySelector(".active-field").parentElement.classList.add("disabled");
-  //     }
-  //   }
-  // }
-
-  // setTitle(event) {
-  //   const selectBox = event.currentTarget;
-  //   const selectedIndex = selectBox.selectedIndex;
-
-  //   if (selectedIndex != 0) {
-  //     this.titleFieldTarget.value = selectBox.options[selectedIndex].textContent;
-  //   }
-  // }
-
-  // selectPhoto(event) {
-  //   const currentField = event.currentTarget;
-  //   const currentFieldId = Number(currentField.id.replace(/photo_field_/g, ''));
-  //   const file = currentField.files[0];
-
-  //   this.previewPhoto(file, currentFieldId);
-  //   currentField.classList.remove("active-field");
-  //   this.createNextField(currentFieldId);
-
-  //   if (this.imageBoxTargets.length == (MAX_PHOTOS_COUNT_PER_POST - 1)) {
-  //     document.querySelector(".active-field").parentElement.classList.add("disabled");
-  //   }
-  // }
-
-  // previewPhoto(file, fieldId) {
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(file);
-
-  //   reader.onloadend = () => {
-  //     const img = new Image();
-  //     const imgBox = document.createElement("div");
-  //     const deleteBtn = document.createElement("a");
-  //     const deleteBtnIcon = document.createElement("i");
-
-  //     img.src = reader.result;
-  //     img.setAttribute("class", "square-image");
-  //     imgBox.setAttribute("class", "col-3 p-1 position-relative");
-  //     imgBox.setAttribute("data-post-form-target", "imageBox");
-  //     deleteBtn.setAttribute("class", "position-absolute top-5 end-5 link cursor-pointer");
-  //     deleteBtn.setAttribute("id", `delete_btn_${fieldId}`);
-  //     deleteBtn.setAttribute("data-action", "click->post-form#deletePhoto");
-  //     deleteBtnIcon.setAttribute("class", "material-icons text-white bg-dark rounded-circle");
-  //     deleteBtnIcon.textContent = "close";
-
-  //     imgBox.appendChild(img);
-  //     deleteBtn.appendChild(deleteBtnIcon);
-  //     imgBox.appendChild(deleteBtn);
-  //     this.previewTarget.appendChild(imgBox);
-  //   }
-  // }
-
-  // deletePhoto(event) {
-  //   const deleteTarget = event.currentTarget;
-  //   const deleteTargetId = Number(deleteTarget.id.replace(/delete_btn_/g, ''));
-  //   const deleteTargetHiddenField = document.querySelector(`#post_photos_attributes_${deleteTargetId}_id`);
-
-  //   deleteTarget.parentElement.remove();
-  //   document.querySelector(`#photo_field_${deleteTargetId}`).parentElement.remove();
-
-  //   if (deleteTargetHiddenField) {
-  //     const destroyField = document.createElement("input");
-
-  //     destroyField.value = true;
-  //     destroyField.setAttribute("class", "d-none");
-  //     destroyField.setAttribute("name", `post[photos_attributes][${deleteTargetId}][_destroy]`);
-  //     this.formTarget.appendChild(destroyField);
-  //   }
-
-  //   document.querySelector(".active-field").parentElement.classList.remove("disabled");
-  // }
-
-  // createNextField(id) {
-  //   const nextFieldNode = this.photoFieldTargets[0].parentElement.cloneNode(true);
-
-  //   nextFieldNode.setAttribute("for", `photo_field_${id + 1}`);
-  //   nextFieldNode.classList.remove("disabled");
-  //   nextFieldNode.children[1].value = null;
-  //   nextFieldNode.children[1].setAttribute("class", "d-none active-field");
-  //   nextFieldNode.children[1].setAttribute("id", `photo_field_${id + 1}`);
-  //   nextFieldNode.children[1].setAttribute("name", `post[photos_attributes][${id + 1}][url]`);
-  //   this.formTarget.appendChild(nextFieldNode);
-  // }
+    if ((input.value.trim().length > 0) && (input.value.length < 1001)) {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove("text-secondary");
+      submitBtn.classList.add("text-primary", "hover-opacity");
+    } else {
+      submitBtn.disabled = true;
+      submitBtn.classList.remove("text-primary", "hover-opacity");
+      submitBtn.classList.add("text-secondary");
+    }
+  }
 }

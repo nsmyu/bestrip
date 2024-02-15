@@ -5,9 +5,9 @@
     <% end %>
     <div class="flex-fill ms-2">
       <%= form_with model: @new_comment do |f| %>
-        <div class="input-group input-group-outline d-flex align-items-center">
-          <%= f.text_area :content, id: "text_input", class: "form-control", rows: "1", placeholder: "コメントを入力…" %>
-          <%= button_tag type: "submit", id: "submit_btn", class: "d-flex border-0 bg-transparent hover-opacity text-secondary ms-2 px-0" do %>
+        <div class="input-group input-group-outline d-flex align-items-center" data-controller="post-comments">
+          <%= f.text_area :content, class: "form-control", data: { action: "input->post-comments#activateSubmitBtn"}, rows: "1", placeholder: "コメントを入力…" %>
+          <%= button_tag type: "submit", id: "submit_btn", class: "d-flex border-0 bg-transparent text-secondary ms-2 px-0", disabled: true do %>
             <i class="material-icons">send</i>
           <% end %>
         </div>

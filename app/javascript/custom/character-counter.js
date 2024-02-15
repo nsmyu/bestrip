@@ -5,7 +5,7 @@ function countChars() {
   if (textInput) {
     const maxCharsLength = charCount.textContent.replace(/\d*\//g, '');
 
-    if (textInput.value.length > 0) {
+    if (textInput.value.trim().length > 0) {
       charCount.querySelector('span').textContent = textInput.value.length;
       if (textInput.value.length > maxCharsLength) {
         addCharsLengthError();
