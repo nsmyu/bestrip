@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Posts", type: :system do
+RSpec.describe "Posts", type: :system, focus: true do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
   let(:itinerary_1) { create(:itinerary, :with_schedule, owner: user) }
@@ -228,7 +228,9 @@ RSpec.describe "Posts", type: :system do
     end
 
     describe "投稿に関連付けられたプランのスケジュール表示" do
-      it "スケジュールの各情報を表示すること" do
+      it "スケジュールの時間、アイコン、タイトルを表示すること" do
+        find("span", text: "この旅のスケジュールを見てみる").click
+
         expect(page).to have_content I18n.l itinerary_1.schedules[0].start_at
         expect(page).to have_content itinerary_1.schedules[0].icon
         expect(page).to have_content itinerary_1.schedules[0].title
@@ -243,6 +245,7 @@ RSpec.describe "Posts", type: :system do
                                              itinerary: itinerary_1)
 
         visit post_path(id: post_1.id)
+        find("span", text: "この旅のスケジュールを見てみる").click
 
         expect(page.text).to match /#{"1日目"}[\s\S]*#{"2日目"}[\s\S]*#{"8日目"}/
         within(:xpath, "//div[h6[contains(text(), '1日目')]]") do
@@ -257,6 +260,7 @@ RSpec.describe "Posts", type: :system do
       end
 
       it "スケジュール右側のアイコンをクリックすると、スポット情報のモーダルを表示すること", js: true do
+        find("span", text: "この旅のスケジュールを見てみる").click
         within(:xpath, "//div[div[p[contains(text(), '#{itinerary_1.schedules[0].title}')]]]") do
           find("i", text: "pin_drop").click
         end
@@ -271,7 +275,7 @@ RSpec.describe "Posts", type: :system do
         post_1.update(itinerary_public: false)
         visit post_path(id: post_1.id)
 
-        expect(page).not_to have_content itinerary_1.schedules[0].title
+        expect(page).not_to have_content "この旅のスケジュールを見てみる"
       end
     end
   end
@@ -291,11 +295,14 @@ RSpec.describe "Posts", type: :system do
         fill_in "post[caption]", with: "Edited caption."
         click_on "投稿する"
 
+
         expect(page).to have_content "旅の思い出を更新しました。"
         expect(page).to have_content "Edited title"
         expect(page).to have_content "Edited caption."
-        expect(page).to have_content itinerary_2.schedules[0].title
         expect(current_path).to eq post_path(id: post_1.id)
+
+        find("span", text: "この旅のスケジュールを見てみる").click
+        expect(page).to have_content itinerary_2.schedules[0].title
       end
 
       it "画像の変更に成功すること" do

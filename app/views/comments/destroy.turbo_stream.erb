@@ -3,7 +3,7 @@
 <% end %>
 <% if @comment.post.comments_count == 1 %>
   <%= turbo_stream.update "comments" do %>
-    <p id="zero_comment_message" class="text-sm py-2 text-center">コメントはまだありません</p>
+    <p id="zero_comment_message" class="text-sm pt-3 pb-1 text-center">コメントはまだありません</p>
   <% end %>
 <% end %>
 <%= turbo_stream.update "comments_count", (@comment.post.comments_count - 1) %>
