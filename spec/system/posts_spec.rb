@@ -25,12 +25,17 @@ RSpec.describe "Posts", type: :system do
         .to match /#{post_today.title}[\s\S]*#{post_yesterday.title}[\s\S]*#{post_2_days_ago.title}/
     end
 
-    it "投稿のタイトル、写真、投稿者名、投稿日を表示すること" do
+    it "投稿のタイトル、写真、投稿者名、投稿日、いいね数、コメント数を表示すること" do
+      create_list(:like, 20, post: post_1)
+      create_list(:comment, 24, post: post_1)
+
       within("turbo-frame#post_#{post_1.id}") do
         expect(page).to have_content post_1.user.name
         expect(page).to have_selector "img[src$='cat.jpg']"
         expect(page).to have_content post_1.title
         expect(page).to have_content I18n.l post_1.created_at, format: :date_posted
+        expect(page).to have_content "20"
+        expect(page).to have_content "24"
       end
     end
 
@@ -50,9 +55,35 @@ RSpec.describe "Posts", type: :system do
     end
 
     context "ユーザーがログイン済みの場合" do
-      it "「旅の思い出を投稿」をクリックすると、投稿作成モーダルを表示すること", js: true do
+      before do
         sign_in user
         visit posts_path
+      end
+
+      it "ハートボタンをクリックすると、投稿に「いいね」ができる（ボタンが削除用リンクに切り替わる）こと", js: true do
+        expect {
+          within("turbo-frame#post_#{post_1.id}") do
+            find("i", text: "favorite_border").click
+
+            expect(page).to have_xpath "//a[i[contains(text(), 'favorite')]]"
+          end
+        }.to change(Like, :count).by(1)
+      end
+
+      it "「いいね」済みの投稿のハートボタンをクリックすると、「いいね」が削除できる（ボタンが作成用フォームに切り替わる）こと", js: true do
+        create(:like, user: user, post: post_1)
+        visit posts_path
+
+        expect {
+          within("turbo-frame#post_#{post_1.id}") do
+            find("i", text: "favorite").click
+
+            expect(page).to have_xpath "//form[button[i[contains(text(), 'favorite_border')]]]"
+          end
+        }.to change(Like, :count).by(-1)
+      end
+
+      it "「旅の思い出を投稿」をクリックすると、投稿作成モーダルを表示すること", js: true do
         click_on "旅の思い出を投稿"
 
         within(".modal") do
