@@ -4,7 +4,7 @@ RSpec.describe "Likes", type: :system do
   let(:itinerary) { create(:itinerary, owner: other_user) }
   let!(:test_post) { create(:post, :caption_great_with_hashtag, :with_photo, itinerary: itinerary) }
 
-  describe "投稿一覧ページの「いいね（♡）」", js: true do
+  describe "投稿一覧ページの「いいね（♡）」" do
     it "投稿へのいいね数を表示すること" do
       create_list(:like, 16, post: test_post)
       visit posts_path
@@ -62,7 +62,7 @@ RSpec.describe "Likes", type: :system do
     end
   end
 
-  describe "投稿詳細ページの「いいね（♡）」", js: true do
+  describe "投稿詳細ページの「いいね（♡）」" do
     it "投稿へのいいね数を表示すること" do
       create_list(:like, 16, post: test_post)
       visit post_path(id: test_post.id)
