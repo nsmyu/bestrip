@@ -12,7 +12,7 @@
               </div>
             </div>
             <div class="card-body shadow">
-              <p class="mt-2 mb-3 text-sm text-dark">各項目を入力の上「新規登録」ボタンを押してください。入力は全て必須です。</p>
+              <p class="mt-2 mb-3 text-sm text-dark">各項目を入力の上「アカウント登録」ボタンを押してください。入力は全て必須です。</p>
               <%= form_with model: resource, scope: resource_name, url: registration_path(resource_name) do |f| %>
                 <div class="input-group input-group-outline mb-3 <%= "is-filled" if resource[:name].present? %>" >
                   <%= f.label "ニックネーム（20文字以内で入力）", class: "form-label" %>
@@ -43,7 +43,7 @@
                   </div>
                 </div>
                 <div class="text-center">
-                  <%= f.submit "新規登録", data: { turbo: false }, class: "btn btn-lg bg-gradient-primary w-100 mt-3" %>
+                  <%= f.submit "アカウント登録", data: { turbo: false }, class: "btn btn-lg bg-gradient-primary w-100 mt-3" %>
                 </div>
               <% end %>
               <p class="text-sm text-center">
