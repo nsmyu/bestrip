@@ -291,4 +291,16 @@ RSpec.describe "Comments", type: :system do
       expect(page).to have_xpath "//textarea[@placeholder='コメントを入力…']"
     end
   end
+
+  describe "post投稿者のプロフィールページ", focus: true do
+    it "投稿へのコメント数（返信含む）を表示すること" do
+      create_list(:comment, 3, post: test_post)
+      create_list(:comment, 2, post: test_post, parent: test_post.comments.first)
+      visit user_path(id: test_post.user.id)
+
+      within("turbo-frame#post_#{test_post.id}") do
+        expect(page).to have_content "5"
+      end
+    end
+  end
 end
