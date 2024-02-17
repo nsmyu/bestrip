@@ -2,9 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Likes", type: :request do
   let(:user) { create(:user) }
-  let(:other_user) { create(:user) }
-  let(:itinerary) { create(:itinerary, owner: other_user) }
-  let(:test_post) { create(:post, :with_photo, itinerary: itinerary) }
+  let(:test_post) { create(:post, :with_photo) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
   before do

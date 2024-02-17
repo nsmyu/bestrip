@@ -17,7 +17,8 @@ RSpec.describe "Comments", type: :request do
       it "成功すること" do
         comment = build(:comment, user: user)
         comment_params = { content: comment.content, user: comment.user }
-        post post_comments_path(test_post.id), params: { comment: comment_params }, headers: turbo_stream
+        post post_comments_path(test_post.id), params: { comment: comment_params },
+                                               headers: turbo_stream
         expect(response.body).to include comment.content
       end
     end
@@ -26,7 +27,8 @@ RSpec.describe "Comments", type: :request do
       it "コメント本文が空欄の場合、失敗すること" do
         comment = build(:comment, content: "", user: user)
         comment_params = { content: comment.content, user: comment.user }
-        post post_comments_path(test_post.id), params: { comment: comment_params }, headers: turbo_stream
+        post post_comments_path(test_post.id), params: { comment: comment_params },
+                                               headers: turbo_stream
         expect(response).to redirect_to post_path(test_post.id)
         expect(test_post.reload.comments_count).to eq 0
       end
@@ -34,7 +36,8 @@ RSpec.describe "Comments", type: :request do
       it "コメント本文が1001文字以上の場合、失敗すること" do
         comment = build(:comment, content: "a" * 1001, user: user)
         comment_params = { content: comment.content, user: comment.user }
-        post post_comments_path(test_post.id), params: { comment: comment_params }, headers: turbo_stream
+        post post_comments_path(test_post.id), params: { comment: comment_params },
+                                               headers: turbo_stream
         expect(response).to redirect_to post_path(test_post.id)
         expect(test_post.reload.comments_count).to eq 0
       end

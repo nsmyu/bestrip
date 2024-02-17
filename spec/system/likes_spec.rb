@@ -1,8 +1,6 @@
 RSpec.describe "Likes", type: :system do
   let(:user) { create(:user) }
-  let(:other_user) { create(:user) }
-  let(:itinerary) { create(:itinerary, owner: other_user) }
-  let!(:test_post) { create(:post, :caption_great_with_hashtag, :with_photo, itinerary: itinerary) }
+  let(:test_post) { create(:post, :caption_great_with_hashtag, :with_photo) }
 
   describe "投稿一覧ページの「いいね（♡）」" do
     it "投稿へのいいね数を表示すること" do
@@ -16,6 +14,7 @@ RSpec.describe "Likes", type: :system do
 
     context "ユーザーがログインしていない場合" do
       it "「いいね」ボタンが無効化されていること" do
+        test_post
         visit posts_path
 
         within("turbo-frame#post_#{test_post.id}") do
@@ -24,12 +23,13 @@ RSpec.describe "Likes", type: :system do
       end
     end
 
-    context "ユーザーがログイン済みの場合" do
+    context "ユーザーがログイン済みの場合", js: true do
       before do
         sign_in user
       end
 
-      it "「いいね」ボタンをクリックすると、投稿に「いいね」ができること（いいね数更新、ボタンが削除用リンクに変化）", js: true do
+      it "「いいね」ボタンをクリックすると、投稿に「いいね」ができること（いいね数更新、ボタンが削除用リンクに変化）" do
+        test_post
         visit posts_path
 
         expect {
@@ -44,7 +44,7 @@ RSpec.describe "Likes", type: :system do
         }.to change(Like, :count).by(1)
       end
 
-      it "「いいね」済みの場合「いいね」ボタンをクリックすると「いいね」が削除できること（いいね数更新、ボタンが作成用フォームに変化）", js: true do
+      it "「いいね」済みの場合「いいね」ボタンをクリックすると「いいね」が削除できること（いいね数更新、ボタンが作成用フォームに変化）" do
         create(:like, user: user, post: test_post)
         visit posts_path
 
@@ -82,12 +82,12 @@ RSpec.describe "Likes", type: :system do
       end
     end
 
-    context "ユーザーがログイン済みの場合" do
+    context "ユーザーがログイン済みの場合", js: true do
       before do
         sign_in user
       end
 
-      it "「いいね」ボタンをクリックすると、投稿に「いいね」ができること（いいね数更新、ボタンが削除用リンクに変化）", js: true do
+      it "「いいね」ボタンをクリックすると、投稿に「いいね」ができること（いいね数更新、ボタンが削除用リンクに変化）" do
         visit visit post_path(id: test_post.id)
 
         expect {
@@ -102,7 +102,7 @@ RSpec.describe "Likes", type: :system do
         }.to change(Like, :count).by(1)
       end
 
-      it "「いいね」済みの場合「いいね」ボタンをクリックすると「いいね」が削除できること（いいね数更新、ボタンが作成用フォームに変化）", js: true do
+      it "「いいね」済みの場合「いいね」ボタンをクリックすると「いいね」が削除できること（いいね数更新、ボタンが作成用フォームに変化）" do
         create(:like, user: user, post: test_post)
         visit visit post_path(id: test_post.id)
 

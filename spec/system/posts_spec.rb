@@ -295,7 +295,6 @@ RSpec.describe "Posts", type: :system do
         fill_in "post[caption]", with: "Edited caption."
         click_on "投稿する"
 
-
         expect(page).to have_content "旅の思い出を更新しました。"
         expect(page).to have_content "Edited title"
         expect(page).to have_content "Edited caption."
