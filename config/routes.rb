@@ -44,11 +44,11 @@ Rails.application.routes.draw do
   resources :posts do
     get 'search', to: 'posts#search', on: :collection
     member do
-      resources :likes,    only: %i(create destroy)
-      resources :comments, only: %i(create destroy)
-      get 'new_reply',    to: 'comments#new_reply'
-      get 'show_replies', to: 'comments#show_replies'
-      get 'hide_replies', to: 'comments#hide_replies'
+      resources :likes, only: %i(create destroy)
     end
+    resources :comments, only: %i(create destroy)
+    get 'new_reply',    to: 'comments#new_reply'
+    get 'show_replies', to: 'comments#show_replies'
+    get 'hide_replies', to: 'comments#hide_replies'
   end
 end

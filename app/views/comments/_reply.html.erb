@@ -12,10 +12,10 @@
       </div>
       <div class="mt-1 ps-2 d-flex align-items-center" data-controller="post-comments">
         <p class="ps-1 text-xs text-secondary"><%= time_since_creation(reply.created_at) %></p>
-        <%= link_to "返信", [:new_reply_post, comment_id: reply.id], id: "reply_btn_to_#{reply.id}", class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity",
+        <%= link_to "返信", [:post_new_reply, post_id: reply.post.id, comment_id: reply.id], id: "reply_btn_to_#{reply.id}", class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity",
           data: { turbo_frame: "comment_form", action: "click->post-comments#markComment"} %>
-        <% if (current_user == reply.user) || (current_user == @post.user) %>
-          <%= link_to "削除", [:comment, id: reply.id], id: "delete_btn_#{reply.id}", class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity",
+        <% if (current_user == reply.user) || (current_user == reply.post.user) %>
+          <%= link_to "削除", [:post_comment, post_id: reply.post.id, id: reply.id], id: "delete_btn_#{reply.id}", class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity",
             data: { turbo_method: :delete, turbo_confirm: 'このコメントを削除しますか？', action: "click->post-comments#clearForm" } %>
         <% end %>
       </div>

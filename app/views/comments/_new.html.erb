@@ -4,7 +4,7 @@
       <%= image_tag current_user.avatar.url, class: "avatar avatar-thumbnail" %>
     <% end %>
     <div class="flex-fill ms-2">
-      <%= form_with model: @new_comment do |f| %>
+      <%= form_with model: [@post, @new_comment] do |f| %>
         <div class="input-group input-group-outline d-flex align-items-center" data-controller="post-comments">
           <%= f.text_area :content, class: "form-control", data: { action: "input->post-comments#activateSubmitBtn"}, rows: "1", placeholder: "コメントを入力…" %>
           <%= button_tag type: "submit", id: "submit_btn", class: "d-flex border-0 bg-transparent text-secondary ms-2 px-0", disabled: true do %>

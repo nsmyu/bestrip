@@ -12,16 +12,16 @@
       </div>
       <div class="mt-1 ps-2 d-flex align-items-center" data-controller="post-comments">
         <p class="ps-1 text-xs text-secondary"><%= time_since_creation(comment.created_at) %></p>
-        <%= link_to "返信", [:new_reply_post, comment_id: comment.id], id: "reply_btn_to_#{comment.id}", class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity",
+        <%= link_to "返信", [:post_new_reply, post_id: @post.id, comment_id: comment.id], id: "reply_btn_to_#{comment.id}", class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity",
           data: { turbo_frame: "comment_form", action: "click->post-comments#markComment"} %>
         <% if (current_user == comment.user) || (current_user == @post.user) %>
-          <%= link_to "削除", [:comment, id: comment.id], id: "delete_btn_#{comment.id}", class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity",
+          <%= link_to "削除", [:post_comment, post_id: @post.id, id: comment.id], id: "delete_btn_#{comment.id}", class: "d-flex align-items-center ms-3 text-xs fw-bold text-secondary hover-opacity",
             data: { turbo_method: :delete, turbo_confirm: 'このコメントを削除しますか？', action: "click->post-comments#clearForm" } %>
         <% end %>
       </div>
       <%= turbo_frame_tag "replies_#{comment.id}" do %>
         <% if comment.replies_count > 0 %>
-          <%= link_to [:show_replies_post, comment_id: comment.id], class: "d-flex align-items-center mt-3 ms-2 hover-opacity", data: { turbo_frame: "replies_#{comment.id}" } do %>
+          <%= link_to [:post_show_replies, post_id: @post.id, comment_id: comment.id], class: "d-flex align-items-center mt-3 ms-2 hover-opacity", data: { turbo_frame: "replies_#{comment.id}" } do %>
             <p class="ms-1 text-xs text-dark"><span style="letter-spacing:-0.18em;margin-right:1em;">ーー</span>返信<%= comment.replies_count %>件を表示する</p>
           <% end %>
         <% end %>

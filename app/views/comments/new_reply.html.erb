@@ -4,7 +4,7 @@
       <%= image_tag current_user.avatar.url, class: "avatar avatar-thumbnail" %>
     <% end %>
     <div class="flex-fill ms-2">
-      <%= form_with model: @new_reply do |f| %>
+      <%= form_with model: [@comment.post, @new_reply] do |f| %>
         <div class="input-group input-group-outline d-flex align-items-center" data-controller="post-comments">
           <%= f.hidden_field :parent_id, value: @new_reply.parent.id %>
           <%= f.text_area :content, class: "form-control border-secondary", data: { action: "input->post-comments#activateSubmitBtn"}, rows: "1", placeholder: "#{@comment.user.name}さんに返信…", autofocus: true %>

@@ -2,9 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Comments", type: :system, focus: true do
   let(:user) { create(:user) }
-  let(:other_user) { create(:user) }
-  let(:itinerary) { create(:itinerary, owner: other_user) }
-  let!(:test_post) { create(:post, :caption_great_with_hashtag, :with_photo, itinerary: itinerary) }
+  let(:test_post) { create(:post, :caption_great_with_hashtag, :with_photo) }
   let(:comment_1) { create(:comment, post: test_post) }
   let(:comment_2) { create(:comment, post: test_post) }
   let(:reply_1) { create(:comment, post: test_post, parent: comment_1) }
@@ -147,6 +145,58 @@ RSpec.describe "Comments", type: :system, focus: true do
         fill_in "comment[content]", with: "a" * 1001
 
         expect(find('#submit_btn')).to be_disabled
+      end
+    end
+  end
+
+  describe "コメントの削除" do
+    before do
+      comment_1
+    end
+
+    context "有効な値の場合" do
+      it "ログインユーザーがコメント投稿者の場合、成功すること", js: true do
+        sign_in comment_1.user
+        visit post_path(id: test_post.id)
+
+        expect(find("#comments_count")).to have_content "1"
+
+        expect {
+          within("turbo-frame#comment_#{comment_1.id}") do
+            click_on "削除"
+          end
+          click_on "削除する"
+
+          expect(page).not_to have_content comment_1.content
+          expect(find("#comments_count")).to have_content "0"
+        }.to change(Comment, :count).by(-1)
+      end
+
+      it "ログインユーザーがpost投稿者の場合、成功すること", js: true do
+        sign_in test_post.user
+        visit post_path(id: test_post.id)
+
+        expect(find("#comments_count")).to have_content "1"
+
+        expect {
+          within("turbo-frame#comment_#{comment_1.id}") do
+            click_on "削除"
+          end
+          click_on "削除する"
+
+          expect(page).not_to have_content comment_1.content
+          expect(find("#comments_count")).to have_content "0"
+        }.to change(Comment, :count).by(-1)
+      end
+    end
+
+    context "無効な値の場合" do
+      it "ログインユーザーがコメントの投稿者でもpostの投稿者でもない場合、「削除」ボタンが表示されないこと" do
+        random_user = create(:user)
+        sign_in random_user
+        visit post_path(id: test_post.id)
+
+        expect(page).not_to have_link "削除", href: "/posts/#{test_post.id}/comments/#{comment_1.id}"
       end
     end
   end
