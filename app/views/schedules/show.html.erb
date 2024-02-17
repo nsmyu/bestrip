@@ -26,7 +26,7 @@
         <div class="border mt-2">
           <div class="d-flex" >
             <div>
-              <%= image_tag @place_photo_urls ? @place_photo_urls[0] : "default_place_thumbnail.png", class: "modal-small-place-image", id: "place_photo" %>
+              <%= image_tag @place_photo_urls ? @place_photo_urls[0] : "default_place_thumbnail.png", class: "modal-small-place-image", id: "place_photo", alt: "#{@place_details[:name]}の写真" %>
             </div>
             <div class="p-2 position-relative w-100">
               <p class="text-sm text-dark"><%= @place_details[:name] %></p>

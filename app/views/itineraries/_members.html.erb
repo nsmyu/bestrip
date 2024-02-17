@@ -4,7 +4,7 @@
     <% @itinerary_members.each do |member| %>
       <div class="d-flex justify-content-between mt-3 align-items-center">
         <%= link_to [:user, id: member.id], class:"hover-opacity" do %>
-          <%= image_tag member.avatar.url, id: 'image-preview', class: "rounded-circle avatar-thumbnail me-2" %>
+          <%= image_tag member.avatar.url, class: "rounded-circle avatar-thumbnail me-2", alt: "#{member.name}のプロフィール画像" %>
           <p class="d-inline text-sm text-dark"><%= member.name %></p>
         <% end %>
         <% if current_user == @itinerary.owner && member!= @itinerary.owner %>

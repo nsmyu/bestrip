@@ -42,7 +42,7 @@
           </li>
           <li class="nav-item dropdown dropdown-hover max-width-200 border-radius-md link-area cursor-pointer d-flex align-items-center ms-2">
             <a class="nav-link d-flex pe-3" type="button" data-bs-toggle="dropdown">
-              <%= image_tag current_user.avatar.url, class: "header-avatar" %>
+              <%= image_tag current_user.avatar.url, class: "header-avatar",  alt: "#{current_user.name}のプロフィール画像" %>
               <p class="ms-1 fw-bold text-ellipsis text-sm text-charcoal"><%= current_user.name %></p>
             </a>
             <%= render 'layouts/header_dropdown' %>

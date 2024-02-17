@@ -2,7 +2,7 @@
 <%= turbo_frame_tag "member" do %>
   <%= form_with url: :itinerary_users, data: { action: "turbo:submit-end->modal#close", turbo_frame: "_top" } do |f| %>
     <div class="d-flex flex-column align-items-center mt-5 mb-4">
-      <%= image_tag @user.avatar.url, id: 'image-preview', class: "rounded-circle w-30 w-sm-20 mb-2" %>
+      <%= image_tag @user.avatar.url, class: "rounded-circle w-30 w-sm-20 mb-2", alt: "#{@user.name}のプロフィール画像" %>
       <p class="text-dark fw-bold"><%= @user.name %></p>
       <%= f.hidden_field :user_id, value: @user.id %>
       <div class="mt-3">

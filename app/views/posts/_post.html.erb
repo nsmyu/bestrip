@@ -4,7 +4,7 @@
       <div class="p-2 pb-0">
         <div class="d-flex align-items-center">
           <%= link_to user_path(id: post.user.id), data: { turbo: false } do %>
-            <%= image_tag post.user.avatar.url, class: "rounded-circle avatar-thumbnail me-2 hover-opacity" %>
+            <%= image_tag post.user.avatar.url, class: "rounded-circle avatar-thumbnail me-2 hover-opacity", alt: "#{post.user.name}のプロフィール画像" %>
           <% end %>
           <%= link_to post.user.name, user_path(id: post.user.id), class: "text-dark text-sm hover-opacity", data: { turbo: false } %>
         </div>
@@ -12,7 +12,7 @@
     <% end %>
     <div class="p-2">
       <%= link_to post_path(id: post.id), class:"hover-opacity", data: { turbo: false } do %>
-        <%= image_tag post.photos[0].url.to_s, class: "w-100" %>
+        <%= image_tag post.photos[0].url.to_s, class: "w-100", alt: "思い出投稿「#{post.title}」のサムネイル" %>
         <p class="px-1 fs-px-15 fw-bold text-dark text-ellipsis lh-sm py-2"><%= post.title %><br>
           <span class="text-xs fw-normal text-secondary lh-base"><%= l post.created_at, format: :date_posted %></span>
         </p>

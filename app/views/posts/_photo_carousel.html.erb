@@ -1,7 +1,7 @@
 <div id="post_photo_carousel" class="carousel slide mb-2">
   <div class="carousel-inner">
     <% @post.photos.each_with_index do |photo, i| %>
-      <%= image_tag photo.url.to_s, class: "carousel-item #{ "active" if i.zero? }" %>
+      <%= image_tag photo.url.to_s, class: "carousel-item #{ "active" if i.zero? }", alt: "思い出投稿「#{@post.title}」の写真" %>
     <% end %>
   </div>
   <button type="button" class="carousel-control-prev" data-bs-target="#post_photo_carousel" data-bs-slide="prev">
@@ -15,7 +15,7 @@
   <div class="carousel-inner ps-0 grid-5-wrapper">
     <% @post.photos.each_with_index do |photo, i| %>
       <div type="button" data-bs-target="#post_photo_carousel" data-bs-slide-to="<%= i %>" class="<%= "active" if i.zero? %>">
-        <%= image_tag photo.url.to_s, class: "w-100" %>
+        <%= image_tag photo.url.to_s, class: "w-100", alt: "思い出投稿「#{@post.title}」の写真" %>
       </div>
     <% end %>
   </div>

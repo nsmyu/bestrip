@@ -52,7 +52,7 @@ function initSearchBox() {
               `<div id="content" class="infowindow-content">
                 <div class="row mx-0 p-1" id="bodyContent">
                   <div class="col-5 ps-0">
-                    <img src=${photo_url} class="square-image">
+                    <img src=${photo_url} class="square-image" alt="${places[i].name}の写真">
                   </div>
                   <div class="col-7 px-0">
                     <p id="firstHeading" class="text-sm text-dark fw-bold lh-sm">${places[i].name}</p>
@@ -76,7 +76,7 @@ function initSearchBox() {
             `<div id="content" class="infowindow-content">
               <div class="row mx-0 p-1" id="bodyContent">
                 <div class="col-5 ps-0">
-                  <img src=${photo_url} class="square-image">
+                  <img src=${photo_url} class="square-image" alt="${places[i].name}の写真">
                 </div>
                 <div class="col-7 px-0">
                   <p id="firstHeading" class="text-sm text-dark fw-bold lh-sm">${places[i].name}</p>

@@ -7,7 +7,7 @@
     </div>
     <div class="carousel-inner">
       <% @place_photo_urls.each_with_index do |url, i| %>
-        <%= image_tag url, class: "carousel-item modal-image #{ "active" if i.zero? }" %>
+        <%= image_tag url, class: "carousel-item modal-image #{ "active" if i.zero? }", alt: "#{@place_details[:name]}の写真" %>
       <% end %>
     </div>
     <button type="button" class="carousel-control-prev" data-bs-target="#place_photo_carousel" data-bs-slide="prev">

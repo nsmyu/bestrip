@@ -3,7 +3,7 @@
     <%= link_to [:itinerary, id: @itinerary.id], class:"d-block nav-link sidenav-link text-dark" do %>
       <div class="row">
         <div class="col-3 d-flex ps-1 pe-0 align-items-center">
-          <%= image_tag @itinerary.image.url, class: "square-image rounded-circle" %>
+          <%= image_tag @itinerary.image.url, class: "square-image rounded-circle", alt: "旅のプラン「#{@itinerary.title}」のイメージ画像" %>
         </div>
         <div class="col-9">
           <p class="fs-px-15 fw-bold text-ellipsis"><%= @itinerary.title %></p>
