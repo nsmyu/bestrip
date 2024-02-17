@@ -22,8 +22,6 @@ class Users::InvitationsController < Devise::InvitationsController
       else
         respond_with resource, location: after_invite_path_for(@itinerary, resource)
       end
-    else
-      respond_with(resource)
     end
   end
   private
