@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
 
-  devise :database_authenticatable, :registerable, :rememberable, :validatable
+  devise :invitable, :database_authenticatable, :registerable, :rememberable, :validatable
 
   validates :name,       presence: true, length: { maximum: 20 }
   VALID_BESTRIP_ID_REGEX = /\A[\w]{5,20}\z/

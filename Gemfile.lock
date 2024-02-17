@@ -120,6 +120,9 @@ GEM
       warden (~> 1.2.3)
     devise-i18n (1.12.0)
       devise (>= 4.9.0)
+    devise_invitable (2.0.9)
+      actionmailer (>= 5.0)
+      devise (>= 4.6)
     diff-lcs (1.5.0)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
@@ -408,6 +411,7 @@ DEPENDENCIES
   debug
   devise
   devise-i18n
+  devise_invitable
   dotenv-rails
   factory_bot_rails
   faker
