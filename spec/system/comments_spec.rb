@@ -292,7 +292,7 @@ RSpec.describe "Comments", type: :system do
     end
   end
 
-  describe "post投稿者のプロフィールページ", focus: true do
+  describe "post投稿者のプロフィールページ" do
     it "投稿へのコメント数（返信含む）を表示すること" do
       create_list(:comment, 3, post: test_post)
       create_list(:comment, 2, post: test_post, parent: test_post.comments.first)

@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :invitation do
-    user { nil }
-    itinerary { nil }
+    invitee
+    invited_to_itinerary
   end
 end

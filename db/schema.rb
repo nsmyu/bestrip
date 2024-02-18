@@ -33,6 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_17_225404) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["itinerary_id"], name: "index_invitations_on_itinerary_id"
+    t.index ["user_id", "itinerary_id"], name: "index_invitations_on_user_id_and_itinerary_id", unique: true
     t.index ["user_id"], name: "index_invitations_on_user_id"
   end
 
@@ -138,6 +139,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_17_225404) do
   add_foreign_key "comments", "comments", column: "parent_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "invitations", "itineraries"
+  add_foreign_key "invitations", "users"
   add_foreign_key "itinerary_users", "itineraries"
   add_foreign_key "itinerary_users", "users"
   add_foreign_key "likes", "posts"

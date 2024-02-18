@@ -6,13 +6,13 @@ RSpec.describe Like, type: :model do
       expect(build(:like)).to be_valid
     end
 
-    it "user_idがなければ無効であることと" do
+    it "user_idがなければ無効であること" do
       like = build(:like, user: nil)
       like.valid?
       expect(like.errors).to be_of_kind(:user, :blank)
     end
 
-    it "post_idがなければ無効であることと" do
+    it "post_idがなければ無効であること" do
       like = build(:like, post: nil)
       like.valid?
       expect(like.errors).to be_of_kind(:post, :blank)
