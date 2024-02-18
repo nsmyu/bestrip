@@ -1,12 +1,12 @@
 class ItineraryUsersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_itinerary, only: %i(new create)
   before_action -> {
-    authenticate_user!
     set_itinerary
     authenticate_itinerary_member(@itinerary)
-  }
+  }, only: %i(find_by_bestrip_id search_user destroy)
 
   def new
-    @itinerary = Itinerary.find(13)
   end
 
   def find_by_bestrip_id
@@ -24,7 +24,8 @@ class ItineraryUsersController < ApplicationController
   def create
     user = User.find(params[:user_id])
     if @itinerary.members << user
-      redirect_to @itinerary, notice: "メンバーを追加しました。"
+      user.invitations.find_by(itinerary_id: @itinerary.id).destroy
+      redirect_to :itineraries, notice: "旅のプランに参加しました。"
     end
   end
 

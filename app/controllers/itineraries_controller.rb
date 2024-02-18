@@ -8,6 +8,9 @@ class ItinerariesController < ApplicationController
 
   def index
     @itineraries = current_user.itineraries.includes(:members).order(departure_date: :desc)
+    if params[:invited_to_itinerary]
+      @itinerary = Itinerary.find(params[:invited_to_itinerary])
+    end
   end
 
   def new
