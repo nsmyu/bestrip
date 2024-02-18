@@ -14,6 +14,7 @@ class Users::InvitationsController < Devise::InvitationsController
     yield resource if block_given?
 
     if resource_invited
+      resource.invited_to_itineraries << @itinerary
       if is_flashing_format? && self.resource.invitation_sent_at
         set_flash_message :notice, :send_instructions, email: self.resource.email
       end
