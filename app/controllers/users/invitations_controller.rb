@@ -6,14 +6,17 @@ class Users::InvitationsController < Devise::InvitationsController
   end
 
   def create
-    @itinerary = Itinerary.find(params[:itinerary_id])
+    @itinerary = Itinerary.find(params[:user][:latest_invitation_to])
     self.resource = invite_resource
     resource_invited = resource.errors.empty?
 
     yield resource if block_given?
 
     @invitation = Invitation.new(invitee: resource, invited_to_itinerary: @itinerary)
-    return if !@invitation.save && @invitation.errors[:invitee].include?("#{resource.name}さんはすでにメンバーに含まれています")
+    if !@invitation.save \
+        && @invitation.errors[:invitee].include?("#{resource.name}さんはすでにメンバーに含まれています")
+      return
+    end
 
     if resource_invited
       if is_flashing_format? && resource.invitation_sent_at

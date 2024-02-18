@@ -1,9 +1,19 @@
-<div class="text-center">
-  <%= image_tag "brand_logo.png", style: "height: 24px;" %>
-  <p><%= "#{User.find(@resource.invited_by_id).name}さんがあなたを#{Itinerary.find(@resource.invited_to_itineraries[0].id).title}に招待しています" %></p>
-  <p>「いますぐ参加する」を押して、「」に参加しましょう</p>
-  <p><%= link_to "いますぐ参加する", accept_invitation_url(@resource, invitation_token: @token), class: "btn btn-gradient-primary" %></p>
 
-
-  <p><%= t("devise.mailer.invitation_instructions.ignore") %></p>
+<div style="margin:0 auto;padding:1em;width:500px;text-align:center;">
+  <%= image_tag "brand_logo.png", style: "width:150px;" %>
+</div>
+<div style="margin:0 auto;padding:2em;width:500px;background-color:#f7f6f5;">
+  <p style="margin-top:0px;text-align:center;color:#344767;font-size:19px;font-weight:bold;font-family:sans-serif;">旅のプランに招待されました</p>
+  <div style="padding:1.5em;background-color:#fff;">
+    <%= image_tag @itinerary.image.url, style: "margin-bottom:1rem;width:100%;border-radius:8px;" %>
+    <p style="margin-top:12px;margin-bottom:0px;text-align:center;font-size:19px;font-weight:bold;color:#344767;font-family:sans-serif;"><%= @itinerary.title %></p>
+    <p style="margin:2px 0px 0px;text-align:center;font-size:14px;color:#344767;font-family:sans-serif;"><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
+  </div>
+  <div style="margin:1.7em 0;">
+    <p style="margin:0px 0px 2px;text-align:center;font-size:14px;color:#344767;font-family:sans-serif;"><%= "#{User.find(@resource.invited_by_id).name}さんがあなたを「#{@itinerary.title}」に招待しています" %></p>
+    <p style="margin:0px;text-align:center;font-size:14px;color:#344767;font-family:sans-serif;">下記のボタンから今すぐ参加しましょう</p>
+  </div>
+  <div style="display:flex;justify-content:center;margin-bottom:20px;">
+    <%= link_to "旅のプランに参加する", accept_invitation_url(@resource, invitation_token: @token), style: "padding:10px 24px;margin:0px auto;background:#51c2d5;color:#FFF;text-decoration:none;text-align:center;border-radius:8px;font-size:15px;font-weight:500;font-family:sans-serif;" %>
+  </div>
 </div>

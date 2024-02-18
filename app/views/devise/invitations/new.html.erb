@@ -1,10 +1,11 @@
 <%= render "shared/modal", title: "メールでメンバーを招待する" do %>
   <div class="my-2">
     <p class="my-2 text-sm text-dark">旅のプランに招待したい人のメールアドレスを入力してください</p>
-    <%= form_for(resource, as: resource_name, url: invitation_path(resource_name, itinerary_id: @itinerary.id), html: { method: :post }, data: { action: "turbo:submit-end->modal#close", turbo_frame: "_top" }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post }, data: { action: "turbo:submit-end->modal#close", turbo_frame: "_top" }) do |f| %>
       <div class="d-flex flex-column align-items-center">
         <% resource.class.invite_key_fields.each do |field| -%>
           <div class="input-group input-group-outline row mx-0 mb-4">
+            <%= f.hidden_field :latest_invitation_to, value: @itinerary.id %>
             <%= f.text_field field, class: "form-control", type: "email", placeholder: "メールアドレスを入力" %>
             <div class="error-message pt-1" id="email_error"></div>
             <div class="error-message pt-1" id="invitation_error"></div>
