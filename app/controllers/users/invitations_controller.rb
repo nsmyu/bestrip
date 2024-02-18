@@ -7,9 +7,19 @@ class Users::InvitationsController < Devise::InvitationsController
 
   def create
     @itinerary = Itinerary.find(params[:user][:latest_invitation_to])
+    existing_user = User.where(email: invite_params[:email])[0]
+
+    if existing_user && !@itinerary.members.include?(existing_user)
+      existing_user.update(invite_params)
+      existing_user_invited = existing_user.invite!(current_user)
+      self.resource = existing_user
+      Invitation.create(invitee: resource, invited_to_itinerary: @itinerary)
+      redirect_to itinerary_path(@itinerary.id), notice: "招待メールが#{existing_user.email}に送信されました。"
+      return
+    end
+
     self.resource = invite_resource
     resource_invited = resource.errors.empty?
-
     yield resource if block_given?
 
     @invitation = Invitation.new(invitee: resource, invited_to_itinerary: @itinerary)
