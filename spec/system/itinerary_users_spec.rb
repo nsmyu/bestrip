@@ -8,10 +8,10 @@ RSpec.describe "ItineraryUsers", type: :system do
       before do
         set_signed_in_user(user_type)
         visit itinerary_path(itinerary.id)
-        click_on "メンバーを追加"
+        click_on "BesTrip IDでメンバーを招待"
       end
 
-      context "検索したユーザーをメンバーに追加すること可能な場合" do
+      context "検索したユーザーをメンバーに追加することが可能な場合" do
         it "ユーザーの情報を表示し、メンバー追加に成功すること" do
           expect {
             fill_in "bestrip_id", with: other_user.bestrip_id

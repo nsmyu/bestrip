@@ -1,5 +1,4 @@
 class Users::InvitationsController < Devise::InvitationsController
-
   def new
     @itinerary = Itinerary.find(params[:itinerary_id])
     self.resource = resource_class.new
@@ -15,19 +14,16 @@ class Users::InvitationsController < Devise::InvitationsController
 
     if resource_invited
       resource.invited_to_itineraries << @itinerary
-      if is_flashing_format? && self.resource.invitation_sent_at
-        set_flash_message :notice, :send_instructions, email: self.resource.email
+      if is_flashing_format? && resource.invitation_sent_at
+        set_flash_message :notice, :send_instructions, email: resource.email
       end
-      if self.method(:after_invite_path_for).arity == 1
-        respond_with resource, location: after_invite_path_for(@itinerary)
-      else
-        respond_with resource, location: after_invite_path_for(@itinerary, resource)
-      end
+      respond_with resource, location: after_invite_path_for(@itinerary)
     end
   end
+
   private
 
-  def after_invite_path_for(itinerary, invitee = nil)
+  def after_invite_path_for(itinerary)
     itinerary_path(itinerary.id)
   end
 end

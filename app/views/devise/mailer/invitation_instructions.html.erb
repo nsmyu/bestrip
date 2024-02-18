@@ -1,5 +1,5 @@
 <%= image_tag "brand_logo.png", style: "height: 24px;" %>
-<p><%= "#{User.find(record.invited_by_id).name}さんがあなたを#{Itinerary.find(@resource)}に招待しています" %></p>
+<p><%= "#{User.find(@resource.invited_by_id).name}さんがあなたをに招待しています" %></p>
 
 <p><%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, invitation_token: @token) %></p>
 

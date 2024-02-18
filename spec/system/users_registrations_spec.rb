@@ -15,7 +15,7 @@ RSpec.describe "UsersRegistrations", type: :system do
           fill_in "user[email]", with: user.email
           fill_in "user[password]", match: :first, with: user.password
           fill_in "user[password_confirmation]", with: user.password_confirmation
-          click_button "新規登録"
+          click_button "アカウント登録"
 
           expect(page).to have_content "アカウント登録が完了しました。"
           within "header" do
@@ -33,7 +33,7 @@ RSpec.describe "UsersRegistrations", type: :system do
           fill_in "user[email]", with: "invalid_email_address"
           fill_in "user[password]", match: :first, with: "foo"
           fill_in "user[password_confirmation]", with: "bar"
-          click_button "新規登録"
+          click_button "アカウント登録"
 
           expect(page).to have_content "ニックネームを入力してください"
           expect(page).to have_content "メールアドレスを正しく入力してください"
