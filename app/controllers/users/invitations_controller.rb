@@ -36,9 +36,18 @@ class Users::InvitationsController < Devise::InvitationsController
     end
   end
 
+  def edit
+    @itinerary = Itinerary.find(params[:itinerary_id])
+    super
+  end
+
   private
 
   def after_invite_path_for(itinerary)
     itinerary_path(itinerary.id)
+  end
+
+  def after_accept_path_for(resource)
+    itineraries_path
   end
 end

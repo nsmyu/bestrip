@@ -27,11 +27,11 @@
       <% end %>
     </div>
     <p class="mb-2 lh-base"><span class="fw-bold text-xs">旅行期間</span><br><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
-      <span class="fw-bold text-xs d-inline-block mb-2">旅のプラン作成者</span><br>
-      <%= link_to [:user, id: @itinerary.owner.id], class: "hover-opacity" do %>
-          <%= image_tag @itinerary.owner.avatar.url, class: "rounded-circle avatar-thumbnail me-2", alt: "#{@itinerary.owner.name}のプロフィール画像" %>
-          <p class="d-inline text-dark"><%= @itinerary.owner.name %></p>
-      <% end %>
+    <span class="fw-bold text-xs d-inline-block mb-2">旅のプラン作成者</span><br>
+    <%= link_to [:user, id: @itinerary.owner.id], class: "hover-opacity" do %>
+        <%= image_tag @itinerary.owner.avatar.url, class: "rounded-circle avatar-thumbnail me-2", alt: "#{@itinerary.owner.name}のプロフィール画像" %>
+        <p class="d-inline text-dark"><%= @itinerary.owner.name %></p>
+    <% end %>
   </div>
 </div>
 

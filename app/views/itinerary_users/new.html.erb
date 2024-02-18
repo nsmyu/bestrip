@@ -1,0 +1,25 @@
+<%= render "shared/modal", title: "旅のプラン新規作成" do %>
+<div class="px-2">
+  <div class="sticky-top bg-white">
+    <p class="text-sm text-dark">こちらの旅のプランに招待されています。下記のボタンからプランに参加して、メンバーと一緒に旅の計画を楽しみましょう。</p>
+    <div class="d-flex justify-content-center py-3 border-bottom">
+      <%= link_to "この旅のプランに参加する", [:itinerary_users, id: @itinerary.id], class: "btn bg-gradient-primary mb-0" %>
+    </div>
+  </div>
+  <%= image_tag @itinerary.image.url, class: "mt-3 mb-2 border-radius-lg w-100", alt: "旅のプラン「#{@itinerary.title}」のイメージ画像" %>
+  <h5 class="mb-0 pt-1"><%= @itinerary.title %></h5>
+  <p class="text-sm text-dark"><%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %></p>
+  <div class="my-3">
+    <h6 class="border-bottom pb-1">旅のメンバー</h6>
+    <% @itinerary.members.each do |member| %>
+      <div class="d-flex justify-content-between mt-3 align-items-center">
+        <%= link_to [:user, id: member.id], data: { turbo_frame: "_top" }, class:"hover-opacity" do %>
+          <%= image_tag member.avatar.url, class: "rounded-circle avatar-thumbnail me-2", alt: "#{member.name}のプロフィール画像" %>
+          <p class="d-inline text-sm text-dark"><%= member.name %></p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<% end %>
+

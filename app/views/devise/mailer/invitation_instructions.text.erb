@@ -6,4 +6,4 @@
 <%= "#{User.find(@resource.invited_by_id).name}さんがあなたを「#{@itinerary.title}」に招待しています。" %>
 下記のリンクから今すぐ参加しましょう。
 
-<%= accept_invitation_url(@resource, invitation_token: @token) %>
+<%= accept_invitation_url(@resource, invitation_token: @token, itinerary_id: @itinerary.id) %>

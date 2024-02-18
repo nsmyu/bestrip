@@ -6,7 +6,7 @@ class ItineraryUsersController < ApplicationController
   }
 
   def new
-    #参加確認画面
+    @itinerary = Itinerary.find(13)
   end
 
   def find_by_bestrip_id
