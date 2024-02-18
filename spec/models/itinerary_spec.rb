@@ -67,5 +67,10 @@ RSpec.describe Itinerary, type: :model do
       create(:itinerary_place, placeable: itinerary)
       expect { itinerary.destroy }.to change { Place.count }.by(-1)
     end
+
+    it "itineraryを削除すると関連するinvitationも削除されること" do
+      create(:invitation, invited_to_itinerary: itinerary)
+      expect { itinerary.destroy }.to change { Invitation.count }.by(-1)
+    end
   end
 end

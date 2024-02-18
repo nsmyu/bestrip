@@ -40,4 +40,13 @@ RSpec.describe Comment, type: :model do
       expect(comment.errors).to be_of_kind(:post, :blank)
     end
   end
+
+  describe "子モデルのレコード削除" do
+    it "commentを削除すると関連するreplyも削除されること" do
+      post = create(:post, :with_photo)
+      comment = create(:comment, post: post)
+      create(:comment, parent: comment, post: post)
+      expect { comment.destroy }.to change { Comment.count }.by(-2)
+    end
+  end
 end

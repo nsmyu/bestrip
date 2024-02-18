@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Invitation, type: :model, focus: true do
+RSpec.describe Invitation, type: :model do
   describe "バリデーション" do
     it "user_id、itinerary_idがあれば有効であること" do
       expect(build(:invitation)).to be_valid

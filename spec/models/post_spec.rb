@@ -65,9 +65,21 @@ RSpec.describe Post, type: :model do
   end
 
   describe "子モデルのレコード削除" do
+    let!(:post) { create(:post, :with_photo) }
+
     it "postを削除すると関連するphotoも削除されること" do
-      post = create(:post, :with_photo)
       expect { post.destroy }.to change { Photo.count }.by(-1)
+    end
+
+    it "postを削除すると関連するlikeも削除されること" do
+      create(:like, post: post)
+      expect { post.destroy }.to change { Like.count }.by(-1)
+    end
+
+    it "postを削除すると関連するcomment(reply含む）も削除されること" do
+      comment = create(:comment, post: post)
+      create(:comment, parent: comment, post: post)
+      expect { post.destroy }.to change { Comment.count }.by(-2)
     end
   end
 end
