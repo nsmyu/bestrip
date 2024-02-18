@@ -7,7 +7,7 @@ class Invitation < ApplicationRecord
 
   def existing_member_cannot_be_invited_to_itinerary
     return if !(invited_to_itinerary && invitee)
-    if invited_to_itinerary.members.include? invitee
+    if invited_to_itinerary.members.includes([:user]).include? invitee
       errors.add(:invitee, "#{invitee.name}さんはすでにメンバーに含まれています")
     end
   end
