@@ -10,10 +10,10 @@ RSpec.describe "ItineraryUsers", type: :request do
     sign_in user
   end
 
-  describe "GET #new" do
+  describe "GET #find_by_bestrip_id" do
     context "ログインユーザーがプランのメンバーである場合" do
       it "正常にレスポンスを返すこと" do
-        get new_itinerary_user_path(itinerary.id)
+        get find_by_bestrip_id_itinerary_path(itinerary.id)
         expect(response).to have_http_status 200
       end
     end
@@ -22,7 +22,7 @@ RSpec.describe "ItineraryUsers", type: :request do
       it "indexにリダイレクトされること" do
         sign_out user
         sign_in other_user_1
-        get new_itinerary_user_path(itinerary.id)
+        get find_by_bestrip_id_itinerary_path(itinerary.id)
         expect(response).to redirect_to itineraries_path
       end
     end

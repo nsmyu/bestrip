@@ -6,6 +6,10 @@ class ItineraryUsersController < ApplicationController
   }
 
   def new
+    #参加確認画面
+  end
+
+  def find_by_bestrip_id
   end
 
   def search_user
@@ -13,7 +17,7 @@ class ItineraryUsersController < ApplicationController
     @user = User.find_by(bestrip_id: bestrip_id)
     if @user.nil?
       flash.now[:notice] = 'ユーザーが見つかりませんでした'
-      render :new
+      render :find_by_bestrip_id
     end
   end
 
