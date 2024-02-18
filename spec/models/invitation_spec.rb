@@ -24,7 +24,7 @@ RSpec.describe Invitation, type: :model do
       invited_to_itinerary.members << invitee
       invitation = build(:invitation, invitee: invitee, invited_to_itinerary: invited_to_itinerary)
       invitation.valid?
-      expect(invitation.errors).to be_of_kind(:invitee, "#{invitee.name}はすでにメンバーに含まれています")
+      expect(invitation.errors).to be_of_kind(:invitee, "#{invitee.name}さんはすでにメンバーに含まれています")
     end
 
     it "inviteeとinvited_to_itineraryの組み合わせが一意でない場合、無効であること" do

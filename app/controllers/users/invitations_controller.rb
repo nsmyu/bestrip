@@ -12,8 +12,10 @@ class Users::InvitationsController < Devise::InvitationsController
 
     yield resource if block_given?
 
+    @invitation = Invitation.new(invitee: resource, invited_to_itinerary: @itinerary)
+    return if !@invitation.save && @invitation.errors[:invitee].include?("#{resource.name}さんはすでにメンバーに含まれています")
+
     if resource_invited
-      resource.invited_to_itineraries << @itinerary
       if is_flashing_format? && resource.invitation_sent_at
         set_flash_message :notice, :send_instructions, email: resource.email
       end

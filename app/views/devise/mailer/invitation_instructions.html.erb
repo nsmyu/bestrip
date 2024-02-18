@@ -1,7 +1,9 @@
-<%= image_tag "brand_logo.png", style: "height: 24px;" %>
-<p><%= "#{User.find(@resource.invited_by_id).name}さんがあなたをに招待しています" %></p>
+<div class="text-center">
+  <%= image_tag "brand_logo.png", style: "height: 24px;" %>
+  <p><%= "#{User.find(@resource.invited_by_id).name}さんがあなたを#{Itinerary.find(@resource.invited_to_itineraries[0].id).title}に招待しています" %></p>
+  <p>「いますぐ参加する」を押して、「」に参加しましょう</p>
+  <p><%= link_to "いますぐ参加する", accept_invitation_url(@resource, invitation_token: @token), class: "btn btn-gradient-primary" %></p>
 
-<p><%= link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, invitation_token: @token) %></p>
 
-
-<p><%= t("devise.mailer.invitation_instructions.ignore") %></p>
+  <p><%= t("devise.mailer.invitation_instructions.ignore") %></p>
+</div>

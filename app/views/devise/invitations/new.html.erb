@@ -5,9 +5,9 @@
       <div class="d-flex flex-column align-items-center">
         <% resource.class.invite_key_fields.each do |field| -%>
           <div class="input-group input-group-outline row mx-0 mb-4">
-            <%= f.hidden_field :invited_to_itinerary_id, value: @itinerary.id %>
             <%= f.text_field field, class: "form-control", type: "email", placeholder: "メールアドレスを入力" %>
             <div class="error-message pt-1" id="email_error"></div>
+            <div class="error-message pt-1" id="invitation_error"></div>
           </div>
         <% end %>
         <%= f.submit t("devise.invitations.new.submit_button"), class: "btn bg-gradient-primary mb-0" %>

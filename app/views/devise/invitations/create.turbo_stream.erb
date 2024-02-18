@@ -1,4 +1,7 @@
 <%= turbo_stream.update "email_error" do %>
   <%= resource.errors.full_messages_for(:email).first if resource.errors.any? %>
 <% end %>
+<%= turbo_stream.update "email_error" do %>
+  <%= @invitation.errors.full_messages_for(:invitee).first if @invitation.errors.any? %>
+<% end %>
 
