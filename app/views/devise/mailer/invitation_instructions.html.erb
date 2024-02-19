@@ -12,7 +12,13 @@
     <p style="margin:0px 0px 2px;text-align:center;font-size:14px;color:#344767;font-family:sans-serif;"><%= "#{User.find(@resource.invited_by_id).name}さんがあなたを「#{@itinerary.title}」に招待しています" %></p>
     <p style="margin:0px;text-align:center;font-size:14px;color:#344767;font-family:sans-serif;">下記のボタンから今すぐ参加しましょう</p>
   </div>
-  <div style="display:flex;justify-content:center;margin-bottom:20px;">
-    <%= link_to "旅のプランに参加する", accept_invitation_url(@resource, invitation_token: @token, itinerary_id: @itinerary.id), style: "padding:10px 24px;margin:0px auto;background:#51c2d5;color:#FFF;text-decoration:none;text-align:center;border-radius:8px;font-size:15px;font-weight:500;font-family:sans-serif;" %>
-  </div>
+  <% if @resource.name == "newly_invited" %>
+    <div style="display:flex;justify-content:center;margin-bottom:20px;">
+      <%= link_to "アカウント登録して参加する", accept_invitation_url(@resource, invitation_token: @token, itinerary_id: @itinerary.id), style: "padding:10px 24px;margin:0px auto;background:#51c2d5;color:#FFF;text-decoration:none;text-align:center;border-radius:8px;font-size:15px;font-weight:500;font-family:sans-serif;" %>
+    </div>
+  <% else %>
+    <div style="display:flex;justify-content:center;margin-bottom:20px;">
+      <%= link_to "ログインして参加する", new_user_session_url(id: @resource.id, itinerary_id: @itinerary.id), style: "padding:10px 24px;margin:0px auto;background:#51c2d5;color:#FFF;text-decoration:none;text-align:center;border-radius:8px;font-size:15px;font-weight:500;font-family:sans-serif;" %>
+    </div>
+  <% end %>
 </div>

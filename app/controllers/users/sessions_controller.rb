@@ -1,6 +1,18 @@
 class Users::SessionsController < Devise::SessionsController
   before_action :configure_sign_in_params, only: :create
 
+  def new
+    if params[:itinerary_id]
+      set_itinerary
+      sign_in_params = ActiveSupport::HashWithIndifferentAccess.new(email: User.find(params[:id]).email)
+    end
+
+    self.resource = resource_class.new(sign_in_params)
+    clean_up_passwords(resource)
+    yield resource if block_given?
+    respond_with(resource, serialize_options(resource))
+  end
+
   def create
     user = User.find_by(email: params[:user][:email])
     if user.invited_to_sign_up?
@@ -18,7 +30,11 @@ class Users::SessionsController < Devise::SessionsController
   protected
 
   def after_sign_in_path_for(resource)
-    itineraries_path
+    if params[:user] && params[:user][:invited_to_itinerary]
+      itineraries_path(invited_to_itinerary: params[:user][:invited_to_itinerary])
+    else
+      itineraries_path
+    end
   end
 
   def configure_sign_in_params

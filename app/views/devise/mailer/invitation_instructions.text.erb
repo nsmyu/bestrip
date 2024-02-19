@@ -4,6 +4,13 @@
 <%= l @itinerary.departure_date %> 〜 <%= l @itinerary.return_date %>
 
 <%= "#{User.find(@resource.invited_by_id).name}さんがあなたを「#{@itinerary.title}」に招待しています。" %>
-下記のリンクから今すぐ参加しましょう。
+
+<% if @resource.name == "newly_invited" %>
+下記のリンクからアカウント登録をして今すぐ参加しましょう。
 
 <%= accept_invitation_url(@resource, invitation_token: @token, itinerary_id: @itinerary.id) %>
+<% else %>
+下記のリンクからログインして今すぐ参加しましょう。
+
+<%= new_user_session_url(id: @resource.id, itinerary_id: @itinerary.id) %>
+<% end %>
