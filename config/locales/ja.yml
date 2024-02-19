@@ -52,7 +52,3 @@ ja:
                 taken: 既に追加されています
               placeable_id:
                 format: "%{message}"
-          invitation:
-            attributes:
-              invitee:
-                format: "%{message}"

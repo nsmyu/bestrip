@@ -3,11 +3,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :set_user,
     only: %i(edit_email edit_profile validate_bestrip_id update_without_password)
 
-  def create
-    super
-    logger.debug { resource.errors.full_messages_for(:password) }
-  end
-
   def edit_email
   end
 

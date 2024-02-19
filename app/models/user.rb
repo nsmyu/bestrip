@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   include Placeable
 
+  attr_accessor :currently_invited_to
+
   has_many :itinerary_users, dependent: :destroy
   has_many :itineraries, through: :itinerary_users
   has_many :owned_itineraries, class_name: "Itinerary", dependent: :destroy

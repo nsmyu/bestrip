@@ -15,7 +15,7 @@
   </div>
   <%= render partial: 'shared/fixed_button', locals: { path: :new_itinerary, link_text: "新しいプランを作成" } %>
 </main>
-<% if @itinerary && URI(request.referer.to_s).path.include?('/users/invitation/accept') %>
+<% if @itinerary && URI(request.referer.to_s).path.include?('/users/invitation') %>
   <%= render "shared/modal", title: "旅のプランに招待されています" do %>
     <%= render "itinerary_users/new", itinerary: @itinerary %>
   <% end %>

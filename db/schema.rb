@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_18_061720) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_18_015424) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -113,7 +113,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_18_061720) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name", default: " ", null: false
+    t.string "name", null: false
     t.string "bestrip_id"
     t.string "email", null: false
     t.string "encrypted_password", null: false
@@ -130,7 +130,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_18_061720) do
     t.string "invited_by_type"
     t.bigint "invited_by_id"
     t.integer "invitations_count", default: 0
-    t.bigint "latest_invitation_to"
     t.index ["bestrip_id"], name: "index_users_on_bestrip_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

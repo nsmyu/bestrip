@@ -18,15 +18,6 @@ RSpec.describe Invitation, type: :model do
       expect(invitation.errors).to be_of_kind(:invited_to_itinerary, :blank)
     end
 
-    it "inviteeが既にinvited_to_itineraryのメンバーに含まれている場合、無効であること" do
-      invited_to_itinerary = create(:itinerary)
-      invitee = create(:user)
-      invited_to_itinerary.members << invitee
-      invitation = build(:invitation, invitee: invitee, invited_to_itinerary: invited_to_itinerary)
-      invitation.valid?
-      expect(invitation.errors).to be_of_kind(:invitee, "#{invitee.name}さんはすでにメンバーに含まれています")
-    end
-
     it "inviteeとinvited_to_itineraryの組み合わせが一意でない場合、無効であること" do
       invited_to_itinerary = create(:itinerary)
       invitee = create(:user)

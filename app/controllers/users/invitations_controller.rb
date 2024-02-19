@@ -1,17 +1,17 @@
 class Users::InvitationsController < Devise::InvitationsController
-  def new
-    @itinerary = Itinerary.find(params[:itinerary_id])
-    self.resource = resource_class.new
-    render :new
-  end
+  before_action :set_itinerary
 
   def create
-    @itinerary = Itinerary.find(params[:user][:latest_invitation_to])
-    existing_user = User.where(email: invite_params[:email])[0]
+    @itinerary = Itinerary.find(params[:itinerary_id])
+    existing_user = User.find_by(email: invite_params[:email])
 
-    if existing_user && !@itinerary.members.include?(existing_user)
-      existing_user.update(invite_params)
-      existing_user_invited = existing_user.invite!(current_user)
+    if existing_user
+      if @itinerary.members.include?(existing_user)
+        @already_added_error = "#{existing_user.name}はすでにメンバーに含まれています"
+        return
+      end
+      existing_user.send("currently_invited_to=", @itinerary.id)
+      existing_user.invite!(current_user)
       self.resource = existing_user
       Invitation.create(invitee: resource, invited_to_itinerary: @itinerary)
       redirect_to itinerary_path(@itinerary.id), notice: "招待メールが#{existing_user.email}に送信されました。"
@@ -22,23 +22,13 @@ class Users::InvitationsController < Devise::InvitationsController
     resource_invited = resource.errors.empty?
     yield resource if block_given?
 
-    @invitation = Invitation.new(invitee: resource, invited_to_itinerary: @itinerary)
-    if !@invitation.valid? \
-        && @invitation.errors[:invitee].include?("#{resource.name}さんはすでにメンバーに含まれています")
-    end
-
     if resource_invited
-      @invitation.save
+      Invitation.create(invitee: resource, invited_to_itinerary: @itinerary)
       if is_flashing_format? && resource.invitation_sent_at
         set_flash_message :notice, :send_instructions, email: resource.email
       end
-      respond_with resource, location: after_invite_path_for(@itinerary)
+      respond_with resource, location: itinerary_path(@itinerary.id)
     end
-  end
-
-  def edit
-    @itinerary = Itinerary.find(params[:itinerary_id])
-    super
   end
 
   def update
@@ -68,11 +58,12 @@ class Users::InvitationsController < Devise::InvitationsController
 
   private
 
-  def after_invite_path_for(itinerary)
-    itinerary_path(itinerary.id)
-  end
-
   def after_accept_path_for(itinerary)
     itineraries_path(invited_to_itinerary: itinerary.id)
+  end
+
+  def invite_resource
+    set_itinerary
+    super { |user| user.send("currently_invited_to=", @itinerary.id) }
   end
 end
