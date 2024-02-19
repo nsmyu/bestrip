@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "UsersSessions", type: :request do
+RSpec.describe "Users::Sessions", type: :request do
   let(:user) { create(:user) }
 
   describe "GET #new" do
