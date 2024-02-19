@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_18_015424) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_19_231735) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,16 +25,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_18_015424) do
     t.index ["parent_id"], name: "index_comments_on_parent_id"
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
-  end
-
-  create_table "invitations", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "itinerary_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["itinerary_id"], name: "index_invitations_on_itinerary_id"
-    t.index ["user_id", "itinerary_id"], name: "index_invitations_on_user_id_and_itinerary_id", unique: true
-    t.index ["user_id"], name: "index_invitations_on_user_id"
   end
 
   create_table "itineraries", force: :cascade do |t|
@@ -64,6 +54,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_18_015424) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_likes_on_post_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "pending_invitations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "itinerary_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["itinerary_id"], name: "index_pending_invitations_on_itinerary_id"
+    t.index ["user_id", "itinerary_id"], name: "index_pending_invitations_on_user_id_and_itinerary_id", unique: true
+    t.index ["user_id"], name: "index_pending_invitations_on_user_id"
   end
 
   create_table "photos", force: :cascade do |t|
@@ -140,12 +140,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_18_015424) do
   add_foreign_key "comments", "comments", column: "parent_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
-  add_foreign_key "invitations", "itineraries"
-  add_foreign_key "invitations", "users"
   add_foreign_key "itinerary_users", "itineraries"
   add_foreign_key "itinerary_users", "users"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
+  add_foreign_key "pending_invitations", "itineraries"
+  add_foreign_key "pending_invitations", "users"
   add_foreign_key "photos", "posts"
   add_foreign_key "posts", "itineraries"
   add_foreign_key "posts", "users"

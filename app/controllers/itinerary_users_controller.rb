@@ -23,7 +23,7 @@ class ItineraryUsersController < ApplicationController
 
   def invite_user
     user = User.find(params[:user_id])
-    Invitation.create(invitee: user, invited_to_itinerary: @itinerary)
+    PendingInvitation.create(invitee: user, invited_to_itinerary: @itinerary)
     redirect_to @itinerary, notice: "#{user.name}さんを招待しました。#{user.name}さんが参加するのをお待ちください。"
   end
 

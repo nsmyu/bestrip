@@ -4,8 +4,8 @@ class Itinerary < ApplicationRecord
   belongs_to :owner, class_name: 'User', foreign_key: :user_id
   has_many   :itinerary_users, dependent: :destroy
   has_many   :members, through: :itinerary_users, source: :user
-  has_many   :invitations, dependent: :destroy
-  has_many   :invitees, through: :invitations
+  has_many   :pending_invitations, dependent: :destroy
+  has_many   :invitees, through: :pending_invitations
   has_many   :schedules, dependent: :destroy
   has_many   :posts, dependent: :destroy
 

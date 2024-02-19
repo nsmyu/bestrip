@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :invitation do
+  factory :pending_invitation do
     invitee
     invited_to_itinerary
   end
