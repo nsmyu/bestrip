@@ -4,6 +4,7 @@ class DeviseMailer < Devise::Mailer
   def invitation_instructions(record, token, opts = {})
     opts[:subject] = "#{User.find(record.invited_by_id).name}さんがあなたを旅のメンバーに招待しています"
     @itinerary = Itinerary.find(record.currently_invited_to)
+    @registration_completed = record.registration_completed
     super
   end
 end
