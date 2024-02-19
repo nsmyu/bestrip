@@ -24,9 +24,7 @@ class ItineraryUsersController < ApplicationController
   def create
     user = User.find(params[:user_id])
     if @itinerary.members << user
-      if user.invitations.find_by(itinerary_id: @itinerary.id)
-        user.invitations.find_by(itinerary_id: @itinerary.id).destroy
-      end
+      user.invitations.find_by(itinerary_id: @itinerary.id)&.destroy
       redirect_to :itineraries, notice: "旅のプランに参加しました。"
     end
   end

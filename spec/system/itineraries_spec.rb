@@ -37,7 +37,7 @@ RSpec.describe "Itineraries", type: :system do
         itinerary_1.members << other_user
         visit itineraries_path
 
-        within(:xpath, "//div[p[contains(text(), '#{itinerary_1.title}')]]") do
+        within(:xpath, "//div[p[contains(text(), '#{itinerary_1.title}')]]", match: :first) do
           expect(page).to have_content I18n.l itinerary_1.departure_date
           expect(page).to have_content I18n.l itinerary_1.return_date
           expect(page).to have_content user.name

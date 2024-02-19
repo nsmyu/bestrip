@@ -25,9 +25,9 @@ RSpec.describe "ItineraryUsers", type: :system do
               click_on "メンバーに追加"
             end
 
-            expect(page).to have_content "メンバーを追加しました。"
+            expect(page).to have_content "旅のプランに参加しました"
             expect(page).to have_content other_user.name
-            expect(current_path).to eq itinerary_path(itinerary.id)
+            expect(current_path).to eq itineraries_path
           }.to change(itinerary.members, :count).by(1)
         end
       end

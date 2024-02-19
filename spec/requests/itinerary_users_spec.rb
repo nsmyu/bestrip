@@ -66,7 +66,7 @@ RSpec.describe "ItineraryUsers", type: :request do
       it "成功すること" do
         add_member_params = { user_id: other_user_1.id, id: itinerary.id }
         post itinerary_users_path(itinerary.id), params: add_member_params
-        expect(response).to redirect_to itinerary_path(itinerary.id)
+        expect(response).to redirect_to itineraries_path
       end
     end
 

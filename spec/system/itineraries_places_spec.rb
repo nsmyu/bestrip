@@ -142,6 +142,7 @@ RSpec.describe "Itineraries::Places", type: :system do
 
             click_on "プランを確認"
 
+            expect(page).to have_content "行きたい場所リスト"
             expect(page).to have_content itinerary.title
             expect(page).to have_content "シドニー・オペラハウス"
             expect(current_path).to eq itinerary_places_path(itinerary_id: itinerary.id)
