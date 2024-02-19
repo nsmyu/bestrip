@@ -10,7 +10,7 @@
   </div>
   <%= image_tag itinerary.image.url, class: "mt-3 mb-2 border-radius-lg w-100", alt: "旅のプラン「#{itinerary.title}」のイメージ画像" %>
   <h5 class="mb-0 pt-1"><%= itinerary.title %></h5>
-  <p class="text-dark fw-bold"><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
+  <p class="text-dark text-sm"><%= l itinerary.departure_date %> 〜 <%= l itinerary.return_date %></p>
   <div class="my-3">
     <h6 class="border-bottom pb-1">旅のメンバー</h6>
     <% itinerary.members.each do |member| %>
@@ -23,4 +23,3 @@
     <% end %>
   </div>
 </div>
-

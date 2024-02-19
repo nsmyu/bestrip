@@ -4,6 +4,18 @@
   <h5 class="page-heading">旅のプラン一覧</h5>
   <div class="container-fluid py-4 px-0 px-sm-2 min-vh-100">
     <div class="max-width-850 mx-auto">
+      <% if @invitations.count > 0 %>
+        <div class="mb-4">
+          <% @invitations.each do |invitation| %>
+            <div class="invitation-notification border-radius-sm mx-3 mb-2 p-2">
+              <%= link_to [:new_itinerary_user, id: invitation[:id]], class:"d-flex align-items-center hover-opacity", data: { turbo_frame: "modal" } do %>
+                <span class="material-symbols-outlined text-danger">notification_important</span>
+                <p class="text-sm text-dark">「<%= invitation[:title] %>」に招待されています</p>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
       <div class="row mx-0">
         <% if @itineraries.blank? %>
           <p class="p-4 text-center text-sm text-dark">旅のプランは登録されていません</p>
@@ -17,7 +29,7 @@
 </main>
 <% if @itinerary && @itinerary.invitation_pending?(current_user)  %>
   <%= render "shared/modal", title: "旅のプランに招待されています" do %>
-    <%= render "itinerary_users/new", itinerary: @itinerary %>
+    <%= render "itinerary_users/form", itinerary: @itinerary %>
   <% end %>
 <% end %>
 

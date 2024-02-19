@@ -336,3 +336,11 @@ details[open] .do-open {
 details:not([open]) .do-close {
 	display: none ;
 }
+
+.invitation-notification {
+  background-color: #fce3e3;
+  // border: 0.5px solid $favorite;
+  span {
+    font-size: 22px;
+  }
+}
