@@ -10,12 +10,14 @@
       </button>
     <% end %>
     <%= link_to image_tag("brand_logo.png", width: "100", alt: "brand_logo"), root_url, class: "navbar-brand ms-md-2 me-0" %>
-    <div class="dropdown">
-      <a class="navbar-toggler dropdown-toggle d-flex d-lg-none align-items-center text-secondary" type="button" data-bs-toggle="dropdown">
-        <i class="material-symbols-outlined text-secondary fs-3">account_circle</i>
-      </a>
-      <%= render 'layouts/header_dropdown' %>
-    </div>
+    <% if request.fullpath.exclude?('/users/invitation') %>
+      <div class="dropdown">
+        <a class="navbar-toggler dropdown-toggle d-flex d-lg-none align-items-center text-secondary" type="button" data-bs-toggle="dropdown">
+          <i class="material-symbols-outlined text-secondary fs-3">account_circle</i>
+        </a>
+        <%= render 'layouts/header_dropdown' %>
+      </div>
+    <% end %>
     <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5">
       <ul class="navbar-nav ms-auto">
         <% if user_signed_in? %>
@@ -48,12 +50,14 @@
             <%= render 'layouts/header_dropdown' %>
           </li>
         <% else %>
-          <li class="nav-item">
-            <%= link_to "アカウント登録", :new_user_registration, class: "nav-link px-3 border-radius-md link-area text-sm text-charcoal" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "ログイン", :new_user_session, class: "nav-link px-3 border-radius-md link-area text-sm text-charcoal" %>
-          </li>
+          <% if request.fullpath.exclude?('/users/invitation') %>
+            <li class="nav-item">
+              <%= link_to "アカウント登録", :new_user_registration, class: "nav-link px-3 border-radius-md link-area text-sm text-charcoal" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "ログイン", :new_user_session, class: "nav-link px-3 border-radius-md link-area text-sm text-charcoal" %>
+            </li>
+          <% end %>
         <% end %>
       </ul>
     </div>

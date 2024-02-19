@@ -4,7 +4,8 @@ class Users::SessionsController < Devise::SessionsController
   def new
     if params[:itinerary_id]
       set_itinerary
-      sign_in_params = ActiveSupport::HashWithIndifferentAccess.new(email: User.find(params[:id]).email)
+      sign_in_params = ActiveSupport::HashWithIndifferentAccess
+        .new(email: User.find(params[:id]).email)
     end
 
     self.resource = resource_class.new(sign_in_params)
