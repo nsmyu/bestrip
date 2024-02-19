@@ -1,6 +1,6 @@
 <div class="card mb-3 mx-auto max-width-500">
-  <div class="card-body text-dark">
-    <h6 class="border-bottom pb-2">旅のメンバー</h6>
+  <div class="card-body py-3 text-dark">
+    <h6 class="border-bottom pb-1">旅のメンバー</h6>
     <% @itinerary_members.each do |member| %>
       <div class="d-flex justify-content-between mt-3 align-items-center">
         <%= link_to [:user, id: member.id], class:"hover-opacity" do %>

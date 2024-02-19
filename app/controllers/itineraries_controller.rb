@@ -9,8 +9,8 @@ class ItinerariesController < ApplicationController
   def index
     @itineraries = current_user.itineraries.includes(:members).order(departure_date: :desc)
     @invitations = current_user.invitations.order(:created_at).map do |invitation|
-        { id: invitation.itinerary_id, title: Itinerary.find(invitation.itinerary_id).title }
-      end
+      { id: invitation.itinerary_id, title: Itinerary.find(invitation.itinerary_id).title }
+    end
     if params[:invited_to_itinerary]
       @itinerary = Itinerary.find(params[:invited_to_itinerary])
     end

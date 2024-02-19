@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "ItineraryUsers", type: :system do
   let(:other_user) { create(:user, bestrip_id: "other_user_id") }
 
-  describe "ユーザーを検索して旅のプランのメンバーに追加", js: true do
+  describe "ユーザーをBesTrip IDで検索し、旅のメンバーに招待", js: true do
     shared_examples "旅のメンバー共通機能" do |user_type|
       before do
         set_signed_in_user(user_type)
@@ -11,8 +11,8 @@ RSpec.describe "ItineraryUsers", type: :system do
         click_on "BesTrip IDでメンバーを招待"
       end
 
-      context "検索したユーザーをメンバーに追加することが可能な場合" do
-        it "ユーザーの情報を表示し、メンバー追加に成功すること" do
+      context "検索したユーザーをメンバーに招待できる場合" do
+        it "ユーザーの情報を表示し、メンバー招待に成功すること" do
           expect {
             fill_in "bestrip_id", with: other_user.bestrip_id
             within '.modal' do
@@ -20,30 +20,28 @@ RSpec.describe "ItineraryUsers", type: :system do
 
               expect(page).to have_selector "img[src*='default_avatar']"
               expect(page).to have_content other_user.name
-              expect(page).to have_xpath "//input[@value='メンバーに追加']"
 
-              click_on "メンバーに追加"
+              click_on "メンバーに招待"
             end
 
-            expect(page).to have_content "旅のプランに参加しました"
-            expect(page).to have_content other_user.name
-            expect(current_path).to eq itineraries_path
-          }.to change(itinerary.members, :count).by(1)
+            expect(page).to have_content "#{other_user.name}さんを招待しました。"
+            expect(current_path).to eq itinerary_path(itinerary.id)
+          }.to change(Invitation, :count).by(1)
         end
       end
 
-      context "検索したユーザーをメンバーに追加すること不可能な場合" do
-        it "ユーザーが存在しない場合、その旨メッセージを表示し、追加ボタンは表示しないこと" do
+      context "検索したユーザーをメンバーに招待できない場合" do
+        it "ユーザーが存在しない場合、その旨メッセージを表示し、招待ボタンは表示しないこと" do
           fill_in "bestrip_id", with: "no_user_id"
           within '.modal' do
             click_on 'button'
           end
 
           expect(page).to have_content "ユーザーが見つかりませんでした"
-          expect(page).not_to have_xpath "//input[@value='メンバーに追加']"
+          expect(page).not_to have_xpath "//input[@value='メンバーに招待']"
         end
 
-        it "ユーザーが既にメンバーに含まれている場合、その旨メッセージを表示し、追加ボタンは表示しないこと" do
+        it "ユーザーが既にメンバーに含まれている場合、その旨メッセージを表示し、招待ボタンは表示しないこと" do
           itinerary.members << other_user
           fill_in "bestrip_id", with: other_user.bestrip_id
           within '.modal' do
@@ -51,7 +49,7 @@ RSpec.describe "ItineraryUsers", type: :system do
           end
 
           expect(page).to have_content "すでにメンバーに追加されています"
-          expect(page).not_to have_xpath "//input[@value='メンバーに追加']"
+          expect(page).not_to have_xpath "//input[@value='メンバーに招待']"
         end
       end
     end
@@ -62,7 +60,7 @@ RSpec.describe "ItineraryUsers", type: :system do
       it_behaves_like "旅のメンバー共通機能", :owner
     end
 
-    context "ログインユーザーがプランの作成者以外のメンバーの場合" do
+    context "ログインユーザーがプラン作成者以外のメンバーの場合" do
       let(:user) { create(:user) }
       let(:itinerary) { create(:itinerary) }
       it_behaves_like "旅のメンバー共通機能", :member

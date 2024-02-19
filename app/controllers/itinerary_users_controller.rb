@@ -4,7 +4,7 @@ class ItineraryUsersController < ApplicationController
   before_action -> {
     set_itinerary
     authenticate_itinerary_member(@itinerary)
-  }, only: %i(find_by_bestrip_id search_user destroy)
+  }, only: %i(find_by_bestrip_id search_user invite_user destroy)
 
   def new
   end
@@ -19,6 +19,12 @@ class ItineraryUsersController < ApplicationController
       flash.now[:notice] = 'ユーザーが見つかりませんでした'
       render :find_by_bestrip_id
     end
+  end
+
+  def invite_user
+    user = User.find(params[:user_id])
+    Invitation.create(invitee: user, invited_to_itinerary: @itinerary)
+    redirect_to @itinerary, notice: "#{user.name}さんを招待しました。#{user.name}さんが参加するのをお待ちください。"
   end
 
   def create
