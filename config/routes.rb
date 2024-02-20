@@ -34,7 +34,6 @@ Rails.application.routes.draw do
       resources :itinerary_users, only: %i(new create destroy)
       get 'find_by_bestrip_id', to: 'itinerary_users#find_by_bestrip_id'
       get 'search_user', to: 'itinerary_users#search_user'
-      get 'invite_user', to: 'itinerary_users#invite_user'
     end
 
     scope module: :itineraries do

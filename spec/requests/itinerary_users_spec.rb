@@ -46,7 +46,7 @@ RSpec.describe "ItineraryUsers", type: :request do
         itinerary.members << other_user_1
         user_search_params = { bestrip_id: other_user_1.bestrip_id, id: itinerary.id }
         get search_user_itinerary_path(itinerary.id), params: user_search_params
-        expect(response.body).to include "すでにメンバーに追加されています"
+        expect(response.body).to include "すでにメンバーに含まれています"
       end
     end
 
@@ -62,20 +62,27 @@ RSpec.describe "ItineraryUsers", type: :request do
   end
 
   describe "POST #create" do
-    context "ログインユーザーがプランのメンバーである場合" do
-      it "成功すること" do
+    context "BesTrip ID検索からメンバーを追加する場合" do
+      it "ログインユーザーがプランのメンバーである場合、成功すること" do
         add_member_params = { user_id: other_user_1.id, id: itinerary.id }
         post itinerary_users_path(itinerary.id), params: add_member_params
-        expect(response).to redirect_to itineraries_path
+        expect(response).to redirect_to itinerary_path(itinerary.id)
       end
-    end
 
-    context "ログインユーザーがプランのメンバーではない場合" do
-      it "失敗すること" do
+      it "ログインユーザーがプランのメンバーではない場合、失敗すること" do
         sign_out user
         sign_in other_user_1
         add_member_params = { user_id: other_user_2.id, id: itinerary.id }
         post itinerary_users_path(itinerary.id), params: add_member_params
+        expect(response).to redirect_to itinerary_path(itinerary.id)
+      end
+    end
+
+    context "招待された旅のプランに参加する場合" do
+      it "成功すること" do
+        create(:pending_invitation, invitee: other_user_1, invited_to_itinerary: itinerary)
+        join_member_params = { user_id: other_user_1.id, id: itinerary.id }
+        post itinerary_users_path(itinerary.id), params: join_member_params
         expect(response).to redirect_to itineraries_path
       end
     end

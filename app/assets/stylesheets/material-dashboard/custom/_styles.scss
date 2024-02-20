@@ -133,7 +133,7 @@ input::placeholder, textarea::placeholder {
     content: '';
   }
   &:has(input:focus) {
-    border-color: $gray-500;
+    border-color: $secondary;
   }
   input {
     width: 100%;
@@ -151,15 +151,16 @@ input::placeholder, textarea::placeholder {
   align-items: center;
   overflow: hidden;
   border: 1px solid #d2d6da;
-  border-radius: 3px;
+  border-radius: 6px;
+  margin: -1px 0 !important;
 
   &:has(input:focus) {
-    border-color: $gray-500;
+    border-color: $secondary !important;
   }
   input {
     width: 100%;
     height: 36px;
-    padding: 10px 15px;
+    padding: 10px 12px;
     border: none;
     box-sizing: border-box;
     font-size: 14px;

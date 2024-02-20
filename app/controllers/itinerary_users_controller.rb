@@ -21,17 +21,14 @@ class ItineraryUsersController < ApplicationController
     end
   end
 
-  def invite_user
-    user = User.find(params[:user_id])
-    PendingInvitation.create(invitee: user, invited_to_itinerary: @itinerary)
-    redirect_to @itinerary, notice: "#{user.name}さんを招待しました。#{user.name}さんが参加するのをお待ちください。"
-  end
-
   def create
     user = User.find(params[:user_id])
     if @itinerary.members << user
-      user.pending_invitations.find_by(itinerary_id: @itinerary.id)&.destroy
-      redirect_to :itineraries, notice: "旅のプランに参加しました。"
+      if user.pending_invitations.find_by(itinerary_id: @itinerary.id)&.destroy
+        redirect_to :itineraries, notice: "旅のプランに参加しました。"
+        return
+      end
+      redirect_to @itinerary, notice: "#{user.name}さんを旅のメンバーに追加しました。"
     end
   end
 
