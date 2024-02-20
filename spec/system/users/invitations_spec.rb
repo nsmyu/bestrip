@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Users::Invitations", type: :system do
+RSpec.describe "Users::Invitations", type: :system, focus: true do
   let(:user) { create(:user) }
   let(:invitee) { build(:user) }
   let(:itinerary) { create(:itinerary, owner: user) }
@@ -91,7 +91,8 @@ RSpec.describe "Users::Invitations", type: :system do
     context "有効な値の場合" do
       it "アカウント未登録の場合、パスワード設定後にログインし、招待の承認に成功すること" do
         expect do
-          visit accept_user_invitation_path(invitation_token: invitation_token[0], itinerary_id: itinerary.id)
+          visit accept_user_invitation_path(invitation_token: invitation_token[0],
+                                            itinerary_id: itinerary.id)
           fill_in "user[name]", with: invitee.name
           fill_in "user[password]", with: invitee.password
           fill_in "user[password_confirmation]", with: invitee.password_confirmation
@@ -125,7 +126,8 @@ RSpec.describe "Users::Invitations", type: :system do
     context "無効な値の場合" do
       it "ニックネームが空欄の場合、失敗すること" do
         expect do
-          visit accept_user_invitation_path(invitation_token: invitation_token[0], itinerary_id: itinerary.id)
+          visit accept_user_invitation_path(invitation_token: invitation_token[0],
+                                            itinerary_id: itinerary.id)
           fill_in "user[name]", with: ""
           fill_in "user[password]", with: invitee.password
           fill_in "user[password_confirmation]", with: invitee.password_confirmation
@@ -137,7 +139,8 @@ RSpec.describe "Users::Invitations", type: :system do
 
       it "パスワードが空欄の場合、失敗すること" do
         expect do
-          visit accept_user_invitation_path(invitation_token: invitation_token[0], itinerary_id: itinerary.id)
+          visit accept_user_invitation_path(invitation_token: invitation_token[0],
+                                            itinerary_id: itinerary.id)
           fill_in "user[name]", with: invitee.name
           fill_in "user[password]", with: ""
           fill_in "user[password_confirmation]", with: ""
@@ -149,7 +152,8 @@ RSpec.describe "Users::Invitations", type: :system do
 
       it "確認用パスワードが一致しない場合、失敗すること" do
         expect do
-          visit accept_user_invitation_path(invitation_token: invitation_token[0], itinerary_id: itinerary.id)
+          visit accept_user_invitation_path(invitation_token: invitation_token[0],
+                                            itinerary_id: itinerary.id)
           fill_in "user[name]", with: invitee.name
           fill_in "user[password]", with: invitee.password
           fill_in "user[password_confirmation]", with: "wrongpassword"
@@ -158,6 +162,36 @@ RSpec.describe "Users::Invitations", type: :system do
           expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
         end.not_to change(PendingInvitation, :count)
       end
+    end
+  end
+
+  describe "旅のプラン一覧ページ" do
+    it "旅のプランへの招待通知が表示され、リンクから招待の承認に成功すること" do
+      invitee.save
+      create(:pending_invitation, invitee: invitee, invited_to_itinerary: itinerary)
+      expect do
+        sign_in invitee
+        visit itineraries_path
+        click_on "「#{itinerary.title}」に招待されています"
+        click_on "この旅のプランに参加する"
+
+        expect(page).to have_content "旅のプランに参加しました。"
+        expect(page).to have_content itinerary.title
+        expect(page).not_to have_content "「#{itinerary.title}」に招待されています"
+      end.to change(itinerary.members, :count).by(1).and change(PendingInvitation, :count).by(-1)
+    end
+
+    it "旅のプランへの招待通知が複数ある場合、招待された日時の昇順で表示されること" do
+      invitee.save
+      itinerary_1 = create(:itinerary)
+      itinerary_2 = create(:itinerary)
+      create(:pending_invitation, invitee: invitee, invited_to_itinerary: itinerary_1)
+      create(:pending_invitation, invitee: invitee, invited_to_itinerary: itinerary_2)
+      sign_in invitee
+      visit itineraries_path
+
+      expect(page.text)
+        .to match(/「#{itinerary_1.title}」に招待されています[\s\S]*「#{itinerary_2.title}」に招待されています/)
     end
   end
 end

@@ -35,6 +35,13 @@ RSpec.describe "Itineraries", type: :request do
       expect(response.body).to include I18n.l itinerary.return_date
       expect(response.body).to include itinerary.owner.name, other_user.name
     end
+
+    it "未応答の旅のプランへの招待を取得すること" do
+      create(:pending_invitation, invitee: other_user, invited_to_itinerary: itinerary)
+      sign_in other_user
+      get itineraries_path
+      expect(response.body).to include "「#{itinerary.title}」に招待されています"
+    end
   end
 
   describe "GET #new" do
