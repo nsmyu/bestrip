@@ -1,8 +1,5 @@
 class Users::InvitationsController < Devise::InvitationsController
-  before_action -> {
-    set_itinerary
-    authenticate_itinerary_member(@itinerary)
-  }
+  before_action :set_itinerary
 
   def create
     @itinerary = Itinerary.find(params[:itinerary_id])

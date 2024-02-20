@@ -22,7 +22,7 @@ class Itinerary < ApplicationRecord
   end
 
   def invitation_pending?(user)
-    Invitation.find_by(user_id: user.id, itinerary_id: id)
+    PendingInvitation.find_by(user_id: user.id, itinerary_id: id)
   end
 
   private
