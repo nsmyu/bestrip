@@ -1,5 +1,9 @@
 class Users::InvitationsController < Devise::InvitationsController
-  before_action :set_itinerary
+  before_action :set_itinerary, except: %i(create destroy)
+  before_action -> {
+    set_itinerary
+    authenticate_itinerary_member(@itinerary)
+  }, only: %i(create destroy)
 
   def create
     @itinerary = Itinerary.find(params[:itinerary_id])
