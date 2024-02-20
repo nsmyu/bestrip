@@ -26,7 +26,7 @@ RSpec.describe "ItineraryUsers", type: :system do
 
             expect(page).to have_content "#{other_user.name}さんを招待しました。"
             expect(current_path).to eq itinerary_path(itinerary.id)
-          }.to change(Invitation, :count).by(1)
+          }.to change(PendingInvitation, :count).by(1)
         end
       end
 

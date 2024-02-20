@@ -137,8 +137,8 @@ RSpec.describe User, type: :model do
     end
 
     it "userを削除すると関連するinvitationも削除されること" do
-      create(:invitation, invitee: user)
-      expect { user.destroy }.to change { Invitation.count }.by(-1)
+      create(:pending_invitation, invitee: user)
+      expect { user.destroy }.to change { PendingInvitation.count }.by(-1)
     end
   end
 end

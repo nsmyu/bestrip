@@ -2,8 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Users::Invitations", type: :request do
   let(:user) { create(:user) }
-  let(:new_user) { build(:user, name: "newly_invited") }
-  let(:existing_user) { create(:user) }
+  let(:invitee) { build(:user) }
   let(:itinerary) { create(:itinerary, owner: user) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
   let(:invitation_token) { Devise.token_generator.generate(User, :invitation_token) }
@@ -27,14 +26,15 @@ RSpec.describe "Users::Invitations", type: :request do
 
     context "有効な値の場合" do
       it "アカウント未登録ユーザーへのメール送信に成功すること" do
-        invitation_params = { user: { name: new_user.name, email: new_user.email } }
+        invitation_params = { user: { name: invitee.name, email: invitee.email } }
         post user_invitation_path(itinerary_id: itinerary.id), params: invitation_params
         expect(response).to redirect_to itinerary_path(itinerary.id)
         expect(User.last.invited_to_itineraries).to include itinerary
       end
 
       it "既存ユーザーへの招待メール送信に成功すること" do
-        invitation_params = { user: { email: existing_user.email } }
+        invitee.save
+        invitation_params = { user: { email: invitee.email } }
         post user_invitation_path(itinerary_id: itinerary.id), params: invitation_params
         expect(response).to redirect_to itinerary_path(itinerary.id)
         expect(User.last.invited_to_itineraries).to include itinerary
@@ -43,33 +43,34 @@ RSpec.describe "Users::Invitations", type: :request do
 
     context "無効な値の場合" do
       it "メールアドレスが空欄の場合、失敗すること" do
-        invitation_params = { user: { name: new_user.name, email: "" } }
+        invitation_params = { user: { name: invitee.name, email: "" } }
         post user_invitation_path(itinerary_id: itinerary.id), params: invitation_params,
                                                                headers: turbo_stream
         expect(response.body).to include "メールアドレスを入力してください"
       end
 
       it "メールアドレスが不正な形式の場合、失敗すること" do
-        invitation_params = { user: { name: new_user.name, email: "invalid_email_address" } }
+        invitation_params = { user: { name: invitee.name, email: "invalid_email_address" } }
         post user_invitation_path(itinerary_id: itinerary.id), params: invitation_params,
                                                                headers: turbo_stream
         expect(response.body).to include "メールアドレスを正しく入力してください"
       end
 
       it "招待しようとしたユーザーが既にメンバーに含まれている場合、失敗すること" do
-        itinerary.members << existing_user
-        invitation_params = { user: { email: existing_user.email } }
+        invitee.save
+        itinerary.members << invitee
+        invitation_params = { user: { email: invitee.email } }
         post user_invitation_path(itinerary_id: itinerary.id), params: invitation_params,
                                                                headers: turbo_stream
-        expect(response.body).to include "#{existing_user.name}さんはすでにメンバーに含まれています"
+        expect(response.body).to include "#{invitee.name}さんはすでにメンバーに含まれています"
       end
     end
   end
 
   describe "GET #edit" do
     it "正常にレスポンスを返すこと" do
-      create(:user, name: new_user.name, email: new_user.email,
-                    invitation_token: invitation_token[1])
+      invitee.save
+      invitee.update(invitation_token: invitation_token[1])
       accept_params = { invitation_token: invitation_token[0], itinerary_id: itinerary.id }
       get accept_user_invitation_path, params: accept_params
       expect(response).to have_http_status 200
@@ -78,12 +79,12 @@ RSpec.describe "Users::Invitations", type: :request do
 
   describe "PATCH #update" do
     before do
-      create(:user, name: new_user.name, email: new_user.email,
-                    invitation_token: invitation_token[1])
+      invitee.save
+      invitee.update(invitation_token: invitation_token[1])
       @user_params = {
-        name: new_user.name,
-        password: new_user.password,
-        password_confirmation: new_user.password_confirmation,
+        name: invitee.name,
+        password: invitee.password,
+        password_confirmation: invitee.password_confirmation,
         invitation_token: invitation_token[0],
       }
     end

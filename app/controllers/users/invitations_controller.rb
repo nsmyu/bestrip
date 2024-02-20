@@ -19,7 +19,7 @@ class Users::InvitationsController < Devise::InvitationsController
       existing_user.invite!(current_user)
       self.resource = existing_user
       PendingInvitation.create(invitee: resource, invited_to_itinerary: @itinerary)
-      redirect_to itinerary_path(@itinerary.id), notice: "招待メールが#{existing_user.email}に送信されました。"
+      redirect_to itinerary_path(@itinerary.id), notice: "招待メールを#{existing_user.email}に送信しました。"
       return
     end
 
