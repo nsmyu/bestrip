@@ -69,13 +69,13 @@ RSpec.describe "Users::Places", type: :system do
         visit users_places_find_path
         search_place_and_open_place_modal
 
-        expect {
+        expect do
           within ".modal" do
             find(:xpath, "//form[button[span[contains(text(), 'お気に入りに追加')]]]").click
 
             expect(page).to have_xpath "//a[span[contains(text(), 'お気に入りに追加済み')]]"
           end
-        }.to change(user.places, :count).by(1)
+        end.to change(user.places, :count).by(1)
       end
     end
 
@@ -108,18 +108,18 @@ RSpec.describe "Users::Places", type: :system do
 
     context "スポット検索画面のモーダルから削除する場合" do
       it "成功すること（ボタンが追加用フォームに切り替わること）" do
-        expect {
+        expect do
           visit new_users_place_path(place_id: user_place.place_id)
           find(:xpath, "//a[span[contains(text(), 'お気に入りに追加済み')]]").click
 
           expect(page).to have_xpath "//form[button[span[contains(text(), 'お気に入りに追加')]]]"
-        }.to change(user.places, :count).by(-1)
+        end.to change(user.places, :count).by(-1)
       end
     end
 
     context "お気に入り一覧ページから削除する場合" do
       it "成功すること" do
-        expect {
+        expect do
           visit users_places_path
           within(:xpath, "//div[a[p[contains(text(), 'シドニー・オペラハウス')]]]") do
             find("i", text: "close").click
@@ -132,7 +132,7 @@ RSpec.describe "Users::Places", type: :system do
           expect(page).to have_content "スポットを削除しました。"
           expect(page).not_to have_content "シドニー・オペラハウス"
           expect(current_path).to eq users_places_path
-        }.to change(user.places, :count).by(-1)
+        end.to change(user.places, :count).by(-1)
       end
     end
   end

@@ -22,7 +22,8 @@ RSpec.describe PendingInvitation, type: :model do
       invited_to_itinerary = create(:itinerary)
       invitee = create(:user)
       create(:pending_invitation, invitee: invitee, invited_to_itinerary: invited_to_itinerary)
-      pending_invitation = build(:pending_invitation, invitee: invitee, invited_to_itinerary: invited_to_itinerary)
+      pending_invitation = build(:pending_invitation, invitee: invitee,
+                                                      invited_to_itinerary: invited_to_itinerary)
       pending_invitation.valid?
       expect(pending_invitation.errors).to be_of_kind(:invitee, :taken)
     end

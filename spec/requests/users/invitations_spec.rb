@@ -7,7 +7,7 @@ RSpec.describe "Users::Invitations", type: :request do
   let(:itinerary) { create(:itinerary, owner: user) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
   let(:invitation_token) { Devise.token_generator.generate(User, :invitation_token) }
-  #invitation_token[0]にトークン, invitation_token[1]にそのダイジェスト値が格納される
+  # invitation_token[0]にトークン, invitation_token[1]にそのダイジェスト値が格納される
 
   describe "GET #new" do
     before do
@@ -27,14 +27,14 @@ RSpec.describe "Users::Invitations", type: :request do
 
     context "有効な値の場合" do
       it "アカウント未登録ユーザーへのメール送信に成功すること" do
-        invitation_params = { user: { name: new_user.name, email: new_user.email} }
+        invitation_params = { user: { name: new_user.name, email: new_user.email } }
         post user_invitation_path(itinerary_id: itinerary.id), params: invitation_params
         expect(response).to redirect_to itinerary_path(itinerary.id)
         expect(User.last.invited_to_itineraries).to include itinerary
       end
 
       it "既存ユーザーへの招待メール送信に成功すること" do
-        invitation_params = { user: { email: existing_user.email} }
+        invitation_params = { user: { email: existing_user.email } }
         post user_invitation_path(itinerary_id: itinerary.id), params: invitation_params
         expect(response).to redirect_to itinerary_path(itinerary.id)
         expect(User.last.invited_to_itineraries).to include itinerary
@@ -68,7 +68,8 @@ RSpec.describe "Users::Invitations", type: :request do
 
   describe "GET #edit" do
     it "正常にレスポンスを返すこと" do
-      create(:user, name: new_user.name, email: new_user.email, invitation_token: invitation_token[1])
+      create(:user, name: new_user.name, email: new_user.email,
+                    invitation_token: invitation_token[1])
       accept_params = { invitation_token: invitation_token[0], itinerary_id: itinerary.id }
       get accept_user_invitation_path, params: accept_params
       expect(response).to have_http_status 200
@@ -77,13 +78,14 @@ RSpec.describe "Users::Invitations", type: :request do
 
   describe "PATCH #update" do
     before do
-      create(:user, name: new_user.name, email: new_user.email, invitation_token: invitation_token[1])
+      create(:user, name: new_user.name, email: new_user.email,
+                    invitation_token: invitation_token[1])
       @user_params = {
         name: new_user.name,
         password: new_user.password,
         password_confirmation: new_user.password_confirmation,
-        invitation_token: invitation_token[0]
-       }
+        invitation_token: invitation_token[0],
+      }
     end
 
     context "有効な値の場合" do

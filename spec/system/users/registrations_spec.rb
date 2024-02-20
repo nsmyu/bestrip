@@ -10,7 +10,7 @@ RSpec.describe "Users::Registrations", type: :system do
 
     context "有効な値の場合" do
       it "成功すること" do
-        expect {
+        expect do
           fill_in "user[name]", with: user.name
           fill_in "user[email]", with: user.email
           fill_in "user[password]", match: :first, with: user.password
@@ -22,13 +22,13 @@ RSpec.describe "Users::Registrations", type: :system do
             expect(page).to have_content user.name
           end
           expect(current_path).to eq itineraries_path
-        }.to change(User, :count).by(1)
+        end.to change(User, :count).by(1)
       end
     end
 
     context "無効な値の場合" do
       it "失敗すること" do
-        expect {
+        expect do
           fill_in "user[name]", with: ""
           fill_in "user[email]", with: "invalid_email_address"
           fill_in "user[password]", match: :first, with: "foo"
@@ -39,7 +39,7 @@ RSpec.describe "Users::Registrations", type: :system do
           expect(page).to have_content "メールアドレスを正しく入力してください"
           expect(page).to have_content "パスワードは6文字以上で入力してください"
           expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
-        }.not_to change(User, :count)
+        end.not_to change(User, :count)
       end
     end
   end
