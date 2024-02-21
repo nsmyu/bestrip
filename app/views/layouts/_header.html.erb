@@ -1,7 +1,7 @@
 <header class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top z-index-10 py-2">
   <div class="container px-1">
     <% if user_signed_in? %>
-      <button class="navbar-toggler shadow-none d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-expanded="false">
+      <button class="navbar-toggler shadow-none d-xl-none me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-expanded="false">
         <span class="navbar-toggler-icon mt-2">
           <span class="navbar-toggler-bar bar1"></span>
           <span class="navbar-toggler-bar bar2"></span>
@@ -11,9 +11,9 @@
     <% end %>
     <%= link_to image_tag("brand_logo.png", width: "100", alt: "brand_logo"), root_url, class: "navbar-brand ms-md-2 me-0" %>
     <% if request.fullpath.exclude?('/users/invitation') %>
-      <ul class="d-flex mb-0">
+      <ul class="d-flex ps-0 mb-0">
         <% if current_user %>
-          <li class="nav-item dropdown border-radius-md link-area d-lg-none cursor-pointer d-flex align-items-center ms-2">
+          <li class="nav-item dropdown border-radius-md link-area d-lg-none cursor-pointer d-flex align-items-center">
             <a class="position-relative d-block d-flex" type="button" data-bs-toggle="dropdown">
               <i class="material-symbols-outlined text-charcoal px-2 fs-3">notifications</i>
               <% if current_user.invited_to_itineraries.count > 0 %>
