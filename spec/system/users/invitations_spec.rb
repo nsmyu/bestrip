@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Users::Invitations", type: :system, focus: true do
+RSpec.describe "Users::Invitations", type: :system do
   let(:user) { create(:user) }
   let(:invitee) { build(:user) }
   let(:itinerary) { create(:itinerary, owner: user) }
@@ -166,22 +166,7 @@ RSpec.describe "Users::Invitations", type: :system, focus: true do
   end
 
   describe "旅のプラン一覧ページ" do
-    it "旅のプランへの招待通知が表示され、リンクから招待の承認に成功すること" do
-      invitee.save
-      create(:pending_invitation, invitee: invitee, invited_to_itinerary: itinerary)
-      expect do
-        sign_in invitee
-        visit itineraries_path
-        click_on "「#{itinerary.title}」に招待されています"
-        click_on "この旅のプランに参加する"
-
-        expect(page).to have_content "旅のプランに参加しました。"
-        expect(page).to have_content itinerary.title
-        expect(page).not_to have_content "「#{itinerary.title}」に招待されています"
-      end.to change(itinerary.members, :count).by(1).and change(PendingInvitation, :count).by(-1)
-    end
-
-    it "旅のプランへの招待通知が複数ある場合、招待された日時の昇順で表示されること" do
+    it "旅のプランへの招待通知を招待された日時の昇順で表示されること" do
       invitee.save
       itinerary_1 = create(:itinerary)
       itinerary_2 = create(:itinerary)
@@ -192,6 +177,39 @@ RSpec.describe "Users::Invitations", type: :system, focus: true do
 
       expect(page.text)
         .to match(/「#{itinerary_1.title}」に招待されています[\s\S]*「#{itinerary_2.title}」に招待されています/)
+    end
+
+    describe "招待通知への応答" do
+      before do
+        sign_in invitee
+        invitee.save
+        create(:pending_invitation, invitee: invitee, invited_to_itinerary: itinerary)
+        visit itineraries_path
+        click_on "「#{itinerary.title}」に招待されています"
+      end
+
+      it "プランへの参加に成功すること" do
+        expect do
+          click_on "この旅のプランに参加する"
+
+          expect(page).to have_content "旅のプランに参加しました。"
+          expect(page).not_to have_content "「#{itinerary.title}」に招待されています"
+          expect(current_path).to eq itineraries_path
+        end.to change(itinerary.members, :count).by(1).and change(PendingInvitation, :count).by(-1)
+      end
+
+      it "招待の削除に成功すること" do
+        expect do
+          within ".dropdown-center" do
+            find("span", text: "参加しない（招待を削除）").click
+            click_on "削除する"
+          end
+
+          expect(page).to have_content "「#{itinerary.title}」への招待を削除しました。"
+          expect(page).not_to have_content "「#{itinerary.title}」に招待されています"
+          expect(current_path).to eq itineraries_path
+        end.to not_change(itinerary.members, :count).and change(PendingInvitation, :count).by(-1)
+      end
     end
   end
 end

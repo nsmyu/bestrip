@@ -9,12 +9,12 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
-    get   'users/guest_sign_in',  to: 'users/sessions#guest_sign_in'
-    get   'users/edit_email',     to: 'users/registrations#edit_email'
-    get   'users/edit_profile',   to: 'users/registrations#edit_profile'
+    get   'users/guest_sign_in', to: 'users/sessions#guest_sign_in'
+    get   'users/edit_email', to: 'users/registrations#edit_email'
+    get   'users/edit_profile', to: 'users/registrations#edit_profile'
     patch 'users/update_without_password', to: 'users/registrations#update_without_password'
     patch 'users/validate_bestrip_id', to: 'users/registrations#validate_bestrip_id'
-    get   'users/decline_invitation',   to: 'users/invitations#decline_invitation'
+    get   'users/decline_invitation', to: 'users/invitations#decline_invitation'
   end
 
   concern :placeable do

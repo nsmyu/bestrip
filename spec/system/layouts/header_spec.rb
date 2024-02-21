@@ -44,12 +44,12 @@ RSpec.describe "ヘッダー", type: :system do
       assert_current_path itineraries_path
     end
 
-    it "「?」アイコンをクリックすると、楽しみ方ガイドページに遷移すること", js: true do
+    it "BesTripアイコンをクリックすると、投稿一覧ページに遷移すること" do
       within "header" do
-        find("i", text: "help_outline").click
+        find(:xpath, "//img[contains(@src, 'brand_icon_charcoal')]").click
       end
 
-      assert_current_path guide_path
+      assert_current_path root_path
     end
 
     it "ハートのアイコンをクリックすると、お気に入りスポット一覧ページに遷移すること", js: true do
@@ -60,48 +60,63 @@ RSpec.describe "ヘッダー", type: :system do
       assert_current_path users_places_path
     end
 
-    it "BesTripアイコンをクリックすると、投稿一覧ページに遷移すること" do
-      within "header" do
-        find(:xpath, "//img[contains(@src, 'brand_icon_charcoal')]").click
+    describe "旅のプランへの招待通知" do
+      it "招待がある場合、旅のプラン一覧ページへのリンクを表示すること", js: true do
+        itinerary = create(:itinerary)
+        create(:pending_invitation, invitee: user, invited_to_itinerary: itinerary)
+        visit root_path
+        within "header" do
+          find("i", text: "notifications").click
+        end
+
+        click_on "1件の旅のプランに招待されています"
+        assert_current_path itineraries_path
       end
 
-      assert_current_path root_path
-    end
+      it "招待が無い場合、通知アイコンをクリックすると「お知らせはありません」と表示すること", js: true do
+        within "header" do
+          find("i", text: "notifications").click
+        end
 
-    it "ユーザーのニックネームとアバター画像を表示すること" do
-      within "header" do
-        expect(page).to have_selector "img[src*='default_avatar']"
-        expect(page).to have_content user.name
+        expect(page).to have_content "お知らせはありません"
       end
     end
 
-    it "ドロップダウンメニューの「プロフィール」をクリックすると、自分のプロフィールページへ遷移すること", js: true do
-      within "header" do
-        find("p", text: user.name).hover
-        click_on "プロフィール"
+    describe "アカウント設定のドロップダウンメニュー" do
+      it "ユーザーのニックネームとアバター画像を表示すること" do
+        within "header" do
+          expect(page).to have_selector "img[src*='default_avatar']"
+          expect(page).to have_content user.name
+        end
       end
 
-      assert_current_path user_path(id: user.id)
-    end
+      it "「プロフィール」をクリックすると、自分のプロフィールページへ遷移すること", js: true do
+        within "header" do
+          find("p", text: user.name).click
+          click_on "プロフィール"
+        end
 
-    it "ドロップダウンメニューの「メールアドレス変更」をクリックすると、メールアドレス変更ページへ遷移すること", js: true do
-      within "header" do
-        find("p", text: user.name).hover
-        click_on "メールアドレス変更"
+        assert_current_path user_path(id: user.id)
       end
 
-      expect users_edit_email_path
-    end
+      it "「メールアドレス変更」をクリックすると、メールアドレス変更ページへ遷移すること", js: true do
+        within "header" do
+          find("p", text: user.name).click
+          click_on "メールアドレス変更"
+        end
 
-    it "ドロップダウンメニューの「パスワード変更」をクリックすると、パスワード変更ページへ遷移すること", js: true do
-      within "header" do
-        find("p", text: user.name).hover
-        click_on "パスワード変更"
+        expect users_edit_email_path
       end
 
-      assert_current_path edit_user_registration_path
-    end
+      it "「パスワード変更」をクリックすると、パスワード変更ページへ遷移すること", js: true do
+        within "header" do
+          find("p", text: user.name).click
+          click_on "パスワード変更"
+        end
 
-    # ドロップダウンメニュー「ログアウト」のテストはusers_sessions_spec.rbで行う
+        assert_current_path edit_user_registration_path
+      end
+      # ドロップダウンメニュー「ログアウト」のテストはusers_sessions_spec.rbで行う
+    end
   end
 end

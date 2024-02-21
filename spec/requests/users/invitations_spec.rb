@@ -145,4 +145,13 @@ RSpec.describe "Users::Invitations", type: :request do
       end
     end
   end
+
+  describe "GET #decline_invitation" do
+    it "成功すること" do
+      sign_in invitee
+      create(:pending_invitation, invitee: invitee, invited_to_itinerary: itinerary)
+      get users_decline_invitation_path(itinerary_id: itinerary.id)
+      expect(response).to redirect_to itineraries_path
+    end
+  end
 end

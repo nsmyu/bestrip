@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "ItineraryUsers", type: :system do
-  let(:new_member) { create(:user) }
+  let(:member) { create(:user) }
 
   describe "ユーザーをBesTrip IDで検索し、旅のメンバーに追加", js: true do
     shared_examples "旅のメンバー共通機能" do |user_type|
@@ -14,17 +14,17 @@ RSpec.describe "ItineraryUsers", type: :system do
       context "検索したユーザーをメンバーに追加できる場合" do
         it "ユーザーの情報を表示し、メンバー追加に成功すること" do
           expect {
-            fill_in "bestrip_id", with: new_member.bestrip_id
+            fill_in "bestrip_id", with: member.bestrip_id
             within '.modal' do
               click_on 'button'
 
               expect(page).to have_selector "img[src*='default_avatar']"
-              expect(page).to have_content new_member.name
+              expect(page).to have_content member.name
 
               click_on "メンバーに追加"
             end
 
-            expect(page).to have_content "#{new_member.name}さんを旅のメンバーに追加しました。"
+            expect(page).to have_content "#{member.name}さんを旅のメンバーに追加しました。"
             expect(current_path).to eq itinerary_path(itinerary.id)
           }.to change(itinerary.members, :count).by(1)
         end
@@ -42,8 +42,8 @@ RSpec.describe "ItineraryUsers", type: :system do
         end
 
         it "ユーザーが既にメンバーに含まれている場合、その旨メッセージを表示すること" do
-          itinerary.members << new_member
-          fill_in "bestrip_id", with: new_member.bestrip_id
+          itinerary.members << member
+          fill_in "bestrip_id", with: member.bestrip_id
           within '.modal' do
             click_on 'button'
           end
@@ -72,7 +72,7 @@ RSpec.describe "ItineraryUsers", type: :system do
     let(:itinerary) { create(:itinerary, owner: user) }
 
     before do
-      itinerary.members << new_member
+      itinerary.members << member
     end
 
     it "成功すること" do
@@ -82,14 +82,13 @@ RSpec.describe "ItineraryUsers", type: :system do
         find("i", text: "person_remove").click
         click_on "削除する"
 
-        expect(page).to have_content "#{new_member.name}さんを旅のメンバーから削除しました。"
-        expect(page).not_to have_content new_member.name
+        expect(page).to have_content "#{member.name}さんを旅のメンバーから削除しました。"
         expect(current_path).to eq itinerary_path(itinerary.id)
       }.to change(itinerary.members, :count).by(-1)
     end
 
     it "プランの作成者以外はメンバー削除ができない（削除ボタンが表示されない）こと" do
-      sign_in new_member
+      sign_in member
 
       visit itinerary_path(itinerary.id)
       expect(page).not_to have_selector "i", text: "person_remove"

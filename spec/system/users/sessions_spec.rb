@@ -49,7 +49,7 @@ RSpec.describe "Users::Sessions", type: :system do
       sign_in user
       visit itineraries_path
       within "header" do
-        find("p", text: user.name).hover
+        find("p", text: user.name).click
         click_on "ログアウト"
       end
 

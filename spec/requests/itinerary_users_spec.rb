@@ -78,8 +78,9 @@ RSpec.describe "ItineraryUsers", type: :request do
       end
     end
 
-    context "招待された旅のプランに参加する場合" do
+    context "メールでの招待から旅のプランに参加する場合" do
       it "成功すること" do
+        sign_in other_user_1
         create(:pending_invitation, invitee: other_user_1, invited_to_itinerary: itinerary)
         join_member_params = { user_id: other_user_1.id, id: itinerary.id }
         post itinerary_users_path(itinerary.id), params: join_member_params
