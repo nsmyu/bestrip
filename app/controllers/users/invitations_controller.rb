@@ -1,9 +1,9 @@
 class Users::InvitationsController < Devise::InvitationsController
-  before_action :set_itinerary, except: %i(create destroy)
+  before_action :set_itinerary, except: :create
   before_action -> {
     set_itinerary
     authenticate_itinerary_member(@itinerary)
-  }, only: %i(create destroy)
+  }, only: :create
 
   def create
     @itinerary = Itinerary.find(params[:itinerary_id])
@@ -34,6 +34,11 @@ class Users::InvitationsController < Devise::InvitationsController
       end
       respond_with resource, location: itinerary_path(@itinerary.id)
     end
+  end
+
+  def decline_invitation
+    current_user.pending_invitations.find_by(itinerary_id: @itinerary.id)&.destroy
+    redirect_to :itineraries, notice: "「#{@itinerary.title}」への招待を削除しました。"
   end
 
   private

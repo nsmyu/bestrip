@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     get   'users/edit_profile',   to: 'users/registrations#edit_profile'
     patch 'users/update_without_password', to: 'users/registrations#update_without_password'
     patch 'users/validate_bestrip_id', to: 'users/registrations#validate_bestrip_id'
+    get   'users/decline_invitation',   to: 'users/invitations#decline_invitation'
   end
 
   concern :placeable do

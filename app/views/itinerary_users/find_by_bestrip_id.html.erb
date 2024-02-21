@@ -1,6 +1,6 @@
 <%= render "shared/modal", title: "BesTrip IDでユーザーを検索" do %>
-  <div class="mt-2 mb-3 pb-3">
-    <p class="my-2 text-sm text-dark">旅のプランに招待したいユーザーのBesTrip IDを入力してください</p>
+  <div class="my-3 pb-3">
+    <p class="my-2 pt-1 text-sm text-dark">旅のプランに招待したいユーザーのBesTrip IDを入力してください</p>
     <%= form_with url: :search_user_itinerary, class: "search-form-icon-right mb-3", html: { data: { turbo_frame: "member" } }, method: :get do |f| %>
       <%= f.search_field :bestrip_id, placeholder: "例）user_1_id" %>
       <%= f.button "" %>

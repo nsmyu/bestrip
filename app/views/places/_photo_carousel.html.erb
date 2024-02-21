@@ -1,5 +1,5 @@
 <% if @place_photo_urls %>
-  <div id="place_photo_carousel" class="carousel slide">
+  <div id="place_photo_carousel" class="carousel slide pt-3">
     <div class="carousel-indicators">
       <% @place_photo_urls.each_with_index do |url, i| %>
         <button type="button" data-bs-target="#place_photo_carousel" data-bs-slide-to="<%= i %>" class="<%= "active" if i.zero? %>"></button>
