@@ -1,46 +1,54 @@
-<div class="my-3">
-  <p class="fs-5 text-dark fw-bold lh-sm"><%= place_details[:name] %></p>
-  <% if place_details[:rating] %>
-    <div class="d-flex align-items-center pt-1">
-      <p class="text-xs text-dark fw-bold">クチコミ評価</p>
-      <i class="material-icons ps-1 rating-icon fs-px-15">star</i>
-      <p class="text-xs text-dark fw-bold"><%= place_details[:rating] %></p>
+<div class="pb-3">
+  <div class="my-3">
+    <p class="fs-5 text-dark fw-bold lh-sm"><%= place_details[:name] %></p>
+    <% if place_details[:rating] %>
+      <div class="d-flex align-items-center pt-1">
+        <p class="text-xs text-dark fw-bold">クチコミ評価</p>
+        <i class="material-icons ps-1 rating-icon fs-px-15">star</i>
+        <p class="text-xs text-dark fw-bold"><%= place_details[:rating] %></p>
+      </div>
+    <% end %>
+    <% if @placeable && @placeable.user? %>
+      <%= render 'places/forms/user_place' %>
+    <% elsif @placeable %>
+      <%= render 'places/forms/itinerary_place' %>
+    <% end %>
+  </div>
+  <div class="row py-2">
+    <i class="col-1 material-icons pe-1 text-primary">location_on</i>
+    <p class="col-11 text-sm text-dark"><%= place_details[:address] %></p>
+  </div>
+  <% if place_details[:opening_hours] %>
+    <div class="row my-1 py-2">
+      <i class="col-1 material-icons pe-1 text-primary">schedule</i>
+      <details class="col-11">
+        <summary class="list-icon-none text-sm text-dark">
+            <span class="do-close chevron-up icon-after">営業時間</span>
+            <span class="do-open chevron-down icon-after">営業時間</span>
+        </summary>
+        <div class="mt-1">
+          <% place_details[:opening_hours][:weekday_text].each do |opening_hour| %>
+            <p class="text-sm text-dark mt-1"><%= opening_hour %></p>
+          <% end %>
+        </div>
+      </details>
     </div>
   <% end %>
-  <% if @placeable && @placeable.user? %>
-    <%= render 'places/forms/user_place' %>
-  <% elsif @placeable %>
-    <%= render 'places/forms/itinerary_place' %>
-  <% end %>
-</div>
-<div class="row py-2">
-  <i class="col-1 material-icons pe-1 text-primary">location_on</i>
-  <p class="col-11 text-sm text-dark"><%= place_details[:address] %></p>
-</div>
-<% if place_details[:opening_hours] %>
-  <div class="row my-1 py-2">
-    <i class="col-1 material-icons pe-1 text-primary">schedule</i>
-    <div class="col-11">
-      <% place_details[:opening_hours][:weekday_text].each do |opening_hour| %>
-        <p class="text-sm text-dark"><%= opening_hour %></p>
+  <% if place_details[:url] %>
+    <div class="row my-1 py-2 link-area border-radius-lg">
+      <i class="col-1 material-icons pe-1 text-primary">open_in_new</i>
+      <%= link_to place_details[:url], class: "col-11 text-sm text-dark", target: :_blank do %>
+        <p class="text-sm">Google Mapで見る</p>
       <% end %>
     </div>
-  </div>
-<% end %>
-<% if place_details[:url] %>
-  <div class="row my-1 py-2 link-area border-radius-lg">
-    <i class="col-1 material-icons pe-1 text-primary">open_in_new</i>
-    <%= link_to place_details[:url], class: "col-11 text-sm text-dark", target: :_blank do %>
-      <p class="text-sm">Google Mapで見る</p>
-    <% end %>
-  </div>
-<% end %>
-<% if place_details[:website] %>
-  <div class="row my-1 py-2 link-area border-radius-lg">
-    <i class="col-1 material-icons pe-1 text-primary">public</i>
-    <%= link_to place_details[:website], class: "col-11 text-sm text-dark", target: :_blank do %>
-      <p class="text-sm">公式サイト</p>
-    <% end %>
-  </div>
-<% end %>
+  <% end %>
+  <% if place_details[:website] %>
+    <div class="row my-1 py-2 link-area border-radius-lg">
+      <i class="col-1 material-icons pe-1 text-primary">public</i>
+      <%= link_to place_details[:website], class: "col-11 text-sm text-dark", target: :_blank do %>
+        <p class="text-sm">公式サイト</p>
+      <% end %>
+    </div>
+  <% end %>
+</div>
 

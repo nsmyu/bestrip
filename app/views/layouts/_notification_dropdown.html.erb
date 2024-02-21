@@ -1,0 +1,15 @@
+<ul class="dropdown-menu dropdown-menu-end p-2 border-radius-md border header-dropdown">
+  <% if current_user.invited_to_itineraries.count > 0 %>
+    <li class="border-0 p-0">
+      <%= link_to :itineraries, class: "dropdown-item py-2 px-3 border-radius-md" do %>
+        <p class="dropdown-header d-flex align-items-center p-0 text-dark"><%= current_user.invited_to_itineraries.count %>件の旅のプランに招待されています</p>
+      <% end %>
+    </li>
+  <% else %>
+    <li class="border-0 p-0">
+      <div class="dropdown-item py-2 px-3 border-radius-md bg-white" style="cursor:auto;">
+        <p class="dropdown-header d-flex align-items-center p-0 text-dark">お知らせはありません</p>
+      </div>
+    </li>
+  <% end %>
+</ul>

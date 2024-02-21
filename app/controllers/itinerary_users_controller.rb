@@ -24,11 +24,12 @@ class ItineraryUsersController < ApplicationController
   def create
     user = User.find(params[:user_id])
     if @itinerary.members << user
-      if user.pending_invitations.find_by(itinerary_id: @itinerary.id)&.destroy
+      user.pending_invitations.find_by(itinerary_id: @itinerary.id)&.destroy
+      if user == current_user
         redirect_to :itineraries, notice: "旅のプランに参加しました。"
-        return
+      else
+        redirect_to @itinerary, notice: "#{user.name}さんを旅のメンバーに追加しました。"
       end
-      redirect_to @itinerary, notice: "#{user.name}さんを旅のメンバーに追加しました。"
     end
   end
 
@@ -36,7 +37,7 @@ class ItineraryUsersController < ApplicationController
     member = User.find(params[:user_id])
     if current_user == @itinerary.owner && member != @itinerary.owner
       @itinerary.itinerary_users.find_by(user_id: member.id).destroy
-      redirect_to @itinerary, notice: "メンバーから削除しました。"
+      redirect_to @itinerary, notice: "#{member.name}さんを旅のメンバーから削除しました。"
     else
       redirect_to @itinerary, notice: "この操作ができるのはプラン作成者のみです。"
     end

@@ -8,8 +8,8 @@
           <p class="d-inline text-sm text-dark"><%= member.name %></p>
         <% end %>
         <% if current_user == @itinerary.owner && member!= @itinerary.owner %>
-          <%= link_to [:itinerary_user, id: @itinerary.id, user_id: member.id], data: { turbo_method: :delete, turbo_confirm: member.name + 'をメンバーから削除しますか？' } do %>
-            <i class="material-icons p-2 fw-normal text-dark link-area rounded-circle">person_remove</i>
+          <%= link_to [:itinerary_user, id: @itinerary.id, user_id: member.id], data: { turbo_method: :delete, turbo_confirm: member.name + 'さんをメンバーから削除しますか？' } do %>
+            <i class="material-icons p-2 fw-normal text-secondary link-area rounded-circle">person_remove</i>
           <% end %>
         <% end %>
       </div>

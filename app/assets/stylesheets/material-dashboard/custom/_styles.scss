@@ -297,6 +297,43 @@ label:has(.schedule-icon-btn:checked) {
   font-weight: 600 !important;
 }
 
+/*=== DETAILS/SUMMARY ===*/
+summary.list-icon-none {
+  list-style: none;
+}
+details[open] .do-open {
+	display: none ;
+}
+.do-open.chevron-down {
+  position: relative;
+  &:after {
+    font-family: FontAwesome;
+    content: '\f078';
+    margin-left: 15px;
+    color: $secondary;
+    font-size: 12px;
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+  }
+}
+details:not([open]) .do-close {
+	display: none ;
+}
+.do-close.chevron-up {
+  position: relative;
+  &:after {
+    font-family: FontAwesome;
+    content: '\f077';
+    margin-left: 15px;
+    color: $secondary;
+    font-size: 12px;
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+  }
+}
+
 /*=== OTHER ===*/
 .page-heading {
   margin: 0px;
@@ -329,13 +366,6 @@ label:has(.schedule-icon-btn:checked) {
   background: linear-gradient(to right, #fff, $dark, #fff);
   height: 1.3px;
   width: 80%;
-}
-
-details[open] .do-open {
-	display: none ;
-}
-details:not([open]) .do-close {
-	display: none ;
 }
 
 .invitation-notification {

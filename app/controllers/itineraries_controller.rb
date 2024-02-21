@@ -30,6 +30,7 @@ class ItinerariesController < ApplicationController
 
   def show
     @itinerary_members = @itinerary.members.order("itinerary_users.id")
+      .partition { |member| member.id == current_user.id }.flatten
   end
 
   def edit

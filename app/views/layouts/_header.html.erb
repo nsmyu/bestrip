@@ -15,7 +15,7 @@
         <a class="navbar-toggler dropdown-toggle d-flex d-lg-none align-items-center text-secondary" type="button" data-bs-toggle="dropdown">
           <i class="material-symbols-outlined text-secondary fs-3">account_circle</i>
         </a>
-        <%= render 'layouts/header_dropdown' %>
+        <%= render 'layouts/account_dropdown' %>
       </div>
     <% end %>
     <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5">
@@ -24,30 +24,35 @@
           <li class="nav-item d-flex align-items-center me-2">
             <%= link_to "旅の計画", :itineraries, class: "btn bg-gradient-primary mb-0 fs-px-13" %>
           </li>
-          <li class="nav-item d-flex align-items-center ms-3">
-            <%= link_to :guide, class: "nav-link d-flex align-items-center px-2 border-radius-md link-area",
-              "data-bs-toggle": "tooltip", "data-bs-placement": "bottom", title: "BesTripの楽しみ方" do %>
-              <i class="material-symbols-outlined text-charcoal fs-4">help_outline</i>
-            <% end %>
-          </li>
-          <li class="nav-item d-flex align-items-center ms-2">
-            <%= link_to :users_places, class: "nav-link d-flex align-items-center px-2 border-radius-md link-area",
-              "data-bs-toggle": "tooltip", "data-bs-placement": "bottom", title: "お気に入りスポット" do %>
-              <i class="material-symbols-outlined text-charcoal fs-4">favorite_border</i>
-            <% end %>
-          </li>
           <li class="nav-item d-flex align-items-center ms-2">
             <%= link_to :root, class: "nav-link px-2 border-radius-md link-area",
               "data-bs-toggle": "tooltip", "data-bs-placement": "bottom", title: "みんなの思い出" do %>
               <%= image_tag "brand_icon_charcoal.png", style: "height: 24px;" %>
             <% end %>
           </li>
-          <li class="nav-item dropdown dropdown-hover max-width-200 border-radius-md link-area cursor-pointer d-flex align-items-center ms-2">
-            <a class="nav-link d-flex pe-3" type="button" data-bs-toggle="dropdown">
-              <%= image_tag current_user.avatar.url, class: "header-avatar",  alt: "#{current_user.name}のプロフィール画像" %>
-              <p class="ms-1 fw-bold text-ellipsis text-sm text-charcoal"><%= current_user.name %></p>
+          <li class="nav-item d-flex align-items-center ms-2">
+            <%= link_to :users_places, class: "nav-link d-flex align-items-center px-2 border-radius-md link-area",
+              "data-bs-toggle": "tooltip", "data-bs-placement": "bottom", title: "お気に入りスポット" do %>
+              <i class="material-symbols-outlined text-charcoal" style="font-size:25px;">favorite_border</i>
+            <% end %>
+          </li>
+          <li class="nav-item dropdown border-radius-md link-area cursor-pointer d-flex align-items-center ms-2">
+            <a class="position-relative d-block d-flex" type="button" data-bs-toggle="dropdown">
+              <i class="material-symbols-outlined text-charcoal px-2 fs-4">notifications</i>
+              <% if current_user.invited_to_itineraries.count > 0 %>
+                <i class="material-icons text-danger text-xs position-absolute" style="top:-2px;right:5px;">fiber_manual_record</i>
+              <% end %>
             </a>
-            <%= render 'layouts/header_dropdown' %>
+            <%= render 'layouts/notification_dropdown' %>
+          </li>
+          <li class="nav-item dropdown max-width-200 border-radius-md link-area cursor-pointer d-flex align-items-center ms-2">
+            <a class="nav-link d-block d-flex pe-3" type="button" data-bs-toggle="dropdown">
+              <%= image_tag current_user.avatar.url, class: "header-avatar",  alt: "#{current_user.name}のプロフィール画像" %>
+              <div style="max-width: 150px;">
+              <p class="ms-1 fw-bold text-ellipsis text-sm text-charcoal"><%= current_user.name %></p>
+              </div>
+            </a>
+            <%= render 'layouts/account_dropdown' %>
           </li>
         <% else %>
           <% if request.fullpath.exclude?('/users/invitation') %>

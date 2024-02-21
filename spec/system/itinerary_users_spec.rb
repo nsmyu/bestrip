@@ -82,7 +82,7 @@ RSpec.describe "ItineraryUsers", type: :system do
         find("i", text: "person_remove").click
         click_on "削除する"
 
-        expect(page).to have_content "メンバーから削除しました。"
+        expect(page).to have_content "#{new_member.name}さんを旅のメンバーから削除しました。"
         expect(page).not_to have_content new_member.name
         expect(current_path).to eq itinerary_path(itinerary.id)
       }.to change(itinerary.members, :count).by(-1)
