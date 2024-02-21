@@ -11,12 +11,23 @@
     <% end %>
     <%= link_to image_tag("brand_logo.png", width: "100", alt: "brand_logo"), root_url, class: "navbar-brand ms-md-2 me-0" %>
     <% if request.fullpath.exclude?('/users/invitation') %>
-      <div class="dropdown">
-        <a class="navbar-toggler dropdown-toggle d-flex d-lg-none align-items-center text-secondary" type="button" data-bs-toggle="dropdown">
-          <i class="material-symbols-outlined text-secondary fs-3">account_circle</i>
-        </a>
-        <%= render 'layouts/account_dropdown' %>
-      </div>
+      <ul class="d-flex mb-0">
+        <% if current_user && current_user.invited_to_itineraries.count > 0 %>
+          <li class="nav-item dropdown border-radius-md link-area d-lg-none cursor-pointer d-flex align-items-center ms-2">
+            <a class="position-relative d-block d-flex" type="button" data-bs-toggle="dropdown">
+              <i class="material-symbols-outlined text-charcoal px-2 fs-3">notifications</i>
+              <i class="material-icons text-danger text-xs position-absolute" style="top:-2px;right:5px;">fiber_manual_record</i>
+            </a>
+            <%= render 'layouts/notification_dropdown' %>
+          </li>
+        <% end %>
+        <li class="dropdown link-area border-radius-md">
+          <a class="navbar-toggler dropdown-toggle d-flex d-lg-none align-items-center text-charcoal" type="button" data-bs-toggle="dropdown">
+            <i class="material-symbols-outlined text-charcoal fs-3">account_circle</i>
+          </a>
+          <%= render 'layouts/account_dropdown' %>
+        </li>
+      </ul>
     <% end %>
     <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5">
       <ul class="navbar-nav ms-auto">
@@ -40,7 +51,7 @@
             <a class="position-relative d-block d-flex" type="button" data-bs-toggle="dropdown">
               <i class="material-symbols-outlined text-charcoal px-2 fs-4">notifications</i>
               <% if current_user.invited_to_itineraries.count > 0 %>
-                <i class="material-icons text-danger text-xs position-absolute" style="top:-2px;right:5px;">fiber_manual_record</i>
+                <i class="material-icons text-danger text-xs position-absolute" style="top:-3px;right:4px;">fiber_manual_record</i>
               <% end %>
             </a>
             <%= render 'layouts/notification_dropdown' %>
