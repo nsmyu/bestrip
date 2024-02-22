@@ -24,7 +24,7 @@ class Itinerary < ApplicationRecord
   end
 
   def confirmed_members
-    self.members.select { |member| member.confirmed_member_of?(self) }
+    members.select { |member| member.confirmed_member_of?(self) }
       .sort_by { |member| member.itinerary_users.find_by(itinerary_id: id).id }
   end
 

@@ -48,7 +48,7 @@ class User < ApplicationRecord
   end
 
   def confirmed_itineraries
-    self.itineraries.includes(:members)
+    itineraries.includes(:members)
       .select { |itinerary| itinerary.confirmed_by?(self) }
       .sort_by { |itinerary| itinerary.departure_date }.reverse
   end

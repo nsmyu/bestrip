@@ -27,6 +27,8 @@ class ItineraryUsersController < ApplicationController
     if user == current_user
       redirect_to :itineraries, notice: "旅のプランに参加しました。"
     else
+      return if authenticate_itinerary_member(@itinerary)
+      @itinerary.members << user if @itinerary.members.exclude?(user)
       redirect_to @itinerary, notice: "#{user.name}さんを旅のメンバーに追加しました。"
     end
   end

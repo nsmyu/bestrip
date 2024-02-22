@@ -36,8 +36,15 @@ RSpec.describe "Itineraries", type: :request do
       expect(response.body).to include itinerary.owner.name, other_user.name
     end
 
+    it "招待されているが参加していない旅のプランの情報を取得しないこと" do
+      create(:itinerary_user, user: other_user, itinerary: itinerary, confirmed: false)
+      sign_in other_user
+      get itineraries_path
+      expect(response.body).not_to include I18n.l itinerary.departure_date
+    end
+
     it "未応答の旅のプランへの招待を取得すること" do
-      create(:pending_invitation, invitee: other_user, invited_to_itinerary: itinerary)
+      create(:itinerary_user, user: other_user, itinerary: itinerary, confirmed: false)
       sign_in other_user
       get itineraries_path
       expect(response.body).to include "「#{itinerary.title}」に招待されています"
@@ -87,17 +94,23 @@ RSpec.describe "Itineraries", type: :request do
   describe "GET #show" do
     context "ログインユーザーがプランのメンバーである場合" do
       it "正常にレスポンスを返すこと" do
-        get itineraries_path
+        get itinerary_path(itinerary.id)
         expect(response).to have_http_status 200
       end
 
       it "旅のプランのタイトル、出発日・帰宅日、メンバー名を取得すること" do
         itinerary.members << other_user
-        get itineraries_path
+        get itinerary_path(itinerary.id)
         expect(response.body).to include itinerary.title
         expect(response.body).to include I18n.l itinerary.departure_date
         expect(response.body).to include I18n.l itinerary.return_date
         expect(response.body).to include itinerary.owner.name, other_user.name
+      end
+
+      it "招待中のメンバー名を取得しないこと" do
+        create(:itinerary_user, user: other_user, itinerary: itinerary, confirmed: false)
+        get itinerary_path(itinerary.id)
+        expect(response.body).not_to include other_user.name
       end
     end
 

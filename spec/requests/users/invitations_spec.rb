@@ -29,7 +29,7 @@ RSpec.describe "Users::Invitations", type: :request do
         invitation_params = { user: { name: invitee.name, email: invitee.email } }
         post user_invitation_path(itinerary_id: itinerary.id), params: invitation_params
         expect(response).to redirect_to itinerary_path(itinerary.id)
-        expect(User.last.invited_to_itineraries).to include itinerary
+        expect(ItineraryUser.last.confirmed).to be_falsey
       end
 
       it "既存ユーザーへの招待メール送信に成功すること" do
@@ -37,7 +37,7 @@ RSpec.describe "Users::Invitations", type: :request do
         invitation_params = { user: { email: invitee.email } }
         post user_invitation_path(itinerary_id: itinerary.id), params: invitation_params
         expect(response).to redirect_to itinerary_path(itinerary.id)
-        expect(User.last.invited_to_itineraries).to include itinerary
+        expect(ItineraryUser.last.confirmed).to be_falsey
       end
     end
 
@@ -93,7 +93,7 @@ RSpec.describe "Users::Invitations", type: :request do
       it "成功すること" do
         patch user_invitation_path, params: { user: @user_params, itinerary_id: itinerary.id }
         expect(response).to redirect_to itineraries_path(invited_to_itinerary: itinerary.id)
-        expect(User.last.invited_to_itineraries).not_to include itinerary
+        expect(invitee.pending_invitations).not_to include itinerary
       end
     end
 
@@ -143,15 +143,6 @@ RSpec.describe "Users::Invitations", type: :request do
         patch user_invitation_path, params: { user: @user_params, itinerary_id: itinerary.id }
         expect(response.body).to include "パスワード（確認用）とパスワードの入力が一致しません"
       end
-    end
-  end
-
-  describe "GET #decline_invitation" do
-    it "成功すること" do
-      sign_in invitee
-      create(:pending_invitation, invitee: invitee, invited_to_itinerary: itinerary)
-      get users_decline_invitation_path(itinerary_id: itinerary.id)
-      expect(response).to redirect_to itineraries_path
     end
   end
 end

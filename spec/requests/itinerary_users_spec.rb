@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe "ItineraryUsers", type: :request do
-  let(:user) { create(:user) }
-  let(:other_user_1) { create(:user, bestrip_id: "other_user_1_id") }
-  let(:other_user_2) { create(:user) }
-  let(:itinerary) { create(:itinerary, owner: user) }
+  let(:owner) { create(:user) }
+  let(:user_1) { create(:user, bestrip_id: "user_1_id") }
+  let(:user_2) { create(:user) }
+  let(:itinerary) { create(:itinerary, owner: owner) }
 
   before do
-    sign_in user
+    sign_in owner
   end
 
   describe "GET #find_by_bestrip_id" do
@@ -20,8 +20,7 @@ RSpec.describe "ItineraryUsers", type: :request do
 
     context "ログインユーザーがプランのメンバーではない場合" do
       it "indexにリダイレクトされること" do
-        sign_out user
-        sign_in other_user_1
+        sign_in user_1
         get find_by_bestrip_id_itinerary_path(itinerary.id)
         expect(response).to redirect_to itineraries_path
       end
@@ -30,10 +29,19 @@ RSpec.describe "ItineraryUsers", type: :request do
 
   describe "GET #search_user" do
     context "ログインユーザーがプランのメンバーである場合" do
-      it "検索したBesTrip IDのユーザーを返すこと" do
-        user_search_params = { bestrip_id: other_user_1.bestrip_id, id: itinerary.id }
+      it "検索したBesTrip IDのユーザー（招待中ではない）の追加ボタンを取得すること" do
+        user_search_params = { bestrip_id: user_1.bestrip_id, id: itinerary.id }
         get search_user_itinerary_path(itinerary.id), params: user_search_params
-        expect(response.body).to include other_user_1.name
+        expect(response.body).to include user_1.name
+        expect(response.body).to include "メンバーに追加"
+      end
+
+      it "検索したBesTrip IDのユーザー（招待中）の追加ボタンを取得すること" do
+        create(:itinerary_user, user: user_1, itinerary: itinerary, confirmed: false)
+        user_search_params = { bestrip_id: user_1.bestrip_id, id: itinerary.id }
+        get search_user_itinerary_path(itinerary.id), params: user_search_params
+        expect(response.body).to include user_1.name
+        expect(response.body).to include "メンバーに追加"
       end
 
       it "検索したBesTrip IDのユーザーが存在しない場合、メッセージを返すこと" do
@@ -43,8 +51,8 @@ RSpec.describe "ItineraryUsers", type: :request do
       end
 
       it "検索したBesTrip IDのユーザーが既にメンバーに含まれている場合、その旨メッセージを返すこと" do
-        itinerary.members << other_user_1
-        user_search_params = { bestrip_id: other_user_1.bestrip_id, id: itinerary.id }
+        itinerary.members << user_1
+        user_search_params = { bestrip_id: user_1.bestrip_id, id: itinerary.id }
         get search_user_itinerary_path(itinerary.id), params: user_search_params
         expect(response.body).to include "すでにメンバーに含まれています"
       end
@@ -52,9 +60,8 @@ RSpec.describe "ItineraryUsers", type: :request do
 
     context "ログインユーザーがプランのメンバーではない場合" do
       it "旅のプラン一覧画面にリダイレクトされること" do
-        sign_out user
-        sign_in other_user_1
-        user_search_params = { bestrip_id: user.bestrip_id, id: itinerary.id }
+        sign_in user_1
+        user_search_params = { bestrip_id: user_2.bestrip_id, id: itinerary.id }
         get search_user_itinerary_path(itinerary.id), params: user_search_params
         expect(response).to redirect_to itineraries_path
       end
@@ -62,61 +69,82 @@ RSpec.describe "ItineraryUsers", type: :request do
   end
 
   describe "POST #create" do
-    context "BesTrip ID検索からメンバーを追加する場合" do
-      it "ログインユーザーがプランのメンバーである場合、成功すること" do
-        add_member_params = { user_id: other_user_1.id, id: itinerary.id }
-        post itinerary_users_path(itinerary.id), params: add_member_params
-        expect(response).to redirect_to itinerary_path(itinerary.id)
+    describe "BesTrip ID検索からメンバーを追加" do
+      context "ログインユーザーがプランのメンバーである場合" do
+        it "招待中ではないユーザーの追加に成功すること" do
+          add_member_params = { user_id: user_1.id, id: itinerary.id }
+          post itinerary_users_path(itinerary.id), params: add_member_params
+          expect(response).to redirect_to itinerary_path(itinerary.id)
+          expect(itinerary.reload.members).to include user_1
+        end
+
+        it "招待中のユーザーの追加に成功すること" do
+          create(:itinerary_user, user: user_1, itinerary: itinerary, confirmed: false)
+          add_member_params = { user_id: user_1.id, id: itinerary.id }
+          post itinerary_users_path(itinerary.id), params: add_member_params
+          expect(response).to redirect_to itinerary_path(itinerary.id)
+          expect(itinerary.reload.confirmed_members).to include user_1
+        end
       end
 
-      it "ログインユーザーがプランのメンバーではない場合、失敗すること" do
-        sign_out user
-        sign_in other_user_1
-        add_member_params = { user_id: other_user_2.id, id: itinerary.id }
-        post itinerary_users_path(itinerary.id), params: add_member_params
-        expect(response).to redirect_to itinerary_path(itinerary.id)
+      context "ログインユーザーがプランのメンバーではない場合" do
+        it "失敗すること" do
+          sign_in user_1
+          add_member_params = { user_id: user_2.id, id: itinerary.id }
+          post itinerary_users_path(itinerary.id), params: add_member_params
+          expect(itinerary.reload.members).not_to include user_2
+        end
       end
     end
 
-    context "メールでの招待から旅のプランに参加する場合" do
+    describe "メールでの招待から旅のプランに参加" do
       it "成功すること" do
-        sign_in other_user_1
-        create(:pending_invitation, invitee: other_user_1, invited_to_itinerary: itinerary)
-        join_member_params = { user_id: other_user_1.id, id: itinerary.id }
+        create(:itinerary_user, user: user_1, itinerary: itinerary, confirmed: false)
+        sign_in user_1
+        join_member_params = { user_id: user_1.id, id: itinerary.id }
         post itinerary_users_path(itinerary.id), params: join_member_params
         expect(response).to redirect_to itineraries_path
+        expect(itinerary.reload.confirmed_members).to include user_1
       end
+    end
+  end
+
+  describe "GET #decline_invitation" do
+    it "成功すること" do
+      create(:itinerary_user, user: user_1, itinerary: itinerary)
+      sign_in user_1
+      get decline_invitation_itinerary_path(itinerary.id)
+      expect(response).to redirect_to itineraries_path
     end
   end
 
   describe "DELETE #destroy" do
     before do
-      itinerary.members << other_user_1 << other_user_2
+      itinerary.members << user_1 << user_2
     end
 
     context "削除可能な場合" do
       it "ログインユーザーがプラン作成者の場合、成功すること" do
-        remove_member_params = { user_id: other_user_1.id, id: itinerary.id }
+        remove_member_params = { user_id: user_1.id, id: itinerary.id }
         delete itinerary_user_path(itinerary.id), params: remove_member_params
         expect(response).to redirect_to itinerary_path(itinerary.id)
+        expect(itinerary.reload.members).not_to include user_1
       end
     end
 
     context "削除不可能な場合" do
       it "ログインユーザーがプラン作成者ではない場合、失敗すること" do
-        sign_out user
-        sign_in other_user_1
-        remove_member_params = { user_id: other_user_2.id, id: itinerary.id }
+        sign_in user_1
+        remove_member_params = { user_id: user_2.id, id: itinerary.id }
         delete itinerary_user_path(itinerary.id), params: remove_member_params
-        expect(itinerary.reload.members).to include other_user_2
+        expect(itinerary.reload.members).to include user_2
       end
 
       it "削除対象がプラン作成者の場合、失敗すること" do
-        sign_out user
-        sign_in other_user_1
-        remove_member_params = { user_id: user.id, id: itinerary.id }
+        sign_in user_1
+        remove_member_params = { user_id: owner.id, id: itinerary.id }
         delete itinerary_user_path(itinerary.id), params: remove_member_params
-        expect(itinerary.reload.members).to include user
+        expect(itinerary.reload.members).to include owner
       end
     end
   end
