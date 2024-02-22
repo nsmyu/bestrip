@@ -48,9 +48,12 @@ class User < ApplicationRecord
   end
 
   def confirmed_itineraries
-    itineraries.includes(:members)
-      .select { |itinerary| itinerary.confirmed_by?(self) }
-      .sort_by { |itinerary| itinerary.departure_date }.reverse
+    itinerary_users = ItineraryUser.where(user_id: id).where(confirmed: true)
+    confirmed_itineraries = []
+    itinerary_users.each do |itinerary_user|
+      confirmed_itineraries << Itinerary.find(itinerary_user.itinerary_id)
+    end
+    confirmed_itineraries.sort_by { |itinerary| itinerary.departure_date }.reverse
   end
 
   def pending_invitations

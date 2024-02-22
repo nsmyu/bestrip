@@ -24,8 +24,13 @@ class Itinerary < ApplicationRecord
   end
 
   def confirmed_members
-    members.select { |member| member.confirmed_member_of?(self) }
-      .sort_by { |member| member.itinerary_users.find_by(itinerary_id: id).id }
+    itinerary_users = ItineraryUser
+      .where(itinerary_id: id).where(confirmed: true).order(:updated_at)
+    confirmed_members = []
+    itinerary_users.each do |itinerary_user|
+      confirmed_members << User.find(itinerary_user.user_id)
+    end
+    confirmed_members
   end
 
   private

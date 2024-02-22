@@ -63,7 +63,7 @@ RSpec.describe "ヘッダー", type: :system do
     describe "旅のプランへの招待通知" do
       it "招待がある場合、旅のプラン一覧ページへのリンクを表示すること", js: true do
         itinerary = create(:itinerary)
-        create(:pending_invitation, invitee: user, invited_to_itinerary: itinerary)
+        create(:itinerary_user, user: user, itinerary: itinerary, confirmed: false)
         visit root_path
         within "header" do
           find("i", text: "notifications").click

@@ -17,7 +17,7 @@ class PostsController < ApplicationController
   end
 
   def new
-    @itineraries = current_user.itineraries
+    @itineraries = current_user.confirmed_itineraries
     @post = Post.new
     @post.photos.build
   end
@@ -47,7 +47,7 @@ class PostsController < ApplicationController
   end
 
   def edit
-    @itineraries = current_user.itineraries
+    @itineraries = current_user.confirmed_itineraries
   end
 
   def update
@@ -82,18 +82,16 @@ class PostsController < ApplicationController
   end
 
   def sort_comments(comments)
-    if !current_user
-      @comments = comments.order(created_at: :desc).page(params[:page]).per(5)
+    return if !current_user
+
+    time_sorted_comments = comments.includes(:user).order(created_at: :desc)
+    if comments.where(user_id: current_user.id).count.zero?
+      @comments = time_sorted_comments.page(params[:page]).per(5)
     else
-      time_sorted_comments = comments.includes(:user).order(created_at: :desc)
-      if comments.where(user_id: current_user.id).count.zero?
-        @comments = time_sorted_comments.page(params[:page]).per(5)
-      else
-        user_id_parted_comments = time_sorted_comments.partition do |comment|
-          comment.user_id == current_user.id
-        end .flatten
-        @comments = Kaminari.paginate_array(user_id_parted_comments).page(params[:page]).per(5)
-      end
+      user_id_parted_comments = time_sorted_comments.partition do |comment|
+        comment.user_id == current_user.id
+      end .flatten
+      @comments = Kaminari.paginate_array(user_id_parted_comments).page(params[:page]).per(5)
     end
   end
 end
