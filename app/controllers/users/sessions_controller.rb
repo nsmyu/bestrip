@@ -2,6 +2,8 @@ class Users::SessionsController < Devise::SessionsController
   before_action :configure_sign_in_params, only: :create
 
   def new
+    session[:previous_url] = request.referer
+
     if params[:itinerary_id]
       set_itinerary
       sign_in_params = ActiveSupport::HashWithIndifferentAccess
@@ -30,9 +32,11 @@ class Users::SessionsController < Devise::SessionsController
 
   protected
 
-  def after_sign_in_path_for(resource)
+  def after_sign_in_path_for(resource_or_scope)
     if params[:user] && params[:user][:invited_to_itinerary]
       itineraries_path(invited_to_itinerary: params[:user][:invited_to_itinerary])
+    elsif session[:previous_url] && URI(session[:previous_url].to_s).path.start_with?("/posts")
+      session[:previous_url]
     else
       itineraries_path
     end

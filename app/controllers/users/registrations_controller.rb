@@ -3,6 +3,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :set_user,
     only: %i(edit_email edit_profile validate_bestrip_id update_without_password)
 
+  def new
+    session[:previous_url] = request.referer
+    super
+  end
+
   def edit_email
   end
 
@@ -51,7 +56,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
 
   def after_sign_up_path_for(resource)
-    itineraries_path
+    if session[:previous_url] && URI(session[:previous_url].to_s).path.start_with?("/posts")
+      session[:previous_url]
+    else
+      itineraries_path
+    end
   end
 
   def set_user
