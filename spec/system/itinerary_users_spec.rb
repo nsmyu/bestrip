@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "ItineraryUsers", type: :system, focus: true do
+RSpec.describe "ItineraryUsers", type: :system do
   describe "ユーザーをBesTrip IDで検索し、旅のメンバーに追加", js: true do
     let(:new_member) { create(:user) }
 

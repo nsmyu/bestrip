@@ -9,21 +9,14 @@ RSpec.describe "Itineraries", type: :system do
   end
 
   describe "一覧表示" do
-    context "旅のプランが登録されていない場合" do
-      it "メッセージを表示すること" do
-        visit itineraries_path
-        expect(page).to have_content "旅のプランは登録されていません"
-      end
-    end
-
-    context "旅のプランが複数登録されている場合" do
+    context "参加している旅のプランがある場合" do
       let!(:itinerary_1) { create(:itinerary, owner: user) }
       let!(:itinerary_2) { create(:itinerary, departure_date: "2024-01-31", owner: user) }
       let!(:other_users_itinerary) {
         create(:itinerary, departure_date: "2024-02-02", owner: other_user)
       }
 
-      it "ログインユーザーの全ての旅のプランを、出発日の降順で表示すること" do
+      it "参加している旅のプラン一覧を、出発日の降順で表示すること" do
         other_users_itinerary.members << user
         visit itineraries_path
 
@@ -31,6 +24,14 @@ RSpec.describe "Itineraries", type: :system do
           .to match(
             /#{other_users_itinerary.title}[\s\S]*#{itinerary_1.title}[\s\S]*#{itinerary_2.title}/
           )
+      end
+
+      it "招待されているが参加していない旅のプランを表示しないこと" do
+        create(:itinerary_user, user: other_user, itinerary: itinerary_1, confirmed: false)
+        sign_in other_user
+        visit itineraries_path
+
+        expect(page).not_to have_content I18n.l itinerary_1.departure_date
       end
 
       it "旅のタイトル、出発・帰宅日、メンバーのニックネームを表示すること" do
@@ -45,11 +46,25 @@ RSpec.describe "Itineraries", type: :system do
         end
       end
 
-      it "旅のプランのカードをクリックすると、旅のプラン情報ページへ遷移すること" do
+      it "招待中のメンバーのニックネームを表示しないこと" do
+        create(:itinerary_user, user: other_user, itinerary: itinerary_1, confirmed: false)
+        visit itineraries_path
+
+        expect(page).not_to have_content other_user.name
+      end
+
+      it "旅のプランをクリックすると、旅のプラン情報ページへ遷移すること" do
         visit itineraries_path
         click_on itinerary_1.title
 
         expect(current_path).to eq itinerary_path(id: itinerary_1.id)
+      end
+    end
+
+    context "参加している旅のプランがない場合" do
+      it "メッセージを表示すること" do
+        visit itineraries_path
+        expect(page).to have_content "旅のプランはありません"
       end
     end
   end
@@ -143,6 +158,14 @@ RSpec.describe "Itineraries", type: :system do
       expect(page).to have_content other_user.name
     end
 
+    it "招待中のメンバーのニックネームを表示しないこと" do
+      invitee = create(:user)
+      create(:itinerary_user, user: invitee, itinerary: itinerary, confirmed: false)
+      visit itineraries_path
+
+      expect(page).not_to have_content invitee.name
+    end
+
     context "ログインユーザーがプラン作成者の場合" do
       it "ドロップダウンメニューを表示すること" do
         expect(page).to have_selector "button[id='itinerary_dropdown']"
@@ -162,7 +185,6 @@ RSpec.describe "Itineraries", type: :system do
 
     context "ログインユーザーがプラン作成者でない場合" do
       it "ドロップダウンメニューを表示しないこと" do
-        sign_out user
         sign_in other_user
         visit itinerary_path(itinerary.id)
 

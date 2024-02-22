@@ -65,10 +65,28 @@ RSpec.describe "Posts", type: :request do
   end
 
   describe "GET #new" do
-    it "正常にレスポンスを返すこと" do
+    before do
       sign_in user
+    end
+
+    it "正常にレスポンスを返すこと" do
       get new_post_path
       expect(response).to have_http_status 200
+    end
+
+    it "ログインユーザーが参加している旅のプラン全てを取得すること" do
+      itinerary_1
+      other_users_itinerary = create(:itinerary, owner: other_user)
+      other_users_itinerary.members << user
+      get new_post_path
+      expect(response.body).to include itinerary_1.title, other_users_itinerary.title
+    end
+
+    it "ログインユーザーが招待されているが参加していない旅のプランの情報を取得しないこと" do
+      create(:itinerary_user, user: other_user, itinerary: itinerary_1, confirmed: false)
+      sign_in other_user
+      get new_post_path
+      expect(response.body).not_to include itinerary_1.title
     end
   end
 

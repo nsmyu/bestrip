@@ -78,7 +78,6 @@ RSpec.describe "Itineraries::Places", type: :request do
 
     context "ログインユーザーがプランのメンバーではない場合" do
       it "旅のプラン一覧画面にリダイレクトされること" do
-        sign_out user
         sign_in other_user
         get new_itinerary_place_path(itinerary_id: itinerary.id, place_id: itinerary_place.place_id)
         expect(response).to redirect_to itineraries_path
@@ -132,13 +131,21 @@ RSpec.describe "Itineraries::Places", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "ログインユーザーが所有または所属する旅のプラン全てを取得すること" do
+    it "ログインユーザーが参加している旅のプラン全てを取得すること" do
       other_itinerary_1 = create(:itinerary, owner: user)
       other_itinerary_2 = create(:itinerary, owner: other_user)
       other_itinerary_2.members << user
       get places_select_itinerary_itineraries_path(place_id: itinerary_place.place_id)
       expect(response.body)
         .to include itinerary.title, other_itinerary_1.title, other_itinerary_2.title
+    end
+
+    it "ログインユーザーが招待されているが参加していない旅のプランを取得しないこと" do
+      create(:itinerary, owner: other_user)
+      create(:itinerary_user, user: other_user, itinerary: itinerary, confirmed: false)
+      sign_in other_user
+      get places_select_itinerary_itineraries_path(place_id: itinerary_place.place_id)
+      expect(response.body).not_to include itinerary.title
     end
   end
 

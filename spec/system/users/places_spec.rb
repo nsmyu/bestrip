@@ -106,7 +106,7 @@ RSpec.describe "Users::Places", type: :system do
   describe "お気に入りから削除", js: true do
     let!(:user_place) { create(:user_place, :opera_house, placeable: user) }
 
-    context "スポット検索画面のモーダルから削除する場合" do
+    describe "スポット検索ページのモーダルから削除" do
       it "成功すること（ボタンが追加用フォームに切り替わること）" do
         expect do
           visit new_users_place_path(place_id: user_place.place_id)
@@ -117,7 +117,7 @@ RSpec.describe "Users::Places", type: :system do
       end
     end
 
-    context "お気に入り一覧ページから削除する場合" do
+    describe "お気に入り一覧ページから削除" do
       it "成功すること" do
         expect do
           visit users_places_path

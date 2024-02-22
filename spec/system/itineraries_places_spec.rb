@@ -176,7 +176,7 @@ RSpec.describe "Itineraries::Places", type: :system do
     describe "行きたい場所リストから削除", js: true do
       let!(:itinerary_place) { create(:itinerary_place, :opera_house, placeable: itinerary) }
 
-      context "スポット検索画面のモーダルから削除する場合" do
+      describe "スポット検索ページのモーダルから削除" do
         it "成功すること（ボタンが追加用フォームに切り替わること）" do
           expect {
             visit new_itinerary_place_path(itinerary_id: itinerary.id,
@@ -188,7 +188,7 @@ RSpec.describe "Itineraries::Places", type: :system do
         end
       end
 
-      context "行きたい場所リスト一覧ページから削除する場合" do
+      describe "行きたい場所リスト一覧ページから削除" do
         it "成功すること" do
           expect {
             visit itinerary_places_path(itinerary_id: itinerary.id)

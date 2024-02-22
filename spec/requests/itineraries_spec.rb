@@ -17,7 +17,7 @@ RSpec.describe "Itineraries", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "ログインユーザーが所有または所属する旅のプラン全てを取得すること" do
+    it "ログインユーザーが参加している旅のプラン全てを取得すること" do
       itinerary
       other_itinerary = create(:itinerary, owner: user)
       other_users_itinerary = create(:itinerary, owner: other_user)
@@ -25,6 +25,13 @@ RSpec.describe "Itineraries", type: :request do
       get itineraries_path
       expect(response.body)
         .to include itinerary.title, other_itinerary.title, other_users_itinerary.title
+    end
+
+    it "ログインユーザーが招待されているが参加していない旅のプランの情報を取得しないこと" do
+      create(:itinerary_user, user: other_user, itinerary: itinerary, confirmed: false)
+      sign_in other_user
+      get itineraries_path
+      expect(response.body).not_to include I18n.l itinerary.departure_date
     end
 
     it "旅のプランのタイトル、出発日・帰宅日、メンバー名を取得すること" do
@@ -36,14 +43,13 @@ RSpec.describe "Itineraries", type: :request do
       expect(response.body).to include itinerary.owner.name, other_user.name
     end
 
-    it "招待されているが参加していない旅のプランの情報を取得しないこと" do
+    it "招待中のユーザーのニックネームを取得しないこと" do
       create(:itinerary_user, user: other_user, itinerary: itinerary, confirmed: false)
-      sign_in other_user
       get itineraries_path
-      expect(response.body).not_to include I18n.l itinerary.departure_date
+      expect(response.body).not_to include other_user.name
     end
 
-    it "未応答の旅のプランへの招待を取得すること" do
+    it "旅のプランへの招待通知を取得すること" do
       create(:itinerary_user, user: other_user, itinerary: itinerary, confirmed: false)
       sign_in other_user
       get itineraries_path
@@ -107,7 +113,7 @@ RSpec.describe "Itineraries", type: :request do
         expect(response.body).to include itinerary.owner.name, other_user.name
       end
 
-      it "招待中のメンバー名を取得しないこと" do
+      it "招待中のユーザーのニックネームを取得しないこと" do
         create(:itinerary_user, user: other_user, itinerary: itinerary, confirmed: false)
         get itinerary_path(itinerary.id)
         expect(response.body).not_to include other_user.name
