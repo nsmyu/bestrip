@@ -18,6 +18,12 @@ RSpec.describe ItineraryUser, type: :model do
       expect(itinerary_users.errors).to be_of_kind(:itinerary, :blank)
     end
 
+    it "confirmedがnilの場合は無効であること" do
+      itinerary_users = build(:itinerary_user, confirmed: nil)
+      itinerary_users.valid?
+      expect(itinerary_users.errors).to be_of_kind(:confirmed, :blank)
+    end
+
     it "userとitineraryの組み合わせが一意でない場合、無効であること" do
       itinerary = create(:itinerary)
       user = create(:user)
