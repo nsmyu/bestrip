@@ -27,7 +27,7 @@
   </div>
   <%= render partial: 'shared/fixed_button', locals: { path: :new_itinerary, link_text: "新しいプランを作成" } %>
 </main>
-<% if @itinerary && @itinerary.invitation_pending?(current_user)  %>
+<% if @itinerary && !current_user.confirmed_member_of?(@itinerary)  %>
   <%= render "shared/modal", title: "旅のプランに招待されています" do %>
     <%= render "itinerary_users/form", itinerary: @itinerary %>
   <% end %>

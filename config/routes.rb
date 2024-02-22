@@ -14,7 +14,6 @@ Rails.application.routes.draw do
     get   'users/edit_profile', to: 'users/registrations#edit_profile'
     patch 'users/update_without_password', to: 'users/registrations#update_without_password'
     patch 'users/validate_bestrip_id', to: 'users/registrations#validate_bestrip_id'
-    get   'users/decline_invitation', to: 'users/invitations#decline_invitation'
   end
 
   concern :placeable do
@@ -35,10 +34,11 @@ Rails.application.routes.draw do
       resources :itinerary_users, only: %i(new create destroy)
       get 'find_by_bestrip_id', to: 'itinerary_users#find_by_bestrip_id'
       get 'search_user', to: 'itinerary_users#search_user'
+      get 'decline_invitation', to: 'users/itinerary_users#decline_invitation'
     end
 
     scope module: :itineraries do
-      get  'places/select_itinerary',     to: 'places#select_itinerary', on: :collection
+      get  'places/select_itinerary', to: 'places#select_itinerary', on: :collection
       post 'places/add_from_user_places', to: 'places#add_from_user_places'
       concerns :placeable
     end

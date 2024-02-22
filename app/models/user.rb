@@ -6,8 +6,6 @@ class User < ApplicationRecord
   has_many :itinerary_users, dependent: :destroy
   has_many :itineraries, through: :itinerary_users
   has_many :owned_itineraries, class_name: "Itinerary", dependent: :destroy
-  has_many :pending_invitations, dependent: :destroy
-  has_many :invited_to_itineraries, through: :pending_invitations
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
@@ -43,6 +41,20 @@ class User < ApplicationRecord
 
   def guest?
     email == 'guest@example.com'
+  end
+
+  def confirmed_member_of?(itinerary)
+    ItineraryUser.find_by(user_id: self, itinerary: itinerary)&.confirmed?
+  end
+
+  def confirmed_itineraries
+    self.itineraries.includes(:members)
+      .select { |itinerary| itinerary.confirmed_by?(self) }
+      .sort_by { |itinerary| itinerary.departure_date }.reverse
+  end
+
+  def pending_invitations
+    ItineraryUser.where(user_id: id).where(confirmed: false)
   end
 
   private

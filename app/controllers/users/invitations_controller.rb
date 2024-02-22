@@ -10,7 +10,7 @@ class Users::InvitationsController < Devise::InvitationsController
     existing_user = User.find_by(email: invite_params[:email])
 
     if existing_user
-      if @itinerary.members.include?(existing_user)
+      if existing_user.confirmed_member_of?(@itinerary)
         @already_added_error = "#{existing_user.name}さんはすでにメンバーに含まれています"
         return
       end
@@ -18,7 +18,7 @@ class Users::InvitationsController < Devise::InvitationsController
       existing_user.send("currently_invited_to=", @itinerary.id)
       existing_user.invite!(current_user)
       self.resource = existing_user
-      PendingInvitation.create(invitee: resource, invited_to_itinerary: @itinerary)
+      ItineraryUser.create(user: resource, itinerary: @itinerary, confirmed: false)
       redirect_to itinerary_path(@itinerary.id), notice: "招待メールを#{existing_user.email}に送信しました。"
       return
     end
@@ -28,17 +28,12 @@ class Users::InvitationsController < Devise::InvitationsController
     yield resource if block_given?
 
     if resource_invited
-      PendingInvitation.create(invitee: resource, invited_to_itinerary: @itinerary)
+      ItineraryUser.create(user: resource, itinerary: @itinerary, confirmed: false)
       if is_flashing_format? && resource.invitation_sent_at
         set_flash_message :notice, :send_instructions, email: resource.email
       end
       respond_with resource, location: itinerary_path(@itinerary.id)
     end
-  end
-
-  def decline_invitation
-    current_user.pending_invitations.find_by(itinerary_id: @itinerary.id)&.destroy
-    redirect_to :itineraries, notice: "「#{@itinerary.title}」への招待を削除しました。"
   end
 
   private

@@ -1,5 +1,5 @@
 module ItinerariesHelper
   def member_names(itinerary)
-    itinerary.members.map { |i| i.name }.join(", ")
+    itinerary.confirmed_members.map { |member| member.name }.join(", ")
   end
 end

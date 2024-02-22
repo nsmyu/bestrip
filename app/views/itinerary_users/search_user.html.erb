@@ -5,7 +5,7 @@
       <p class="text-dark fw-bold"><%= @user.name %></p>
       <%= f.hidden_field :user_id, value: @user.id %>
       <div class="mt-3">
-        <% if @itinerary.members.include?(@user) %>
+        <% if @user.confirmed_member_of?(@itinerary) %>
           <p class="text-dark text-sm">すでにメンバーに含まれています</p>
         <% else %>
           <%= f.submit "メンバーに追加", class: "btn bg-gradient-primary" %>

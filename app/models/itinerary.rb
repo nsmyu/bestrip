@@ -4,8 +4,6 @@ class Itinerary < ApplicationRecord
   belongs_to :owner, class_name: 'User', foreign_key: :user_id
   has_many   :itinerary_users, dependent: :destroy
   has_many   :members, through: :itinerary_users, source: :user
-  has_many   :pending_invitations, dependent: :destroy
-  has_many   :invitees, through: :pending_invitations
   has_many   :schedules, dependent: :destroy
   has_many   :posts, dependent: :destroy
 
@@ -21,8 +19,13 @@ class Itinerary < ApplicationRecord
     joins(:schedules).merge(Schedule.where("schedules.title LIKE?", "%#{keyword}%"))
   end
 
-  def invitation_pending?(user)
-    PendingInvitation.find_by(user_id: user.id, itinerary_id: id)
+  def confirmed_by?(user)
+    ItineraryUser.find_by(itinerary: self, user: user)&.confirmed?
+  end
+
+  def confirmed_members
+    self.members.select { |member| member.confirmed_member_of?(self) }
+      .sort_by { |member| member.itinerary_users.find_by(itinerary_id: id).id }
   end
 
   private
