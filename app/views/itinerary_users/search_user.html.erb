@@ -8,7 +8,10 @@
         <% if @user.confirmed_member_of?(@itinerary) %>
           <p class="text-dark text-sm">すでにメンバーに含まれています</p>
         <% else %>
-          <%= f.submit "メンバーに追加", class: "btn bg-gradient-primary" %>
+          <div class="text-center">
+            <%= f.submit "メンバーに追加", class: "btn bg-gradient-primary" %>
+            <p class="text-dark text-xs">「メンバーに追加」を押すと、すぐに旅のメンバーに追加されます</p>
+          <div>
         <% end %>
       </div>
     </div>
