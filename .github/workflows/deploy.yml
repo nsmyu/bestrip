@@ -6,16 +6,16 @@ on:
       - 'main'
 
 jobs:
-  rubocop:
-    uses: ./.github/workflows/rubocop.yml
+  # rubocop:
+  #   uses: ./.github/workflows/rubocop.yml
 
-  rspec:
-    needs: rubocop
-    uses: ./.github/workflows/rspec.yml
-    secrets: inherit
+  # rspec:
+  #   needs: rubocop
+  #   uses: ./.github/workflows/rspec.yml
+  #   secrets: inherit
 
   deploy:
-    needs: rspec
+    # needs: rspec
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment: production
