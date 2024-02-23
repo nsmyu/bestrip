@@ -8,7 +8,7 @@ RSpec.describe "ItineraryUsers", type: :system do
       before do
         set_signed_in_user(user_type)
         visit itinerary_path(itinerary.id)
-        click_on "BesTrip IDでメンバーを追加"
+        find("div.invitation-icon", match: :first).click
       end
 
       context "検索したユーザーをメンバーに追加できる場合" do

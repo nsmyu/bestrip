@@ -13,21 +13,24 @@ RSpec.describe "Users::Invitations", type: :system do
       visit itinerary_path(itinerary.id)
     end
 
-    context "正常な値の場合" do
+    context "正常な値の場合", js: true, focus: true do
       it "アカウント未登録ユーザーへのメール送信に成功し、再送信も成功すること" do
         expect do
-          click_on "メールでメンバーを招待"
+          find("i", text: "email").click
           fill_in "user[email]", with: invitee.email
           click_on "招待メールを送る"
+          sleep 2
 
           expect(page).to have_content "招待メールを#{invitee.email}に送信しました。"
           expect(current_path).to eq itinerary_path(itinerary.id)
         end.to change(User, :count).by(1).and change { itinerary.members.count }.by(1)
 
         expect do
-          click_on "メールでメンバーを招待"
+          visit itinerary_path(itinerary.id)
+          find("i", text: "email").click
           fill_in "user[email]", with: invitee.email
           click_on "招待メールを送る"
+          sleep 2
 
           expect(page).to have_content "招待メールを#{invitee.email}に送信しました。"
           expect(current_path).to eq itinerary_path(itinerary.id)
@@ -37,18 +40,21 @@ RSpec.describe "Users::Invitations", type: :system do
       it "既存ユーザーへの招待メール送信に成功し、再送信も成功すること" do
         invitee.save
         expect do
-          click_on "メールでメンバーを招待"
+          find("i", text: "email").click
           fill_in "user[email]", with: invitee.email
           click_on "招待メールを送る"
+          sleep 2
 
           expect(page).to have_content "招待メールを#{invitee.email}に送信しました。"
           expect(current_path).to eq itinerary_path(itinerary.id)
         end.to not_change(User, :count).and change { itinerary.members.count }.by(1)
 
         expect do
-          click_on "メールでメンバーを招待"
+          visit itinerary_path(itinerary.id)
+          find("i", text: "email").click
           fill_in "user[email]", with: invitee.email
           click_on "招待メールを送る"
+          sleep 2
 
           expect(page).to have_content "招待メールを#{invitee.email}に送信しました。"
           expect(current_path).to eq itinerary_path(itinerary.id)
@@ -59,7 +65,7 @@ RSpec.describe "Users::Invitations", type: :system do
     context "無効な値の場合", js: true do
       it "メールアドレスが空欄の場合、失敗すること" do
         expect do
-          click_on "メールでメンバーを招待"
+          find("i", text: "email").click
           fill_in "user[email]", with: ""
           click_on "招待メールを送る"
 
@@ -71,7 +77,7 @@ RSpec.describe "Users::Invitations", type: :system do
         invitee.save
         itinerary.members << invitee
         expect do
-          click_on "メールでメンバーを招待"
+          find("i", text: "email").click
           fill_in "user[email]", with: invitee.email
           click_on "招待メールを送る"
 
