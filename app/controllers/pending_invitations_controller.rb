@@ -3,7 +3,8 @@ class PendingInvitationsController < ApplicationController
   before_action :set_itinerary
 
   def create
-
+    @invitation_code = SecureRandom.urlsafe_base64
+    PendingInvitation.create(itinerary_id: @itinerary.id, invitation_code: @invitation_code)
   end
 
   def destroy

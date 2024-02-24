@@ -4,10 +4,11 @@ class Users::SessionsController < Devise::SessionsController
   def new
     session[:previous_url] = request.referer
 
-    if params[:itinerary_id]
+    token = Devise.token_generator.digest(User, :invitation_token, params[:invitation_token])
+    user = User.find_by(invitation_token: token)
+    if user
       set_itinerary
-      sign_in_params = ActiveSupport::HashWithIndifferentAccess
-        .new(email: User.find(params[:id]).email)
+      sign_in_params = ActiveSupport::HashWithIndifferentAccess.new(email: user.email)
     end
 
     self.resource = resource_class.new(sign_in_params)

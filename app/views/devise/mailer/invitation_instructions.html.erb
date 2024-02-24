@@ -14,7 +14,7 @@
   </div>
   <% if @registration_completed %>
     <div style="display:flex;justify-content:center;margin-bottom:20px;">
-      <%= link_to "ログインして参加する", new_user_session_url(id: @resource.id, itinerary_id: @itinerary.id), style: "padding:10px 24px;margin:0px auto;background:#51c2d5;color:#FFF;text-decoration:none;text-align:center;border-radius:8px;font-size:15px;font-weight:500;font-family:sans-serif;" %>
+      <%= link_to "ログインして参加する", new_user_session_url(invitation_token: @token, itinerary_id: @itinerary.id), style: "padding:10px 24px;margin:0px auto;background:#51c2d5;color:#FFF;text-decoration:none;text-align:center;border-radius:8px;font-size:15px;font-weight:500;font-family:sans-serif;" %>
     </div>
   <% else %>
     <div style="display:flex;justify-content:center;margin-bottom:20px;">

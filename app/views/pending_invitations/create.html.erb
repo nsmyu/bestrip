@@ -1,0 +1,4 @@
+<%= turbo_frame_tag "line_invitation" do %>
+  <%= link_to "share_with_line", "https://social-plugins.line.me/lineit/share?url=https://bestrip.click?invitation_code=#{@invitation_code}&text=旅のプランのメンバーに招待したよ！リンクから参加してね🎵",
+    id: "request_url", class: "d-none" %>
+<% end %>

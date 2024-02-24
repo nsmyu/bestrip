@@ -16,7 +16,7 @@
     <% end %>
     <div class="mt-4 mb-2 pt-3">
       <h6 class="border-bottom pb-1">メンバーを追加</h6>
-      <div class="row d-flex justify-content-evenly mt-4 mx-auto w-80">
+      <div class="row d-flex justify-content-evenly mt-4 mx-auto w-90">
         <div class="col pe-0 text-center">
           <%= link_to :find_by_bestrip_id_itinerary, class: "d-inline-block", data: { turbo_frame: "modal" } do %>
             <div class="mx-auto border border-primary text-primary rounded-circle invitation-icon hover-opacity d-flex align-items-center justify-content-center">
@@ -37,11 +37,14 @@
           <p class="text-xs mt-2">メールで招待</p>
         </div>
         <div class="col ps-0 text-center">
-          <%= link_to "https://social-plugins.line.me/lineit/share?url=https://bestrip.click?line_invitation_to=1&text=旅行のメンバーに招待したよ！リンクから参加してね🎵",
-            data: { controller: "small-window", action: "click->small-window#popupWindow" } do %>
-            <%= image_tag "LINE_icon.png", class:"invitation-icon hover-opacity" %>
+          <%= form_with url: [:itinerary_pending_invitations, itinerary_id: @itinerary.id], data: { turbo_frame: "line_invitation" } do |f| %>
+            <label for="line_invitation_btn" class="m-0 cursor-pointer">
+              <%= f.submit "この旅のプランに参加する", class: "d-none", id: "line_invitation_btn" %>
+              <%= image_tag "LINE_icon.png", class:"invitation-icon hover-opacity" %>
+            </label>
           <% end %>
           <p class="text-xs mt-2">LINEで招待</p>
+          <%= turbo_frame_tag "line_invitation", data: { controller: "line-invitation", action: "turbo:frame-render->line-invitation#popupWindow" } %>
         </div>
       </div>
     </div>
