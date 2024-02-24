@@ -31,12 +31,12 @@ Rails.application.routes.draw do
 
   resources :itineraries do
     resources :schedules
+    resources :pending_invitations, only: %i(create destroy)
 
     member do
       resources :itinerary_users, only: %i(new create destroy)
       get 'find_by_bestrip_id', to: 'itinerary_users#find_by_bestrip_id'
       get 'search_user',        to: 'itinerary_users#search_user'
-      get 'decline_invitation', to: 'itinerary_users#decline_invitation'
     end
 
     scope module: :itineraries do

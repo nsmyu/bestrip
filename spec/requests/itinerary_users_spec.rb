@@ -102,15 +102,6 @@ RSpec.describe "ItineraryUsers", type: :request do
     end
   end
 
-  describe "GET #decline_invitation" do
-    it "成功すること" do
-      create(:itinerary_user, user: user_1, itinerary: itinerary)
-      sign_in user_1
-      get decline_invitation_itinerary_path(itinerary.id)
-      expect(response).to redirect_to itineraries_path
-    end
-  end
-
   describe "DELETE #destroy" do
     before do
       itinerary.members << user_1 << user_2

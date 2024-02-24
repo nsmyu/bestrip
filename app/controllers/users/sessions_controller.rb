@@ -33,8 +33,8 @@ class Users::SessionsController < Devise::SessionsController
   protected
 
   def after_sign_in_path_for(resource_or_scope)
-    if params[:user] && params[:user][:invited_to_itinerary]
-      itineraries_path(invited_to_itinerary: params[:user][:invited_to_itinerary])
+    if params[:user] && params[:user][:invited_itinerary_id]
+      itineraries_path(invited_itinerary_id: params[:user][:invited_itinerary_id])
     elsif session[:previous_url] && URI(session[:previous_url].to_s).path.start_with?("/posts")
       session[:previous_url]
     else

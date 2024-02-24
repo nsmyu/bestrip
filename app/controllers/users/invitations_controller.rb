@@ -39,7 +39,7 @@ class Users::InvitationsController < Devise::InvitationsController
   private
 
   def after_accept_path_for(resource)
-    itineraries_path(invited_to_itinerary: @itinerary.id)
+    itineraries_path(invited_itinerary_id: @itinerary.id)
   end
 
   def invite_resource

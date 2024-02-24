@@ -21,10 +21,6 @@ class Itinerary < ApplicationRecord
     joins(:schedules).merge(Schedule.where("schedules.title LIKE?", "%#{keyword}%"))
   end
 
-  def invitation_pending?(user)
-    PendingInvitation.find_by(user_id: user.id, itinerary_id: id)
-  end
-
   private
 
   def add_owner_to_members

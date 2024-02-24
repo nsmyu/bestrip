@@ -1,6 +1,6 @@
 class ItineraryUsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_itinerary, only: %i(new create decline_invitation)
+  before_action :set_itinerary, only: %i(new create)
   before_action -> {
     set_itinerary
     authenticate_itinerary_member(@itinerary)
@@ -41,11 +41,6 @@ class ItineraryUsersController < ApplicationController
       @itinerary.members << user
       redirect_to @itinerary, notice: "#{user.name}さんを旅のメンバーに追加しました。"
     end
-  end
-
-  def decline_invitation
-    current_user.pending_invitations.find_by(itinerary_id: @itinerary.id)&.destroy
-    redirect_to :itineraries, notice: "「#{@itinerary.title}」への招待を削除しました。"
   end
 
   def destroy

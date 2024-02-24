@@ -92,7 +92,7 @@ RSpec.describe "Users::Invitations", type: :request do
     context "有効な値の場合" do
       it "成功すること" do
         patch user_invitation_path, params: { user: @user_params, itinerary_id: itinerary.id }
-        expect(response).to redirect_to itineraries_path(invited_to_itinerary: itinerary.id)
+        expect(response).to redirect_to itineraries_path(invited_itinerary_id: itinerary.id)
         expect(invitee.pending_invitations).not_to include itinerary
       end
     end
