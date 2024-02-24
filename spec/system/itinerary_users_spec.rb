@@ -74,8 +74,8 @@ RSpec.describe "ItineraryUsers", type: :system do
 
     before do
       sign_in invitee
-      create(:itinerary_user, user: invitee, itinerary: itinerary_1, confirmed: false)
-      create(:itinerary_user, user: invitee, itinerary: itinerary_2, confirmed: false)
+      create(:pending_invitation, user: invitee, itinerary: itinerary_1)
+      create(:pending_invitation, user: invitee, itinerary: itinerary_2)
       visit itineraries_path
     end
 

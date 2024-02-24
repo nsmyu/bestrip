@@ -143,14 +143,6 @@ RSpec.describe "Itineraries", type: :system do
       expect(page).to have_content other_user.name
     end
 
-    it "招待中のメンバーのニックネームを表示しないこと" do
-      invitee = create(:user)
-      create(:itinerary_user, user: invitee, itinerary: itinerary, confirmed: false)
-      visit itineraries_path
-
-      expect(page).not_to have_content invitee.name
-    end
-
     context "ログインユーザーがプラン作成者の場合" do
       it "ドロップダウンメニューを表示すること" do
         expect(page).to have_selector "button[id='itinerary_dropdown']"
