@@ -21,14 +21,16 @@ RSpec.describe PendingInvitation, type: :model do
 
     it "itinerary_idとinvitation_codeの組み合わせが一意でない場合、無効であること" do
       itinerary = create(:itinerary)
-      existing_invitation = create(:pending_invitation, :with_invitation_code, itinerary: itinerary)
-      pending_invitation = build(:pending_invitation, itinerary: itinerary, invitation_code: existing_invitation.invitation_code)
+      invitation = create(:pending_invitation, :with_invitation_code, itinerary: itinerary)
+      pending_invitation = build(:pending_invitation, itinerary: itinerary,
+                                                      invitation_code: invitation.invitation_code)
       pending_invitation.valid?
       expect(pending_invitation.errors).to be_of_kind(:invitation_code, :taken)
     end
 
     it "itinerary_idがなければ無効であること" do
-      pending_invitations = build(:pending_invitation, :with_user_id, :with_invitation_code, itinerary: nil)
+      pending_invitations =
+        build(:pending_invitation, :with_user_id, :with_invitation_code, itinerary: nil)
       pending_invitations.valid?
       expect(pending_invitations.errors).to be_of_kind(:itinerary, :blank)
     end

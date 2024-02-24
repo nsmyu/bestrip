@@ -1,7 +1,7 @@
 class Users::LineLoginApiController < ApplicationController
   def login
     session[:state] = SecureRandom.urlsafe_base64
-    line_login_api_callback_url = "https://8031-125-15-187-39.ngrok-free.app/line_login_api/callback"
+    line_login_api_callback_url = "https://4a7c-125-15-187-39.ngrok-free.app/line_login_api/callback"
 
     base_authorization_url = 'https://access.line.me/oauth2/v2.1/authorize'
     response_type = 'code'
@@ -9,7 +9,9 @@ class Users::LineLoginApiController < ApplicationController
     redirect_uri = CGI.escape(line_login_api_callback_url)
     state = session[:state]
     scope = 'profile%20openid%20email'
-    authorization_url = "#{base_authorization_url}?response_type=#{response_type}&client_id=#{client_id}&redirect_uri=#{redirect_uri}&state=#{state}&scope=#{scope}"
+    authorization_url =
+      "#{base_authorization_url}?response_type=#{response_type}&client_id=#{client_id}" +
+      "&redirect_uri=#{redirect_uri}&state=#{state}&scope=#{scope}"
 
     redirect_to authorization_url, allow_other_host: true
   end
@@ -53,7 +55,7 @@ class Users::LineLoginApiController < ApplicationController
         body: {
           id_token: line_user_id_token,
           client_id: ENV['LINE_KEY'],
-        }
+        },
       }
       response = Typhoeus::Request.post(url, options)
       if response.code == 200
@@ -72,15 +74,15 @@ class Users::LineLoginApiController < ApplicationController
 
     options = {
       headers: {
-        'Content-Type' => 'application/x-www-form-urlencoded'
+        'Content-Type' => 'application/x-www-form-urlencoded',
       },
       body: {
         grant_type: 'authorization_code',
         code: code,
         redirect_uri: redirect_uri,
         client_id: ENV['LINE_KEY'],
-        client_secret: ENV['LINE_SECRET']
-      }
+        client_secret: ENV['LINE_SECRET'],
+      },
     }
     response = Typhoeus::Request.post(url, options)
 
