@@ -61,6 +61,7 @@ gem 'dotenv-rails'
 gem 'faker'
 gem 'counter_culture'
 gem 'devise_invitable'
+gem 'typhoeus'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

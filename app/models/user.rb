@@ -25,6 +25,7 @@ class User < ApplicationRecord
     validates :password_confirmation, presence: true
   end
   validates :introduction, length: { maximum: 500 }
+  validates :line_user_id, uniqueness: true, allow_nil: true
 
   after_create :add_guest_to_itineraries, if: :guest?
 
@@ -58,6 +59,10 @@ class User < ApplicationRecord
 
   def pending_invitations
     ItineraryUser.where(user_id: id).where(confirmed: false)
+  end
+
+  def setup_attach_avatar(image_url)
+    self.remote_avatar_url = image_url
   end
 
   private

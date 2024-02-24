@@ -1,8 +1,14 @@
 .fixed-plugin{
   .fixed-plugin-button{
+    @include media-breakpoint-up(sm) {
+      bottom: $fixed-plugin-bottom;
+      right: $fixed-plugin-right;
+    }
+    @include media-breakpoint-down(sm) {
+      bottom: 15px;
+      right: 15px;
+    }
     border-radius: $fixed-plugin-radius;
-    bottom: $fixed-plugin-bottom;
-    right: $fixed-plugin-right;
     font-size: $font-size-xl;
     z-index: $fixed-plugin-button-z-index;
     box-shadow: $fixed-plugin-box-shadow;

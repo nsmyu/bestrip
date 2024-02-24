@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     patch 'users/update_without_password', to: 'users/registrations#update_without_password'
     patch 'users/validate_bestrip_id',     to: 'users/registrations#validate_bestrip_id'
   end
+  get 'line_login_api/login',    to: 'users/line_login_api#login'
+  get 'line_login_api/callback', to: 'users/line_login_api#callback'
 
   concern :placeable do
     get 'places/index_lazy', to: 'places#index_lazy'

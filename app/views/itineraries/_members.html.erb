@@ -37,7 +37,7 @@
           <p class="text-xs mt-2">メールで招待</p>
         </div>
         <div class="col ps-0 text-center">
-          <%= link_to "https://social-plugins.line.me/lineit/share?url=https://bestrip.click/itineraries/9&text=旅行のプランをつくったよ！メンバーに参加してね🎵",
+          <%= link_to "https://social-plugins.line.me/lineit/share?url=https://bestrip.click?line_invitation_to=1&text=旅行のメンバーに招待したよ！リンクから参加してね🎵",
             data: { controller: "small-window", action: "click->small-window#popupWindow" } do %>
             <%= image_tag "LINE_icon.png", class:"invitation-icon hover-opacity" %>
           <% end %>
