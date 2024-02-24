@@ -13,14 +13,14 @@ class Itineraries::PlacesController < PlacesController
   end
 
   def select_itinerary
-    @itineraries = current_user.confirmed_itineraries
+    @itineraries = current_user.itineraries.order(departure_date: :desc)
     @itinerary = @itineraries[0]
     @place = Place.new
     @place_id = params[:place_id]
   end
 
   def add_from_user_places
-    @itineraries = current_user.confirmed_itineraries
+    @itineraries = current_user.itineraries.order(departure_date: :desc)
     @place = @placeable.places.new(place_params)
     @place.save
   end

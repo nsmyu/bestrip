@@ -7,7 +7,7 @@ class ItinerariesController < ApplicationController
   before_action :authenticate_itinerary_owner, only: %i(edit update destroy)
 
   def index
-    @itineraries = current_user.confirmed_itineraries
+    @itineraries = current_user.itineraries.includes(:members).order(departure_date: :desc)
     @invitations = current_user.pending_invitations.order(:created_at).map do |invitation|
       { id: invitation.itinerary_id, title: Itinerary.find(invitation.itinerary_id).title }
     end
@@ -29,7 +29,7 @@ class ItinerariesController < ApplicationController
   end
 
   def show
-    @itinerary_members = @itinerary.confirmed_members
+    @itinerary_members = @itinerary.members.order("itinerary_users.id")
       .partition { |member| member.id == current_user.id }.flatten
   end
 

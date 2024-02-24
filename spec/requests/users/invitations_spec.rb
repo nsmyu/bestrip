@@ -29,7 +29,7 @@ RSpec.describe "Users::Invitations", type: :request do
         invitation_params = { user: { name: invitee.name, email: invitee.email } }
         post user_invitation_path(itinerary_id: itinerary.id), params: invitation_params
         expect(response).to redirect_to itinerary_path(itinerary.id)
-        expect(ItineraryUser.last.confirmed).to be_falsey
+        expect(itinerary.reload.invitees).to include User.last
       end
 
       it "既存ユーザーへの招待メール送信に成功すること" do
@@ -37,7 +37,7 @@ RSpec.describe "Users::Invitations", type: :request do
         invitation_params = { user: { email: invitee.email } }
         post user_invitation_path(itinerary_id: itinerary.id), params: invitation_params
         expect(response).to redirect_to itinerary_path(itinerary.id)
-        expect(ItineraryUser.last.confirmed).to be_falsey
+        expect(itinerary.reload.invitees).to include invitee
       end
     end
 

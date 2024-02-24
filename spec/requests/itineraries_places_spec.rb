@@ -139,14 +139,6 @@ RSpec.describe "Itineraries::Places", type: :request do
       expect(response.body)
         .to include itinerary.title, other_itinerary_1.title, other_itinerary_2.title
     end
-
-    it "ログインユーザーが招待されているが参加していない旅のプランを取得しないこと" do
-      create(:itinerary, owner: other_user)
-      create(:itinerary_user, user: other_user, itinerary: itinerary, confirmed: false)
-      sign_in other_user
-      get places_select_itinerary_itineraries_path(place_id: itinerary_place.place_id)
-      expect(response.body).not_to include itinerary.title
-    end
   end
 
   describe "POST #add_from_user_places" do

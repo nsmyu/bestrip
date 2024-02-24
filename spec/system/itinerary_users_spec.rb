@@ -26,7 +26,7 @@ RSpec.describe "ItineraryUsers", type: :system do
 
             expect(page).to have_content "#{new_member.name}さんを旅のメンバーに追加しました。"
             expect(current_path).to eq itinerary_path(itinerary.id)
-          }.to change { itinerary.confirmed_members.count }.by(1)
+          }.to change { itinerary.members.count }.by(1)
         end
       end
 
@@ -93,7 +93,7 @@ RSpec.describe "ItineraryUsers", type: :system do
         expect(page).to have_content "旅のプランに参加しました。"
         expect(page).to have_content I18n.l itinerary_1.departure_date
         expect(current_path).to eq itineraries_path
-      end.to change { itinerary_1.confirmed_members.count }.by(1)
+      end.to change { itinerary_1.members.count }.by(1)
     end
 
     it "招待の削除に成功すること" do
@@ -108,7 +108,7 @@ RSpec.describe "ItineraryUsers", type: :system do
         expect(page).not_to have_content I18n.l itinerary_1.departure_date
         expect(page).to have_content "「#{itinerary_1.title}」への招待を削除しました。"
         expect(current_path).to eq itineraries_path
-      end.to not_change { itinerary_1.confirmed_members.count }
+      end.to not_change { itinerary_1.members.count }
     end
   end
 
@@ -130,7 +130,7 @@ RSpec.describe "ItineraryUsers", type: :system do
 
         expect(page).to have_content "#{member.name}さんを旅のメンバーから削除しました。"
         expect(current_path).to eq itinerary_path(itinerary.id)
-      }.to change { itinerary.confirmed_members.count }.by(-1)
+      }.to change { itinerary.members.count }.by(-1)
     end
 
     it "プランの作成者以外はメンバー削除ができない（削除ボタンが表示されない）こと" do

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "ItineraryUsers", type: :request do
   let(:owner) { create(:user) }
-  let(:user_1) { create(:user, bestrip_id: "user_1_id") }
+  let(:user_1) { create(:user, bestrip_id: "bestrip_id") }
   let(:user_2) { create(:user) }
   let(:itinerary) { create(:itinerary, owner: owner) }
 
@@ -29,19 +29,10 @@ RSpec.describe "ItineraryUsers", type: :request do
 
   describe "GET #search_user" do
     context "ログインユーザーがプランのメンバーである場合" do
-      it "検索したBesTrip IDのユーザー（招待中ではない）の追加ボタンを取得すること" do
+      it "検索したBesTrip IDのユーザーのニックネームを取得すること" do
         user_search_params = { bestrip_id: user_1.bestrip_id, id: itinerary.id }
         get search_user_itinerary_path(itinerary.id), params: user_search_params
         expect(response.body).to include user_1.name
-        expect(response.body).to include "メンバーに追加"
-      end
-
-      it "検索したBesTrip IDのユーザー（招待中）の追加ボタンを取得すること" do
-        create(:itinerary_user, user: user_1, itinerary: itinerary, confirmed: false)
-        user_search_params = { bestrip_id: user_1.bestrip_id, id: itinerary.id }
-        get search_user_itinerary_path(itinerary.id), params: user_search_params
-        expect(response.body).to include user_1.name
-        expect(response.body).to include "メンバーに追加"
       end
 
       it "検索したBesTrip IDのユーザーが存在しない場合、メッセージを返すこと" do
@@ -79,11 +70,12 @@ RSpec.describe "ItineraryUsers", type: :request do
         end
 
         it "招待中のユーザーの追加に成功すること" do
-          create(:itinerary_user, user: user_1, itinerary: itinerary, confirmed: false)
+          create(:pending_invitation, user: user_1, itinerary: itinerary)
           add_member_params = { user_id: user_1.id, id: itinerary.id }
           post itinerary_users_path(itinerary.id), params: add_member_params
           expect(response).to redirect_to itinerary_path(itinerary.id)
-          expect(itinerary.reload.confirmed_members).to include user_1
+          expect(itinerary.reload.members).to include user_1
+          expect(itinerary.reload.invitees).not_to include user_1
         end
       end
 
@@ -99,12 +91,13 @@ RSpec.describe "ItineraryUsers", type: :request do
 
     describe "メールでの招待から旅のプランに参加" do
       it "成功すること" do
-        create(:itinerary_user, user: user_1, itinerary: itinerary, confirmed: false)
+        create(:pending_invitation, user: user_1, itinerary: itinerary)
         sign_in user_1
         join_member_params = { user_id: user_1.id, id: itinerary.id }
         post itinerary_users_path(itinerary.id), params: join_member_params
         expect(response).to redirect_to itineraries_path
-        expect(itinerary.reload.confirmed_members).to include user_1
+        expect(itinerary.reload.members).to include user_1
+        expect(itinerary.reload.invitees).not_to include user_1
       end
     end
   end

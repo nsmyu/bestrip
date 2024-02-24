@@ -46,23 +46,6 @@ class User < ApplicationRecord
     email == 'guest@example.com'
   end
 
-  def confirmed_member_of?(itinerary)
-    ItineraryUser.find_by(user_id: self, itinerary: itinerary)&.confirmed?
-  end
-
-  def confirmed_itineraries
-    itinerary_users = ItineraryUser.where(user_id: id).where(confirmed: true)
-    confirmed_itineraries = []
-    itinerary_users.each do |itinerary_user|
-      confirmed_itineraries << Itinerary.find(itinerary_user.itinerary_id)
-    end
-    confirmed_itineraries.sort_by { |itinerary| itinerary.departure_date }.reverse
-  end
-
-  def pending_invitations
-    ItineraryUser.where(user_id: id).where(confirmed: false)
-  end
-
   def setup_attach_avatar(image_url)
     self.remote_avatar_url = image_url
   end

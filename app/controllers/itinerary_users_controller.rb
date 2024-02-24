@@ -4,7 +4,7 @@ class ItineraryUsersController < ApplicationController
   before_action -> {
     set_itinerary
     authenticate_itinerary_member(@itinerary)
-  }, only: %i(find_by_bestrip_id search_user invite_user destroy)
+  }, only: %i(find_by_bestrip_id search_user destroy)
 
   def new
   end
@@ -23,12 +23,22 @@ class ItineraryUsersController < ApplicationController
 
   def create
     user = User.find(params[:user_id])
-    user.pending_invitations.find_by(itinerary_id: @itinerary.id)&.update(confirmed: true)
-    if user == current_user
-      redirect_to :itineraries, notice: "旅のプランに参加しました。"
+    invitation = user.pending_invitations.find_by(itinerary_id: @itinerary.id)
+
+    if invitation
+      if user == current_user
+        @itinerary.members << user
+        invitation.destroy
+        redirect_to :itineraries, notice: "旅のプランに参加しました。"
+      else
+        return if @itinerary.members.exclude? current_user
+        @itinerary.members << user
+        invitation.destroy
+        redirect_to @itinerary, notice: "#{user.name}さんを旅のメンバーに追加しました。"
+      end
     else
-      return if authenticate_itinerary_member(@itinerary)
-      @itinerary.members << user if @itinerary.members.exclude?(user)
+      return if @itinerary.members.exclude? current_user
+      @itinerary.members << user
       redirect_to @itinerary, notice: "#{user.name}さんを旅のメンバーに追加しました。"
     end
   end

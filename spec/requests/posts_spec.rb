@@ -81,13 +81,6 @@ RSpec.describe "Posts", type: :request do
       get new_post_path
       expect(response.body).to include itinerary_1.title, other_users_itinerary.title
     end
-
-    it "ログインユーザーが招待されているが参加していない旅のプランの情報を取得しないこと" do
-      create(:itinerary_user, user: other_user, itinerary: itinerary_1, confirmed: false)
-      sign_in other_user
-      get new_post_path
-      expect(response.body).not_to include itinerary_1.title
-    end
   end
 
   describe "POST #create" do

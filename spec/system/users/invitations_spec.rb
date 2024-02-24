@@ -111,7 +111,7 @@ RSpec.describe "Users::Invitations", type: :system do
 
             expect(page).to have_content "旅のプランに参加しました。"
             expect(page).to have_content I18n.l itinerary.departure_date
-          end.to change { itinerary.confirmed_members.count }.by(1)
+          end.to change { itinerary.members.count }.by(1)
         end
       end
 
@@ -126,7 +126,7 @@ RSpec.describe "Users::Invitations", type: :system do
             click_on "アカウント登録"
 
             expect(page).to have_content "ニックネームを入力してください"
-          end.not_to change { itinerary.confirmed_members.count }
+          end.not_to change { itinerary.members.count }
         end
 
         it "パスワードが空欄の場合、失敗すること" do
@@ -139,7 +139,7 @@ RSpec.describe "Users::Invitations", type: :system do
             click_on "アカウント登録"
 
             expect(page).to have_content "パスワードを入力してください"
-          end.not_to change { itinerary.confirmed_members.count }
+          end.not_to change { itinerary.members.count }
         end
 
         it "確認用パスワードが一致しない場合、失敗すること" do
@@ -152,7 +152,7 @@ RSpec.describe "Users::Invitations", type: :system do
             click_on "アカウント登録"
 
             expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
-          end.not_to change { itinerary.confirmed_members.count }
+          end.not_to change { itinerary.members.count }
         end
       end
     end
@@ -170,7 +170,7 @@ RSpec.describe "Users::Invitations", type: :system do
 
           expect(page).to have_content "旅のプランに参加しました。"
           expect(page).to have_content I18n.l itinerary.departure_date
-        end.to change { itinerary.confirmed_members.count }.by(1)
+        end.to change { itinerary.members.count }.by(1)
       end
 
       # 既存ユーザーの異常系テストは通常のログイン時と同様のため実施しない（sessions_spec.rbで実施済み）

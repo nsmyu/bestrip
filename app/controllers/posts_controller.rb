@@ -17,7 +17,7 @@ class PostsController < ApplicationController
   end
 
   def new
-    @itineraries = current_user.confirmed_itineraries
+    @itineraries = current_user.itineraries.order(departure_date: :desc)
     @post = Post.new
     @post.photos.build
   end
@@ -47,7 +47,7 @@ class PostsController < ApplicationController
   end
 
   def edit
-    @itineraries = current_user.confirmed_itineraries
+    @itineraries = current_user.itineraries.order(departure_date: :desc)
   end
 
   def update

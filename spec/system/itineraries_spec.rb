@@ -26,14 +26,6 @@ RSpec.describe "Itineraries", type: :system do
           )
       end
 
-      it "招待されているが参加していない旅のプランを表示しないこと" do
-        create(:itinerary_user, user: other_user, itinerary: itinerary_1, confirmed: false)
-        sign_in other_user
-        visit itineraries_path
-
-        expect(page).not_to have_content I18n.l itinerary_1.departure_date
-      end
-
       it "旅のタイトル、出発・帰宅日、メンバーのニックネームを表示すること" do
         itinerary_1.members << other_user
         visit itineraries_path
@@ -44,13 +36,6 @@ RSpec.describe "Itineraries", type: :system do
           expect(page).to have_content user.name
           expect(page).to have_content other_user.name
         end
-      end
-
-      it "招待中のメンバーのニックネームを表示しないこと" do
-        create(:itinerary_user, user: other_user, itinerary: itinerary_1, confirmed: false)
-        visit itineraries_path
-
-        expect(page).not_to have_content other_user.name
       end
 
       it "旅のプランをクリックすると、旅のプラン情報ページへ遷移すること" do
