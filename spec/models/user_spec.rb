@@ -135,5 +135,10 @@ RSpec.describe User, type: :model do
       create(:user_place, placeable: user)
       expect { user.destroy }.to change { Place.count }.by(-1)
     end
+
+    it "userを削除すると関連するpending_invitationも削除されること" do
+      create(:pending_invitation, user: user)
+      expect { user.destroy }.to change { PendingInvitation.count }.by(-1)
+    end
   end
 end

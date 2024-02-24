@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_23_110125) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_24_061255) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,7 +42,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_110125) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "confirmed", default: true, null: false
     t.index ["itinerary_id"], name: "index_itinerary_users_on_itinerary_id"
     t.index ["user_id", "itinerary_id"], name: "index_itinerary_users_on_user_id_and_itinerary_id", unique: true
     t.index ["user_id"], name: "index_itinerary_users_on_user_id"
@@ -55,6 +54,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_110125) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_likes_on_post_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "pending_invitations", force: :cascade do |t|
+    t.bigint "itinerary_id", null: false
+    t.bigint "user_id"
+    t.string "invitation_code", limit: 22
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invitation_code", "itinerary_id"], name: "index_pending_invitations_on_invitation_code_and_itinerary_id", unique: true
+    t.index ["itinerary_id"], name: "index_pending_invitations_on_itinerary_id"
+    t.index ["user_id", "itinerary_id"], name: "index_pending_invitations_on_user_id_and_itinerary_id", unique: true
+    t.index ["user_id"], name: "index_pending_invitations_on_user_id"
   end
 
   create_table "photos", force: :cascade do |t|
@@ -137,6 +148,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_110125) do
   add_foreign_key "itinerary_users", "users"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
+  add_foreign_key "pending_invitations", "itineraries"
+  add_foreign_key "pending_invitations", "users"
   add_foreign_key "photos", "posts"
   add_foreign_key "posts", "itineraries"
   add_foreign_key "posts", "users"

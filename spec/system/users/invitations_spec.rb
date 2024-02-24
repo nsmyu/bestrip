@@ -13,7 +13,7 @@ RSpec.describe "Users::Invitations", type: :system do
       visit itinerary_path(itinerary.id)
     end
 
-    context "正常な値の場合", js: true, focus: true do
+    context "正常な値の場合", js: true do
       it "アカウント未登録ユーザーへのメール送信に成功し、再送信も成功すること" do
         expect do
           find("i", text: "email").click

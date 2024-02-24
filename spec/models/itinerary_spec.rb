@@ -67,5 +67,10 @@ RSpec.describe Itinerary, type: :model do
       create(:itinerary_place, placeable: itinerary)
       expect { itinerary.destroy }.to change { Place.count }.by(-1)
     end
+
+    it "itineraryを削除すると関連するpending_invitationも削除されること" do
+      create(:pending_invitation, :with_user_id, itinerary: itinerary)
+      expect { itinerary.destroy }.to change { PendingInvitation.count }.by(-1)
+    end
   end
 end
