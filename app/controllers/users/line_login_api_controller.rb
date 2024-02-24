@@ -27,11 +27,18 @@ class Users::LineLoginApiController < ApplicationController
         return
       end
 
+      if line_user_profile[:email].blank?
+        flash[:notice] = "LINEアカウントにメールアドレスのご登録が無いため、LINEでのログインはご利用いただけません。" +
+         "メールアドレスでアカウント登録いただくか、LINEアカウントにメールアドレスご登録後に本サービスへのログインをお願いします。"
+        redirect_to new_user_session_path
+        return
+      end
+
       random_pass = SecureRandom.base36
       user.name = line_user_profile[:name]
+      user.email = line_user_profile[:email]
       user.password = random_pass
       user.password_confirmation = random_pass
-      user.email = line_user_profile[:email] if line_user_profile[:email].present?
       user.setup_attach_avatar(line_user_profile[:picture]) if line_user_profile[:picture].present?
 
       if user.save
