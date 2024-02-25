@@ -1,0 +1,12 @@
+<%= turbo_stream.update "name_error" do %>
+  <%= resource.errors.full_messages_for(:name).first if resource.errors.any? %>
+<% end %>
+<%= turbo_stream.update "email_error" do %>
+  <%= resource.errors.full_messages_for(:email).first if resource.errors.any? %>
+<% end %>
+<%= turbo_stream.update "password_error" do %>
+  <%= resource.errors.full_messages_for(:password).first if resource.errors.any? %>
+<% end %>
+<%= turbo_stream.update "password_confirmation_error" do %>
+  <%= resource.errors.full_messages_for(:password_confirmation).first if resource.errors.any? %>
+<% end %>

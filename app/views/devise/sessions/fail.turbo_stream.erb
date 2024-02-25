@@ -1,0 +1,5 @@
+<%= turbo_stream.update "sign_in_error" do %>
+  <% if flash[:alert] %>
+    <div class="mt-3 mb-4 p-2 border border-danger text-center text-sm text-danger"><%= alert %></div>
+  <% end %>
+<% end %>

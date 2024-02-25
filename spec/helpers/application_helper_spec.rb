@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ApplicationHelper, type: :helper, focus: true do
+RSpec.describe ApplicationHelper, type: :helper do
   describe "#full_title(page_title)" do
     it "引数が渡された場合、「引数 | Bestrip」を返すこと" do
       expect(helper.full_title("タイトル")).to eq "タイトル | BesTrip"

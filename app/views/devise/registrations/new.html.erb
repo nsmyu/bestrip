@@ -14,13 +14,13 @@
             <div class="card-body shadow">
               <div class="d-flex align-items-center mt-2">
                 <hr class="w-100" color="#7b809a">
-                <p class="text-center text-dark text-md fw-bold w-100 text-nowrap px-3">SNSで登録・ログイン</p>
+                <p class="text-center text-dark text-md fw-bold w-100 text-nowrap px-3">SNSで登録</p>
                 <hr class="w-100" color="#7b809a">
               </div>
               <div class="mt-2 mb-4 ms-auto">
-                <%= link_to line_login_api_login_path(invitation_code: @invitation_code), class: "mt-0 mb-2 btn btn-lg bg-gradient-line line-login-btn w-100 d-flex align-items-center" do %>
-                  <%= image_tag "LINE_login_btn_icon.png" %>
-                  <div class="text-center flex-fill">LINEでアカウント登録・ログイン</div>
+                <%= link_to line_login_api_login_path(invitation_code: @invitation_code), class: "mt-0 mb-2 btn btn-lg btn-outline-dark line-login-btn w-100 d-flex align-items-center" do %>
+                  <%= image_tag "LINE_icon.png" %>
+                  <div class="text-center flex-fill lh-1">LINEでアカウント登録</div>
                 <% end %>
                 <p class="text-xs text-dark">※LINEアカウントにメールアドレスの登録が無い場合はご利用いただけません。</p>
               </div>
@@ -29,43 +29,35 @@
                 <p class="text-center text-dark text-md fw-bold w-100 text-nowrap px-3">メールアドレスで登録</p>
                 <hr class="w-100" color="#7b809a">
               </div>
-              <p class="mt-2 mb-3 text-sm text-dark">各項目を入力の上「アカウント登録」ボタンを押してください。入力は全て必須です。</p>
-              <%= form_with model: resource, scope: resource_name, url: registration_path(resource_name) do |f| %>
-                <div class="input-group input-group-outline mb-3 <%= "is-filled" if resource[:name].present? %>" >
+              <p class="mt-2 mb-4 text-sm text-dark">各項目を入力の上「アカウント登録」ボタンを押してください。入力は全て必須です。</p>
+              <%= form_with model: resource, scope: resource_name, url: registration_path(resource_name), data: { controller: "form-reset", action: "turbo:submit-end->form-reset#clear" } do |f| %>
+                <div class="input-group input-group-outline mb-4 <%= "is-filled" if resource[:name].present? %>" >
                   <%= f.label "ニックネーム（20文字以内で入力）", class: "form-label" %>
                   <%= f.text_field :name, class: "form-control w-100", autocomplete: "name" %>
-                  <div class="<%= "error-message" if resource.errors.messages.key?(:name) %>" >
-                    <%= resource.errors.full_messages_for(:name).first if resource.errors.any? %>
-                  </div>
+                  <div class="px-0 error-message" id="name_error"></div>
                 </div>
-                <div class="input-group input-group-outline mb-3 <%= "is-filled" if resource[:email].present? %>">
+                <div class="input-group input-group-outline mb-4 <%= "is-filled" if resource[:email].present? %>">
                   <%= f.label "メールアドレス", class: "form-label" %>
                   <%= f.email_field :email, class: "form-control w-100", autocomplete: "email" %>
-                  <div class="<%= "error-message" if resource.errors.messages.key?(:email) %>" >
-                    <%= resource.errors.full_messages_for(:email).first if resource.errors.any? %>
-                  </div>
+                  <div class="px-0 error-message" id="email_error"></div>
                 </div>
-                <div class="input-group input-group-outline mb-3">
+                <div class="input-group input-group-outline mb-4">
                   <%= f.label "パスワード（半角英数字6文字以上）", class: "form-label" %>
-                  <%= f.password_field :password, class: "form-control w-100", autocomplete: "new-password" %>
-                  <div class="<%= "error-message" if resource.errors.messages.key?(:password) %>" >
-                    <%= resource.errors.full_messages_for(:password).first if resource.errors.any? %>
-                  </div>
+                  <%= f.password_field :password, class: "form-control w-100", autocomplete: "new-password", data: { form_reset_target: "input" } %>
+                  <div class="px-0 error-message" id="password_error"></div>
                 </div>
-                <div class="input-group input-group-outline mb-3">
+                <div class="input-group input-group-outline mb-4">
                   <%= f.label "パスワード（確認用）", class: "form-label" %>
-                  <%= f.password_field :password_confirmation, class: "form-control w-100", autocomplete: "new-password" %>
-                  <div class="<%= "error-message" if resource.errors.messages.key?(:password_confirmation) %>" >
-                    <%= resource.errors.full_messages_for(:password_confirmation).first if resource.errors.any? %>
-                  </div>
+                  <%= f.password_field :password_confirmation, class: "form-control w-100", autocomplete: "new-password", data: { form_reset_target: "input" } %>
+                  <div class="px-0 error-message" id="password_confirmation_error"></div>
                 </div>
-                <div class="text-center">
-                  <%= f.submit "アカウント登録", data: { turbo: false }, class: "btn bg-gradient-primary w-100 text-sm" %>
+                <div class="text-center pt-2">
+                  <%= f.submit "アカウント登録", class: "btn bg-gradient-primary w-100 text-sm" %>
                 </div>
               <% end %>
-              <p class="text-sm text-center text-dark">
+              <p class="text-sm text-center text-dark my-1 pt-1">
                 アカウントをお持ちの方は
-                <%= link_to "ログイン", :new_user_session, data: { turbo: false }, class: "text-primary font-weight-bold  hover-opacity" %>
+                <%= link_to "ログイン", :new_user_session, data: { turbo: false }, class: "text-primary font-weight-bold hover-opacity" %>
               </p>
             </div>
           </div>

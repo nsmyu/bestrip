@@ -204,16 +204,15 @@
     &.is-focused,
     &.is-filled {
       .form-label + .form-control {
-        border-color: $primary !important;
+        border-color: $secondary !important;
         border-top-color: transparent !important;
-        box-shadow: inset 1px 0 $primary, inset -1px 0 $primary, inset 0 -1px $primary;
       }
 
       .form-label {
         width: 100%;
         height: 100%;
         font-size: $form-label-font-size-focused !important;
-        color: $primary;
+        color: $dark;
         display: flex;
         line-height: $line-height-sm !important;
 
@@ -224,8 +223,7 @@
 
         &:before,
         &:after {
-          border-top-color: $primary;
-          box-shadow: inset 0 1px $primary;
+          border-top-color: $secondary;
         }
       }
     }

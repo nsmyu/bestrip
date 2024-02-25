@@ -24,6 +24,9 @@ class Users::SessionsController < Devise::SessionsController
     super
   end
 
+  def fail
+  end
+
   def guest_sign_in
     user = User.guest
     sign_in user
@@ -60,5 +63,9 @@ class Users::SessionsController < Devise::SessionsController
     else
       itineraries_path
     end
+  end
+
+  def auth_options
+    { scope: resource_name, recall: "#{controller_path}#fail", locale: I18n.locale }
   end
 end
