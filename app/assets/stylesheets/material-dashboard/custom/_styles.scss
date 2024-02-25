@@ -389,3 +389,14 @@ details:not([open]) .do-close {
   width: 42px;
   height: 42px;
 }
+
+.line-login-btn {
+  background-color: #06C755 !important;
+  color: white !important;
+  padding: 5px 10px !important;
+
+  img {
+    width: 30px;
+    height: 30px;
+  }
+}

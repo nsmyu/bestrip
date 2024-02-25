@@ -7,11 +7,27 @@
         <div class="col-xl-4 col-lg-6 col-md-8 col-12 mx-auto">
           <div class="card z-index-0 fadeIn3 fadeInBottom border-radius-lg">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div class="bg-gradient-primary shadow-primary border-radius-lg py-5 pe-1">
-                <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">アカウント登録</h4>
+              <div class="bg-gradient-primary shadow-primary border-radius-lg py-4 pe-1">
+                <h4 class="text-white font-weight-bolder text-center py-2 mb-0">アカウント登録</h4>
               </div>
             </div>
             <div class="card-body shadow">
+              <div class="d-flex align-items-center mt-2">
+                <hr class="w-100" color="#7b809a">
+                <p class="text-center text-dark text-md fw-bold w-100 text-nowrap px-3">SNSで登録・ログイン</p>
+                <hr class="w-100" color="#7b809a">
+              </div>
+              <div class="mt-2 text-center ms-auto">
+                <%= link_to line_login_api_login_path(invitation_code: @invitation_code), class: "mt-0 mb-4 btn btn-lg bg-gradient-line line-login-btn w-100 d-flex align-items-center" do %>
+                  <%= image_tag "LINE_login_btn_icon.png" %>
+                  <div class="text-center flex-fill">LINEでアカウント登録・ログイン</div>
+                <% end %>
+              </div>
+              <div class="d-flex align-items-center mt-4 pt-2">
+                <hr class="w-100" color="#7b809a">
+                <p class="text-center text-dark text-md fw-bold w-100 text-nowrap px-3">メールアドレスで登録</p>
+                <hr class="w-100" color="#7b809a">
+              </div>
               <p class="mt-2 mb-3 text-sm text-dark">各項目を入力の上「アカウント登録」ボタンを押してください。入力は全て必須です。</p>
               <%= form_with model: resource, scope: resource_name, url: registration_path(resource_name) do |f| %>
                 <div class="input-group input-group-outline mb-3 <%= "is-filled" if resource[:name].present? %>" >
@@ -43,12 +59,12 @@
                   </div>
                 </div>
                 <div class="text-center">
-                  <%= f.submit "アカウント登録", data: { turbo: false }, class: "btn btn-lg bg-gradient-primary w-100 mt-3" %>
+                  <%= f.submit "アカウント登録", data: { turbo: false }, class: "btn bg-gradient-primary w-100 text-sm" %>
                 </div>
               <% end %>
               <p class="text-sm text-center">
                 アカウントをお持ちの方は
-                <%= link_to "ログイン", :new_user_session, data: { turbo: false }, class: "text-primary font-weight-bold" %>
+                <%= link_to "ログイン", :new_user_session, data: { turbo: false }, class: "text-primary font-weight-bold  hover-opacity" %>
               </p>
             </div>
           </div>
