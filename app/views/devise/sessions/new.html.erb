@@ -1,4 +1,9 @@
 <% provide :title, "ログイン" %>
+<% if @invited_itinerary %>
+  <% provide :itinerary_title, @invited_itinerary.title %>
+  <% provide :itinerary_date, "#{l @invited_itinerary.departure_date} 〜 #{l @invited_itinerary.return_date}" %>
+  <% provide :itinerary_image, @invited_itinerary.image.url %>
+<% end %>
 <main class="main-content mt-0 bg-pearl-white">
   <div class="page-header align-items-start min-vh-100" style="background-image: url(<%= asset_path 'sign_in.jpg' %>);">
     <span class="mask bg-white opacity-5"></span>

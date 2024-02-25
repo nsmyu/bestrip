@@ -111,7 +111,9 @@ RSpec.describe "Users::Invitations", type: :system do
 
             expect(page).to have_content "旅のプランに参加しました。"
             expect(page).to have_content I18n.l itinerary.departure_date
-          end.to change { itinerary.members.count }.by(1).and change { itinerary.invitees.count }.by(-1)
+          end
+            .to change { itinerary.members.count }.by(1)
+            .and change { itinerary.invitees.count }.by(-1)
         end
       end
 
@@ -170,7 +172,9 @@ RSpec.describe "Users::Invitations", type: :system do
 
           expect(page).to have_content "旅のプランに参加しました。"
           expect(page).to have_content I18n.l itinerary.departure_date
-        end.to change { itinerary.members.count }.by(1).and change { itinerary.invitees.count }.by(-1)
+        end.to change { itinerary.members.count }.by(1).and change {
+                                                              itinerary.invitees.count
+                                                            } .by(-1)
       end
 
       # 既存ユーザーの異常系テストは通常のログイン時と同様のため実施しない（sessions_spec.rbで実施済み）

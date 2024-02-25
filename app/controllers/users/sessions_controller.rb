@@ -10,7 +10,7 @@ class Users::SessionsController < Devise::SessionsController
       return if require_no_authentication
     end
 
-    self.resource = resource_class.new(sign_in_params)
+    self.resource = resource_class.new(@sign_in_params)
     clean_up_passwords(resource)
     yield resource if block_given?
     respond_with(resource, serialize_options(resource))
@@ -37,7 +37,7 @@ class Users::SessionsController < Devise::SessionsController
     user = User.find_by(invitation_token: token)
     if user
       set_itinerary
-      sign_in_params = ActiveSupport::HashWithIndifferentAccess.new(email: user.email)
+      @sign_in_params = ActiveSupport::HashWithIndifferentAccess.new(email: user.email)
     end
   end
 

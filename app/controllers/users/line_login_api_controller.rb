@@ -12,7 +12,7 @@ class Users::LineLoginApiController < ApplicationController
     state = session[:state]
     scope = 'profile%20openid%20email'
     authorization_url =
-      "#{base_authorization_url}?response_type=#{response_type}&client_id=#{client_id}" +
+      "#{base_authorization_url}?response_type=#{response_type}&client_id=#{client_id}" \
       "&redirect_uri=#{redirect_uri}&state=#{state}&scope=#{scope}"
 
     redirect_to authorization_url, allow_other_host: true
@@ -37,7 +37,7 @@ class Users::LineLoginApiController < ApplicationController
         after_sign_in_path
       else
         flash[:notice] =
-          "LINEアカウントにメールアドレスの登録が無いため、LINEでのログインはご利用いただけません。" +
+          "LINEアカウントにメールアドレスの登録が無いため、LINEでのログインはご利用いただけません。" \
           "メールアドレスでの登録をお願いします。"
         redirect_to new_user_session_path(invitation_code: @invitation_code)
       end
@@ -63,7 +63,7 @@ class Users::LineLoginApiController < ApplicationController
       password: random_pass,
       password_confirmation: random_pass,
     )
-    new_user.setup_attach_avatar(line_user_profile[:picture]) if line_user_profile[:picture].present?
+    new_user.set_remote_avatar(line_user_profile[:picture]) if line_user_profile[:picture].present?
 
     if new_user.save
       add_user_to_pending_invitation(new_user)

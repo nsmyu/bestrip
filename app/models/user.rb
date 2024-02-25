@@ -46,7 +46,7 @@ class User < ApplicationRecord
     email == 'guest@example.com'
   end
 
-  def setup_attach_avatar(image_url)
+  def set_remote_avatar(image_url)
     self.remote_avatar_url = image_url
   end
 

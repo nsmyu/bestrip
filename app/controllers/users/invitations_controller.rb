@@ -14,7 +14,7 @@ class Users::InvitationsController < Devise::InvitationsController
         @already_added_error = "#{existing_user.name}さんはすでにメンバーに含まれています"
         return
       end
-      existing_user.send("registration_completed=", !!existing_user.invitation_accepted_at)
+      existing_user.send("registration_completed=", !existing_user.invitation_accepted_at)
       existing_user.send("currently_invited_to=", @itinerary.id)
       existing_user.invite!(current_user)
       self.resource = existing_user

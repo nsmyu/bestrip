@@ -1,5 +1,3 @@
-
-
 describe "旅のプラン一覧ページで招待通知に応答" do
   let(:invitee) { create(:user) }
   let(:itinerary_1) { create(:itinerary) }

@@ -8,7 +8,7 @@
         <p class="text-sm"><%= @schedule.start_at ? (l @schedule.start_at) : "未定" %> - <%= @schedule.end_at ? (l @schedule.end_at) : "未定" %></p>
       </div>
     </div>
-    <% if @schedule.icon.present? %>
+    <% if @schedule.icon? %>
       <div class="col-1 ps-0 d-flex align-items-start">
         <i class="material-icons rounded-circle schedule-icon"><%= @schedule.icon %></i>
       </div>
@@ -16,7 +16,7 @@
   </div>
   <div class="mb-4">
     <p class="text-sm fw-bold text-dark" >スポット情報</p>
-    <% if @schedule.place_id.present? %>
+    <% if @schedule.place_id? %>
       <% if @error %>
         <div class="d-flex align-items-start mt-2 text-danger">
           <i class="material-symbols-outlined me-1 fs-5">error</i>
@@ -47,7 +47,7 @@
   </div>
   <div class="mb-4">
     <p class="text-sm fw-bold text-dark" >メモ</p>
-    <% if @schedule.note.present? %>
+    <% if @schedule.note? %>
       <p class="text-sm text-dark"><%= @schedule.note %></p>
     <% else %>
       <p class="text-sm text-secondary">登録されていません</p>

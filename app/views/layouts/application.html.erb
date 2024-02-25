@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html lang="ja">
   <head prefix="og: https://ogp.me/ns#">
-    <meta property="og:title" content="<%= ogp_meta_tags(yield(:title))[:title] %>" />
-    <meta property="og:description" content="<%= ogp_meta_tags(yield(:title))[:description] %>" />
-    <meta property="og:image" content="<%= ogp_meta_tags(yield(:title))[:image] %>" />
+    <meta property="og:title" content="<%= yield(:itinerary_title) %>" />
+    <meta property="og:description" content="<%= yield(:itinerary_date) %>" />
+    <meta property="og:image" content="<%= ogp_image(yield(:itinerary_image)) %>" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="turbo-cache-control" content="no-cache">

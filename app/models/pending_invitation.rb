@@ -4,7 +4,7 @@ class PendingInvitation < ApplicationRecord
 
   validates :user, uniqueness: { scope: :itinerary }, allow_nil: true
   validates :invitation_code, length: { is: 22 }, allow_blank: true,
-                              uniqueness: { scope: :itinerary }, allow_nil: true
+                              uniqueness: { scope: :itinerary }
   validate :either_or_both_of_user_and_invitation_code_must_be_present
 
   private
