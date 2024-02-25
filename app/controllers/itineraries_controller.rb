@@ -12,8 +12,6 @@ class ItinerariesController < ApplicationController
     if params[:invited_itinerary_id].present?
       @invited_itinerary = Itinerary.find(params[:invited_itinerary_id])
       @pending_invitation = current_user.pending_invitations.find_by(itinerary_id: @invited_itinerary.id)
-      p @invited_itinerary.inspect
-      p "FFFF"
     end
   end
 

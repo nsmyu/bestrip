@@ -6,11 +6,11 @@
     <div class="max-width-850 mx-auto">
       <% if @invited_itineraries.count > 0 %>
         <div class="mb-4">
-          <% @invited_itineraries.each do |itinerary| %>
+          <% @invited_itineraries.each do |invited_itinerary| %>
             <div class="invitation-notification border-radius-md mx-3 mb-2 p-2">
-              <%= link_to [:new_itinerary_user, id: itinerary.id], class:"d-flex align-items-center hover-opacity", data: { turbo_frame: "modal" } do %>
+              <%= link_to [:new_itinerary_user, id: invited_itinerary.id], class:"d-flex align-items-center hover-opacity", data: { turbo_frame: "modal" } do %>
                 <span class="material-symbols-outlined text-danger">notification_important</span>
-                <p class="text-sm text-dark">「<%= itinerary.title %>」に招待されています</p>
+                <p class="text-sm text-dark">「<%= invited_itinerary.title %>」に招待されています</p>
               <% end %>
             </div>
           <% end %>
@@ -29,7 +29,7 @@
 </main>
 <% if @invited_itinerary && @invited_itinerary.invitees.include?(current_user) %>
   <%= render "shared/modal", title: "旅のプランに招待されています" do %>
-    <%= render "itinerary_users/form", itinerary: @invited_itinerary %>
+    <%= render "itinerary_users/form", invited_itinerary: @invited_itinerary %>
   <% end %>
 <% end %>
 

@@ -1,12 +1,14 @@
 class ItineraryUsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_itinerary, only: %i(new create)
+  before_action :set_itinerary, only: :create
   before_action -> {
     set_itinerary
     authenticate_itinerary_member(@itinerary)
   }, only: %i(find_by_bestrip_id search_user destroy)
 
   def new
+    @invited_itinerary = Itinerary.find(params[:id])
+    @pending_invitation = current_user.pending_invitations.find_by(itinerary_id: @invited_itinerary.id)
   end
 
   def find_by_bestrip_id

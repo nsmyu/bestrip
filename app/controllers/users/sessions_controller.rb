@@ -1,10 +1,14 @@
 class Users::SessionsController < Devise::SessionsController
+  skip_before_action :require_no_authentication, only: :new
   before_action :configure_sign_in_params, only: :create
 
   def new
     session[:previous_url] = request.referer
     set_email
     set_invitation_code
+    if @invitation_code.blank?
+      return if require_no_authentication
+    end
 
     self.resource = resource_class.new(sign_in_params)
     clean_up_passwords(resource)
