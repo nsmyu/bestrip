@@ -7,7 +7,8 @@ class Users::LineLoginApiController < ApplicationController
     base_authorization_url = 'https://access.line.me/oauth2/v2.1/authorize'
     response_type = 'code'
     client_id = ENV['LINE_KEY']
-    redirect_uri = CGI.escape(line_login_api_callback_url) + "?invitation_code=#{invitation_code}"
+    redirect_uri = CGI.escape(line_login_api_callback_url)
+    redirect_uri += "?invitation_code=#{invitation_code}" if invitation_code
     state = session[:state]
     scope = 'profile%20openid%20email'
     authorization_url =
@@ -18,36 +19,55 @@ class Users::LineLoginApiController < ApplicationController
   end
 
   def callback
+    if params[:state] != session[:state]
+      redirect_to root_path, notice: '不正なアクセスです。'
+      return
+    end
+
     @invitation_code = params[:invitation_code]
     @invited_itinerary = PendingInvitation.find_by(invitation_code: @invitation_code)&.itinerary
+    line_user_profile = get_line_user_profile(params[:code], @invitation_code)
 
-    if params[:state] == session[:state]
-      line_user_profile = get_line_user_profile(params[:code], @invitation_code)
-      return if email_blank?(line_user_profile)
-
-      user = User.find_or_initialize_by(line_user_id: line_user_profile[:sub])
-
-      if user.id
-        sign_in user
-        redirect_to itineraries_path(invited_itinerary_id: @invited_itinerary.id), notice: 'ログインしました。'
-        return
-      end
-
-      random_pass = SecureRandom.base36
-      user.name = line_user_profile[:name]
-      user.email = line_user_profile[:email]
-      user.password = random_pass
-      user.password_confirmation = random_pass
-      user.setup_attach_avatar(line_user_profile[:picture]) if line_user_profile[:picture].present?
-
-      if user.save
-        sign_in user
-        redirect_to itineraries_path, notice: 'ログインしました。'
+    if line_user_profile[:email].blank?
+      existing_user = User.find_by(line_user_id: line_user_profile[:sub])
+      if existing_user
+        sign_in existing_user
+        after_sign_in_path
       else
-        redirect_to root_path, notice: 'ログインに失敗しました。'
+        flash[:notice] =
+          "LINEアカウントにメールアドレスの登録が無いため、LINEでのログインはご利用いただけません。" +
+          "メールアドレスでの登録をお願いします。"
+        redirect_to new_user_session_path(invitation_code: @invitation_code)
       end
+      return
+    end
+
+    existing_user = User.find_by(email: line_user_profile[:email])
+    if existing_user
+      if existing_user.line_user_id.blank?
+        existing_user.update_attribute(:line_user_id, line_user_profile[:sub])
+      end
+      sign_in existing_user
+      after_sign_in_path
+      return
+    end
+
+    random_pass = SecureRandom.base36
+    new_user = User.new(
+      name: line_user_profile[:name],
+      email: line_user_profile[:email],
+      line_user_id: line_user_profile[:sub],
+      password: random_pass,
+      password_confirmation: random_pass,
+    )
+    new_user.setup_attach_avatar(line_user_profile[:picture]) if line_user_profile[:picture].present?
+
+    if new_user.save
+      sign_in new_user
+      after_sign_in_path
     else
-      redirect_to root_path, notice: '不正なアクセスです。'
+      flash[:notice] = 'ログインに失敗しました。'
+      redirect_to new_user_session_path(invitation_code: @invitation_code)
     end
   end
 
@@ -64,11 +84,7 @@ class Users::LineLoginApiController < ApplicationController
         },
       }
       response = Typhoeus::Request.post(url, options)
-      if response.code == 200
-        JSON.parse(response.body, symbolize_names: true)
-      else
-        nil
-      end
+      response.code == 200 ? JSON.parse(response.body, symbolize_names: true) : nil
     else
       nil
     end
@@ -76,7 +92,8 @@ class Users::LineLoginApiController < ApplicationController
 
   def get_line_user_id_token(code, invitation_code)
     url = 'https://api.line.me/oauth2/v2.1/token'
-    redirect_uri = line_login_api_callback_url + "?invitation_code=#{invitation_code}"
+    redirect_uri = line_login_api_callback_url
+    redirect_uri += "?invitation_code=#{invitation_code}" if invitation_code
 
     options = {
       headers: {
@@ -91,18 +108,11 @@ class Users::LineLoginApiController < ApplicationController
       },
     }
     response = Typhoeus::Request.post(url, options)
-
-    if response.code == 200
-      JSON.parse(response.body)['id_token']
-    else
-      nil
-    end
+    response.code == 200 ? JSON.parse(response.body)['id_token'] : nil
   end
 
-  def email_blank?(line_user_profile)
-    if line_user_profile[:email].blank?
-      flash[:notice] = "LINEアカウントにメールアドレスのご登録が無いため、LINEでのログインはご利用いただけません。"
-      redirect_to new_user_session_path(invitation_code: @invitation_code)
-    end
+  def after_sign_in_path
+    flash[:notice] = "ログインしました。"
+    redirect_to itineraries_path(invited_itinerary_id: @invited_itinerary&.id)
   end
 end

@@ -27,7 +27,7 @@ class User < ApplicationRecord
     validates :password_confirmation, presence: true
   end
   validates :introduction, length: { maximum: 500 }
-  validates :line_user_id, uniqueness: true, allow_nil: true
+  validates :line_user_id, uniqueness: true, allow_blank: true
 
   after_create :add_guest_to_itineraries, if: :guest?
 

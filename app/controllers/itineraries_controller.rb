@@ -9,9 +9,11 @@ class ItinerariesController < ApplicationController
   def index
     @itineraries = current_user.itineraries.includes(:members).order(departure_date: :desc)
     @invited_itineraries = current_user.invited_itineraries.order(:created_at)
-    if params[:invited_itinerary_id]
+    if params[:invited_itinerary_id].present?
       @invited_itinerary = Itinerary.find(params[:invited_itinerary_id])
       @pending_invitation = current_user.pending_invitations.find_by(itinerary_id: @invited_itinerary.id)
+      p @invited_itinerary.inspect
+      p "FFFF"
     end
   end
 

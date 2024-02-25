@@ -15,7 +15,7 @@ class SchedulesController < ApplicationController
 
   def new
     @schedule = @itinerary.schedules.new
-    if params[:place_id]
+    if params[:place_id].present?
       @place_id = params[:place_id]
       get_place_details(@place_id)
       @schedule.title = @place_details[:name]

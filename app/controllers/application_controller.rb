@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_itinerary
-    if params[:itinerary_id]
+    if params[:itinerary_id].present?
       @itinerary = Itinerary.find(params[:itinerary_id])
     else
       @itinerary = Itinerary.find(params[:id])
