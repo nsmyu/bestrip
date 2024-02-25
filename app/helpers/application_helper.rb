@@ -7,7 +7,8 @@ module ApplicationHelper
 
   def ogp_meta_tags(page_title)
     ogp_meta_tags = {}
-    if controller_name == "sessions" && action_name == "new" && @invitation_code
+    @itinerary ||= @invited_itinerary
+    if controller_name == "sessions" && action_name == "new" && @invitation_code.present?
       ogp_meta_tags[:title] = @itinerary.title
       ogp_meta_tags[:description] = "#{ l @itinerary.departure_date } 〜 #{ l @itinerary.return_date }"
       ogp_meta_tags[:image] = "https://s3.ap-northeast-1.amazonaws.com/bestrip#{@itinerary.image.url}"

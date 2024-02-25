@@ -1,12 +1,13 @@
 class Users::LineLoginApiController < ApplicationController
   def login
+    invitation_code = params[:invitation_code]
     session[:state] = SecureRandom.urlsafe_base64
-    line_login_api_callback_url = "https://2cd7-125-15-187-39.ngrok-free.app/line_login_api/callback"
+    line_login_api_callback_url = "https://f400-125-15-187-39.ngrok-free.app/line_login_api/callback"
 
     base_authorization_url = 'https://access.line.me/oauth2/v2.1/authorize'
     response_type = 'code'
     client_id = ENV['LINE_KEY']
-    redirect_uri = CGI.escape(line_login_api_callback_url)
+    redirect_uri = CGI.escape(line_login_api_callback_url) + "?invitation_code=#{invitation_code}"
     state = session[:state]
     scope = 'profile%20openid%20email'
     authorization_url =
@@ -17,20 +18,18 @@ class Users::LineLoginApiController < ApplicationController
   end
 
   def callback
+    @invitation_code = params[:invitation_code]
+    @invited_itinerary = PendingInvitation.find_by(invitation_code: @invitation_code)&.itinerary
+
     if params[:state] == session[:state]
-      line_user_profile = get_line_user_profile(params[:code])
+      line_user_profile = get_line_user_profile(params[:code], @invitation_code)
+      return if email_blank?(line_user_profile)
+
       user = User.find_or_initialize_by(line_user_id: line_user_profile[:sub])
 
       if user.id
         sign_in user
-        redirect_to itineraries_path, notice: 'ログインしました。'
-        return
-      end
-
-      if line_user_profile[:email].blank?
-        flash[:notice] = "LINEアカウントにメールアドレスのご登録が無いため、LINEでのログインはご利用いただけません。" +
-         "メールアドレスでアカウント登録いただくか、LINEアカウントにメールアドレスご登録後に本サービスへのログインをお願いします。"
-        redirect_to new_user_session_path
+        redirect_to itineraries_path(invited_itinerary_id: @invited_itinerary.id), notice: 'ログインしました。'
         return
       end
 
@@ -54,8 +53,8 @@ class Users::LineLoginApiController < ApplicationController
 
   private
 
-  def get_line_user_profile(code)
-    line_user_id_token = get_line_user_id_token(code)
+  def get_line_user_profile(code, invitation_code)
+    line_user_id_token = get_line_user_id_token(code, invitation_code)
     if line_user_id_token.present?
       url = 'https://api.line.me/oauth2/v2.1/verify'
       options = {
@@ -75,9 +74,9 @@ class Users::LineLoginApiController < ApplicationController
     end
   end
 
-  def get_line_user_id_token(code)
+  def get_line_user_id_token(code, invitation_code)
     url = 'https://api.line.me/oauth2/v2.1/token'
-    redirect_uri = line_login_api_callback_url
+    redirect_uri = line_login_api_callback_url + "?invitation_code=#{invitation_code}"
 
     options = {
       headers: {
@@ -97,6 +96,13 @@ class Users::LineLoginApiController < ApplicationController
       JSON.parse(response.body)['id_token']
     else
       nil
+    end
+  end
+
+  def email_blank?(line_user_profile)
+    if line_user_profile[:email].blank?
+      flash[:notice] = "LINEアカウントにメールアドレスのご登録が無いため、LINEでのログインはご利用いただけません。"
+      redirect_to new_user_session_path(invitation_code: @invitation_code)
     end
   end
 end

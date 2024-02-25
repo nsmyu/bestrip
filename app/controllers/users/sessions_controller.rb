@@ -39,9 +39,8 @@ class Users::SessionsController < Devise::SessionsController
 
   def set_invitation_code
     @invitation_code = params[:invitation_code]
-    if @invitation_code
-      @itinerary = Itinerary
-        .find(PendingInvitation.find_by(invitation_code: @invitation_code).itinerary_id)
+    if @invitation_code.present?
+      @invited_itinerary = PendingInvitation.find_by(invitation_code: @invitation_code).itinerary
     end
   end
 
