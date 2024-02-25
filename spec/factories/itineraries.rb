@@ -10,5 +10,11 @@ FactoryBot.define do
         itinerary.schedules << build(:schedule)
       end
     end
+
+    trait :with_image do
+      after(:build) do |itinerary|
+        itinerary.image = build(:photo).url
+      end
+    end
   end
 end
