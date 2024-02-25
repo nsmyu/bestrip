@@ -23,57 +23,57 @@ RSpec.describe "Users::Registrations", type: :request do
     context "無効な値の場合" do
       it "ニックネームが空欄の場合、失敗すること" do
         user_params = attributes_for(:user, name: "")
-        post user_registration_path, params: { user: user_params }
+        post user_registration_path, params: { user: user_params }, headers: turbo_stream
         expect(response.body).to include "ニックネームを入力してください"
       end
 
       it "ニックネームが21文字以上の場合、失敗すること" do
         user_params = attributes_for(:user, name: "a" * 21)
-        post user_registration_path, params: { user: user_params }
+        post user_registration_path, params: { user: user_params }, headers: turbo_stream
         expect(response.body).to include "ニックネームは20文字以内で入力してください"
       end
 
       it "メールアドレスが空欄の場合、失敗すること" do
         user_params = attributes_for(:user, email: "")
-        post user_registration_path, params: { user: user_params }
+        post user_registration_path, params: { user: user_params }, headers: turbo_stream
         expect(response.body).to include "メールアドレスを入力してください"
       end
 
       it "メールアドレスが他のユーザーと重複している場合、失敗すること" do
         user
         user_params = attributes_for(:user, email: user.email)
-        post user_registration_path, params: { user: user_params }
+        post user_registration_path, params: { user: user_params }, headers: turbo_stream
         expect(response.body).to include "このメールアドレスはすでに登録されています"
       end
 
       it "メールアドレスが不正な形式の場合、失敗すること" do
         user_params = attributes_for(:user, email: "invalid_email_address")
-        post user_registration_path, params: { user: user_params }
+        post user_registration_path, params: { user: user_params }, headers: turbo_stream
         expect(response.body).to include "メールアドレスを正しく入力してください"
       end
 
       it "パスワードが5文字以下の場合、失敗すること" do
         user_params = attributes_for(:user, password: "a" * 5, password_confirmation: "a" * 5)
-        post user_registration_path, params: { user: user_params }
+        post user_registration_path, params: { user: user_params }, headers: turbo_stream
         expect(response.body).to include "パスワードは6文字以上で入力してください"
       end
 
       it "パスワードが129文字以上の場合、失敗すること" do
         user_params = attributes_for(:user, password: "a" * 129, password_confirmation: "a" * 129)
-        post user_registration_path, params: { user: user_params }
+        post user_registration_path, params: { user: user_params }, headers: turbo_stream
         expect(response.body).to include "パスワードは128文字以内で入力してください"
       end
 
       it "パスワードに半角英数字以外が含まれている場合、失敗すること" do
         user_params = attributes_for(:user, password: "invalid-password",
                                             password_confirmation: "invalid-password")
-        post user_registration_path, params: { user: user_params }
+        post user_registration_path, params: { user: user_params }, headers: turbo_stream
         expect(response.body).to include "パスワードは半角英数字で入力してください"
       end
 
       it "確認用パスワードが一致しない場合、失敗すること" do
         user_params = attributes_for(:user, password_confirmation: "wrongpassword")
-        post user_registration_path, params: { user: user_params }
+        post user_registration_path, params: { user: user_params }, headers: turbo_stream
         expect(response.body).to include "パスワード（確認用）とパスワードの入力が一致しません"
       end
     end

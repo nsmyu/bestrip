@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Users::Sessions", type: :request do
   let(:user) { create(:user) }
+  let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
 
   describe "GET #new" do
     it "正常にレスポンスを返すこと" do
@@ -29,13 +30,13 @@ RSpec.describe "Users::Sessions", type: :request do
     context "無効な値の場合" do
       it "メールアドレスが間違っている場合、ログインに失敗すること" do
         user_params = { email: "wrong@example.com", password: user.password }
-        post user_session_path, params: { user: user_params }
+        post user_session_path, params: { user: user_params }, headers: turbo_stream
         expect(response.body).to include "メールアドレスまたはパスワードが違います。"
       end
 
       it "パスワードが間違っている場合、ログインに失敗すること" do
         user_params = { email: user.email, password: "wrongpassword" }
-        post user_session_path, params: { user: user_params }
+        post user_session_path, params: { user: user_params }, headers: turbo_stream
         expect(response.body).to include "メールアドレスまたはパスワードが違います。"
       end
     end
