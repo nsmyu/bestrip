@@ -3,13 +3,8 @@ class Users::SessionsController < Devise::SessionsController
 
   def new
     session[:previous_url] = request.referer
-
-    token = Devise.token_generator.digest(User, :invitation_token, params[:invitation_token])
-    user = User.find_by(invitation_token: token)
-    if user
-      set_itinerary
-      sign_in_params = ActiveSupport::HashWithIndifferentAccess.new(email: user.email)
-    end
+    set_email
+    set_invitation_code
 
     self.resource = resource_class.new(sign_in_params)
     clean_up_passwords(resource)
@@ -31,7 +26,28 @@ class Users::SessionsController < Devise::SessionsController
     redirect_to itineraries_path, notice: "ゲストユーザーとしてログインしました。"
   end
 
-  protected
+  private
+
+  def set_email
+    token = Devise.token_generator.digest(User, :invitation_token, params[:invitation_token])
+    user = User.find_by(invitation_token: token)
+    if user
+      set_itinerary
+      sign_in_params = ActiveSupport::HashWithIndifferentAccess.new(email: user.email)
+    end
+  end
+
+  def set_invitation_code
+    @invitation_code = params[:invitation_code]
+    if @invitation_code
+      @itinerary = Itinerary
+        .find(PendingInvitation.find_by(invitation_code: @invitation_code).itinerary_id)
+    end
+  end
+
+  def configure_sign_in_params
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
+  end
 
   def after_sign_in_path_for(resource_or_scope)
     if params[:user] && params[:user][:invited_itinerary_id]
@@ -41,9 +57,5 @@ class Users::SessionsController < Devise::SessionsController
     else
       itineraries_path
     end
-  end
-
-  def configure_sign_in_params
-    devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   end
 end

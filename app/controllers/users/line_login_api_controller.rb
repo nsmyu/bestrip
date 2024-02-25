@@ -1,7 +1,7 @@
 class Users::LineLoginApiController < ApplicationController
   def login
     session[:state] = SecureRandom.urlsafe_base64
-    line_login_api_callback_url = "https://4a7c-125-15-187-39.ngrok-free.app/line_login_api/callback"
+    line_login_api_callback_url = "https://2cd7-125-15-187-39.ngrok-free.app/line_login_api/callback"
 
     base_authorization_url = 'https://access.line.me/oauth2/v2.1/authorize'
     response_type = 'code'

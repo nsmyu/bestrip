@@ -39,7 +39,7 @@
         <div class="col ps-0 text-center">
           <%= form_with url: [:itinerary_pending_invitations, itinerary_id: @itinerary.id], data: { turbo_frame: "line_invitation" } do |f| %>
             <label for="line_invitation_btn" class="m-0 cursor-pointer">
-              <%= f.submit "この旅のプランに参加する", class: "d-none", id: "line_invitation_btn" %>
+              <%= f.submit "LINEで招待する", class: "d-none", id: "line_invitation_btn" %>
               <%= image_tag "LINE_icon.png", class:"invitation-icon hover-opacity" %>
             </label>
           <% end %>
