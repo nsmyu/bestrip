@@ -68,21 +68,34 @@ RSpec.describe "Users::Invitations", type: :request do
   end
 
   describe "GET #edit" do
-    it "アカウント未登録ユーザーの場合、正常にレスポンスを返すこと" do
-      invitee = create(:user, name:"newly_invited")
-      invitee.update(invitation_token: invitation_token[1])
-      accept_params = { invitation_token: invitation_token[0], itinerary_id: itinerary.id }
-      get accept_user_invitation_path, params: accept_params
-      expect(response).to have_http_status 200
+    context "アカウント未登録ユーザーの場合" do
+      before do
+        invitee = create(:user, name:"newly_invited")
+        invitee.update(invitation_token: invitation_token[1])
+        accept_params = { invitation_token: invitation_token[0], itinerary_id: itinerary.id }
+        get accept_user_invitation_path, params: accept_params
+      end
+
+      it "正常にレスポンスを返すこと" do
+        expect(response).to have_http_status 200
+      end
+
+      it "招待された旅のプランの情報を取得すること" do
+        expect(response.body).to include itinerary.title
+        expect(response.body).to include I18n.l itinerary.departure_date
+        expect(response.body).to include I18n.l itinerary.return_date
+      end
     end
 
-    it "既存ユーザーの場合、ログインページにリダイレクトすること" do
-      invitee.save
-      invitee.update(invitation_token: invitation_token[1])
-      accept_params = { invitation_token: invitation_token[0], itinerary_id: itinerary.id }
-      get accept_user_invitation_path, params: accept_params
-      expect(response).to redirect_to new_user_session_path(invitation_token: invitation_token[0],
-                                                            itinerary_id: itinerary.id)
+    context "既存ユーザーの場合" do
+      it "ログインページにリダイレクトすること" do
+        invitee.save
+        invitee.update(invitation_token: invitation_token[1])
+        accept_params = { invitation_token: invitation_token[0], itinerary_id: itinerary.id }
+        get accept_user_invitation_path, params: accept_params
+        expect(response).to redirect_to new_user_session_path(invitation_token: invitation_token[0],
+                                                              itinerary_id: itinerary.id)
+      end
     end
   end
 

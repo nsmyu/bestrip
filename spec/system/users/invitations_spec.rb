@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Users::Invitations", type: :system do
   let(:user) { create(:user) }
-  let(:invitee) { build(:user) }
+  let(:invitee) { build(:user, name: "newly_invited") }
   let(:itinerary) { create(:itinerary, owner: user) }
   let(:invitation_token) { Devise.token_generator.generate(User, :invitation_token) }
   # invitation_token[0]にトークン, invitation_token[1]にそのダイジェスト値が格納される
@@ -14,7 +14,7 @@ RSpec.describe "Users::Invitations", type: :system do
     end
 
     context "正常な値の場合", js: true do
-      it "アカウント未登録ユーザーへのメール送信に成功し、再送信も成功すること" do
+      it "アカウント未登録ユーザーへのメール送信及び再送信に成功し、DBが正しく更新されること" do
         expect do
           find("i", text: "email").click
           fill_in "user[email]", with: invitee.email
@@ -23,7 +23,8 @@ RSpec.describe "Users::Invitations", type: :system do
 
           expect(page).to have_content "招待メールを#{invitee.email}に送信しました。"
           expect(current_path).to eq itinerary_path(itinerary.id)
-        end.to change(User, :count).by(1).and change { itinerary.invitees.count }.by(1)
+        end.to change { User.count }.by(1).and change { itinerary.invitees.count }.by(1)
+          .and change { ActionMailer::Base.deliveries.size }.by(1)
 
         expect do
           visit itinerary_path(itinerary.id)
@@ -34,10 +35,11 @@ RSpec.describe "Users::Invitations", type: :system do
 
           expect(page).to have_content "招待メールを#{invitee.email}に送信しました。"
           expect(current_path).to eq itinerary_path(itinerary.id)
-        end.to not_change(User, :count).and not_change { itinerary.invitees.count }
+        end.to not_change{ User.count }.and not_change { itinerary.invitees.count }
+          .and change { ActionMailer::Base.deliveries.size }.by(1)
       end
 
-      it "既存ユーザーへの招待メール送信に成功し、再送信も成功すること" do
+      it "既存ユーザーへの招待メール送信及び再送信に成功し、DBが正しく更新されること" do
         invitee.save
         expect do
           find("i", text: "email").click
@@ -48,6 +50,7 @@ RSpec.describe "Users::Invitations", type: :system do
           expect(page).to have_content "招待メールを#{invitee.email}に送信しました。"
           expect(current_path).to eq itinerary_path(itinerary.id)
         end.to not_change { User.count }.and change { itinerary.invitees.count }.by(1)
+          .and change { ActionMailer::Base.deliveries.size }.by(1)
 
         expect do
           visit itinerary_path(itinerary.id)
@@ -59,6 +62,7 @@ RSpec.describe "Users::Invitations", type: :system do
           expect(page).to have_content "招待メールを#{invitee.email}に送信しました。"
           expect(current_path).to eq itinerary_path(itinerary.id)
         end.to not_change { User.count }.and not_change { itinerary.invitees.count }
+          .and change { ActionMailer::Base.deliveries.size }.by(1)
       end
     end
 
@@ -71,6 +75,7 @@ RSpec.describe "Users::Invitations", type: :system do
 
           expect(page).to have_content "メールアドレスを入力してください"
         end.to not_change { User.count }.and not_change { itinerary.invitees.count }
+          .and not_change { ActionMailer::Base.deliveries.size }
       end
 
       it "招待しようとしたユーザーが既にメンバーに含まれている場合、失敗すること" do
@@ -83,23 +88,24 @@ RSpec.describe "Users::Invitations", type: :system do
 
           expect(page).to have_content "#{invitee.name}さんはすでにメンバーに含まれています"
         end.to not_change { User.count }.and not_change { itinerary.invitees.count }
+          .and not_change { ActionMailer::Base.deliveries.size }
       end
     end
   end
 
   describe "招待メールから旅のプランに参加" do
-    before do
-      invitee.save
-      invitee.update(invitation_token: invitation_token[1])
-      create(:pending_invitation, user: invitee, itinerary: itinerary)
-    end
-
     context "アカウント未登録（パスワード未設定）の場合" do
+      before do
+        invitee.save
+        invitee.update(invitation_token: invitation_token[1])
+        create(:pending_invitation, user: invitee, itinerary: itinerary)
+        visit accept_user_invitation_path(invitation_token: invitation_token[0],
+                                          itinerary_id: itinerary.id)
+      end
+
       context "有効な値の場合" do
         it "パスワード設定後にログインし、招待の承認に成功すること" do
           expect do
-            visit accept_user_invitation_path(invitation_token: invitation_token[0],
-                                              itinerary_id: itinerary.id)
             fill_in "user[name]", with: invitee.name
             fill_in "user[password]", with: invitee.password
             fill_in "user[password_confirmation]", with: invitee.password_confirmation
@@ -115,13 +121,17 @@ RSpec.describe "Users::Invitations", type: :system do
             .to change { itinerary.members.count }.by(1)
             .and change { itinerary.invitees.count }.by(-1)
         end
+
+        it "パスワード設定画面で、招待されているプランの情報を表示すること" do
+          expect(page).to have_content itinerary.title
+          expect(page).to have_content I18n.l itinerary.departure_date
+          expect(page).to have_content I18n.l itinerary.return_date
+        end
       end
 
       context "無効な値の場合" do
         it "ニックネームが空欄の場合、失敗すること" do
           expect do
-            visit accept_user_invitation_path(invitation_token: invitation_token[0],
-                                              itinerary_id: itinerary.id)
             fill_in "user[name]", with: ""
             fill_in "user[password]", with: invitee.password
             fill_in "user[password_confirmation]", with: invitee.password_confirmation
@@ -133,8 +143,6 @@ RSpec.describe "Users::Invitations", type: :system do
 
         it "パスワードが空欄の場合、失敗すること" do
           expect do
-            visit accept_user_invitation_path(invitation_token: invitation_token[0],
-                                              itinerary_id: itinerary.id)
             fill_in "user[name]", with: invitee.name
             fill_in "user[password]", with: ""
             fill_in "user[password_confirmation]", with: ""
@@ -146,8 +154,6 @@ RSpec.describe "Users::Invitations", type: :system do
 
         it "確認用パスワードが一致しない場合、失敗すること" do
           expect do
-            visit accept_user_invitation_path(invitation_token: invitation_token[0],
-                                              itinerary_id: itinerary.id)
             fill_in "user[name]", with: invitee.name
             fill_in "user[password]", with: invitee.password
             fill_in "user[password_confirmation]", with: "wrongpassword"
@@ -160,9 +166,17 @@ RSpec.describe "Users::Invitations", type: :system do
     end
 
     context "既存ユーザーの場合" do
-      it "ログイン後に招待の承認に成功すること", js: true do
+      it "ログインページにリダイレクトされ、ログイン後に招待の承認に成功すること" do
+        invitee = create(:invitee, name: "existing_user")
+        invitee.update(invitation_token: invitation_token[1])
+        create(:pending_invitation, user: invitee, itinerary: itinerary)
+
         expect do
-          visit new_user_session_path(id: invitee.id, itinerary_id: itinerary.id)
+          visit accept_user_invitation_path(invitation_token: invitation_token[0],
+                                            itinerary_id: itinerary.id)
+
+          expect(current_path).to eq new_user_session_path
+
           fill_in "user[password]", with: invitee.password
           click_button "ログイン"
 
@@ -176,8 +190,6 @@ RSpec.describe "Users::Invitations", type: :system do
           .to change { itinerary.members.count }.by(1)
           .and change { itinerary.invitees.count } .by(-1)
       end
-
-      # 既存ユーザーの異常系テストは通常のログイン時と同様のため実施しない（sessions_spec.rbで実施済み）
     end
   end
 end
