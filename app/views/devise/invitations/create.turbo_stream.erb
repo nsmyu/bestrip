@@ -1,9 +1,9 @@
 <% if @already_added_error %>
-  <%= turbo_stream.update "invitation_error" do %>
+  <%= turbo_stream.update "email_errors" do %>
     <%= @already_added_error %>
   <% end %>
 <% elsif resource.errors.any? %>
-  <%= turbo_stream.update "email_error" do %>
+  <%= turbo_stream.update "email_errors" do %>
     <%= resource.errors.full_messages_for(:email).first %>
   <% end %>
 <% end %>
