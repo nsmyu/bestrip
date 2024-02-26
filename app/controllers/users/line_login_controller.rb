@@ -9,7 +9,7 @@ class Users::LineLoginController < ApplicationController
   def login
     invitation_code = params[:invitation_code]
     session[:state] = SecureRandom.urlsafe_base64
-    line_login_callback_url = "https://d96f-125-15-187-39.ngrok-free.app/line_login/callback"
+    line_login_callback_url = "https://bestrip.click/line_login/callback"
 
     base_authorization_url = 'https://access.line.me/oauth2/v2.1/authorize'
     response_type = 'code'
