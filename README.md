@@ -41,7 +41,7 @@ BesTripは、Web上で簡単に旅行の計画を立てることができるア�
 <br>
 
 ## データベース設計
-<img src="app/assets/images/readme/erd.png" width="800px">
+<img src="app/assets/images/readme/erd.jpg" width="800px">
 
 <br>
 
