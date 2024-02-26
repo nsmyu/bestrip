@@ -4,13 +4,26 @@ class Users::SessionsController < Devise::SessionsController
 
   def new
     session[:previous_url] = request.referer
-    set_email
-    set_invitation_code
+
+    @invitation_code = params[:invitation_code]
     if @invitation_code.blank?
       return if require_no_authentication
+    else
+      invitation = Invitation.find_by(code: @invitation_code)
+      @invited_itinerary = invitation.itinerary
     end
 
-    self.resource = resource_class.new(@sign_in_params)
+    invitation_token = params[:invitation_token]
+    if invitation_token.present?
+      digest = Devise.token_generator.digest(User, :invitation_token, invitation_token)
+      user = User.find_by(invitation_token: digest)
+      if user
+        @invited_itinerary = Itinerary.find(params[:itinerary_id])
+        sign_in_params = ActiveSupport::HashWithIndifferentAccess.new(email: user.email)
+      end
+    end
+
+    self.resource = resource_class.new(sign_in_params)
     clean_up_passwords(resource)
     yield resource if block_given?
     respond_with(resource, serialize_options(resource))
@@ -34,22 +47,6 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   private
-
-  def set_email
-    token = Devise.token_generator.digest(User, :invitation_token, params[:invitation_token])
-    user = User.find_by(invitation_token: token)
-    if user
-      set_itinerary
-      @sign_in_params = ActiveSupport::HashWithIndifferentAccess.new(email: user.email)
-    end
-  end
-
-  def set_invitation_code
-    @invitation_code = params[:invitation_code]
-    if @invitation_code.present?
-      @invited_itinerary = PendingInvitation.find_by(invitation_code: @invitation_code).itinerary
-    end
-  end
 
   def configure_sign_in_params
     devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])

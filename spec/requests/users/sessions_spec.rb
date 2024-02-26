@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "Users::Sessions", type: :request do
   let(:user) { create(:user) }
   let(:turbo_stream) { { accept: "text/vnd.turbo-stream.html" } }
+  let(:invitation_token) { Devise.token_generator.generate(User, :invitation_token) }
 
   describe "GET #new" do
     it "正常にレスポンスを返すこと" do
@@ -10,9 +11,12 @@ RSpec.describe "Users::Sessions", type: :request do
       expect(response).to have_http_status 200
     end
 
-    it "既存ユーザーが招待メールからアクセスした場合、正常にレスポンスを返すこと" do
+    it "既存ユーザーが招待メールからアクセスした場合、正常にレスポンスを返すこと、ユーザーのメールアドレスを取得すること" do
       itinerary = create(:itinerary)
-      get new_user_session_path(id: user.id, itinerary_id: itinerary.id)
+      user
+      user.update(invitation_token: invitation_token[1])
+      create(:pending_invitation, user: user, itinerary: itinerary)
+      get new_user_session_path(invitation_token: invitation_token[0], itinerary_id: itinerary.id)
       expect(response).to have_http_status 200
       expect(response.body).to include user.email
     end

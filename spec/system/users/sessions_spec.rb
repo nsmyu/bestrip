@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Users::Sessions", type: :system, focus: true do
+RSpec.describe "Users::Sessions", type: :system do
   let!(:user) { create(:user) }
 
   before do
