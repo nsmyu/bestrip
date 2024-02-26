@@ -1,4 +1,4 @@
-class Users::InvitationsController < Devise::InvitationsController
+class Users::EmailInvitationsController < Devise::InvitationsController
   before_action :set_itinerary, except: :create
   before_action -> {
     set_itinerary

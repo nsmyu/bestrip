@@ -16,7 +16,7 @@
           <li class="nav-item dropdown border-radius-md link-area d-lg-none cursor-pointer d-flex align-items-center">
             <a class="position-relative d-block d-flex" type="button" data-bs-toggle="dropdown">
               <i class="material-symbols-outlined text-charcoal px-2 fs-3">notifications</i>
-              <% if current_user.pending_invitations.count > 0 %>
+              <% if current_user.invitations.count > 0 %>
                 <i class="material-icons text-danger text-xs position-absolute" style="top:-2px;right:5px;">fiber_manual_record</i>
               <% end %>
             </a>
@@ -52,7 +52,7 @@
           <li class="nav-item dropdown border-radius-md link-area cursor-pointer d-flex align-items-center ms-2">
             <a class="position-relative d-block d-flex" type="button" data-bs-toggle="dropdown">
               <i class="material-symbols-outlined text-charcoal px-2 fs-4">notifications</i>
-              <% if current_user.pending_invitations.count > 0 %>
+              <% if current_user.invitations.count > 0 %>
                 <i class="material-icons text-danger text-xs position-absolute" style="top:-3px;right:4px;">fiber_manual_record</i>
               <% end %>
             </a>

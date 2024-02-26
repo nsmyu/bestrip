@@ -27,6 +27,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_24_061255) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "invitations", force: :cascade do |t|
+    t.bigint "itinerary_id", null: false
+    t.bigint "user_id"
+    t.string "code", limit: 22
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_invitations_on_code", unique: true
+    t.index ["itinerary_id"], name: "index_invitations_on_itinerary_id"
+    t.index ["user_id", "itinerary_id"], name: "index_invitations_on_user_id_and_itinerary_id", unique: true
+    t.index ["user_id"], name: "index_invitations_on_user_id"
+  end
+
   create_table "itineraries", force: :cascade do |t|
     t.string "title", null: false
     t.string "image"
@@ -54,18 +66,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_24_061255) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_likes_on_post_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
-  end
-
-  create_table "pending_invitations", force: :cascade do |t|
-    t.bigint "itinerary_id", null: false
-    t.bigint "user_id"
-    t.string "invitation_code", limit: 22
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["invitation_code", "itinerary_id"], name: "index_pending_invitations_on_invitation_code_and_itinerary_id", unique: true
-    t.index ["itinerary_id"], name: "index_pending_invitations_on_itinerary_id"
-    t.index ["user_id", "itinerary_id"], name: "index_pending_invitations_on_user_id_and_itinerary_id", unique: true
-    t.index ["user_id"], name: "index_pending_invitations_on_user_id"
   end
 
   create_table "photos", force: :cascade do |t|
@@ -144,12 +144,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_24_061255) do
   add_foreign_key "comments", "comments", column: "parent_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "invitations", "itineraries"
+  add_foreign_key "invitations", "users"
   add_foreign_key "itinerary_users", "itineraries"
   add_foreign_key "itinerary_users", "users"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
-  add_foreign_key "pending_invitations", "itineraries"
-  add_foreign_key "pending_invitations", "users"
   add_foreign_key "photos", "posts"
   add_foreign_key "posts", "itineraries"
   add_foreign_key "posts", "users"

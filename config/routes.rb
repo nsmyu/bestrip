@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions',
-    invitations: 'users/invitations',
+    invitations: 'users/email_invitations',
   }
 
   devise_scope :user do
@@ -15,8 +15,8 @@ Rails.application.routes.draw do
     patch 'users/update_without_password', to: 'users/registrations#update_without_password'
     patch 'users/validate_bestrip_id',     to: 'users/registrations#validate_bestrip_id'
   end
-  get 'line_login_api/login',    to: 'users/line_login_api#login'
-  get 'line_login_api/callback', to: 'users/line_login_api#callback'
+  get 'line_login/login',    to: 'users/line_login#login'
+  get 'line_login/callback', to: 'users/line_login#callback'
 
   concern :placeable do
     get 'places/index_lazy', to: 'places#index_lazy'

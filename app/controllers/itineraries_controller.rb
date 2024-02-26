@@ -11,8 +11,7 @@ class ItinerariesController < ApplicationController
     @invited_itineraries = current_user.invited_itineraries.order(:created_at)
     if params[:invited_itinerary_id].present?
       @invited_itinerary = Itinerary.find(params[:invited_itinerary_id])
-      @pending_invitation =
-        current_user.pending_invitations.find_by(itinerary_id: @invited_itinerary.id)
+      @invitation = current_user.invitations.find_by(itinerary_id: @invited_itinerary.id)
     end
   end
 

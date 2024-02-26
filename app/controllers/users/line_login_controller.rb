@@ -1,8 +1,8 @@
-class Users::LineLoginApiController < ApplicationController
+class Users::LineLoginController < ApplicationController
   def login
     invitation_code = params[:invitation_code]
     session[:state] = SecureRandom.urlsafe_base64
-    line_login_api_callback_url = "https://f400-125-15-187-39.ngrok-free.app/line_login_api/callback"
+    line_login_api_callback_url = "https://f400-125-15-187-39.ngrok-free.app/line_login/callback"
 
     base_authorization_url = 'https://access.line.me/oauth2/v2.1/authorize'
     response_type = 'code'
@@ -26,7 +26,6 @@ class Users::LineLoginApiController < ApplicationController
 
     @invitation_code = params[:invitation_code]
 
-    p "HERE"
     line_user_profile = get_line_user_profile(params[:code], @invitation_code)
 
     if line_user_profile[:email].blank?
