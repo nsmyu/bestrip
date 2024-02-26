@@ -36,6 +36,7 @@ class Users::InvitationsController < Devise::InvitationsController
   end
 
   def edit
+    @invitation_token = params[:invitation_token]
     digest = Devise.token_generator.digest(User, :invitation_token, params[:invitation_token])
     user = User.find_by(invitation_token: digest)
     if user&.name != "newly_invited"
