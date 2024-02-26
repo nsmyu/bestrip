@@ -25,13 +25,14 @@ class Users::LineLoginController < ApplicationController
     end
 
     @invitation_code = params[:invitation_code]
+    @invitation = Invitation.find_by(invitation_code: @invitation_code)
 
     line_user_profile = get_line_user_profile(params[:code], @invitation_code)
 
     if line_user_profile[:email].blank?
       existing_user = User.find_by(line_user_id: line_user_profile[:sub])
       if existing_user
-        add_user_to_pending_invitation(existing_user)
+        @invitation.add_user(existing_user)
         sign_in existing_user
         after_sign_in_path
       else
@@ -41,17 +42,17 @@ class Users::LineLoginController < ApplicationController
         redirect_to new_user_session_path(invitation_code: @invitation_code)
       end
       return
-    end
-
-    existing_user = User.find_by(email: line_user_profile[:email])
-    if existing_user
-      if existing_user.line_user_id.blank?
-        existing_user.update_attribute(:line_user_id, line_user_profile[:sub])
+    else
+      existing_user = User.find_by(email: line_user_profile[:email])
+      if existing_user
+        if !existing_user.line_user_id?
+          existing_user.update_attribute(:line_user_id, line_user_profile[:sub])
+        end
+        @invitation.add_user(existing_user)
+        sign_in existing_user
+        after_sign_in_path
+        return
       end
-      add_user_to_pending_invitation(existing_user)
-      sign_in existing_user
-      after_sign_in_path
-      return
     end
 
     random_pass = SecureRandom.base36
@@ -65,7 +66,7 @@ class Users::LineLoginController < ApplicationController
     new_user.set_remote_avatar(line_user_profile[:picture]) if line_user_profile[:picture].present?
 
     if new_user.save
-      add_user_to_pending_invitation(new_user)
+      @invitation.add_user(new_user)
       sign_in new_user
       after_sign_in_path
     else
@@ -114,15 +115,8 @@ class Users::LineLoginController < ApplicationController
     response.code == 200 ? JSON.parse(response.body)['id_token'] : nil
   end
 
-  def add_user_to_pending_invitation(user)
-    if @invitation_code.present?
-      @pending_invitation = PendingInvitation.find_by(invitation_code: @invitation_code)
-      @pending_invitation.update(user_id: user.id)
-    end
-  end
-
   def after_sign_in_path
     flash[:notice] = "ログインしました。"
-    redirect_to itineraries_path(invited_itinerary_id: @pending_invitation&.itinerary&.id)
+    redirect_to itineraries_path(invited_itinerary_id: @invitation&.itinerary&.id)
   end
 end

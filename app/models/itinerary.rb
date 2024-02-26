@@ -21,6 +21,11 @@ class Itinerary < ApplicationRecord
     joins(:schedules).merge(Schedule.where("schedules.title LIKE?", "%#{keyword}%"))
   end
 
+  def create_invitation(user)
+    code = SecureRandom.urlsafe_base64
+    invitations.create(code: code, user: user)
+  end
+
   private
 
   def add_owner_to_members

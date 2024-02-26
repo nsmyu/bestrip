@@ -1,7 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: :create
-  before_action :set_user,
-    only: %i(edit_email edit_profile validate_bestrip_id update_without_password)
 
   def new
     session[:previous_url] = request.referer
@@ -36,9 +34,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def validate_bestrip_id
-    @user.assign_attributes(update_without_password_params)
-    @user.valid?
-    @blank_error = "お好みのIDを入力してください" if @user.bestrip_id.blank?
+    current_user.assign_attributes(update_without_password_params)
+    current_user.valid?
+    @blank_error = "お好みのIDを入力してください" if current_user.bestrip_id.blank?
   end
 
   def update
@@ -62,8 +60,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update_without_password
     return if block_guest_user
 
-    @user.assign_attributes(update_without_password_params)
-    if @user.save(context: :without_password)
+    current_user.assign_attributes(update_without_password_params)
+    if current_user.save(context: :without_password)
       if update_without_password_params.key?(:email)
         redirect_to :users_edit_email, notice: "メールアドレスを変更しました。"
       else
@@ -84,10 +82,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  def set_user
-    @user = User.find(current_user.id)
-  end
-
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
   end
@@ -97,7 +91,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def block_guest_user
-    if @user.guest? && !params[:user][:name]
+    if current_user.guest? && !params[:user][:name]
       redirect_to request.referer, notice: "ゲストユーザーの方は変更できません。"
     end
   end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "PendingInvitations", type: :request do
+RSpec.describe "Invitations", type: :request do
   let(:owner) { create(:user) }
   let(:itinerary) { create(:itinerary, owner: owner) }
   let(:invitee) { create(:user) }

@@ -31,7 +31,7 @@ Rails.application.routes.draw do
 
   resources :itineraries do
     resources :schedules
-    resources :pending_invitations, only: %i(create destroy)
+    resources :invitations, only: %i(create destroy)
 
     member do
       resources :itinerary_users, only: %i(new create destroy)

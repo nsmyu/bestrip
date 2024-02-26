@@ -1,9 +1,9 @@
 class Users::EmailInvitationsController < Devise::InvitationsController
-  before_action :set_itinerary, except: :create
+  before_action :set_itinerary, only: :edit
   before_action -> {
     set_itinerary
     authenticate_itinerary_member(@itinerary)
-  }, only: :create
+  }, except: :edit
 
   def create
     @itinerary = Itinerary.find(params[:itinerary_id])
@@ -14,13 +14,16 @@ class Users::EmailInvitationsController < Devise::InvitationsController
         @already_added_error = "#{existing_user.name}さんはすでにメンバーに含まれています"
         return
       end
-      existing_user.send("registration_completed=", !existing_user.invitation_accepted_at)
-      existing_user.send("currently_invited_to=", @itinerary.id)
-      existing_user.invite!(current_user)
+
       self.resource = existing_user
-      PendingInvitation.create(user: resource, itinerary: @itinerary)
-      redirect_to itinerary_path(@itinerary.id), notice: "招待メールを#{existing_user.email}に送信しました。"
-      return
+      resource.send("currently_invited_to=", @itinerary.id)
+      if resource.invite!(current_user)
+        @itinerary.create_invitation(resource) if @itinerary.invitations.exclude?(resource)
+        redirect_to itinerary_path(@itinerary.id), notice: "招待メールを#{resource.email}に送信しました。"
+        return
+      else
+        respond_with resource, location: itinerary_path(@itinerary.id)
+      end
     end
 
     self.resource = invite_resource
@@ -28,7 +31,7 @@ class Users::EmailInvitationsController < Devise::InvitationsController
     yield resource if block_given?
 
     if resource_invited
-      PendingInvitation.create(user: resource, itinerary: @itinerary)
+      @itinerary.create_invitation(resource)
       if is_flashing_format? && resource.invitation_sent_at
         set_flash_message :notice, :send_instructions, email: resource.email
       end

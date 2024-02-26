@@ -16,7 +16,7 @@
         <p class="text-dark text-sm pb-3">「<%= invited_itinerary.title %>」への招待を削除しますか？</p>
         <div class="d-flex justify-content-end border-top mx-n3 px-3 pt-3">
           <a class="btn btn-sm bg-gradient-light mb-0 me-1">キャンセル</a>
-          <%= link_to "削除する", [:itinerary_pending_invitation, itinerary_id: invited_itinerary.id, id: @pending_invitation.id], class: "btn btn-sm bg-gradient-danger mb-0 ms-1",
+          <%= link_to "削除する", [:itinerary_pending_invitation, itinerary_id: invited_itinerary.id, id: @invitation.id], class: "btn btn-sm bg-gradient-danger mb-0 ms-1",
             data: { turbo_method: :delete, action: "click->modal#close", turbo_frame: "_top" } %>
         </div>
       </div>

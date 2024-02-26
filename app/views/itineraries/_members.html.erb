@@ -37,7 +37,7 @@
           <p class="text-xs mt-2">メールで招待</p>
         </div>
         <div class="col ps-0 text-center">
-          <%= form_with url: [:itinerary_pending_invitations, itinerary_id: @itinerary.id], data: { turbo_frame: "line_invitation" } do |f| %>
+          <%= form_with url: [:itinerary_invitations, itinerary_id: @itinerary.id], data: { turbo_frame: "line_invitation" } do |f| %>
             <label for="line_invitation_btn" class="m-0 cursor-pointer">
               <%= f.submit "LINEで招待する", class: "d-none", id: "line_invitation_btn" %>
               <%= image_tag "LINE_icon.png", class:"invitation-icon hover-opacity" %>

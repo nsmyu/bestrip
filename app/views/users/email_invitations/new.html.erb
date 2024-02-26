@@ -1,7 +1,9 @@
 <%= render "shared/modal", title: "メールでメンバーを招待する" do %>
-  <div class="my-3 pb-3">
+  <%
+=begin%>
+ <div class="my-3 pb-3">
     <p class="my-2 pt-1 text-sm text-dark">旅のプランに招待したい人のメールアドレスを入力してください</p>
-    <%= form_for(resource, as: resource_name, url: invitation_path(resource_name, itinerary_id: @itinerary.id), html: { method: :post }, data: { action: "turbo:submit-end->modal#close", turbo_frame: "_top" }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: user_invitation_path(resource_name, itinerary_id: @itinerary.id), html: { method: :post }, data: { action: "turbo:submit-end->modal#close", turbo_frame: "_top" }) do |f| %>
       <div class="d-flex flex-column align-items-center">
         <% resource.class.invite_key_fields.each do |field| -%>
           <div class="input-group input-group-outline row mx-0 mb-4">
@@ -15,4 +17,6 @@
       </div>
     <% end %>
   </div>
+<%
+=end%>
 <% end %>

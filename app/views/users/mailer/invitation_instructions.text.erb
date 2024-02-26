@@ -5,12 +5,12 @@
 
 <%= "#{User.find(@resource.invited_by_id).name}さんがあなたを「#{@itinerary.title}」に招待しています。" %>
 
-<% if @registration_completed %>
+<% if @resource.invitation_accepted_at.nil? %>
 下記のリンクからログインして今すぐ参加しましょう。
 
-<%= new_user_session_url(invitation_token: @token, itinerary_id: @itinerary.id) %>
+<%= new_user_session_url(invitation_token: @token, invitation_code: @invitation.code) %>
 <% else %>
 下記のリンクからアカウント登録をして今すぐ参加しましょう。
 
-<%= accept_invitation_url(@resource, invitation_token: @token, itinerary_id: @itinerary.id) %>
+<%= accept_invitation_url(@resource, invitation_token: @token, invitation_code: @invitation.code) %>
 <% end %>
