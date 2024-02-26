@@ -14,13 +14,12 @@ RSpec.describe ApplicationHelper, type: :helper do
   end
 
   describe "#ogp_image(itinerary_image)" do
-    it "引数に画像の相対パスが渡された場合、その画像の絶対パスを返すこと" do
+    it "引数にデフォルト画像以外が渡された場合、その画像の絶対パスを返すこと" do
       itinerary = create(:itinerary, :with_image)
-      expect(helper.ogp_image(itinerary.image.url))
-        .to eq "https://s3.ap-northeast-1.amazonaws.com/bestrip#{itinerary.image.url}"
+      expect(helper.ogp_image(itinerary.image.url)).to eq "#{itinerary.image.url}"
     end
 
-    it "引数にitineraryのデフォルト画像の相対パスが渡された場合、デフォルト画像の絶対バスを返すこと" do
+    it "引数にitineraryのデフォルト画像のパスが渡された場合、デフォルト画像の絶対バスを返すこと" do
       expect(helper.ogp_image("default_itinerary.jpg"))
         .to eq "https://bestrip.s3.ap-northeast-1.amazonaws.com/uploads/default_ogp_image.png"
     end
