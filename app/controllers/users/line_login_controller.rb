@@ -1,5 +1,6 @@
 class Users::LineLoginController < ApplicationController
   def new
+    sign_out current_user
     @user = User.new
     @invitation_code = params[:invitation_code]
     @invited_itinerary = PendingInvitation.find_by(code: @invitation_code).itinerary
