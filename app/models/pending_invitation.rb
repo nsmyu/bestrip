@@ -14,4 +14,8 @@ class PendingInvitation < ApplicationRecord
       errors.add(:code, :blank)
     end
   end
+
+  def add_user(user)
+    update(user_id: user.id)
+  end
 end

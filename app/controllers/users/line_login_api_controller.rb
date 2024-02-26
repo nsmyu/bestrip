@@ -25,14 +25,14 @@ class Users::LineLoginApiController < ApplicationController
     end
 
     @invitation_code = params[:invitation_code]
+    @pending_invitation = PendingInvitation.find_by(code: @invitation_code)
 
-    p "HERE"
     line_user_profile = get_line_user_profile(params[:code], @invitation_code)
 
     if line_user_profile[:email].blank?
       existing_user = User.find_by(line_user_id: line_user_profile[:sub])
       if existing_user
-        add_user_to_pending_invitation(existing_user)
+        @pending_invitation.add_user(existing_user)
         sign_in existing_user
         after_sign_in_path
       else
@@ -49,7 +49,7 @@ class Users::LineLoginApiController < ApplicationController
       if existing_user.line_user_id.blank?
         existing_user.update_attribute(:line_user_id, line_user_profile[:sub])
       end
-      add_user_to_pending_invitation(existing_user)
+      @pending_invitation.add_user(existing_user)
       sign_in existing_user
       after_sign_in_path
       return
@@ -66,7 +66,7 @@ class Users::LineLoginApiController < ApplicationController
     new_user.set_remote_avatar(line_user_profile[:picture]) if line_user_profile[:picture].present?
 
     if new_user.save
-      add_user_to_pending_invitation(new_user)
+      @pending_invitation.add_user(new_user)
       sign_in new_user
       after_sign_in_path
     else
@@ -113,13 +113,6 @@ class Users::LineLoginApiController < ApplicationController
     }
     response = Typhoeus::Request.post(url, options)
     response.code == 200 ? JSON.parse(response.body)['id_token'] : nil
-  end
-
-  def add_user_to_pending_invitation(user)
-    if @invitation_code.present?
-      @pending_invitation = PendingInvitation.find_by(invitation_code: @invitation_code)
-      @pending_invitation.update(user_id: user.id)
-    end
   end
 
   def after_sign_in_path
