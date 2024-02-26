@@ -12,7 +12,19 @@
               </div>
             </div>
             <div class="card-body shadow">
-              <p class="mb-3 text-sm text-dark">ニックネームとパスワードを設定してアカウント登録をしてください。登録後、招待されたプランに参加することができます。</p>
+              <p class="mt-1 ps-1 text-sm text-dark fw-bold">招待されている旅のプラン：</p>
+              <div class="border mt-1">
+                <div class="d-flex" >
+                  <div>
+                    <%= image_tag @itinerary.image.url, class: "modal-small-place-image", alt: "#{@itinerary.title}の画像" %>
+                  </div>
+                  <div class="p-2 position-relative w-100">
+                    <p class="text-sm text-dark fw-bold"><%= @itinerary.title %></p>
+                    <p class="text-xs text-dark"><%= "#{l @itinerary.departure_date} 〜 #{l @itinerary.return_date}" %></p>
+                  </div>
+                </div>
+              </div>
+              <p class="mt-3 mb-4 text-sm text-dark">ニックネームとパスワードを設定してアカウント登録をしてください。登録後、招待されたプランに参加することができます。</p>
               <%= form_for(resource, as: resource_name, url: invitation_path(resource_name, itinerary_id: @itinerary.id), html: { method: :put }) do |f| %>
                 <%= f.hidden_field :invitation_token, readonly: true %>
                 <% if f.object.class.require_password_on_accepting %>

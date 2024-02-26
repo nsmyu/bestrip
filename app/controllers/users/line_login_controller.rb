@@ -1,13 +1,19 @@
-class Users::LineLoginApiController < ApplicationController
+class Users::LineLoginController < ApplicationController
+  def new
+    @user = User.new
+    @invitation_code = params[:invitation_code]
+    @invited_itinerary = PendingInvitation.find_by(code: @invitation_code).itinerary
+  end
+
   def login
     invitation_code = params[:invitation_code]
     session[:state] = SecureRandom.urlsafe_base64
-    line_login_api_callback_url = "https://f400-125-15-187-39.ngrok-free.app/line_login_api/callback"
+    line_login_callback_url = "https://d96f-125-15-187-39.ngrok-free.app/line_login/callback"
 
     base_authorization_url = 'https://access.line.me/oauth2/v2.1/authorize'
     response_type = 'code'
     client_id = ENV['LINE_KEY']
-    redirect_uri = CGI.escape(line_login_api_callback_url)
+    redirect_uri = CGI.escape(line_login_callback_url)
     redirect_uri += "?invitation_code=#{invitation_code}" if invitation_code
     state = session[:state]
     scope = 'profile%20openid%20email'
@@ -96,7 +102,7 @@ class Users::LineLoginApiController < ApplicationController
 
   def get_line_user_id_token(code, invitation_code)
     url = 'https://api.line.me/oauth2/v2.1/token'
-    redirect_uri = line_login_api_callback_url
+    redirect_uri = line_login_callback_url
     redirect_uri += "?invitation_code=#{invitation_code}" if invitation_code
 
     options = {

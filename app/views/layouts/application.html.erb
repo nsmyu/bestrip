@@ -27,7 +27,7 @@
     <%= render 'layouts/header' %>
     <%= render 'layouts/offcanvas' %>
     <%= yield %>
-    <% if !(current_page?(new_user_registration_path) || current_page?(new_user_session_path) || current_page?(accept_user_invitation_path)) %>
+    <% if !(current_page?(new_user_registration_path) || current_page?(new_user_session_path) || current_page?(accept_user_invitation_path) || current_page?(line_login_new_path)) %>
       <%= render 'layouts/footer' %>
     <% end %>
     <%= render 'shared/flash' %>

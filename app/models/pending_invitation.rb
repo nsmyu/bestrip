@@ -6,6 +6,10 @@ class PendingInvitation < ApplicationRecord
   validates :code, length: { is: 22 }, uniqueness: true, allow_blank: true
   validate :either_or_both_of_user_and_code_must_be_present
 
+  def add_user(user)
+    update(user_id: user.id)
+  end
+
   private
 
   def either_or_both_of_user_and_code_must_be_present
@@ -13,9 +17,5 @@ class PendingInvitation < ApplicationRecord
       errors.add(:user, :blank)
       errors.add(:code, :blank)
     end
-  end
-
-  def add_user(user)
-    update(user_id: user.id)
   end
 end

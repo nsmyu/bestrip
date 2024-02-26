@@ -68,7 +68,7 @@
             <%= render 'layouts/account_dropdown' %>
           </li>
         <% else %>
-          <% if request.fullpath.exclude?('/users/invitation') %>
+          <% if request.fullpath.exclude?('/users/invitation') && request.fullpath.exclude?('/line_login/new') %>
             <li class="nav-item">
               <%= link_to "アカウント登録", :new_user_registration, class: "nav-link px-3 border-radius-md link-area text-sm text-charcoal" %>
             </li>

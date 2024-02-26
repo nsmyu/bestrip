@@ -1,17 +1,8 @@
 class Users::SessionsController < Devise::SessionsController
-  skip_before_action :require_no_authentication, only: :new
   before_action :configure_sign_in_params, only: :create
 
   def new
     session[:previous_url] = request.referer
-
-    @invitation_code = params[:invitation_code]
-    if @invitation_code.blank?
-      return if require_no_authentication
-    else
-      invitation = Invitation.find_by(code: @invitation_code)
-      @invited_itinerary = invitation.itinerary
-    end
 
     invitation_token = params[:invitation_token]
     if invitation_token.present?
