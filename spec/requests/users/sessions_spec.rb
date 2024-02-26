@@ -10,16 +10,6 @@ RSpec.describe "Users::Sessions", type: :request do
       get new_user_session_path
       expect(response).to have_http_status 200
     end
-
-    it "既存ユーザーが招待メールからアクセスした場合、正常にレスポンスを返すこと、ユーザーのメールアドレスを取得すること" do
-      itinerary = create(:itinerary)
-      user
-      user.update(invitation_token: invitation_token[1])
-      create(:pending_invitation, user: user, itinerary: itinerary)
-      get new_user_session_path(invitation_token: invitation_token[0], itinerary_id: itinerary.id)
-      expect(response).to have_http_status 200
-      expect(response.body).to include user.email
-    end
   end
 
   describe "POST #create" do

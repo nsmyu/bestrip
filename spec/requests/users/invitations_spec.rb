@@ -25,14 +25,14 @@ RSpec.describe "Users::Invitations", type: :request do
     end
 
     context "有効な値の場合" do
-      it "アカウント未登録ユーザーへのメール送信に成功すること" do
+      it "アカウント未登録ユーザーの場合、成功すること" do
         invitation_params = { user: { name: invitee.name, email: invitee.email } }
         post user_invitation_path(itinerary_id: itinerary.id), params: invitation_params
         expect(response).to redirect_to itinerary_path(itinerary.id)
         expect(itinerary.reload.invitees).to include User.last
       end
 
-      it "既存ユーザーへの招待メール送信に成功すること" do
+      it "既存ユーザーの場合、成功すること" do
         invitee.save
         invitation_params = { user: { email: invitee.email } }
         post user_invitation_path(itinerary_id: itinerary.id), params: invitation_params
@@ -68,12 +68,21 @@ RSpec.describe "Users::Invitations", type: :request do
   end
 
   describe "GET #edit" do
-    it "正常にレスポンスを返すこと" do
-      invitee.save
+    it "アカウント未登録ユーザーの場合、正常にレスポンスを返すこと" do
+      invitee = create(:user, name:"newly_invited")
       invitee.update(invitation_token: invitation_token[1])
       accept_params = { invitation_token: invitation_token[0], itinerary_id: itinerary.id }
       get accept_user_invitation_path, params: accept_params
       expect(response).to have_http_status 200
+    end
+
+    it "既存ユーザーの場合、ログインページにリダイレクトすること" do
+      invitee.save
+      invitee.update(invitation_token: invitation_token[1])
+      accept_params = { invitation_token: invitation_token[0], itinerary_id: itinerary.id }
+      get accept_user_invitation_path, params: accept_params
+      expect(response).to redirect_to new_user_session_path(invitation_token: invitation_token[0],
+                                                            itinerary_id: itinerary.id)
     end
   end
 

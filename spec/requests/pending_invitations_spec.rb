@@ -25,7 +25,7 @@ RSpec.describe "PendingInvitations", type: :request do
       expect(response).to redirect_to itineraries_path
     end
 
-    it "LINEでの招待（=invitation_codeがある）の削除に成功すること" do
+    it "LINEでの招待（=codeがある）の削除に成功すること" do
       pending_invitation = create(:pending_invitation, :with_code, itinerary: itinerary)
       delete itinerary_pending_invitation_path(id: pending_invitation.id,
                                                itinerary_id: itinerary.id)
