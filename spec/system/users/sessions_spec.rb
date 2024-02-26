@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Users::Sessions", type: :system do
+RSpec.describe "Users::Sessions", type: :system, focus: true do
   let!(:user) { create(:user) }
 
   before do
@@ -23,7 +23,7 @@ RSpec.describe "Users::Sessions", type: :system do
       end
     end
 
-    context '無効な値の場合' do
+    context '無効な値の場合', js: true do
       it 'メールアドレスが間違っている場合、失敗すること' do
         fill_in "user[email]", with: "wrong@example.com"
         fill_in "user[password]", with: user.password

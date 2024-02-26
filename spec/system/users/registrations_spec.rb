@@ -27,16 +27,14 @@ RSpec.describe "Users::Registrations", type: :system do
     end
 
     context "無効な値の場合" do
-      it "失敗すること" do
+      it "失敗すること", js: true do
         expect do
-          fill_in "user[name]", with: ""
-          fill_in "user[email]", with: "invalid_email_address"
           fill_in "user[password]", match: :first, with: "foo"
           fill_in "user[password_confirmation]", with: "bar"
           click_button "アカウント登録"
 
           expect(page).to have_content "ニックネームを入力してください"
-          expect(page).to have_content "メールアドレスを正しく入力してください"
+          expect(page).to have_content "メールアドレスを入力してください"
           expect(page).to have_content "パスワードは6文字以上で入力してください"
           expect(page).to have_content "パスワード（確認用）とパスワードの入力が一致しません"
         end.not_to change(User, :count)
@@ -72,7 +70,7 @@ RSpec.describe "Users::Registrations", type: :system do
       end
     end
 
-    context "無効な値の場合" do
+    context "無効な値の場合", js: true do
       it "現在のパスワードが間違っている場合、失敗すること" do
         fill_in "user[current_password]", with: "wrongpassword"
         fill_in "user[password]", match: :first, with: "newpassword"

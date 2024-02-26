@@ -160,7 +160,7 @@ RSpec.describe "Users::Invitations", type: :system do
     end
 
     context "既存ユーザーの場合" do
-      it "ログイン後に招待の承認に成功すること" do
+      it "ログイン後に招待の承認に成功すること", js: true do
         expect do
           visit new_user_session_path(id: invitee.id, itinerary_id: itinerary.id)
           fill_in "user[password]", with: invitee.password

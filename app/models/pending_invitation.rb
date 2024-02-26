@@ -3,16 +3,15 @@ class PendingInvitation < ApplicationRecord
   belongs_to :user, optional: true
 
   validates :user, uniqueness: { scope: :itinerary }, allow_nil: true
-  validates :invitation_code, length: { is: 22 }, allow_blank: true,
-                              uniqueness: { scope: :itinerary }
-  validate :either_or_both_of_user_and_invitation_code_must_be_present
+  validates :code, length: { is: 22 }, uniqueness: true, allow_blank: true
+  validate :either_or_both_of_user_and_code_must_be_present
 
   private
 
-  def either_or_both_of_user_and_invitation_code_must_be_present
-    if !(user || invitation_code)
+  def either_or_both_of_user_and_code_must_be_present
+    if !(user || code)
       errors.add(:user, :blank)
-      errors.add(:invitation_code, :blank)
+      errors.add(:code, :blank)
     end
   end
 end

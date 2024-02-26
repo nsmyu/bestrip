@@ -59,10 +59,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_24_061255) do
   create_table "pending_invitations", force: :cascade do |t|
     t.bigint "itinerary_id", null: false
     t.bigint "user_id"
-    t.string "invitation_code", limit: 22
+    t.string "code", limit: 22
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["invitation_code", "itinerary_id"], name: "index_pending_invitations_on_invitation_code_and_itinerary_id", unique: true
+    t.index ["code"], name: "index_pending_invitations_on_code", unique: true
     t.index ["itinerary_id"], name: "index_pending_invitations_on_itinerary_id"
     t.index ["user_id", "itinerary_id"], name: "index_pending_invitations_on_user_id_and_itinerary_id", unique: true
     t.index ["user_id"], name: "index_pending_invitations_on_user_id"

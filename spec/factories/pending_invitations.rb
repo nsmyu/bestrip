@@ -2,12 +2,12 @@ FactoryBot.define do
   factory :pending_invitation do
     itinerary
 
-    trait :with_user_id do
+    trait :with_user do
       user
     end
 
-    trait :with_invitation_code do
-      invitation_code { SecureRandom.urlsafe_base64 }
+    trait :with_code do
+      code { SecureRandom.urlsafe_base64 }
     end
   end
 end

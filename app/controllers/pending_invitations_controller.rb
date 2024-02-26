@@ -4,7 +4,7 @@ class PendingInvitationsController < ApplicationController
 
   def create
     @invitation_code = SecureRandom.urlsafe_base64
-    PendingInvitation.create(itinerary_id: @itinerary.id, invitation_code: @invitation_code)
+    PendingInvitation.create(itinerary_id: @itinerary.id, code: @invitation_code)
   end
 
   def destroy
