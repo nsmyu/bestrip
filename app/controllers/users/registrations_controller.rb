@@ -7,9 +7,25 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def create
+    invitation_code = params[:user][:invitation_code]
     build_resource(sign_up_params)
-    return if resource.invalid?
-    super
+
+    resource.save
+    if invitation_code.present?
+      pending_invitation = PendingInvitation.find_by(code: invitation_code)
+      pending_invitation.add_user(resource)
+      @invited_itinerary = pending_invitation.itinerary
+    end
+
+    yield resource if block_given?
+    if resource.persisted?
+      set_flash_message! :notice, :signed_up
+      sign_up(resource_name, resource)
+      respond_with resource, location: after_sign_up_path_for(resource)
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
+    end
   end
 
   def edit_email
@@ -62,6 +78,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def after_sign_up_path_for(resource)
     if session[:previous_url] && URI(session[:previous_url].to_s).path.start_with?("/posts")
       session[:previous_url]
+    elsif @invited_itinerary
+      itineraries_path(invited_itinerary_id: @invited_itinerary.id)
     else
       itineraries_path
     end
