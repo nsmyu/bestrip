@@ -30,14 +30,14 @@ class SchedulesController < ApplicationController
   end
 
   def show
-    if @schedule.place_id.present?
+    if @schedule.place_id
       @place_id = @schedule.place_id
       get_place_details(@place_id)
     end
   end
 
   def edit
-    if @schedule.place_id.present?
+    if @schedule.place_id
       @place_id = @schedule.place_id
       get_place_details(@place_id)
     end

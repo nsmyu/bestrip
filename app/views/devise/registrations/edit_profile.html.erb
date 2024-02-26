@@ -5,10 +5,10 @@
   <div class="container-fluid py-3 py-sm-4 px-0 min-vh-100">
     <div class="card mx-auto p-4 max-width-550">
       <div class="px-2">
-        <%= form_with model: resource, url: users_update_without_password_path do |f| %>
+        <%= form_with model: [:user, current_user], url: users_update_without_password_path do |f| %>
           <div class="row mt-3 mb-4 d-flex align-items-center">
             <div class="col-3">
-              <%= image_tag resource.avatar.url, id: 'image_preview', class: "square-image rounded-circle" %>
+              <%= image_tag current_user.avatar.url, id: 'image_preview', class: "square-image rounded-circle" %>
             </div>
             <div class="col-9">
               <label class="btn btn-outline-primary btn-sm mb-0">
@@ -24,8 +24,8 @@
               ニックネーム（20文字以内）<span class="required">必須</span>
             <% end %>
             <%= f.text_field :name, class: "form-control", autocomplete: "name", placeholder: "ニックネームを入力" %>
-            <div class="<%= "error-message" if resource.errors.messages.key?(:name) %>" >
-              <%= resource.errors.full_messages_for(:name).first if resource.errors.any? %>
+            <div class="<%= "error-message" if current_user.errors.messages.key?(:name) %>" >
+              <%= current_user.errors.full_messages_for(:name).first if current_user.errors.any? %>
             </div>
           </div>
           <div class="input-group input-group-outline row mb-4 mx-0 pt-1">
@@ -41,7 +41,7 @@
                 <%= button_tag "IDが使用可能か確認", type: :submit, formaction: :validate_bestrip_id, formmethod: :patch,
                   class: "btn btn-round btn-outline-secondary btn-sm my-1 me-2 py-1 hover-opacity" %>
                 <div class="error-message" >
-                  <%= @user.errors.full_messages_for(:bestrip_id).first if @user.errors.any? %>
+                  <%= current_user.errors.full_messages_for(:bestrip_id).first if current_user.errors.any? %>
                   <%= @blank_error %>
                 </div>
               </div>
