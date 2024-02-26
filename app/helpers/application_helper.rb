@@ -6,7 +6,7 @@ module ApplicationHelper
   end
 
   def ogp_image(itinerary_image_url)
-    if itinerary_image == "default_itinerary.jpg"
+    if itinerary_image_url == "default_itinerary.jpg"
       "https://bestrip.s3.ap-northeast-1.amazonaws.com/uploads/default_ogp_image.png"
     else
       "#{itinerary_image_url}"
