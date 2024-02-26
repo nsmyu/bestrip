@@ -25,7 +25,7 @@ class ItineraryUsersController < ApplicationController
 
   def create
     user = User.find(params[:user_id])
-    invitation = user.pending_invitations.find_by(itinerary_id: @itinerary.id)
+    invitation = user.invitations.find_by(itinerary_id: @itinerary.id)
 
     if invitation
       if user == current_user

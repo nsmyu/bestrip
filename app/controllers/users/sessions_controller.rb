@@ -9,7 +9,7 @@ class Users::SessionsController < Devise::SessionsController
     if @invitation_code.blank?
       return if require_no_authentication
     else
-      invitation = Invitation.find_by(invitation_code: @invitation_code)
+      invitation = Invitation.find_by(code: @invitation_code)
       @invited_itinerary = invitation.itinerary
       if invitation.user_id?
         sign_in_params = ActiveSupport::HashWithIndifferentAccess.new(email: invitation.user.email)

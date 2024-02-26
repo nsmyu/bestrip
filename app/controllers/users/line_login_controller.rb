@@ -25,7 +25,7 @@ class Users::LineLoginController < ApplicationController
     end
 
     @invitation_code = params[:invitation_code]
-    @invitation = Invitation.find_by(invitation_code: @invitation_code)
+    @invitation = Invitation.find_by(code: @invitation_code)
 
     line_user_profile = get_line_user_profile(params[:code], @invitation_code)
 

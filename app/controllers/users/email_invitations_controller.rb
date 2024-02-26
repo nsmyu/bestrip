@@ -1,9 +1,8 @@
 class Users::EmailInvitationsController < Devise::InvitationsController
-  before_action :set_itinerary, only: :edit
   before_action -> {
     set_itinerary
     authenticate_itinerary_member(@itinerary)
-  }, except: :edit
+  }, only: %i(new create)
 
   def create
     @itinerary = Itinerary.find(params[:itinerary_id])
@@ -39,10 +38,21 @@ class Users::EmailInvitationsController < Devise::InvitationsController
     end
   end
 
+  def edit
+    invitation_code = params[:invitation_code]
+    @invited_itinerary = Invitation.find_by(code: invitation_code)&.itinerary
+    super
+  end
+
+  def update
+    @invited_itinerary = Itinerary.find(params[:invited_itinerary_id])
+    super
+  end
+
   private
 
   def after_accept_path_for(resource)
-    itineraries_path(invited_itinerary_id: @itinerary.id)
+    itineraries_path(invited_itinerary_id: @invited_itinerary.id)
   end
 
   def invite_resource

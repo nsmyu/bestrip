@@ -70,7 +70,7 @@ RSpec.describe "ItineraryUsers", type: :request do
         end
 
         it "招待中のユーザーの追加に成功すること" do
-          create(:pending_invitation, user: user_1, itinerary: itinerary)
+          create(:invitation, user: user_1, itinerary: itinerary)
           add_member_params = { user_id: user_1.id, id: itinerary.id }
           post itinerary_users_path(itinerary.id), params: add_member_params
           expect(response).to redirect_to itinerary_path(itinerary.id)
@@ -91,7 +91,7 @@ RSpec.describe "ItineraryUsers", type: :request do
 
     describe "メールでの招待から旅のプランに参加" do
       it "成功すること" do
-        create(:pending_invitation, user: user_1, itinerary: itinerary)
+        create(:invitation, user: user_1, itinerary: itinerary)
         sign_in user_1
         join_member_params = { user_id: user_1.id, id: itinerary.id }
         post itinerary_users_path(itinerary.id), params: join_member_params

@@ -37,7 +37,7 @@ RSpec.describe "Itineraries", type: :request do
     end
 
     it "旅のプランへの招待通知を取得すること" do
-      create(:pending_invitation, user: other_user, itinerary: itinerary)
+      create(:invitation, user: other_user, itinerary: itinerary)
       sign_in other_user
       get itineraries_path
       expect(response.body).to include "「#{itinerary.title}」に招待されています"

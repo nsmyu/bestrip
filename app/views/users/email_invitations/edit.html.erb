@@ -13,7 +13,7 @@
             </div>
             <div class="card-body shadow">
               <p class="mb-3 text-sm text-dark">ニックネームとパスワードを設定してアカウント登録をしてください。登録後、招待されたプランに参加することができます。</p>
-              <%= form_for(resource, as: resource_name, url: invitation_path(resource_name, itinerary_id: @itinerary.id), html: { method: :put }) do |f| %>
+              <%= form_for(resource, as: resource_name, url: invitation_path(resource_name, invited_itinerary_id: @invited_itinerary.id), html: { method: :put }) do |f| %>
                 <%= f.hidden_field :invitation_token, readonly: true %>
                 <% if f.object.class.require_password_on_accepting %>
                   <div class="input-group input-group-outline mb-3 <%= "is-filled" if resource[:name].present? %>" >

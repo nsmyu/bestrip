@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Users::Invitations", type: :request do
+RSpec.describe "Users::EmailInvitations", type: :request do
   let(:user) { create(:user) }
   let(:invitee) { build(:user) }
   let(:itinerary) { create(:itinerary, owner: user) }
@@ -71,7 +71,8 @@ RSpec.describe "Users::Invitations", type: :request do
     it "正常にレスポンスを返すこと" do
       invitee.save
       invitee.update(invitation_token: invitation_token[1])
-      accept_params = { invitation_token: invitation_token[0], itinerary_id: itinerary.id }
+      invitation = create(:invitation, user: invitee)
+      accept_params = { invitation_token: invitation_token[0], invitation_code: invitation.code }
       get accept_user_invitation_path, params: accept_params
       expect(response).to have_http_status 200
     end
@@ -81,6 +82,7 @@ RSpec.describe "Users::Invitations", type: :request do
     before do
       invitee.save
       invitee.update(invitation_token: invitation_token[1])
+      @invitation = create(:invitation, user: invitee, itinerary: itinerary)
       @user_params = {
         name: invitee.name,
         password: invitee.password,
@@ -91,56 +93,56 @@ RSpec.describe "Users::Invitations", type: :request do
 
     context "有効な値の場合" do
       it "成功すること" do
-        patch user_invitation_path, params: { user: @user_params, itinerary_id: itinerary.id }
+        patch user_invitation_path, params: { user: @user_params, invited_itinerary_id: itinerary.id }
         expect(response).to redirect_to itineraries_path(invited_itinerary_id: itinerary.id)
-        expect(invitee.pending_invitations).not_to include itinerary
+        expect(invitee.invitations).not_to include itinerary
       end
     end
 
     context "無効な値の場合" do
       it "ニックネームが空欄の場合、失敗すること" do
         @user_params[:name] = ""
-        patch user_invitation_path, params: { user: @user_params, itinerary_id: itinerary.id }
+        patch user_invitation_path, params: { user: @user_params, invited_itinerary_id: itinerary.id }
         expect(response.body).to include "ニックネームを入力してください"
       end
 
       it "ニックネームが21文字以上の場合、失敗すること" do
         @user_params[:name] = "a" * 21
-        patch user_invitation_path, params: { user: @user_params, itinerary_id: itinerary.id }
+        patch user_invitation_path, params: { user: @user_params, invited_itinerary_id: itinerary.id }
         expect(response.body).to include "ニックネームは20文字以内で入力してください"
       end
 
       it "パスワードが空欄の場合、失敗すること" do
         @user_params[:password] = ""
         @user_params[:password_confirmation] = ""
-        patch user_invitation_path, params: { user: @user_params, itinerary_id: itinerary.id }
+        patch user_invitation_path, params: { user: @user_params, invited_itinerary_id: itinerary.id }
         expect(response.body).to include "パスワードを入力してください"
       end
 
       it "パスワードが5文字以下の場合、失敗すること" do
         @user_params[:password] = "a" * 5
         @user_params[:password_confirmation] = "a" * 5
-        patch user_invitation_path, params: { user: @user_params, itinerary_id: itinerary.id }
+        patch user_invitation_path, params: { user: @user_params, invited_itinerary_id: itinerary.id }
         expect(response.body).to include "パスワードは6文字以上で入力してください"
       end
 
       it "パスワードが129文字以上の場合、失敗すること" do
         @user_params[:password] = "a" * 129
         @user_params[:password_confirmation] = "a" * 129
-        patch user_invitation_path, params: { user: @user_params, itinerary_id: itinerary.id }
+        patch user_invitation_path, params: { user: @user_params, invited_itinerary_id: itinerary.id }
         expect(response.body).to include "パスワードは128文字以内で入力してください"
       end
 
       it "パスワードに半角英数字以外が含まれている場合、失敗すること" do
         @user_params[:password] = "invalid-password"
         @user_params[:password_confirmation] = "invalid-password"
-        patch user_invitation_path, params: { user: @user_params, itinerary_id: itinerary.id }
+        patch user_invitation_path, params: { user: @user_params, invited_itinerary_id: itinerary.id }
         expect(response.body).to include "パスワードは半角英数字で入力してください"
       end
 
       it "確認用パスワードが一致しない場合、失敗すること" do
         @user_params[:password_confirmation] = "wrongpassoword"
-        patch user_invitation_path, params: { user: @user_params, itinerary_id: itinerary.id }
+        patch user_invitation_path, params: { user: @user_params, invited_itinerary_id: itinerary.id }
         expect(response.body).to include "パスワード（確認用）とパスワードの入力が一致しません"
       end
     end
