@@ -70,7 +70,7 @@ RSpec.describe "Users::Invitations", type: :request do
   describe "GET #edit" do
     context "アカウント未登録ユーザーの場合" do
       before do
-        invitee = create(:user, name:"newly_invited")
+        invitee = create(:user, name: "newly_invited")
         invitee.update(invitation_token: invitation_token[1])
         accept_params = { invitation_token: invitation_token[0], itinerary_id: itinerary.id }
         get accept_user_invitation_path, params: accept_params

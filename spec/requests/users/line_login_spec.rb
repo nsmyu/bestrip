@@ -26,4 +26,3 @@ RSpec.describe "Users::LineLogin", type: :request do
     end
   end
 end
-

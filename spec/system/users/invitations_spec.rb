@@ -35,7 +35,7 @@ RSpec.describe "Users::Invitations", type: :system do
 
           expect(page).to have_content "招待メールを#{invitee.email}に送信しました。"
           expect(current_path).to eq itinerary_path(itinerary.id)
-        end.to not_change{ User.count }.and not_change { itinerary.invitees.count }
+        end.to not_change { User.count }.and not_change { itinerary.invitees.count }
           .and change { ActionMailer::Base.deliveries.size }.by(1)
       end
 
