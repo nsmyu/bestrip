@@ -1,3 +1,5 @@
+require "rails_helper"
+
 RSpec.describe "Likes", type: :system do
   let(:user) { create(:user) }
   let(:test_post) { create(:post, :caption_great_with_hashtag, :with_photo) }
