@@ -39,7 +39,7 @@ class Users::LineLoginController < ApplicationController
     if line_user_profile[:email].blank?
       existing_user = User.find_by(line_user_id: line_user_profile[:sub])
       if existing_user
-        @pending_invitation.add_user(existing_user)
+        @pending_invitation&.add_user(existing_user)
         sign_in existing_user
         after_sign_in_path
       else
@@ -56,7 +56,7 @@ class Users::LineLoginController < ApplicationController
       if existing_user.line_user_id.blank?
         existing_user.update_attribute(:line_user_id, line_user_profile[:sub])
       end
-      @pending_invitation.add_user(existing_user)
+      @pending_invitation&.add_user(existing_user)
       sign_in existing_user
       after_sign_in_path
       return
@@ -73,7 +73,7 @@ class Users::LineLoginController < ApplicationController
     new_user.set_remote_avatar(line_user_profile[:picture]) if line_user_profile[:picture].present?
 
     if new_user.save
-      @pending_invitation.add_user(new_user)
+      @pending_invitation&.add_user(new_user)
       sign_in new_user
       after_sign_in_path
     else
